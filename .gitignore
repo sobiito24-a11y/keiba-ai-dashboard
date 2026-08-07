@@ -1,0 +1,14 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+
+assets/analysis/*.json
+collected_html/jra/*
+collected_html/nar/*
+results/*
+
+!assets/analysis/.gitkeep
+!collected_html/jra/.gitkeep
+!collected_html/nar/.gitkeep
+!results/.gitkeep
