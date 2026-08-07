@@ -11,22 +11,20 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from core.daily_summary import (
-    DEFAULT_STRATEGY_PATH,
-    build_daily_summary,
-    load_nar_strategy_selection,
-    normalize_daily_date,
-    write_daily_prediction_result,
-    write_daily_summary,
-)
 from core.html_classifier import classify_html, decode_uploaded_html, required_kinds
 from core.models import PredictionResult
+from core.weekend_summary import (
+    build_weekend_summary,
+    normalize_summary_date,
+    write_prediction_result,
+    write_weekend_summary,
+)
 
 
 RACE_ID_RE = re.compile(r"(?<!\d)(\d{12})(?!\d)")
 
 
-def discover_nar_race_html(input_directory: str | Path) -> dict[str, list[Path]]:
+def discover_race_html(input_directory: str | Path) -> dict[str, list[Path]]:
     root = Path(input_directory)
     if not root.is_dir():
         raise FileNotFoundError(f"Input directory was not found: {root}")
@@ -38,20 +36,20 @@ def discover_nar_race_html(input_directory: str | Path) -> dict[str, list[Path]]
     return grouped
 
 
-def prepare_nar_race_input(paths: list[Path]) -> tuple[dict[str, str], dict[str, str]]:
+def prepare_race_input(paths: list[Path]) -> tuple[dict[str, str], dict[str, str]]:
     classified: dict[str, list[tuple[Path, str]]] = {}
     for path in sorted(paths):
         html_text = decode_uploaded_html(path.read_bytes())
-        item = classify_html(path.name, html_text, "nar")
+        item = classify_html(path.name, html_text, "jra")
         classified.setdefault(item.kind, []).append((path, html_text))
 
-    missing = [kind for kind in required_kinds("nar") if not classified.get(kind)]
+    missing = [kind for kind in required_kinds("jra") if not classified.get(kind)]
     if missing:
-        raise ValueError("Required NAR HTML is missing: " + ", ".join(missing))
+        raise ValueError("Required JRA HTML is missing: " + ", ".join(missing))
 
     html_files: dict[str, str] = {}
     file_names: dict[str, str] = {}
-    for kind in ("speed", "newspaper", "style", "shutuba"):
+    for kind in ("speed", "newspaper", "style", "oikiri"):
         candidates = classified.get(kind, [])
         if not candidates:
             continue
@@ -61,27 +59,25 @@ def prepare_nar_race_input(paths: list[Path]) -> tuple[dict[str, str], dict[str,
     return html_files, file_names
 
 
-def build_daily_from_directory(
+def build_from_directory(
     input_directory: str | Path,
     output_path: str | Path,
     *,
     summary_date: str = "",
-    strategy_path: str | Path = DEFAULT_STRATEGY_PATH,
     fetch_past_detail: bool = True,
     predictor: Callable[[dict[str, str], dict[str, str]], PredictionResult] | None = None,
 ) -> tuple[Path, int, list[dict[str, str]]]:
     input_path = Path(input_directory)
     output = Path(output_path)
-    strategy_selection = load_nar_strategy_selection(strategy_path)
-    grouped = discover_nar_race_html(input_path)
+    grouped = discover_race_html(input_path)
     results: list[tuple[str, PredictionResult]] = []
     detail_paths: dict[str, str] = {}
     errors: list[dict[str, str]] = []
 
     if predictor is None:
-        from core.nar_notebook_logic import predict_nar_from_html
+        from core.jra_notebook_logic import predict_jra_from_html
 
-        predictor = lambda html_files, file_names: predict_nar_from_html(
+        predictor = lambda html_files, file_names: predict_jra_from_html(
             html_files,
             file_names,
             fetch_past_detail=fetch_past_detail,
@@ -89,14 +85,12 @@ def build_daily_from_directory(
 
     for race_id, paths in sorted(grouped.items()):
         try:
-            html_files, file_names = prepare_nar_race_input(paths)
+            html_files, file_names = prepare_race_input(paths)
             result = predictor(html_files, file_names)
-            if result.race_mode != "nar":
-                raise ValueError("NAR Daily predictor returned a non-NAR PredictionResult.")
             if result.status != "ok":
                 raise RuntimeError(result.message or "PredictionResult is not ready.")
-            detail_relative = f"nar_results/{race_id}.json"
-            write_daily_prediction_result(result, output.parent / detail_relative)
+            detail_relative = f"results/{race_id}.json"
+            write_prediction_result(result, output.parent / detail_relative)
             detail_paths[race_id] = detail_relative
             results.append((race_id, result))
             print(f"[{len(results)}/{len(grouped)}] {race_id}: analyzed")
@@ -104,34 +98,28 @@ def build_daily_from_directory(
             errors.append({"race_id": race_id, "message": str(exc)})
             print(f"{race_id}: failed: {exc}", file=sys.stderr)
 
-    resolved_date = normalize_daily_date(summary_date) or _infer_date(input_path, results)
-    summary = build_daily_summary(
+    resolved_date = normalize_summary_date(summary_date) or _infer_date(input_path, results)
+    summary = build_weekend_summary(
         results,
         summary_date=resolved_date,
-        strategy_selection=strategy_selection,
         detail_paths=detail_paths,
         errors=errors,
     )
-    write_daily_summary(summary, output)
+    write_weekend_summary(summary, output)
     return output, len(results), errors
 
 
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="Analyze collected NAR races and build Keiba AI Daily JSON.",
+        description="Analyze every collected JRA race and build Keiba AI Weekend JSON.",
     )
-    parser.add_argument("--input", required=True, help="Directory containing collected NAR HTML files.")
-    parser.add_argument("--output", default="assets/analysis/nar_daily_summary.json", help="Output JSON path.")
-    parser.add_argument(
-        "--strategy",
-        default=str(DEFAULT_STRATEGY_PATH),
-        help="NAR-only strategy selection JSON path.",
-    )
-    parser.add_argument("--date", default="", help="Race date, for example 2026-08-06. Inferred when omitted.")
+    parser.add_argument("--input", required=True, help="Directory containing collected JRA HTML files.")
+    parser.add_argument("--output", default="assets/analysis/weekend_summary.json", help="Output JSON path.")
+    parser.add_argument("--date", default="", help="Race date, for example 2026-08-08. Inferred from the input path when omitted.")
     parser.add_argument(
         "--no-fetch-past-detail",
         action="store_true",
-        help="Skip network completion of past-race details. Existing NAR prediction behavior is used by default.",
+        help="Skip network completion of past-race details. Existing prediction behavior is used by default.",
     )
     return parser.parse_args(argv)
 
@@ -139,17 +127,16 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
 def main(argv: list[str] | None = None) -> int:
     args = parse_args(argv)
     try:
-        output, success_count, errors = build_daily_from_directory(
+        output, success_count, errors = build_from_directory(
             args.input,
             args.output,
             summary_date=args.date,
-            strategy_path=args.strategy,
             fetch_past_detail=not args.no_fetch_past_detail,
         )
     except Exception as exc:
         print(str(exc), file=sys.stderr)
         return 2
-    print(f"daily summary: {output}")
+    print(f"weekend summary: {output}")
     print(f"analyzed: {success_count} / errors: {len(errors)}")
     return 0 if success_count else 1
 
@@ -165,13 +152,13 @@ def _race_id_for_path(path: Path, root: Path) -> str:
 
 
 def _infer_date(input_path: Path, results: list[tuple[str, PredictionResult]]) -> str:
-    inferred = normalize_daily_date(str(input_path))
+    inferred = normalize_summary_date(str(input_path))
     if inferred:
         return inferred
     for _race_id, result in results:
         info = result.race_info or {}
         for key in ("race_date", "date", "開催日"):
-            inferred = normalize_daily_date(info.get(key))
+            inferred = normalize_summary_date(info.get(key))
             if inferred:
                 return inferred
     return ""

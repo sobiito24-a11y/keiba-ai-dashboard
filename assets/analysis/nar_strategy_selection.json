@@ -1,0 +1,28 @@
+{
+  "race_type": "nar",
+  "strategy_id": "nar_existing_ticket_ranking_v1",
+  "strategy_source": "core.nar_notebook_logic",
+  "decision_mapping": {
+    "A": "BUY",
+    "B": "BUY",
+    "C": "HOLD",
+    "D": "SKIP",
+    "N": "SKIP",
+    "－": "SKIP",
+    "": "SKIP"
+  },
+  "investment_yen": {
+    "A": 200,
+    "B": 100,
+    "C": 0,
+    "D": 0,
+    "N": 0,
+    "－": 0,
+    "": 0
+  },
+  "validation": {
+    "label": "地方既存買い目統計",
+    "race_count": null,
+    "status": "暫定検証"
+  }
+}

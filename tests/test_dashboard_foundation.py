@@ -55,8 +55,10 @@ class DashboardFoundationTest(unittest.TestCase):
             "README.md",
             "pages/1_JRA_Weekend.py",
             "pages/2_NAR_Daily.py",
+            "core/upload_pipeline.py",
             "core",
             "tools",
+            "tools/build_weekend_summary.py",
             "assets/analysis",
             "collected_html/jra",
             "collected_html/nar",
@@ -73,29 +75,38 @@ class DashboardFoundationTest(unittest.TestCase):
         self.assertIn('"weekend_summary.json"', source)
         self.assertIn('"nar_daily_summary.json"', source)
         self.assertIn('st.info("データがありません")', source)
+        self.assertIn('st.subheader("HTML ZIPアップロード")', source)
+        self.assertIn("process_html_zip", source)
 
-    def test_dashboard_has_no_mobile_prediction_dependencies(self) -> None:
+    def test_dashboard_does_not_reference_an_external_mobile_checkout(self) -> None:
         production_files = [
             ROOT / "app.py",
             ROOT / "pages" / "1_JRA_Weekend.py",
             ROOT / "pages" / "2_NAR_Daily.py",
             ROOT / "core" / "summary_loader.py",
-            ROOT / "core" / "daily_summary.py",
+            ROOT / "core" / "upload_pipeline.py",
         ]
         source = "\n".join(path.read_text(encoding="utf-8") for path in production_files)
-        for forbidden in ("PredictionResult", "mobile_png", "jra_notebook_logic", "nar_notebook_logic", "Parser"):
+        for forbidden in ("current_task/keiba_ai_mobile", "../keiba_ai_mobile", "mobile_png"):
             self.assertNotIn(forbidden, source)
 
-    def test_summary_builder_is_an_explicit_future_placeholder(self) -> None:
-        result = subprocess.run(
-            [sys.executable, str(ROOT / "tools" / "build_daily_summary.py")],
-            cwd=ROOT,
-            capture_output=True,
-            text=True,
-            check=False,
-        )
-        self.assertEqual(result.returncode, 2)
-        self.assertIn("次のPhase", result.stdout)
+    def test_summary_builders_expose_help_without_running_analysis(self) -> None:
+        for script in ("build_weekend_summary.py", "build_daily_summary.py"):
+            result = subprocess.run(
+                [sys.executable, str(ROOT / "tools" / script), "--help"],
+                cwd=ROOT,
+                capture_output=True,
+                text=True,
+                check=False,
+            )
+            self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertIn("--input", result.stdout)
+
+    def test_nar_strategy_configuration_is_separate_from_generated_summaries(self) -> None:
+        strategy = ROOT / "assets" / "analysis" / "nar_strategy_selection.json"
+        self.assertTrue(strategy.is_file())
+        data = json.loads(strategy.read_text(encoding="utf-8"))
+        self.assertEqual(data["race_type"], "nar")
 
 
 if __name__ == "__main__":

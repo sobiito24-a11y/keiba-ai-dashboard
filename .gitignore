@@ -4,6 +4,7 @@ __pycache__/
 .venv/
 
 assets/analysis/*.json
+!assets/analysis/nar_strategy_selection.json
 collected_html/jra/*
 collected_html/nar/*
 results/*
