@@ -7,6 +7,7 @@ from pathlib import Path
 
 from core.dashboard_cards import (
     DashboardDetailError,
+    filtered_summary_counts,
     load_detail_json,
     prepare_race_card,
     prepare_race_cards,
@@ -25,7 +26,7 @@ def write_detail(analysis_dir: Path, relative: str = "results/race.json") -> Pat
         json.dumps(
             {
                 "race_mode": "jra",
-                "race_name": "新潟11R",
+                "race_name": "新潟1R",
                 "race_info": {
                     "racecourse": "新潟",
                     "race_data": "15:45発走 芝1600m",
@@ -40,9 +41,6 @@ def write_detail(analysis_dir: Path, relative: str = "results/race.json") -> Pat
                     {"馬番": "3", "馬名": "ベータ", "old_final_mark": "○", "AI点": 83, "ability_band": "A", "ability_display_score": 71},
                     {"馬番": 7.0, "馬名": "ガンマ", "old_final_mark": "▲", "AI点": 79, "ability_display_score": 68.2},
                 ],
-                "attention_horses": ["アルファ"],
-                "ai_race_review": "レビュー",
-                "betting_structure": "ワイド",
                 "status": "ok",
             },
             ensure_ascii=False,
@@ -56,16 +54,31 @@ class DashboardCardTest(unittest.TestCase):
     def test_buy_cards_are_sorted_by_strategy_score_descending(self) -> None:
         summary = {
             "buy": [
-                {"race_id": "low", "strategy_score": 65},
-                {"race_id": "high", "strategy_score": "91"},
-                {"race_id": "middle", "strategy_score": 80},
+                {"race_id": "low", "strategy_score": 65, "venue": "札幌", "race_number": "2R"},
+                {"race_id": "high", "strategy_score": "91", "venue": "札幌", "race_number": "1R"},
+                {"race_id": "middle", "strategy_score": 80, "venue": "新潟", "race_number": "1R"},
             ]
         }
         with tempfile.TemporaryDirectory() as tmp:
             cards = prepare_race_cards(summary, tmp, source="JRA Weekend")
         self.assertEqual([card.race_id for card in cards], ["high", "middle", "low"])
 
-    def test_best_five_combines_jra_and_nar_and_keeps_top_scores(self) -> None:
+    def test_cards_can_be_filtered_by_venue_and_sorted_by_race_number(self) -> None:
+        summary = {
+            "buy": [
+                {"race_id": "s2", "strategy_score": 70, "venue": "札幌", "race_number": "2R"},
+                {"race_id": "n1", "strategy_score": 95, "venue": "新潟", "race_number": "1R"},
+                {"race_id": "s1", "strategy_score": 60, "venue": "札幌", "race_number": "1R"},
+            ],
+            "hold": [{"race_id": "s3", "venue": "札幌"}],
+            "skip": [{"race_id": "n2", "venue": "新潟"}],
+        }
+        with tempfile.TemporaryDirectory() as tmp:
+            cards = prepare_race_cards(summary, tmp, source="JRA Weekend", venue="札幌", sort_mode="race")
+        self.assertEqual([card.race_id for card in cards], ["s1", "s2"])
+        self.assertEqual(filtered_summary_counts(summary, "札幌"), (2, 1, 0))
+
+    def test_best_five_combines_sources_and_keeps_top_scores(self) -> None:
         jra = {"buy": [{"race_id": f"jra-{score}", "strategy_score": score} for score in (95, 70, 60)]}
         nar = {"buy": [{"race_id": f"nar-{score}", "strategy_score": score} for score in (99, 88, 77, 55)]}
         with tempfile.TemporaryDirectory() as tmp:
@@ -83,9 +96,9 @@ class DashboardCardTest(unittest.TestCase):
                 "race_number": "11",
                 "ticket": "ワイド SS-A",
                 "strategy_score": 91,
-                "roi": 179.3,
-                "confidence": "★★★★★",
-                "reason": "サンプル20R以上 / 過去回収実績 / 的中率高め / 相手側の配当妙味あり / 5行目",
+                "expected_roi": 179.3,
+                "confidence": "★★★★☆",
+                "reason": "サンプル20R以上 / 過去回収実績",
                 "detail_path": "results/race.json",
             }
             card = prepare_race_card(item, analysis, source="JRA Weekend")
@@ -94,15 +107,9 @@ class DashboardCardTest(unittest.TestCase):
         self.assertEqual(card.race_number, "11R")
         self.assertEqual(card.post_time, "15:45")
         self.assertEqual(card.roi, "179.3%")
-        self.assertEqual(card.investment_rank, "★★★★★")
+        self.assertEqual(card.investment_rank, "★★★★☆")
         self.assertEqual(card.condition_match, "SS-A")
         self.assertEqual(card.adopted_strategy, "ワイド SS-A")
-        self.assertEqual(card.buy_reasons, (
-            "サンプル20R以上",
-            "過去回収実績",
-            "的中率高め",
-            "相手側の配当妙味あり",
-        ))
         self.assertTrue(card.detail_available)
         self.assertEqual([(horse.mark, horse.number, horse.name) for horse in card.horses], [
             ("◎", "1", "アルファ"),
@@ -121,9 +128,9 @@ class DashboardCardTest(unittest.TestCase):
             "venue": "門別",
             "race_number": "10R",
             "post_time": "20:05",
-            "ticket": "馬単 SS→A",
+            "ticket": "馬連 SS-A",
             "strategy_score": 84,
-            "roi": 172,
+            "expected_roi": 172,
             "investment_rank": "S",
             "horses": [
                 {"number": 3, "name": "ホースA", "role": "◎", "group": "SS"},
@@ -135,9 +142,8 @@ class DashboardCardTest(unittest.TestCase):
             card = prepare_race_card(item, tmp, source="NAR Daily")
         self.assertEqual((card.venue, card.race_number, card.post_time), ("門別", "10R", "20:05"))
         self.assertEqual(card.investment_rank, "S")
-        self.assertEqual(card.condition_match, "SS→A")
-        self.assertEqual(card.adopted_strategy, "馬単 SS→A")
-        self.assertEqual(card.buy_reasons, ("SS→A条件一致", "回収率172%", "Score84"))
+        self.assertEqual(card.condition_match, "SS-A")
+        self.assertEqual(card.adopted_strategy, "馬連 SS-A")
         self.assertEqual([horse.mark for horse in card.horses], ["◎", "○", "▲"])
         self.assertTrue(all(horse.ai_score == "—" for horse in card.horses))
         self.assertFalse(card.detail_available)
@@ -151,14 +157,16 @@ class DashboardCardTest(unittest.TestCase):
             with self.assertRaises(DashboardDetailError):
                 load_detail_json(analysis, "/tmp/secret.json")
 
-    def test_mobile_ui_contains_collapsed_hold_skip_count_and_detail_switch(self) -> None:
+    def test_mobile_ui_contains_filter_sort_collapsed_hold_skip_count_and_detail_switch(self) -> None:
         source = (ROOT / "core" / "dashboard_ui.py").read_text(encoding="utf-8")
         detail_source = (ROOT / "pages" / "3_Race_Detail.py").read_text(encoding="utf-8")
         self.assertIn('st.subheader("今日のBEST5")', source)
+        self.assertIn('st.selectbox("開催場"', source)
+        self.assertIn('st.radio("表示順"', source)
+        self.assertIn('filtered_summary_counts(summary, selected_venue)', source)
         self.assertIn('st.markdown("**買う理由**")', source)
         self.assertIn('st.write(f"条件一致：{card.condition_match}")', source)
-        self.assertIn('st.write(f"採用された戦略：{card.adopted_strategy}")', source)
-        self.assertIn('for reason in card.buy_reasons:', source)
+        self.assertIn('st.write(f"採用戦略：{card.adopted_strategy}")', source)
         self.assertIn('with st.expander(f"HOLD {hold_count}R", expanded=False)', source)
         self.assertIn('st.caption(f"SKIP {skip_count}R（件数のみ表示）")', source)
         self.assertIn('st.switch_page(DETAIL_PAGE)', source)

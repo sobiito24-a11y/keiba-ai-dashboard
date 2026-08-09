@@ -11,6 +11,10 @@ from typing import Any, Iterable, Literal, Mapping
 import pandas as pd
 
 from .models import PredictionResult
+from .race_investment_strategy import (
+    load_jra_strategy_selection,
+    select_jra_investment_strategy,
+)
 
 
 DecisionLabel = Literal["BUY", "HOLD", "SKIP"]
@@ -27,6 +31,7 @@ JRA_VENUES = {
     "09": "阪神",
     "10": "小倉",
 }
+JRA_VENUE_ORDER = ("札幌", "函館", "福島", "新潟", "東京", "中山", "中京", "京都", "阪神", "小倉")
 
 
 @dataclass(frozen=True)
@@ -69,13 +74,24 @@ class InvestmentDecision:
     strategy_score: int
     roi: float | None
     investment: int
+    selected_strategy: str = ""
+    strategy_id: str = ""
+    expected_roi: float | None = None
+    hit_rate: float | None = None
+    sample_size: int = 0
+    points: int = 0
+    combinations: tuple[str, ...] = ()
     horses: tuple[WeekendHorse, ...] = ()
-    confidence: str = "★☆☆☆☆"
+    confidence: str = "☆☆☆☆☆"
     reason: str = ""
+    avoid_reason: str = ""
     detail_path: str = ""
+    strategy_audit: Mapping[str, Any] = field(default_factory=dict)
+    race_type: str = "jra"
 
     def to_dict(self) -> dict[str, Any]:
         return {
+            "race_type": self.race_type,
             "race_id": self.race_id,
             "race_name": self.race_name,
             "race_title": self.race_title,
@@ -83,14 +99,23 @@ class InvestmentDecision:
             "race_number": self.race_number,
             "ticket": self.ticket,
             "decision": self.decision,
+            "selected_strategy": self.selected_strategy,
+            "strategy_id": self.strategy_id,
             "score": self.strategy_score,
             "strategy_score": self.strategy_score,
+            "expected_roi": self.expected_roi,
             "roi": self.roi,
+            "hit_rate": self.hit_rate,
+            "sample_size": self.sample_size,
             "investment": self.investment,
+            "points": self.points,
+            "combinations": list(self.combinations),
             "confidence": self.confidence,
             "reason": self.reason,
+            "avoid_reason": self.avoid_reason,
             "detail_path": self.detail_path,
             "horses": [horse.to_dict() for horse in self.horses],
+            "strategy_audit": _json_ready(self.strategy_audit),
         }
 
     @classmethod
@@ -109,10 +134,19 @@ class InvestmentDecision:
             strategy_score=int(_safe_float(data.get("strategy_score", data.get("score"))) or 0),
             roi=_safe_float(data.get("roi")),
             investment=int(_safe_float(data.get("investment")) or 0),
+            selected_strategy=str(data.get("selected_strategy") or ""),
+            strategy_id=str(data.get("strategy_id") or ""),
+            expected_roi=_safe_float(data.get("expected_roi")),
+            hit_rate=_safe_float(data.get("hit_rate")),
+            sample_size=int(_safe_float(data.get("sample_size")) or 0),
+            points=int(_safe_float(data.get("points")) or 0),
+            combinations=tuple(str(item) for item in data.get("combinations", []) if str(item).strip()),
             horses=tuple(WeekendHorse.from_dict(item) for item in data.get("horses", []) if isinstance(item, Mapping)),
-            confidence=str(data.get("confidence") or "★☆☆☆☆"),
+            confidence=str(data.get("confidence") or "☆☆☆☆☆"),
             reason=str(data.get("reason") or ""),
+            avoid_reason=str(data.get("avoid_reason") or ""),
             detail_path=str(data.get("detail_path") or ""),
+            strategy_audit=dict(data.get("strategy_audit") or {}),
         )
 
 
@@ -122,23 +156,34 @@ class WeekendSummary:
     buy: tuple[InvestmentDecision, ...] = ()
     hold: tuple[InvestmentDecision, ...] = ()
     skip: tuple[InvestmentDecision, ...] = ()
+    strategy_selection: dict[str, Any] = field(default_factory=dict)
     generated_at: str = field(default_factory=lambda: datetime.now().isoformat(timespec="seconds"))
     errors: tuple[dict[str, str], ...] = ()
+    race_type: str = "jra"
 
     @property
     def all_decisions(self) -> tuple[InvestmentDecision, ...]:
         return self.buy + self.hold + self.skip
 
+    @property
+    def venues(self) -> tuple[str, ...]:
+        venues = {item.venue for item in self.all_decisions if item.venue}
+        order = {venue: index for index, venue in enumerate(JRA_VENUE_ORDER)}
+        return tuple(sorted(venues, key=lambda venue: (order.get(venue, len(order)), venue)))
+
     def to_dict(self) -> dict[str, Any]:
         return {
+            "race_type": self.race_type,
             "date": self.date,
             "generated_at": self.generated_at,
+            "strategy_selection": _json_ready(self.strategy_selection),
             "counts": {
                 "buy": len(self.buy),
                 "hold": len(self.hold),
                 "skip": len(self.skip),
                 "errors": len(self.errors),
             },
+            "venues": list(self.venues),
             "buy": [item.to_dict() for item in self.buy],
             "hold": [item.to_dict() for item in self.hold],
             "skip": [item.to_dict() for item in self.skip],
@@ -150,6 +195,7 @@ class WeekendSummary:
         return cls(
             date=str(data.get("date") or ""),
             generated_at=str(data.get("generated_at") or ""),
+            strategy_selection=dict(data.get("strategy_selection") or {}),
             buy=tuple(InvestmentDecision.from_dict(item) for item in data.get("buy", []) if isinstance(item, Mapping)),
             hold=tuple(InvestmentDecision.from_dict(item) for item in data.get("hold", []) if isinstance(item, Mapping)),
             skip=tuple(InvestmentDecision.from_dict(item) for item in data.get("skip", []) if isinstance(item, Mapping)),
@@ -162,52 +208,32 @@ def build_investment_decision(
     *,
     race_id: str = "",
     detail_path: str = "",
+    strategy_selection: Mapping[str, Any] | None = None,
 ) -> InvestmentDecision:
-    """Adapt one PredictionResult to the existing JRA ticket-ranking output."""
+    """Build a JRA race-level investment decision without changing prediction logic."""
     if result.race_mode != "jra":
-        raise ValueError("Keiba AI Weekend currently supports JRA only.")
+        raise ValueError("Keiba AI Weekend supports JRA PredictionResult only.")
 
     resolved_race_id = race_id or _race_id_from_result(result)
     venue, race_number, display_name, race_title = _race_metadata(result, resolved_race_id)
-    frame = _ticket_input_frame(result)
-    if frame.empty:
-        return _skip_decision(resolved_race_id, display_name, race_title, venue, race_number, detail_path, "馬データなし")
-
-    ticket_logic = _load_jra_ticket_logic()
-    candidate_rows = ticket_logic._ticket_candidate_rows(frame, confidence_summary=None, race_type="jra")
-    top_rows = ticket_logic._ticket_top_rows(candidate_rows, confidence_summary=None)
-    if top_rows:
-        selected = top_rows[0]
-    elif candidate_rows:
-        selected = sorted(candidate_rows, key=ticket_logic._ticket_ranking_sort_key, reverse=True)[0]
-    else:
-        return _skip_decision(resolved_race_id, display_name, race_title, venue, race_number, detail_path, "有力買い目なし")
-
-    judgement_code = ticket_logic._ticket_judgement_code(selected)
-    decision: DecisionLabel = "BUY" if judgement_code in {"A", "B"} else "HOLD" if judgement_code == "C" else "SKIP"
-    score = int(_safe_float(selected.get("_score", selected.get("買い目スコア"))) or 0)
-    roi = _safe_float(selected.get("_roi"))
-    horses = tuple(_candidate_horses(selected, frame))
-    ticket = _weekend_ticket_text(selected, horses, ticket_logic)
-    stars, _label = ticket_logic._ticket_recommendation(selected)
-    investment = 200 if decision == "BUY" and judgement_code == "A" else 100 if decision == "BUY" else 0
-    reason = str(selected.get("理由") or selected.get("_judgement") or "")
-    return InvestmentDecision(
-        race_id=resolved_race_id,
-        race_name=display_name,
-        race_title=race_title,
-        venue=venue,
-        race_number=race_number,
-        ticket=ticket,
-        decision=decision,
-        strategy_score=score,
-        roi=roi,
-        investment=investment,
-        horses=horses,
-        confidence=stars or _stars_from_score(score),
-        reason=reason,
-        detail_path=detail_path,
-    )
+    loaded_strategy = strategy_selection
+    if loaded_strategy is None:
+        try:
+            loaded_strategy = load_jra_strategy_selection()
+        except Exception:
+            loaded_strategy = None
+    if loaded_strategy is not None:
+        payload = select_jra_investment_strategy(result, loaded_strategy)
+        return _decision_from_strategy_payload(
+            payload,
+            resolved_race_id,
+            display_name,
+            race_title,
+            venue,
+            race_number,
+            detail_path,
+        )
+    return _build_ticket_fallback_decision(result, resolved_race_id, display_name, race_title, venue, race_number, detail_path)
 
 
 def build_weekend_summary(
@@ -217,19 +243,38 @@ def build_weekend_summary(
     detail_paths: Mapping[str, str] | None = None,
     errors: Iterable[Mapping[str, Any]] = (),
 ) -> WeekendSummary:
+    try:
+        strategy_selection = load_jra_strategy_selection()
+    except Exception:
+        strategy_selection = None
+
     decisions = [
         build_investment_decision(
             result,
             race_id=race_id,
             detail_path=str((detail_paths or {}).get(race_id) or ""),
+            strategy_selection=strategy_selection,
         )
         for race_id, result in results
     ]
     buy = tuple(sorted((item for item in decisions if item.decision == "BUY"), key=_decision_sort_key))
     hold = tuple(sorted((item for item in decisions if item.decision == "HOLD"), key=_decision_sort_key))
-    skip = tuple(sorted((item for item in decisions if item.decision == "SKIP"), key=_decision_sort_key))
+    skip = tuple(sorted((item for item in decisions if item.decision == "SKIP"), key=_race_sort_key))
     clean_errors = tuple({str(key): str(value) for key, value in item.items()} for item in errors)
-    return WeekendSummary(date=summary_date, buy=buy, hold=hold, skip=skip, errors=clean_errors)
+    strategy_meta = {
+        "race_type": "jra",
+        "strategy_id": str((strategy_selection or {}).get("strategy_id") or ""),
+        "strategy_source": str((strategy_selection or {}).get("strategy_source") or ""),
+        "validation": _json_ready((strategy_selection or {}).get("validation") or (strategy_selection or {}).get("source") or {}),
+    }
+    return WeekendSummary(
+        date=summary_date,
+        buy=buy,
+        hold=hold,
+        skip=skip,
+        strategy_selection=strategy_meta,
+        errors=clean_errors,
+    )
 
 
 def write_weekend_summary(summary: WeekendSummary, path: str | Path) -> Path:
@@ -239,7 +284,7 @@ def write_weekend_summary(summary: WeekendSummary, path: str | Path) -> Path:
 def load_weekend_summary(path: str | Path) -> WeekendSummary:
     data = json.loads(Path(path).read_text(encoding="utf-8"))
     if not isinstance(data, Mapping):
-        raise ValueError("weekend_summary.json must contain a JSON object.")
+        raise ValueError("weekend_summary.json must contain an object.")
     return WeekendSummary.from_dict(data)
 
 
@@ -250,7 +295,7 @@ def write_prediction_result(result: PredictionResult, path: str | Path) -> Path:
 def load_prediction_result(path: str | Path) -> PredictionResult:
     data = json.loads(Path(path).read_text(encoding="utf-8"))
     if not isinstance(data, Mapping):
-        raise ValueError("PredictionResult JSON must contain a JSON object.")
+        raise ValueError("PredictionResult JSON must contain an object.")
     return prediction_result_from_dict(data)
 
 
@@ -316,6 +361,126 @@ def normalize_summary_date(value: Any) -> str:
         return ""
 
 
+def _decision_from_strategy_payload(
+    payload: Mapping[str, Any],
+    race_id: str,
+    race_name: str,
+    race_title: str,
+    venue: str,
+    race_number: str,
+    detail_path: str,
+) -> InvestmentDecision:
+    decision = str(payload.get("decision") or "SKIP").upper()
+    if decision not in {"BUY", "HOLD", "SKIP"}:
+        decision = "SKIP"
+    horses = tuple(WeekendHorse.from_dict(item) for item in payload.get("horses", []) if isinstance(item, Mapping))
+    return InvestmentDecision(
+        race_id=race_id,
+        race_name=race_name,
+        race_title=race_title,
+        venue=venue,
+        race_number=race_number,
+        ticket=str(payload.get("ticket") or ""),
+        decision=decision,  # type: ignore[arg-type]
+        strategy_score=int(_safe_float(payload.get("strategy_score")) or 0),
+        roi=_safe_float(payload.get("roi", payload.get("expected_roi"))),
+        investment=int(_safe_float(payload.get("investment")) or 0),
+        selected_strategy=str(payload.get("selected_strategy") or ""),
+        strategy_id=str(payload.get("strategy_id") or ""),
+        expected_roi=_safe_float(payload.get("expected_roi", payload.get("roi"))),
+        hit_rate=_safe_float(payload.get("hit_rate")),
+        sample_size=int(_safe_float(payload.get("sample_size")) or 0),
+        points=int(_safe_float(payload.get("points")) or 0),
+        combinations=tuple(str(item) for item in payload.get("combinations", []) if str(item).strip()),
+        horses=horses,
+        confidence=str(payload.get("confidence") or "☆☆☆☆☆"),
+        reason=str(payload.get("reason") or ""),
+        avoid_reason=str(payload.get("avoid_reason") or ""),
+        detail_path=detail_path,
+        strategy_audit=dict(payload.get("strategy_audit") or {}),
+    )
+
+
+def _build_ticket_fallback_decision(
+    result: PredictionResult,
+    resolved_race_id: str,
+    display_name: str,
+    race_title: str,
+    venue: str,
+    race_number: str,
+    detail_path: str,
+) -> InvestmentDecision:
+    """Fallback only for missing/corrupt JRA strategy JSON."""
+    frame = _ticket_input_frame(result)
+    if frame.empty:
+        return _skip_decision(resolved_race_id, display_name, race_title, venue, race_number, detail_path, "horse data missing")
+
+    ticket_logic = _load_jra_ticket_logic()
+    candidate_rows = ticket_logic._ticket_candidate_rows(frame, confidence_summary=None, race_type="jra")
+    top_rows = ticket_logic._ticket_top_rows(candidate_rows, confidence_summary=None)
+    if top_rows:
+        selected = top_rows[0]
+    elif candidate_rows:
+        selected = sorted(candidate_rows, key=ticket_logic._ticket_ranking_sort_key, reverse=True)[0]
+    else:
+        return _skip_decision(resolved_race_id, display_name, race_title, venue, race_number, detail_path, "ticket candidate missing")
+
+    judgement_code = ticket_logic._ticket_judgement_code(selected)
+    decision: DecisionLabel = "BUY" if judgement_code in {"A", "B"} else "HOLD" if judgement_code == "C" else "SKIP"
+    score = int(_safe_float(selected.get("_score", selected.get("買い目スコア"))) or 0)
+    roi = _safe_float(selected.get("_roi"))
+    horses = tuple(_candidate_horses(selected, frame))
+    ticket = _weekend_ticket_text(selected, horses, ticket_logic)
+    stars, _label = ticket_logic._ticket_recommendation(selected)
+    investment = 200 if decision == "BUY" and judgement_code == "A" else 100 if decision == "BUY" else 0
+    reason = str(selected.get("理由") or selected.get("_judgement") or "")
+    return InvestmentDecision(
+        race_id=resolved_race_id,
+        race_name=display_name,
+        race_title=race_title,
+        venue=venue,
+        race_number=race_number,
+        ticket=ticket,
+        decision=decision,
+        strategy_score=score,
+        roi=roi,
+        investment=investment,
+        selected_strategy=ticket,
+        hit_rate=_safe_float(selected.get("_hit_rate")),
+        sample_size=int(_safe_float(selected.get("_n")) or 0),
+        horses=horses,
+        confidence=stars or _stars_from_score(score),
+        reason=reason,
+        detail_path=detail_path,
+    )
+
+
+def _skip_decision(
+    race_id: str,
+    race_name: str,
+    race_title: str,
+    venue: str,
+    race_number: str,
+    detail_path: str,
+    reason: str,
+) -> InvestmentDecision:
+    return InvestmentDecision(
+        race_id=race_id,
+        race_name=race_name,
+        race_title=race_title,
+        venue=venue,
+        race_number=race_number,
+        ticket="",
+        decision="SKIP",
+        strategy_score=0,
+        roi=None,
+        investment=0,
+        confidence="☆☆☆☆☆",
+        reason=reason,
+        detail_path=detail_path,
+    )
+
+
 def _ticket_input_frame(result: PredictionResult) -> pd.DataFrame:
     source = result.overall_table
     if not isinstance(source, pd.DataFrame) or source.empty:
@@ -324,9 +489,9 @@ def _ticket_input_frame(result: PredictionResult) -> pd.DataFrame:
         return pd.DataFrame()
     frame = source.copy(deep=True)
     if "最終印" not in frame.columns:
-        frame["最終印"] = _first_text_series(frame, ["old_final_mark", "旧印", "表示印", "display_mark", "印"])
+        frame["最終印"] = _first_text_series(frame, ["old_final_mark", "display_mark", "印"])
     if "総合評価点" not in frame.columns:
-        frame["総合評価点"] = _first_series(frame, ["final_mark_score", "総合評価監査点", "総合評価", "AI点"])
+        frame["総合評価点"] = _first_series(frame, ["final_mark_score", "総合評価", "AI点"])
     if "AI順位" not in frame.columns and "ai_rank" in frame.columns:
         frame["AI順位"] = frame["ai_rank"]
     if "単勝オッズ" not in frame.columns and "オッズ" in frame.columns:
@@ -334,42 +499,21 @@ def _ticket_input_frame(result: PredictionResult) -> pd.DataFrame:
     return frame
 
 
-def _first_series(frame: pd.DataFrame, columns: list[str]) -> pd.Series:
-    result = pd.Series(pd.NA, index=frame.index, dtype="object")
-    for column in columns:
-        if column not in frame.columns:
-            continue
-        values = frame[column]
-        result = result.where(result.notna(), values)
-    return result
-
-
-def _first_text_series(frame: pd.DataFrame, columns: list[str]) -> pd.Series:
-    result = pd.Series("", index=frame.index, dtype="object")
-    for column in columns:
-        if column not in frame.columns:
-            continue
-        values = frame[column].fillna("").astype(str).str.strip()
-        result = result.where(result.str.len().gt(0), values)
-    return result
-
-
 def _candidate_horses(row: Mapping[str, Any], frame: pd.DataFrame) -> list[WeekendHorse]:
     lookup = _horse_group_lookup(frame)
-    text = str(row.get("単勝オッズ構成") or "")
+    text = str(row.get("単勝オッズ構成") or row.get("蜊伜享繧ｪ繝・ぜ讒区・") or "")
     horses: list[WeekendHorse] = []
-    for part in re.split(r"[／/]", text):
-        match = re.match(r"^\s*(.*?)(\d+)\s+(.+?)：\s*([^倍]+)倍?\s*$", part)
+    for part in re.split(r"[・/]", text):
+        match = re.match(r"^\s*(.*?)(\d+)\s+(.+?)[・/]\s*([^倍]+)倍\s*$", part)
         if not match:
             continue
         role, number_text, name, odds_text = match.groups()
         key = _horse_number_key(number_text)
-        group = lookup.get(key) or _group_from_role(role)
         horses.append(
             WeekendHorse(
                 number=int(number_text),
                 name=name.strip(),
-                group=group,
+                group=lookup.get(key) or _group_from_role(role),
                 role=role.strip(),
                 odds=_safe_float(odds_text),
             )
@@ -402,7 +546,7 @@ def _weekend_ticket_text(row: Mapping[str, Any], horses: tuple[WeekendHorse, ...
 def _group_combo_from_text(value: str) -> str:
     combo = str(value or "").split(" ", 1)[-1]
     connector = "→" if "→" in combo else "-"
-    roles = re.split(r"[－→-]", combo)
+    roles = re.split(r"[・×/-]", combo)
     return connector.join(_group_from_role(role) for role in roles if role)
 
 
@@ -414,7 +558,7 @@ def _group_from_role(role: str) -> str:
         return "A"
     if text.startswith("△"):
         return "B"
-    if text.startswith(("✓", "✔", "☆")):
+    if text.startswith(("✓", "✔")):
         return "C"
     return "Z"
 
@@ -446,43 +590,19 @@ def _race_id_from_result(result: PredictionResult) -> str:
     return ""
 
 
-def _first_text(data: Mapping[str, Any], keys: list[str]) -> str:
-    for key in keys:
-        value = data.get(key)
-        if value is not None and str(value).strip() and str(value).lower() != "nan":
-            return str(value).strip()
-    return ""
-
-
-def _skip_decision(
-    race_id: str,
-    race_name: str,
-    race_title: str,
-    venue: str,
-    race_number: str,
-    detail_path: str,
-    reason: str,
-) -> InvestmentDecision:
-    return InvestmentDecision(
-        race_id=race_id,
-        race_name=race_name,
-        race_title=race_title,
-        venue=venue,
-        race_number=race_number,
-        ticket="",
-        decision="SKIP",
-        strategy_score=0,
-        roi=None,
-        investment=0,
-        confidence="★☆☆☆☆",
-        reason=reason,
-        detail_path=detail_path,
-    )
-
-
 def _decision_sort_key(item: InvestmentDecision) -> tuple[float, float, str]:
     roi = item.roi if item.roi is not None else -1.0
     return (-float(item.strategy_score), -roi, item.race_id)
+
+
+def _race_sort_key(item: InvestmentDecision) -> tuple[int, int, str]:
+    venue_order = {venue: index for index, venue in enumerate(JRA_VENUE_ORDER)}
+    return (venue_order.get(item.venue, len(venue_order)), _race_number_sort_value(item.race_number), item.race_id)
+
+
+def _race_number_sort_value(value: str) -> int:
+    match = re.search(r"([1-9]|1[0-2])", str(value or ""))
+    return int(match.group(1)) if match else 99
 
 
 def _stars_from_score(score: int) -> str:
@@ -491,11 +611,35 @@ def _stars_from_score(score: int) -> str:
 
 
 def _load_jra_ticket_logic() -> Any:
-    # Keep the JSON-only Weekend page light; the existing prediction module is
-    # imported only by the CLI while it builds InvestmentDecision objects.
     from . import jra_notebook_logic
 
     return jra_notebook_logic
+
+
+def _first_text(data: Mapping[str, Any], keys: list[str]) -> str:
+    for key in keys:
+        value = data.get(key)
+        if value is not None and str(value).strip() and str(value).lower() != "nan":
+            return str(value).strip()
+    return ""
+
+
+def _first_series(frame: pd.DataFrame, columns: list[str]) -> pd.Series:
+    result = pd.Series(pd.NA, index=frame.index, dtype="object")
+    for column in columns:
+        if column in frame.columns:
+            result = result.where(result.notna(), frame[column])
+    return result
+
+
+def _first_text_series(frame: pd.DataFrame, columns: list[str]) -> pd.Series:
+    result = pd.Series("", index=frame.index, dtype="object")
+    for column in columns:
+        if column not in frame.columns:
+            continue
+        values = frame[column].fillna("").astype(str).str.strip()
+        result = result.where(result.str.len().gt(0), values)
+    return result
 
 
 def _horse_number_key(value: Any) -> str:

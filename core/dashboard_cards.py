@@ -58,18 +58,33 @@ def prepare_race_cards(
     *,
     source: str,
     decision: str = "buy",
+    venue: str = "",
+    sort_mode: str = "score",
 ) -> tuple[RaceCard, ...]:
-    cards = [prepare_race_card(item, analysis_dir, source=source) for item in summary_decisions(summary, decision)]
-    return tuple(sorted(cards, key=lambda card: -card.strategy_score))
+    cards = [
+        prepare_race_card(item, analysis_dir, source=source)
+        for item in summary_decisions(summary, decision)
+        if _venue_matches(item, venue)
+    ]
+    return tuple(sorted(cards, key=_race_card_sort_key if sort_mode == "race" else _score_sort_key))
 
 
 def today_best_five(
     sources: Iterable[tuple[str, Mapping[str, Any], str | Path]],
+    *,
+    venue: str = "",
 ) -> tuple[RaceCard, ...]:
     cards: list[RaceCard] = []
     for source, summary, analysis_dir in sources:
-        cards.extend(prepare_race_cards(summary, analysis_dir, source=source, decision="buy"))
-    return tuple(sorted(cards, key=lambda card: -card.strategy_score)[:5])
+        cards.extend(prepare_race_cards(summary, analysis_dir, source=source, decision="buy", venue=venue))
+    return tuple(sorted(cards, key=_score_sort_key)[:5])
+
+
+def filtered_summary_counts(summary: Mapping[str, Any], venue: str = "") -> tuple[int, int, int]:
+    return tuple(
+        len([item for item in summary_decisions(summary, decision) if _venue_matches(item, venue)])
+        for decision in ("buy", "hold", "skip")
+    )  # type: ignore[return-value]
 
 
 def prepare_race_card(
@@ -94,22 +109,14 @@ def prepare_race_card(
     if not isinstance(race_info, Mapping):
         race_info = {}
 
-    venue = _first_text(item, ("venue", "開催場")) or _first_text(
-        race_info, ("racecourse", "venue", "place", "開催場", "競馬場")
-    )
+    venue = _first_text(item, ("venue", "開催場")) or _first_text(race_info, ("racecourse", "venue", "place", "競馬場"))
     race_number = _race_number(item, detail, race_info)
     post_time = _post_time(item, race_info)
     ticket = _first_text(item, ("ticket", "券種", "買い目")) or "—"
-    condition_match = _first_text(
-        item,
-        ("condition_match", "matched_condition", "条件一致", "一致条件"),
-    ) or _ticket_condition(ticket)
-    adopted_strategy = _first_text(
-        item,
-        ("adopted_strategy", "strategy_name", "strategy", "採用された戦略", "採用戦略"),
-    ) or ticket
+    condition_match = _first_text(item, ("condition_match", "matched_condition", "一致条件")) or _ticket_condition(ticket)
+    adopted_strategy = _first_text(item, ("selected_strategy", "adopted_strategy", "strategy_name", "strategy", "採用戦略")) or ticket
     strategy_score = _safe_number(item.get("strategy_score", item.get("score"))) or 0.0
-    roi = _format_percent(item.get("roi"))
+    roi = _format_percent(item.get("expected_roi", item.get("roi")))
 
     return RaceCard(
         source=source,
@@ -120,7 +127,7 @@ def prepare_race_card(
         ticket=ticket,
         strategy_score=strategy_score,
         roi=roi,
-        investment_rank=_first_text(item, ("investment_rank", "投資ランク", "confidence", "信頼度")) or "—",
+        investment_rank=_first_text(item, ("investment_rank", "confidence", "信頼度")) or "—",
         condition_match=condition_match or "—",
         adopted_strategy=adopted_strategy,
         buy_reasons=_buy_reason_lines(item, condition_match, roi, strategy_score),
@@ -135,10 +142,10 @@ def resolve_detail_path(analysis_dir: str | Path, detail_path: str) -> Path:
     base = Path(analysis_dir).resolve()
     relative = Path(_text(detail_path))
     if not str(relative) or relative.is_absolute():
-        raise DashboardDetailError("詳細JSONのパスが不正です。")
+        raise DashboardDetailError("detail_path is invalid.")
     target = (base / relative).resolve()
     if target == base or base not in target.parents:
-        raise DashboardDetailError("詳細JSONがassets/analysisの外を指しています。")
+        raise DashboardDetailError("detail_path points outside assets/analysis.")
     return target
 
 
@@ -149,9 +156,9 @@ def load_detail_json(analysis_dir: str | Path, detail_path: str) -> dict[str, An
     try:
         data = json.loads(target.read_text(encoding="utf-8"))
     except (OSError, UnicodeError, json.JSONDecodeError) as exc:
-        raise DashboardDetailError(f"詳細JSONを読み込めません: {target.name}") from exc
+        raise DashboardDetailError(f"Could not read detail JSON: {target.name}") from exc
     if not isinstance(data, dict):
-        raise DashboardDetailError(f"詳細JSONのルートはobjectである必要があります: {target.name}")
+        raise DashboardDetailError(f"Detail JSON must contain an object: {target.name}")
     return data
 
 
@@ -165,19 +172,18 @@ def _buy_reason_lines(
     roi: str,
     strategy_score: float,
 ) -> tuple[str, ...]:
-    raw_reason = _first_text(item, ("buy_reason", "buy_reasons", "BUY理由", "reason", "理由"))
+    raw_reason = _first_text(item, ("buy_reason", "buy_reasons", "reason", "理由"))
     reasons: list[str] = []
     for part in re.split(r"\r?\n|[／/]", raw_reason):
-        clean = re.sub(r"^[✓✔・\-\s]+", "", part).strip()
+        clean = re.sub(r"^[・\-\s]+", "", part).strip()
         if clean:
             _append_unique(reasons, clean)
-
-    if condition_match:
-        _append_unique(reasons, f"{condition_match}条件一致")
-    if roi != "—" and not any("回収" in reason or "ROI" in reason.upper() for reason in reasons):
-        _append_unique(reasons, f"回収率{roi}")
+    if condition_match and condition_match != "—":
+        _append_unique(reasons, f"{condition_match} 条件一致")
+    if roi != "—":
+        _append_unique(reasons, f"回収率 {roi}")
     if not _is_missing(item.get("strategy_score", item.get("score"))):
-        _append_unique(reasons, f"Score{format_strategy_score(strategy_score)}")
+        _append_unique(reasons, f"Score {format_strategy_score(strategy_score)}")
     return tuple(reasons[:4])
 
 
@@ -204,7 +210,7 @@ def _card_horses(item: Mapping[str, Any], detail: Mapping[str, Any]) -> tuple[Ca
         for raw_row in rows:
             if not isinstance(raw_row, Mapping):
                 continue
-            number = _horse_number_key(_first_value(raw_row, ("馬番", "horse_no", "number", "馬")))
+            number = _horse_number_key(_first_value(raw_row, ("馬番", "horse_no", "horse_number", "number")))
             if not number:
                 continue
             merged = rows_by_number.setdefault(number, {})
@@ -216,7 +222,7 @@ def _card_horses(item: Mapping[str, Any], detail: Mapping[str, Any]) -> tuple[Ca
     seen: set[str] = set()
     marked_rows: list[tuple[int, int, CardHorse]] = []
     for index, (number, row) in enumerate(rows_by_number.items()):
-        mark = _normalize_mark(_first_value(row, ("表示印", "display_mark", "old_final_mark", "最終印", "旧印", "印")))
+        mark = _normalize_mark(_first_value(row, ("表示印", "display_mark", "old_final_mark", "最終印", "印", "mark")))
         if mark not in MARK_ORDER:
             continue
         marked_rows.append((MARK_ORDER[mark], index, _horse_from_row(mark, number, row)))
@@ -225,21 +231,14 @@ def _card_horses(item: Mapping[str, Any], detail: Mapping[str, Any]) -> tuple[Ca
 
     summary_horses = item.get("horses")
     if isinstance(summary_horses, list):
-        unused_a_marks = [mark for mark in ("○", "▲") if all(horse.mark != mark for horse in horses)]
         for raw_horse in summary_horses:
             if not isinstance(raw_horse, Mapping):
                 continue
             number = _horse_number_key(_first_value(raw_horse, ("number", "馬番", "horse_no")))
             if not number or number in seen:
                 continue
-            mark = _normalize_mark(_first_value(raw_horse, ("role", "mark", "印")))
             group = _text(raw_horse.get("group")).upper()
-            if mark not in MARK_ORDER and group == "SS":
-                mark = "◎"
-            elif mark not in MARK_ORDER and group == "A" and unused_a_marks:
-                mark = unused_a_marks.pop(0)
-            if mark not in MARK_ORDER:
-                continue
+            mark = _normalize_mark(_first_value(raw_horse, ("role", "mark", "印"))) or _mark_from_group(group)
             detail_row = rows_by_number.get(number, {})
             name = _first_text(raw_horse, ("name", "馬名")) or _first_text(detail_row, ("馬名", "horse_name", "name"))
             horses.append(
@@ -253,7 +252,7 @@ def _card_horses(item: Mapping[str, Any], detail: Mapping[str, Any]) -> tuple[Ca
             )
             seen.add(number)
 
-    return tuple(sorted(horses, key=lambda horse: MARK_ORDER.get(horse.mark, len(MARK_ORDER))))
+    return tuple(sorted(horses, key=lambda horse: (MARK_ORDER.get(horse.mark, len(MARK_ORDER)), _race_number_sort_value(horse.number))))
 
 
 def _horse_from_row(mark: str, number: str, row: Mapping[str, Any]) -> CardHorse:
@@ -267,7 +266,7 @@ def _horse_from_row(mark: str, number: str, row: Mapping[str, Any]) -> CardHorse
 
 
 def _display_ai(row: Mapping[str, Any]) -> str:
-    value = _first_value(row, ("AI点", "normalized_ai_score", "正規化AI点", "旧AI点"))
+    value = _first_value(row, ("AI点", "normalized_ai_score", "旧AI点"))
     return "—" if _is_missing(value) else _format_scalar(value)
 
 
@@ -286,16 +285,7 @@ def _race_number(item: Mapping[str, Any], detail: Mapping[str, Any], race_info: 
         race_info, ("race_number", "race_no", "R", "レース番号")
     )
     if not value:
-        text = " ".join(
-            filter(
-                None,
-                (
-                    _text(item.get("race_name")),
-                    _text(item.get("race_title")),
-                    _text(detail.get("race_name")),
-                ),
-            )
-        )
+        text = " ".join(filter(None, (_text(item.get("race_name")), _text(item.get("race_title")), _text(detail.get("race_name")))))
         match = re.search(r"(?<!\d)(\d{1,2})\s*R", text, flags=re.IGNORECASE)
         value = match.group(1) if match else ""
     if not value:
@@ -316,11 +306,41 @@ def _post_time(item: Mapping[str, Any], race_info: Mapping[str, Any]) -> str:
     return match.group(0) if match else ""
 
 
+def _venue_matches(item: Mapping[str, Any], venue: str) -> bool:
+    if not venue or venue == "すべて":
+        return True
+    item_venue = _first_text(item, ("venue", "開催場"))
+    return item_venue == venue
+
+
+def _score_sort_key(card: RaceCard) -> tuple[float, int, str]:
+    return (-card.strategy_score, _race_number_sort_value(card.race_number), card.race_id)
+
+
+def _race_card_sort_key(card: RaceCard) -> tuple[str, int, str]:
+    return (card.venue, _race_number_sort_value(card.race_number), card.race_id)
+
+
+def _race_number_sort_value(value: str) -> int:
+    match = re.search(r"([1-9]|1[0-2])", str(value or ""))
+    return int(match.group(1)) if match else 99
+
+
 def _normalize_mark(value: Any) -> str:
-    text = _text(value).replace("◯", "○")
+    text = _text(value)
     for mark in CORE_MARKS:
         if mark in text:
             return mark
+    return ""
+
+
+def _mark_from_group(group: str) -> str:
+    if group == "SS":
+        return "◎"
+    if group == "A":
+        return "○"
+    if group == "B":
+        return "▲"
     return ""
 
 

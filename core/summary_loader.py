@@ -43,9 +43,20 @@ def summary_counts(summary: Mapping[str, Any]) -> tuple[int, int, int]:
 
 def summary_venues(summary: Mapping[str, Any]) -> tuple[str, ...]:
     venues = summary.get("venues")
-    if not isinstance(venues, list):
-        return ()
-    return tuple(dict.fromkeys(str(item).strip() for item in venues if str(item).strip()))
+    if isinstance(venues, list):
+        return tuple(dict.fromkeys(str(item).strip() for item in venues if str(item).strip()))
+    derived: list[str] = []
+    for decision in ("buy", "hold", "skip"):
+        items = summary.get(decision)
+        if not isinstance(items, list):
+            continue
+        for item in items:
+            if not isinstance(item, Mapping):
+                continue
+            venue = str(item.get("venue") or "").strip()
+            if venue:
+                derived.append(venue)
+    return tuple(dict.fromkeys(derived))
 
 
 def _count_value(value: Any) -> int:
