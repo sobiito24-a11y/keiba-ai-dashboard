@@ -167,6 +167,8 @@ class DashboardCardTest(unittest.TestCase):
         self.assertIn('st.markdown("**買う理由**")', source)
         self.assertIn('st.write(f"条件一致：{card.condition_match}")', source)
         self.assertIn('st.write(f"採用戦略：{card.adopted_strategy}")', source)
+        self.assertIn('st.download_button(', source)
+        self.assertIn('"本日の予想履歴を一括ダウンロード"', source)
         self.assertIn('with st.expander(f"HOLD {hold_count}R", expanded=False)', source)
         self.assertIn('st.caption(f"SKIP {skip_count}R（件数のみ表示）")', source)
         self.assertIn('st.switch_page(DETAIL_PAGE)', source)

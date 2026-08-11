@@ -12,6 +12,7 @@ from .dashboard_cards import (
     prepare_race_cards,
     today_best_five,
 )
+from .prediction_history import build_prediction_history_zip, history_zip_file_name
 from .summary_loader import summary_date, summary_venues
 
 
@@ -93,6 +94,13 @@ def render_summary_dashboard(
 
     if venues:
         st.caption("開催場：" + " / ".join(venues))
+    st.download_button(
+        "本日の予想履歴を一括ダウンロード",
+        data=build_prediction_history_zip(summary, analysis_dir, source=source),
+        file_name=history_zip_file_name(summary, source=source),
+        mime="application/zip",
+        use_container_width=True,
+    )
 
     best_cards = prepare_race_cards(summary, analysis_dir, source=source, decision="buy", venue=selected_venue)[:5]
     if best_cards:
@@ -144,9 +152,10 @@ def render_buy_card(card: RaceCard, *, key_prefix: str, rank: int | None = None)
 
         if card.horses:
             for horse in card.horses:
+                trust = f"  \n{horse.trust_summary}" if horse.trust_summary else ""
                 st.markdown(
                     f"**{horse.mark} {horse.number} {horse.name}**  \n"
-                    f"AI点 **{horse.ai_score}** ・ 能力評価 **{horse.ability}**"
+                    f"AI点 **{horse.ai_score}** ・ 能力評価 **{horse.ability}**{trust}"
                 )
         else:
             st.caption("対象馬データは詳細JSONまたはSummaryにありません。")

@@ -23,6 +23,7 @@ class CardHorse:
     name: str
     ai_score: str = "—"
     ability: str = "—"
+    trust_summary: str = ""
 
 
 @dataclass(frozen=True)
@@ -248,6 +249,8 @@ def _card_horses(item: Mapping[str, Any], detail: Mapping[str, Any]) -> tuple[Ca
                     name=name or "馬名不明",
                     ai_score=_display_ai(detail_row),
                     ability=_display_ability(detail_row),
+                    trust_summary=_first_text(raw_horse, ("horse_trust_summary", "trust_summary", "信頼根拠"))
+                    or _first_text(detail_row, ("horse_trust_summary", "trust_summary", "信頼根拠")),
                 )
             )
             seen.add(number)
@@ -262,6 +265,7 @@ def _horse_from_row(mark: str, number: str, row: Mapping[str, Any]) -> CardHorse
         name=_first_text(row, ("馬名", "horse_name", "name")) or "馬名不明",
         ai_score=_display_ai(row),
         ability=_display_ability(row),
+        trust_summary=_first_text(row, ("horse_trust_summary", "trust_summary", "信頼根拠")),
     )
 
 
