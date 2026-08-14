@@ -139,11 +139,13 @@ def _render_saved_prediction_open() -> None:
     st.caption(".keiba内のPrediction Snapshotを直接表示します。HTML再解析・予想再計算は行いません。")
     uploaded = st.file_uploader(
         ".keibaファイルを選択",
-        type=["keiba"],
         accept_multiple_files=False,
         key="dashboard_saved_prediction",
     )
     if uploaded is None:
+        return
+    if not is_keiba_filename(uploaded.name):
+        st.error(".keibaファイルを選択してください。")
         return
     payload = uploaded.getvalue()
     signature = f"{uploaded.name}:{len(payload)}:{hashlib.sha256(payload).hexdigest()}"
@@ -160,6 +162,12 @@ def _render_saved_prediction_open() -> None:
     st.session_state.dashboard_rendered_race_id = ""
     st.session_state.dashboard_loaded_signature = signature
     st.success(f"保存時点の予想 {len(event['races'])}Rを読み込みました（再計算なし）。")
+
+
+def is_keiba_filename(filename: Any) -> bool:
+    """Validate after selection so iOS is not blocked by an accept filter."""
+
+    return str(filename or "").strip().lower().endswith(".keiba")
 
 
 def _render_event(event: Mapping[str, Any], render_mobile_result: RenderMobileResult) -> None:

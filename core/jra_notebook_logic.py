@@ -5,6 +5,7 @@ from __future__ import annotations
 import math
 import re
 import time
+import unicodedata
 from datetime import date
 from functools import lru_cache
 from io import StringIO
@@ -467,6 +468,44 @@ def compact_name(text):
     return re.sub(r"\s+", "", text or "")
 
 
+_AMBIGUOUS_JRA_JOCKEY_SURNAMES = {
+    "横山", "吉田", "柴田", "木幡", "小林", "西村", "田中", "藤田",
+}
+
+
+def normalize_jra_jockey_name_for_compare(value):
+    """Return a comparison-only jockey name without changing display text."""
+
+    text = unicodedata.normalize("NFKC", str(value or ""))
+    text = re.sub(r"[▲△☆★◇◆▽▼]", "", text)
+    text = re.sub(r"[（(【]\s*(?:替|継|乗替|乗り替わり|継続)\s*[）)】]", "", text)
+    text = re.sub(r"(?:騎手)$", "", text)
+    text = re.sub(r"[\s・･.．]", "", text)
+    aliases = {
+        "Cルメール": "ルメール", "クリストフルメール": "ルメール",
+        "Mデムーロ": "デムーロ", "ミルコデムーロ": "デムーロ",
+        "松山弘平": "松山", "川田将雅": "川田", "坂井瑠星": "坂井",
+        "団野大成": "団野", "岩田望来": "岩田望", "鮫島克駿": "鮫島駿",
+    }
+    return aliases.get(text, text)
+
+
+def same_jra_jockey_for_compare(current, previous):
+    current_name = normalize_jra_jockey_name_for_compare(current)
+    previous_name = normalize_jra_jockey_name_for_compare(previous)
+    if not current_name or not previous_name:
+        return False
+    if current_name == previous_name:
+        return True
+    short, long = sorted((current_name, previous_name), key=len)
+    return (
+        len(short) >= 2
+        and long.startswith(short)
+        and short not in _AMBIGUOUS_JRA_JOCKEY_SURNAMES
+        and len(long) - len(short) <= 2
+    )
+
+
 def extract_jockey_id(link):
     href = link.get("href", "") if link else ""
     match = re.search(r"/jockey/(?:result/recent/)?(\d+)", href)
@@ -739,7 +778,7 @@ def parse_speed_table(html, race_url, session, fetch_past_detail=True, sleep_sec
         if current_jockey_id and previous_jockey_id:
             jockey_changed = current_jockey_id != previous_jockey_id
         else:
-            jockey_changed = bool(jockey and previous_jockey and compact_name(jockey) != compact_name(previous_jockey))
+            jockey_changed = bool(jockey and previous_jockey and not same_jra_jockey_for_compare(jockey, previous_jockey))
         jockey_display = f"{jockey}(替)" if jockey_changed else jockey
 
         star_result = build_star_max_result(current, star_candidate_runs)
