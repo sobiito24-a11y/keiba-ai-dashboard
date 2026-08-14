@@ -68,15 +68,14 @@ class DashboardFoundationTest(unittest.TestCase):
         for relative in required:
             self.assertTrue((ROOT / relative).exists(), relative)
 
-    def test_top_page_reads_only_weekend_and_daily_summaries(self) -> None:
-        source = (ROOT / "app.py").read_text(encoding="utf-8")
-        self.assertIn('"JRA Weekend"', source)
-        self.assertIn('"NAR Daily"', source)
-        self.assertIn('"weekend_summary.json"', source)
-        self.assertIn('"nar_daily_summary.json"', source)
-        self.assertIn('st.info("データがありません")', source)
-        self.assertIn('st.subheader("HTML ZIPアップロード")', source)
-        self.assertIn("process_html_zip", source)
+    def test_top_page_exposes_batch_prediction_and_saved_snapshot_flows(self) -> None:
+        app_source = (ROOT / "app.py").read_text(encoding="utf-8")
+        dashboard_source = (ROOT / "core" / "dashboard_application.py").read_text(encoding="utf-8")
+        self.assertIn("render_market_compare_result", app_source)
+        self.assertIn('"新規一括予想"', dashboard_source)
+        self.assertIn('"保存した予想を開く"', dashboard_source)
+        self.assertIn('"一括予想データ作成"', dashboard_source)
+        self.assertIn("load_keiba", dashboard_source)
 
     def test_dashboard_does_not_reference_an_external_mobile_checkout(self) -> None:
         production_files = [
@@ -87,8 +86,9 @@ class DashboardFoundationTest(unittest.TestCase):
             ROOT / "core" / "upload_pipeline.py",
         ]
         source = "\n".join(path.read_text(encoding="utf-8") for path in production_files)
-        for forbidden in ("current_task/keiba_ai_mobile", "../keiba_ai_mobile", "mobile_png"):
+        for forbidden in ("current_task/keiba_ai_mobile", "../keiba_ai_mobile"):
             self.assertNotIn(forbidden, source)
+        self.assertTrue((ROOT / "render" / "mobile_png.py").is_file())
 
     def test_summary_builders_expose_help_without_running_analysis(self) -> None:
         for script in ("build_weekend_summary.py", "build_daily_summary.py"):

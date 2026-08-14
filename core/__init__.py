@@ -1,1 +1,1 @@
-"""Shared, prediction-independent helpers for Keiba AI Dashboard."""
+"""Keiba AI Dashboard core using the canonical Mobile prediction runtime."""

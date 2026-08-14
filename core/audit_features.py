@@ -6,6 +6,7 @@ from typing import Any
 
 import pandas as pd
 
+from .condition_fit import evaluate_condition_fit
 from .form_rank import add_form_rank_columns
 
 
@@ -48,6 +49,13 @@ AUDIT_OUTPUT_COLUMNS = [
     "star_max_surface",
     "star_max_turn",
     "star_match_level",
+    "condition_fit_mark",
+    "condition_fit_level",
+    "condition_fit_reason",
+    "condition_fit_data_status",
+    "matched_past_runs",
+    "practical_mark",
+    "practical_warning_reason",
     "old_ai_score",
     "raw_score",
     "ability_display_score",
@@ -111,6 +119,13 @@ AUDIT_EXPORT_COLUMNS = [
     "star_max_surface",
     "star_max_turn",
     "star_match_level",
+    "condition_fit_mark",
+    "condition_fit_level",
+    "condition_fit_reason",
+    "condition_fit_data_status",
+    "matched_past_runs",
+    "practical_mark",
+    "practical_warning_reason",
     "old_ai_score",
     "raw_score",
     "ability_display_score",
@@ -188,6 +203,70 @@ AUDIT_EXPORT_COLUMNS = [
     "重馬場実績",
     "チェック項目",
     "補足",
+    "horse_score_v4",
+    "race_rank_v4",
+    "base_ability_score",
+    "condition_score",
+    "jockey_score",
+    "age_weight_score",
+    "training_score",
+    "momentum_score_v4",
+    "race_shape_score",
+    "condition_matched_quality",
+    "condition_distance_score",
+    "condition_course_score",
+    "group_v4",
+    "mark_v4",
+    "warning_reason",
+    "positive_reasons_v4",
+    "negative_reasons_v4",
+    "watch_reason_v4",
+    "axis_score",
+    "axis_confidence_v4",
+    "top_score_gap_v4",
+    "third_score_gap_v4",
+    "race_competitiveness_v4",
+    "opponent_eligible_v4",
+    "opponent_veto_reason_v4",
+    "ticket_candidate_score",
+    "ver3_ability_core",
+    "ability_core_source",
+    "legacy_raw_score",
+    "market_removed_adjustment",
+    "market_ability_score",
+    "market_ability_rank",
+    "ability_band_v2",
+    "能力帯比較",
+    "ability_band_reason",
+    "actual_odds",
+    "fair_odds_display",
+    "fair_odds_status",
+    "fair_odds_reason",
+    "running_style_market",
+    "pace_mark_market",
+    "pace_reason_market",
+    "pace_scenario_market",
+    "race_interval_market",
+    "state_arrow",
+    "state_label_market",
+    "state_transition",
+    "current_class_market",
+    "previous_class_market",
+    "best_recent_class_market",
+    "class_shift_market",
+    "class_basis_market",
+    "jockey_market",
+    "jockey_change_market",
+    "weight_market",
+    "weight_change_market",
+    "condition_mark_market",
+    "condition_reason_market",
+    "training_market",
+    "stable_comment_market",
+    "positive_materials",
+    "negative_materials",
+    "plus_materials_display",
+    "minus_materials_display",
 ]
 
 
@@ -261,6 +340,11 @@ def add_audit_evaluation_columns(df: pd.DataFrame | None, *, race_type: str = "n
         star_source = _text_series(result, "★最高指数の取得元")
     result["star_max_source"] = star_source.where(star_source.astype(str).str.len().gt(0), "missing")
     result["★最高指数の取得元"] = result["star_max_source"]
+    condition_fit_rows = [evaluate_condition_fit(row.to_dict()) for _, row in result.iterrows()]
+    result["condition_fit_mark"] = [item.get("condition_fit_mark", "") for item in condition_fit_rows]
+    result["condition_fit_level"] = [item.get("condition_fit_level", "none") for item in condition_fit_rows]
+    result["condition_fit_reason"] = [item.get("condition_fit_reason", "") for item in condition_fit_rows]
+    result["matched_past_runs"] = [item.get("matched_past_runs", []) for item in condition_fit_rows]
 
     axis_context = _axis_context(result["raw_score"])
     axis_values: list[str] = []
