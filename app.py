@@ -4,6 +4,7 @@ import html
 import json
 import re
 import traceback
+import unicodedata
 from dataclasses import dataclass
 from datetime import datetime
 from typing import Any
@@ -1518,8 +1519,14 @@ MARKET_DISPLAY_SUPPLEMENT_COLUMNS = (
     "_previous_jockey",
     "前走騎手",
     "previous_jockey",
+    "_previous_jockey_id",
+    "previous_jockey_id",
+    "前走騎手ID",
     "_display_current_jockey",
     "_current_jockey",
+    "_current_jockey_id",
+    "current_jockey_id",
+    "jockey_id",
     "jockey_display_market",
     "_jockey_course_win_rate",
     "_jockey_course_quinella_rate",
@@ -1731,15 +1738,113 @@ def market_stable_comment_text(row: dict[str, Any], race_mode: str) -> str:
     return stable_comment_display({"厩舎コメント": pick(row, "stable_comment_market", "厩舎コメント", "新聞コメント")}, race_mode)
 
 
-def market_jockey_display_text(row: dict[str, Any]) -> str:
+MARKET_AMBIGUOUS_JOCKEY_SURNAMES = {
+    "横山",
+    "吉田",
+    "柴田",
+    "木幡",
+    "小林",
+    "西村",
+    "田中",
+    "藤田",
+    "岩田",
+    "鮫島",
+}
+
+MARKET_JOCKEY_NAME_ALIASES = {
+    "Cルメール": "ルメール",
+    "クリストフルメール": "ルメール",
+    "Mデムーロ": "デムーロ",
+    "ミルコデムーロ": "デムーロ",
+    "松山弘平": "松山",
+    "川田将雅": "川田",
+    "坂井瑠星": "坂井",
+    "団野大成": "団野",
+    "森田誠也": "森田",
+    "岩田望来": "岩田望",
+    "鮫島克駿": "鮫島駿",
+}
+
+
+def market_jockey_display_text(row: dict[str, Any], *, include_place_rate: bool = True) -> str:
     display = clean_text(pick(row, "jockey_display_market"))
     detail = clean_text(pick(row, "騎手詳細", "jockey_detail", "騎手継続/乗替", "jockey_change"))
     current = clean_text(pick(row, "jockey_market", "騎手", "jockey"))
     text = display
     if not text or (current and text == current and has_jockey_change_context(detail)):
         text = detail or current
+    text = collapse_same_jockey_change_display(text or current, row)
     text = normalize_jockey_display_text(text or current)
+    if not include_place_rate:
+        return remove_jockey_place_rate_text(text)
     return append_jockey_place_rate(text, jockey_place_rate_text(row))
+
+
+def collapse_same_jockey_change_display(text: str, row: dict[str, Any]) -> str:
+    value = clean_text(text)
+    current = clean_text(pick(row, "jockey_market", "_display_current_jockey", "_current_jockey", "騎手", "jockey"))
+    previous = clean_text(pick(row, "_display_previous_jockey", "_previous_jockey", "前走騎手", "previous_jockey"))
+    if "→" in value:
+        left, right = [part.strip() for part in value.split("→", 1)]
+        previous = previous or left
+        current = current or right
+    if not current or not previous:
+        return value
+    same = market_same_jockey_identity(
+        current,
+        previous,
+        pick(row, "_current_jockey_id", "current_jockey_id", "jockey_id", "騎手ID"),
+        pick(row, "_previous_jockey_id", "previous_jockey_id", "前走騎手ID"),
+    )
+    if same is not True:
+        return value
+    official = market_clean_jockey_display_name(current) or market_clean_jockey_display_name(value)
+    return f"{official}（継続）" if official else value
+
+
+def market_same_jockey_identity(current: Any, previous: Any, current_id: Any = "", previous_id: Any = "") -> bool | None:
+    current_id_text = clean_text(current_id)
+    previous_id_text = clean_text(previous_id)
+    if current_id_text and previous_id_text:
+        return current_id_text == previous_id_text
+    return market_same_jockey_display_name(current, previous)
+
+
+def market_clean_jockey_display_name(value: Any) -> str:
+    text = clean_text(value)
+    text = re.sub(r"[\(（]\s*(?:替|継|乗替|乗り替わり|継続|複\d+(?:\.\d+)?%)\s*[\)）]", "", text)
+    text = re.sub(r"【\s*(?:替|継|乗替|乗り替わり|継続|前走データなし|判定保留)\s*】", "", text)
+    return text.strip()
+
+
+def market_jockey_compare_name(value: Any) -> str:
+    text = unicodedata.normalize("NFKC", market_clean_jockey_display_name(value))
+    text = re.sub(r"^[▲△☆★◇◆▽▼]+", "", text)
+    text = re.sub(r"(?:騎手)$", "", text)
+    text = re.sub(r"[\s・･.．]", "", text)
+    return MARKET_JOCKEY_NAME_ALIASES.get(text, text)
+
+
+def market_same_jockey_display_name(current: Any, previous: Any) -> bool | None:
+    current_text = market_jockey_compare_name(current)
+    previous_text = market_jockey_compare_name(previous)
+    if not current_text or not previous_text:
+        return None
+    if current_text == previous_text:
+        return True
+    short, long = (
+        (current_text, previous_text)
+        if len(current_text) <= len(previous_text)
+        else (previous_text, current_text)
+    )
+    if (
+        long.startswith(short)
+        and len(short) >= 2
+        and short not in MARKET_AMBIGUOUS_JOCKEY_SURNAMES
+        and 1 <= len(long) - len(short) <= 2
+    ):
+        return True
+    return False
 
 
 def market_weight_display_text(row: dict[str, Any]) -> str:
@@ -1799,6 +1904,14 @@ def normalize_jockey_display_text(text: str) -> str:
     return value
 
 
+def remove_jockey_place_rate_text(text: str) -> str:
+    value = clean_text(text)
+    value = re.sub(r"・?\s*複\d+(?:\.\d+)?%", "", value)
+    value = re.sub(r"[\(（]\s*[\)）]", "", value)
+    value = value.replace("・・", "・").replace("（・", "（").replace("・）", "）")
+    return value
+
+
 def jockey_place_rate_text(row: dict[str, Any]) -> str:
     rate = to_float(pick(row, "_jockey_course_place_rate", "jockey_course_place_rate", "騎手コース複勝率"))
     if rate is None:
@@ -1809,9 +1922,18 @@ def jockey_place_rate_text(row: dict[str, Any]) -> str:
         elif len(matches) == 1 and "複" in stats:
             rate = to_float(matches[0])
     if rate is None:
+        embedded = clean_text(pick(row, "jockey_display_market", "騎手詳細", "jockey_detail"))
+        match = re.search(r"複\s*(\d+(?:\.\d+)?)\s*%", embedded)
+        if match:
+            rate = to_float(match.group(1))
+    if rate is None:
         return ""
     label = f"{rate:.0f}" if float(rate).is_integer() else f"{rate:.1f}"
     return f"複{label}%"
+
+
+def jockey_place_rate_column_text(row: dict[str, Any]) -> str:
+    return re.sub(r"^複", "", jockey_place_rate_text(row)) or "—"
 
 
 def append_jockey_place_rate(text: str, rate: str) -> str:
@@ -1908,7 +2030,8 @@ def render_market_full_table(table: pd.DataFrame, race_mode: str) -> None:
             "能力順位": clean_text(pick(row, "market_ability_rank")) or "—",
             "能力値": format_index_value(pick(row, "market_ability_score")),
             "実オッズ": format_odds(pick(row, "actual_odds")) or "—",
-            "騎手": market_jockey_display_text(row),
+            "騎手": market_jockey_display_text(row, include_place_rate=False),
+            "騎手複勝率": jockey_place_rate_column_text(row),
             "斤量": weight,
             "クラス": clean_text(pick(row, "current_class_market")),
             "クラス変動": clean_text(pick(row, "class_shift_market")),

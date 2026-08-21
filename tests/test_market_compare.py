@@ -328,6 +328,65 @@ class MarketCompareTest(unittest.TestCase):
         self.assertEqual(result.loc[0, "market_ability_score"], 88.2)
         self.assertEqual(result.loc[0, "market_ability_rank"], 1)
 
+    def test_jockey_id_has_priority_over_explicit_change_flag(self) -> None:
+        base = pd.DataFrame(
+            [
+                row(
+                    10,
+                    88.2,
+                    1.6,
+                    **{
+                        "騎手": "森田",
+                        "_previous_jockey": "森田 誠也",
+                        "_current_jockey_id": "01001",
+                        "_previous_jockey_id": "01001",
+                        "_jockey_changed": True,
+                    },
+                )
+            ]
+        )
+        result = evaluate_market_table(base, "jra", RACE_INFO)
+
+        self.assertEqual(result.loc[0, "jockey_change_market"], "継続")
+        self.assertNotIn("→", result.loc[0, "jockey_display_market"])
+        self.assertEqual(result.loc[0, "market_ability_score"], 88.2)
+
+    def test_different_jockey_ids_remain_a_real_change(self) -> None:
+        base = pd.DataFrame(
+            [
+                row(
+                    10,
+                    88.2,
+                    1.6,
+                    **{
+                        "騎手": "森田",
+                        "_previous_jockey": "森田 誠也",
+                        "_current_jockey_id": "01001",
+                        "_previous_jockey_id": "01002",
+                    },
+                )
+            ]
+        )
+        result = evaluate_market_table(base, "jra", RACE_INFO)
+
+        self.assertEqual(result.loc[0, "jockey_change_market"], "乗替")
+        self.assertIn("→", result.loc[0, "jockey_display_market"])
+
+    def test_ambiguous_surname_only_jockey_is_not_forced_to_continue(self) -> None:
+        base = pd.DataFrame(
+            [
+                row(
+                    10,
+                    88.2,
+                    1.6,
+                    **{"騎手": "横山", "_previous_jockey": "横山武史"},
+                )
+            ]
+        )
+        result = evaluate_market_table(base, "jra", RACE_INFO)
+
+        self.assertEqual(result.loc[0, "jockey_change_market"], "乗替")
+
     def test_unknown_previous_jockey_is_not_guessed(self) -> None:
         table = pd.DataFrame([row(1, 90.0, 4.0, **{"騎手": "塚本征(替)"})])
         result = evaluate_market_table(table, "nar", RACE_INFO)

@@ -39,6 +39,33 @@ ABILITY_BAND_RULES = {
     "c_gap": 20.0,
 }
 
+_AMBIGUOUS_JOCKEY_SURNAMES = {
+    "横山",
+    "吉田",
+    "柴田",
+    "木幡",
+    "小林",
+    "西村",
+    "田中",
+    "藤田",
+    "岩田",
+    "鮫島",
+}
+
+_JOCKEY_NAME_ALIASES = {
+    "Cルメール": "ルメール",
+    "クリストフルメール": "ルメール",
+    "Mデムーロ": "デムーロ",
+    "ミルコデムーロ": "デムーロ",
+    "松山弘平": "松山",
+    "川田将雅": "川田",
+    "坂井瑠星": "坂井",
+    "団野大成": "団野",
+    "森田誠也": "森田",
+    "岩田望来": "岩田望",
+    "鮫島克駿": "鮫島駿",
+}
+
 MARKET_OUTPUT_COLUMNS = (
     "ver3_ability_core",
     "ability_core_source",
@@ -872,6 +899,8 @@ def _jockey(row: Mapping[str, Any]) -> tuple[str, str, str]:
             )
         )
     )
+    current_id = clean_text(_pick(row, "_current_jockey_id", "current_jockey_id", "jockey_id", "騎手ID"))
+    previous_id = clean_text(_pick(row, "_previous_jockey_id", "previous_jockey_id", "前走騎手ID"))
     explicit = clean_text(
         _pick(
             row,
@@ -883,11 +912,22 @@ def _jockey(row: Mapping[str, Any]) -> tuple[str, str, str]:
         )
     )
     inline_change = bool(re.search(r"(?:乗り?替|\(替\)|（替）|【乗り替わり】)", raw_current))
+    explicit_change = _truthy(explicit) or "替" in explicit
+    explicit_continuation = explicit.lower() in {"0", "false", "no", "n"} or "継" in explicit
     if previous:
-        same_name = _same_jockey_display_name(current, previous)
-        change = "乗替" if _truthy(explicit) or "替" in explicit or same_name is False else "継続"
+        same_name = _same_jockey_identity(current, previous, current_id, previous_id)
+        if same_name is True:
+            change = "継続"
+        elif same_name is False:
+            change = "乗替"
+        elif explicit_change:
+            change = "乗替"
+        elif explicit_continuation:
+            change = "継続"
+        else:
+            change = "未取得"
     elif explicit:
-        change = "乗替" if _truthy(explicit) or "替" in explicit else "継続" if "継" in explicit else "未取得"
+        change = "乗替" if explicit_change else "継続" if explicit_continuation else "未取得"
     elif inline_change:
         change = "乗替"
     else:
@@ -905,11 +945,23 @@ def _clean_jockey_display_name(value: Any) -> str:
 def _jockey_compare_name(value: Any) -> str:
     text = unicodedata.normalize("NFKC", _clean_jockey_display_name(value))
     text = re.sub(r"^[▲△☆★◇◆▽▼]+", "", text)
-    return re.sub(r"\s+", "", text)
+    text = re.sub(r"(?:騎手)$", "", text)
+    text = re.sub(r"[\s・･.．]", "", text)
+    return _JOCKEY_NAME_ALIASES.get(text, text)
+
+
+def _same_jockey_identity(current: Any, previous: Any, current_id: Any = "", previous_id: Any = "") -> bool | None:
+    """ID-first, display-only jockey identity check."""
+
+    current_id_text = clean_text(current_id)
+    previous_id_text = clean_text(previous_id)
+    if current_id_text and previous_id_text:
+        return current_id_text == previous_id_text
+    return _same_jockey_display_name(current, previous)
 
 
 def _same_jockey_display_name(current: Any, previous: Any) -> bool | None:
-    """Treat provider-truncated three-character names as the same jockey."""
+    """Treat safe provider-truncated names as the same jockey."""
 
     current_text = _jockey_compare_name(current)
     previous_text = _jockey_compare_name(previous)
@@ -922,7 +974,12 @@ def _same_jockey_display_name(current: Any, previous: Any) -> bool | None:
         if len(current_text) <= len(previous_text)
         else (previous_text, current_text)
     )
-    if long.startswith(short) and len(short) >= 3 and 1 <= len(long) - len(short) <= 2:
+    if (
+        long.startswith(short)
+        and len(short) >= 2
+        and short not in _AMBIGUOUS_JOCKEY_SURNAMES
+        and 1 <= len(long) - len(short) <= 2
+    ):
         return True
     return False
 

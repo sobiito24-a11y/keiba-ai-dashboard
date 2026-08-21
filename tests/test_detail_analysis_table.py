@@ -458,9 +458,10 @@ class DetailAnalysisTableTest(unittest.TestCase):
         self.assertIsNotNone(result)
         columns = list(result.columns)
         odds_index = columns.index("実オッズ")
-        self.assertEqual(columns[odds_index + 1 : odds_index + 3], ["騎手", "斤量"])
+        self.assertEqual(columns[odds_index + 1 : odds_index + 4], ["騎手", "騎手複勝率", "斤量"])
         self.assertNotIn("AI適正", columns)
-        self.assertEqual(result.loc[0, "騎手"], "矢野貴之（複58%）")
+        self.assertEqual(result.loc[0, "騎手"], "矢野貴之")
+        self.assertEqual(result.loc[0, "騎手複勝率"], "58%")
         self.assertEqual(result.loc[0, "クラス変動"], "同級")
         self.assertEqual(result.loc[0, "クラス実績"], "今回B3 / 前走B3 / B3経験あり")
 
@@ -587,6 +588,42 @@ class DetailAnalysisTableTest(unittest.TestCase):
 
         self.assertEqual(self.app.market_jockey_display_text(row), "団野大成 → 川田将雅（複58%）")
 
+    def test_market_jockey_display_collapses_safe_same_jockey_abbreviation(self) -> None:
+        row = {
+            "jockey_display_market": "森田 誠也 → 森田",
+            "jockey_market": "森田",
+            "_previous_jockey": "森田 誠也",
+            "_jockey_course_place_rate": 31,
+        }
+
+        self.assertEqual(self.app.market_jockey_display_text(row), "森田（継続・複31%）")
+
+    def test_market_jockey_display_uses_jockey_id_before_text(self) -> None:
+        same_id_row = {
+            "jockey_display_market": "森田 誠也 → 森田",
+            "jockey_market": "森田",
+            "_previous_jockey": "森田 誠也",
+            "_current_jockey_id": "01001",
+            "_previous_jockey_id": "01001",
+        }
+        different_id_row = {
+            **same_id_row,
+            "_previous_jockey_id": "01002",
+        }
+
+        self.assertEqual(self.app.market_jockey_display_text(same_id_row), "森田（継続）")
+        self.assertEqual(self.app.market_jockey_display_text(different_id_row), "森田 誠也 → 森田")
+
+    def test_market_jockey_display_does_not_merge_ambiguous_surname_only(self) -> None:
+        row = {
+            "jockey_display_market": "横山武史 → 横山",
+            "jockey_market": "横山",
+            "_previous_jockey": "横山武史",
+            "_jockey_course_place_rate": 40,
+        }
+
+        self.assertEqual(self.app.market_jockey_display_text(row), "横山武史 → 横山（複40%）")
+
     def test_market_card_restores_weight_change_and_jockey_place_rate_from_sibling_table(self) -> None:
         result = SimpleNamespace(
             overall_table=pd.DataFrame(
@@ -707,6 +744,37 @@ class DetailAnalysisTableTest(unittest.TestCase):
 
         self.assertEqual(table.loc[0, "騎手詳細"], "和田譲【継続】")
         self.assertIn("和田譲（継続・複30%）", html)
+
+    def test_market_full_table_separates_jockey_and_saved_place_rate(self) -> None:
+        self.streamlit.last_dataframe = None
+        table = pd.DataFrame(
+            [
+                {
+                    "馬番": 1,
+                    "馬名": "表示馬",
+                    "馬年齢": "牡4",
+                    "ai_current_mark": "◎",
+                    "current_evaluation_rank": 1,
+                    "ability_band_v2": "A",
+                    "market_ability_rank": 1,
+                    "market_ability_score": 88.2,
+                    "actual_odds": 3.4,
+                    "jockey_display_market": "森田 誠也 → 森田",
+                    "jockey_market": "森田",
+                    "_previous_jockey": "森田 誠也",
+                    "_jockey_course_place_rate": 31,
+                    "weight_market": "56.0kg",
+                }
+            ]
+        )
+
+        self.app.render_market_full_table(table, "jra")
+        result = self.streamlit.last_dataframe
+
+        self.assertIsNotNone(result)
+        self.assertEqual(result.loc[0, "騎手"], "森田（継続）")
+        self.assertEqual(result.loc[0, "騎手複勝率"], "31%")
+        self.assertEqual(result.loc[0, "斤量"], "56.0kg")
 
     def test_market_horse_card_summarizes_training_and_stable_comment(self) -> None:
         html = self.app.market_horse_card_html(
