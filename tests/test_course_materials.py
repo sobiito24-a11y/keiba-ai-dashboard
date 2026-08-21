@@ -164,8 +164,21 @@ def test_jockey_cid2_table_parses_real_rate_columns_for_jra_and_nar() -> None:
             }
 
 
+def test_jockey_cid2_table_parses_real_jra_header_without_header_class() -> None:
+    html = jockey_html(mode="jra").replace('<tr class="Header">', "<tr>")
+    parsed = parse_netkeiba_jockey_course_stats(html, expected_mode="jra")
+    assert parsed.source_status == "取得"
+    assert parsed.horses[1]["jockey_name"] == "矢野貴之"
+    assert parsed.horses[1]["place_rate"] == 58.0
+
+
 def test_style_cid1_is_not_accepted_as_jockey_stats() -> None:
-    parsed = parse_netkeiba_jockey_course_stats(jockey_html().replace("cid=2", "cid=1"))
+    style_html = jockey_html().replace("cid=2", "cid=1").replace(
+        "</body>",
+        '<a href="/race/data_list.html?race_id=202604020612&amp;mode=courseanalysis&amp;cid=2">'
+        "このコースが得意な騎手</a></body>",
+    )
+    parsed = parse_netkeiba_jockey_course_stats(style_html)
     assert parsed.source_status == "騎手コース成績HTMLではない"
     assert parsed.horses == {}
 

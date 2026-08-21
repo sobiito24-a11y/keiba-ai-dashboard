@@ -215,8 +215,8 @@ def parse_netkeiba_jockey_course_stats(
     if expected_mode and parsed.detected_mode and parsed.detected_mode != expected_mode:
         parsed.source_status = "JRA/NAR不一致"
         return parsed
-    lowered = source[:300_000].lower().replace("&amp;", "&")
-    if not re.search(r"mode=courseanalysis(?:[^\"'<>])*[&?]cid=2(?:\D|$)", lowered):
+    page_metadata = _page_metadata_text(source)
+    if not re.search(r"mode=courseanalysis(?:[^\"'<>])*[&?]cid=2(?:\D|$)", page_metadata):
         parsed.source_status = "騎手コース成績HTMLではない"
         return parsed
 
@@ -226,6 +226,8 @@ def parse_netkeiba_jockey_course_stats(
         parsed.source_status = "騎手コース成績表がHTML内に存在しない"
         return parsed
     headers = [_normalize_header(_text(cell)) for cell in table.select("thead tr.Header th")]
+    if not headers:
+        headers = [_normalize_header(_text(cell)) for cell in table.select("thead th")]
     required = ("馬番", "項目", "出走回数", "勝率", "連対率", "複勝率", "馬名")
     indexes = {name: headers.index(name) for name in required if name in headers}
     if any(name not in indexes for name in required):
@@ -745,6 +747,16 @@ def _mode(source: str) -> str:
     if "レース情報(jra)" in lowered or "JRA" in head:
         return "jra"
     return ""
+
+
+def _page_metadata_text(source: str) -> str:
+    head = source[:150_000]
+    metadata_tags = re.findall(
+        r"<(?:link|meta)\b[^>]*(?:rel\s*=\s*['\"]canonical['\"]|property\s*=\s*['\"]og:url['\"])[^>]*>",
+        head,
+        flags=re.I,
+    )
+    return " ".join(metadata_tags).lower().replace("&amp;", "&")
 
 
 def _text(node: Any) -> str:

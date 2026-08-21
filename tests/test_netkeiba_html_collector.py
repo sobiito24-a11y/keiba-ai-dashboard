@@ -7,12 +7,27 @@ from tools.netkeiba_html_collector import selected_specs
 
 
 class NetkeibaHtmlCollectorTest(unittest.TestCase):
+    def test_jra_jockey_courseanalysis_is_a_supported_collection_page(self):
+        specs = selected_specs("jra", "jockey")
+        self.assertEqual(len(specs), 1)
+        self.assertEqual(specs[0].kind, "jockey")
+        self.assertIn("race.netkeiba.com", specs[0].url_template)
+        self.assertIn("mode=courseanalysis", specs[0].url_template)
+        self.assertIn("cid=2", specs[0].url_template)
+
     def test_nar_jockey_courseanalysis_is_a_supported_collection_page(self):
         specs = selected_specs("nar", "jockey")
         self.assertEqual(len(specs), 1)
         self.assertEqual(specs[0].kind, "jockey")
+        self.assertIn("nar.netkeiba.com", specs[0].url_template)
         self.assertIn("mode=courseanalysis", specs[0].url_template)
         self.assertIn("cid=2", specs[0].url_template)
+
+    def test_jra_all_collection_includes_jockey_courseanalysis(self):
+        specs = selected_specs("jra", "all")
+        by_kind = {spec.kind: spec for spec in specs}
+        self.assertIn("jockey", by_kind)
+        self.assertIn("cid=2", by_kind["jockey"].url_template)
 
     def test_accepts_visible_race_id_links_without_path_restriction(self):
         links = [
