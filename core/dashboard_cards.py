@@ -7,6 +7,8 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Iterable, Mapping, Sequence
 
+from .ability_watch import ability_watch_rows
+
 
 CORE_MARKS = ("◎", "○", "▲")
 MARK_ORDER = {mark: index for index, mark in enumerate(CORE_MARKS)}
@@ -218,6 +220,7 @@ def _card_horses(item: Mapping[str, Any], detail: Mapping[str, Any]) -> tuple[Ca
             for key, value in raw_row.items():
                 if not _is_missing(value):
                     merged[str(key)] = value
+    ability_watch_by_number = _ability_watch_by_number(detail, rows_by_number)
 
     horses: list[CardHorse] = []
     seen: set[str] = set()
@@ -226,7 +229,7 @@ def _card_horses(item: Mapping[str, Any], detail: Mapping[str, Any]) -> tuple[Ca
         mark = _normalize_mark(_first_value(row, ("表示印", "display_mark", "old_final_mark", "最終印", "印", "mark")))
         if mark not in MARK_ORDER:
             continue
-        marked_rows.append((MARK_ORDER[mark], index, _horse_from_row(mark, number, row)))
+        marked_rows.append((MARK_ORDER[mark], index, _horse_from_row(mark, number, row, ability_watch_by_number.get(number, ""))))
         seen.add(number)
     horses.extend(item[2] for item in sorted(marked_rows, key=lambda value: (value[0], value[1])))
 
@@ -249,8 +252,11 @@ def _card_horses(item: Mapping[str, Any], detail: Mapping[str, Any]) -> tuple[Ca
                     name=name or "馬名不明",
                     ai_score=_display_ai(detail_row),
                     ability=_display_ability(detail_row),
-                    trust_summary=_first_text(raw_horse, ("horse_trust_summary", "trust_summary", "信頼根拠"))
-                    or _first_text(detail_row, ("horse_trust_summary", "trust_summary", "信頼根拠")),
+                    trust_summary=_join_summary(
+                        _first_text(raw_horse, ("horse_trust_summary", "trust_summary", "信頼根拠"))
+                        or _first_text(detail_row, ("horse_trust_summary", "trust_summary", "信頼根拠")),
+                        ability_watch_by_number.get(number, ""),
+                    ),
                 )
             )
             seen.add(number)
@@ -258,15 +264,41 @@ def _card_horses(item: Mapping[str, Any], detail: Mapping[str, Any]) -> tuple[Ca
     return tuple(sorted(horses, key=lambda horse: (MARK_ORDER.get(horse.mark, len(MARK_ORDER)), _race_number_sort_value(horse.number))))
 
 
-def _horse_from_row(mark: str, number: str, row: Mapping[str, Any]) -> CardHorse:
+def _horse_from_row(mark: str, number: str, row: Mapping[str, Any], ability_watch_label: str = "") -> CardHorse:
     return CardHorse(
         mark=mark,
         number=number,
         name=_first_text(row, ("馬名", "horse_name", "name")) or "馬名不明",
         ai_score=_display_ai(row),
         ability=_display_ability(row),
-        trust_summary=_first_text(row, ("horse_trust_summary", "trust_summary", "信頼根拠")),
+        trust_summary=_join_summary(_first_text(row, ("horse_trust_summary", "trust_summary", "信頼根拠")), ability_watch_label),
     )
+
+
+def _ability_watch_by_number(detail: Mapping[str, Any], rows_by_number: Mapping[str, Mapping[str, Any]]) -> dict[str, str]:
+    race_info = detail.get("race_info") if isinstance(detail.get("race_info"), Mapping) else {}
+    race_mode = _first_text(race_info or {}, ("race_mode", "mode", "JRA/NAR")) or _first_text(detail, ("race_mode", "source"))
+    rows = []
+    numbers = []
+    for number, row in rows_by_number.items():
+        adapted = dict(row)
+        adapted.setdefault("market_ability_rank", _first_value(row, ("market_ability_rank", "ability_rank", "能力順位")))
+        adapted.setdefault("market_ability_score", _first_value(row, ("market_ability_score", "ability_value", "能力評価値", "ability_display_score")))
+        adapted.setdefault("ai_current_mark", _first_value(row, ("ai_current_mark", "display_mark", "old_final_mark", "最終印", "印", "mark")))
+        adapted.setdefault("actual_odds", _first_value(row, ("actual_odds", "odds", "オッズ", "単勝オッズ")))
+        rows.append(adapted)
+        numbers.append(number)
+    labels = ability_watch_rows(rows, race_mode=race_mode or "jra")
+    return {number: _text(label.get("ability_watch_label")) for number, label in zip(numbers, labels)}
+
+
+def _join_summary(*parts: str) -> str:
+    values = []
+    for part in parts:
+        text = _text(part)
+        if text and text not in values:
+            values.append(text)
+    return " / ".join(values)
 
 
 def _display_ai(row: Mapping[str, Any]) -> str:

@@ -148,6 +148,52 @@ class DashboardCardTest(unittest.TestCase):
         self.assertTrue(all(horse.ai_score == "—" for horse in card.horses))
         self.assertFalse(card.detail_available)
 
+    def test_detail_card_adds_ability_watch_note_from_saved_values(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            analysis = Path(tmp) / "analysis"
+            target = analysis / "results" / "race.json"
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_text(
+                json.dumps(
+                    {
+                        "race_mode": "jra",
+                        "race_info": {"racecourse": "新潟"},
+                        "horse_evaluation": [
+                            {
+                                "馬番": 1,
+                                "馬名": "トップ",
+                                "old_final_mark": "◎",
+                                "market_ability_rank": 1,
+                                "market_ability_score": 94.0,
+                                "actual_odds": 2.5,
+                            },
+                            {
+                                "馬番": 2,
+                                "馬名": "無印上位",
+                                "market_ability_rank": 2,
+                                "market_ability_score": 91.0,
+                                "actual_odds": 6.4,
+                            },
+                        ],
+                    },
+                    ensure_ascii=False,
+                ),
+                encoding="utf-8",
+            )
+            card = prepare_race_card(
+                {
+                    "race_id": "202604021111",
+                    "venue": "新潟",
+                    "race_number": "11",
+                    "ticket": "単勝 ◎",
+                    "detail_path": "results/race.json",
+                },
+                analysis,
+                source="JRA Weekend",
+            )
+
+        self.assertIn("能力1位＝◎ / 2位との差 +3.0", card.horses[0].trust_summary)
+
     def test_detail_loader_rejects_paths_outside_analysis(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             analysis = Path(tmp) / "analysis"
