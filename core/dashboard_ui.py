@@ -160,6 +160,10 @@ def render_buy_card(card: RaceCard, *, key_prefix: str, rank: int | None = None)
         else:
             st.caption("対象馬データは詳細JSONまたはSummaryにありません。")
 
+        if card.research_guide:
+            st.markdown("**研究ガイド**")
+            st.write(card.research_guide)
+
         _render_detail_button(card, key=f"{key_prefix}-{card.race_id or 'race'}")
 
 
@@ -169,6 +173,8 @@ def render_hold_row(card: RaceCard, *, key_prefix: str) -> None:
         st.caption(
             f"{card.ticket} ・ strategy_score {format_strategy_score(card.strategy_score)} ・ 期待回収率 {card.roi}"
         )
+        if card.research_guide:
+            st.caption(card.research_guide.splitlines()[0])
         _render_detail_button(card, key=f"{key_prefix}-{card.race_id or 'race'}")
 
 

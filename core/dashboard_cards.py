@@ -8,9 +8,10 @@ from pathlib import Path
 from typing import Any, Iterable, Mapping, Sequence
 
 from .ability_watch import ability_watch_rows
+from .research_bets import build_research_bet
 
 
-CORE_MARKS = ("◎", "○", "▲")
+CORE_MARKS = ("◎", "○", "▲", "△", "☆")
 MARK_ORDER = {mark: index for index, mark in enumerate(CORE_MARKS)}
 
 
@@ -46,6 +47,7 @@ class RaceCard:
     detail_path: str
     detail_available: bool
     reason: str = ""
+    research_guide: str = ""
 
 
 def summary_decisions(summary: Mapping[str, Any], decision: str) -> tuple[Mapping[str, Any], ...]:
@@ -138,6 +140,7 @@ def prepare_race_card(
         detail_path=detail_path,
         detail_available=detail_available,
         reason=_text(item.get("reason")),
+        research_guide=_research_guide_text(detail, source),
     )
 
 
@@ -290,6 +293,42 @@ def _ability_watch_by_number(detail: Mapping[str, Any], rows_by_number: Mapping[
         numbers.append(number)
     labels = ability_watch_rows(rows, race_mode=race_mode or "jra")
     return {number: _text(label.get("ability_watch_label")) for number, label in zip(numbers, labels)}
+
+
+def _research_guide_text(detail: Mapping[str, Any], source: str) -> str:
+    rows = _detail_rows(detail)
+    if not rows:
+        return ""
+    race_mode = _detail_race_mode(detail, source)
+    research = build_research_bet(rows, race_mode, context="dashboard")
+    if not research.get("show"):
+        return ""
+    lines = [
+        _text(research.get("title")),
+        *(_text(line) for line in research.get("lines", []) if _text(line)),
+        _text(research.get("reason")),
+        _text(research.get("trio_condition")),
+        _text(research.get("note")),
+        f"合計：{int(research.get('total') or 0):,}円",
+        f"research_rule_id：{_text(research.get('research_rule_id'))}",
+    ]
+    return "\n".join(line for line in lines if line)
+
+
+def _detail_rows(detail: Mapping[str, Any]) -> list[Mapping[str, Any]]:
+    for table_name in ("overall_table", "horse_evaluation"):
+        rows = detail.get(table_name)
+        if isinstance(rows, list) and rows:
+            return [row for row in rows if isinstance(row, Mapping)]
+    return []
+
+
+def _detail_race_mode(detail: Mapping[str, Any], source: str) -> str:
+    race_info = detail.get("race_info") if isinstance(detail.get("race_info"), Mapping) else {}
+    direct = _first_text(race_info or {}, ("race_mode", "mode", "JRA/NAR")) or _first_text(detail, ("race_mode", "source"))
+    if direct:
+        return direct
+    return "nar" if "NAR" in _text(source).upper() else "jra"
 
 
 def _join_summary(*parts: str) -> str:

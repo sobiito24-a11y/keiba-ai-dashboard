@@ -194,6 +194,63 @@ class DashboardCardTest(unittest.TestCase):
 
         self.assertIn("能力1位＝◎ / 2位との差 +3.0", card.horses[0].trust_summary)
 
+    def test_detail_card_adds_jra_research_guide_without_odds_gate(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            analysis = Path(tmp) / "analysis"
+            target = analysis / "results" / "race.json"
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_text(
+                json.dumps(
+                    {
+                        "race_mode": "jra",
+                        "overall_table": [
+                            {"number": 1, "name": "Axis", "mark": "◎", "market_ability_rank": 1, "actual_odds": 2.0},
+                            {"number": 2, "name": "Second", "mark": "○", "market_ability_rank": 2},
+                            {"number": 3, "name": "Third", "mark": "▲", "market_ability_rank": 3},
+                            {"number": 4, "name": "Fourth", "mark": "△", "market_ability_rank": 4},
+                            {"number": 5, "name": "Fifth", "mark": "☆", "market_ability_rank": 5},
+                        ],
+                    },
+                    ensure_ascii=False,
+                ),
+                encoding="utf-8",
+            )
+            card = prepare_race_card(
+                {"race_id": "jra", "detail_path": "results/race.json"},
+                analysis,
+                source="JRA Weekend",
+            )
+
+        self.assertIn("JRA_DASH_GUIDE_V1", card.research_guide)
+        self.assertIn("3連複", card.research_guide)
+
+    def test_detail_card_adds_nar_research_buy_from_ability_rank_mark(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            analysis = Path(tmp) / "analysis"
+            target = analysis / "results" / "race.json"
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_text(
+                json.dumps(
+                    {
+                        "race_mode": "nar",
+                        "overall_table": [
+                            {"number": 7, "name": "NarAxis", "mark": "◎", "market_ability_rank": 1},
+                            {"number": 3, "name": "NarSecond", "mark": "○", "market_ability_rank": 2},
+                        ],
+                    },
+                    ensure_ascii=False,
+                ),
+                encoding="utf-8",
+            )
+            card = prepare_race_card(
+                {"race_id": "nar", "detail_path": "results/race.json"},
+                analysis,
+                source="NAR Daily",
+            )
+
+        self.assertIn("NAR_V4_R100_V1", card.research_guide)
+        self.assertIn("NarAxis", card.research_guide)
+
     def test_detail_loader_rejects_paths_outside_analysis(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             analysis = Path(tmp) / "analysis"
