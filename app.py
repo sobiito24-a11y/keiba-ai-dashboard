@@ -1500,7 +1500,7 @@ def render_market_compare_result(result: PredictionResult) -> None:
     )
     render_market_race_facts(result, table)
     render_market_horse_cards(table, result.race_mode)
-    render_market_research_bet(table, result.race_mode, context="mobile")
+    render_market_research_bet(table, result.race_mode, context="dashboard")
     render_market_full_table(table, result.race_mode)
     render_market_user_selection(result, table)
     render_market_audit_details(result, table)
@@ -3972,10 +3972,10 @@ def format_odds(value: Any) -> str:
     text = clean_text(value)
     if not text:
         return ""
-    if "倍" in text:
-        return text
     number = to_float(text)
-    return f"{number:g}倍" if number is not None else text
+    if number is None or number <= 0:
+        return ""
+    return f"{number:g}倍"
 
 
 def format_number(value: Any) -> str:

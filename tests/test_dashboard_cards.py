@@ -250,6 +250,8 @@ class DashboardCardTest(unittest.TestCase):
 
         self.assertIn("NAR_V4_R100_V1", card.research_guide)
         self.assertIn("NarAxis", card.research_guide)
+        self.assertIn("NAR Ver4研究ガイド", card.research_guide)
+        self.assertNotIn("3連複", card.research_guide)
 
     def test_detail_loader_rejects_paths_outside_analysis(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:

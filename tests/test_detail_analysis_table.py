@@ -141,6 +141,12 @@ class DetailAnalysisTableTest(unittest.TestCase):
         self.assertIsNotNone(self.streamlit.last_dataframe)
         return self.streamlit.last_dataframe
 
+    def test_format_odds_treats_zero_missing_and_invalid_as_blank(self) -> None:
+        for value in (0, 0.0, "0", "0.0", "0倍", None, "", "未取得", "not-a-number"):
+            self.assertEqual(self.app.format_odds(value), "")
+        self.assertEqual(self.app.format_odds("6.4倍"), "6.4倍")
+        self.assertEqual(self.app.format_odds(12), "12倍")
+
     def test_detail_indexes_come_from_matching_overall_horse_for_both_modes(self) -> None:
         overall_table = pd.DataFrame(
             [
@@ -355,6 +361,7 @@ class DetailAnalysisTableTest(unittest.TestCase):
                 "render_market_band_prices",
                 "render_market_ai_evaluation",
                 "render_market_horse_cards",
+                "render_market_research_bet",
                 "render_market_full_table",
                 "render_market_user_selection",
                 "render_market_audit_details",
@@ -370,6 +377,7 @@ class DetailAnalysisTableTest(unittest.TestCase):
             self.app.render_market_band_prices = forbidden
             self.app.render_market_ai_evaluation = forbidden
             self.app.render_market_horse_cards = lambda _table, _mode: calls.append("cards")
+            self.app.render_market_research_bet = lambda _table, _mode, *, context: calls.append(f"research:{context}")
             self.app.render_market_full_table = lambda _table, _mode: calls.append("full")
             self.app.render_market_user_selection = lambda _result, _table: calls.append("selection")
             self.app.render_market_audit_details = lambda _result, _table: calls.append("audit")
@@ -379,7 +387,7 @@ class DetailAnalysisTableTest(unittest.TestCase):
             for name, func in originals.items():
                 setattr(self.app, name, func)
 
-        self.assertEqual(calls, ["header", "facts", "cards", "full", "selection", "audit"])
+        self.assertEqual(calls, ["header", "facts", "cards", "research:dashboard", "full", "selection", "audit"])
 
     def test_market_ai_evaluation_appends_existing_sex_age_to_horse_name(self) -> None:
         self.streamlit.last_dataframe = None
