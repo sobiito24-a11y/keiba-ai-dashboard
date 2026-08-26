@@ -234,8 +234,11 @@ class DashboardCardTest(unittest.TestCase):
                     {
                         "race_mode": "nar",
                         "overall_table": [
-                            {"number": 7, "name": "NarAxis", "mark": "◎", "market_ability_rank": 1},
+                            {"number": 7, "name": "NarAxis", "mark": "◎", "market_ability_rank": 1, "actual_odds": 2.4},
                             {"number": 3, "name": "NarSecond", "mark": "○", "market_ability_rank": 2},
+                            {"number": 4, "name": "NarThird", "mark": "▲", "market_ability_rank": 3},
+                            {"number": 5, "name": "NarFourth", "mark": "△", "market_ability_rank": 4},
+                            {"number": 6, "name": "NarFifth", "mark": "☆", "market_ability_rank": 5},
                         ],
                     },
                     ensure_ascii=False,
@@ -248,10 +251,13 @@ class DashboardCardTest(unittest.TestCase):
                 source="NAR Daily",
             )
 
-        self.assertIn("NAR_V4_R100_V1", card.research_guide)
+        self.assertIn("NAR_VER4_AXIS_ML_2_4_V1", card.research_guide)
         self.assertIn("NarAxis", card.research_guide)
         self.assertIn("NAR Ver4研究ガイド", card.research_guide)
+        self.assertIn("馬連", card.research_guide)
+        self.assertIn("◎－○ 7-3 100円", card.research_guide)
         self.assertNotIn("3連複", card.research_guide)
+        self.assertNotIn("単勝 500円", card.research_guide)
 
     def test_detail_loader_rejects_paths_outside_analysis(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:

@@ -3,13 +3,14 @@ from __future__ import annotations
 from core.research_bets import build_research_bet
 
 
-def row(no: int, rank: int, mark: str, odds: float | None = None) -> dict:
+def row(no: int, rank: int, mark: str, odds: float | str | None = None, current_rank: int | None = None) -> dict:
     data = {
         "馬番": no,
         "馬名": f"Horse{no}",
         "market_ability_rank": rank,
-        "market_ability_score": 90 - no,
+        "market_ability_score": 100 - (rank * 3),
         "ai_current_mark": mark,
+        "current_evaluation_rank": current_rank or rank,
     }
     if odds is not None:
         data["odds_at_prediction"] = odds
@@ -54,24 +55,60 @@ def test_jra_dashboard_guide_is_invariant_across_saved_odds():
     assert without_odds["trio_condition"] == zero_odds["trio_condition"] == mid_odds["trio_condition"] == high_odds["trio_condition"]
 
 
-def test_nar_research_bet_is_axis_win_only_and_requires_ability_rank_one():
-    research = build_research_bet(marked_rows(6.4), "nar", context="mobile")
-    assert research["research_rule_id"] == "NAR_V4_R100_V1"
-    assert research["total"] == 500
-    assert research["lines"] == ["◎1 Horse1 単勝 500円"]
+def test_nar_research_bet_uses_ability_rank_quinella_when_axis_odds_low():
+    research = build_research_bet(marked_rows(2.4), "nar", context="mobile")
+    assert research["research_rule_id"] == "NAR_VER4_AXIS_ML_2_4_V1"
+    assert research["research_status"] == "eligible"
+    assert research["total"] == 400
+    assert research["ticket_lines"] == [
+        "◎－○ 1-2 100円",
+        "◎－▲ 1-3 100円",
+        "◎－△ 1-4 100円",
+        "◎－☆ 1-5 100円",
+    ]
+    assert all("単勝 500円" not in line for line in research["lines"])
+    assert "3連複" not in "\n".join(research["lines"])
 
     missing = build_research_bet([row(1, 2, "◎", 3.0)], "nar", context="mobile")
     assert missing["show"] is False
 
 
-def test_nar_dashboard_guide_shows_without_odds_and_never_adds_trio():
+def test_nar_dashboard_guide_shows_rule_without_odds_and_never_adds_trio():
     no_odds = build_research_bet(marked_rows(None), "nar", context="dashboard")
     zero_odds = build_research_bet(marked_rows(0.0), "nar", context="dashboard")
 
     for guide in (no_odds, zero_odds):
         assert guide["show"] is True
         assert guide["title"] == "🧪 NAR Ver4研究ガイド"
-        assert guide["total"] == 500
-        assert guide["lines"] == ["◎1 Horse1 単勝 500円"]
+        assert guide["research_status"] == "waiting_odds"
+        assert guide["total"] == 0
+        assert any("オッズ確定後" in line for line in guide["lines"])
         assert "3連複" not in "\n".join(guide["lines"])
         assert guide["trio_condition"] == ""
+
+
+def test_nar_research_bet_marks_out_of_rule_and_boundaries():
+    for odds in (2.39, 2.4, 2.40):
+        assert build_research_bet(marked_rows(odds), "nar", context="dashboard")["research_status"] == "eligible"
+    for odds in (2.41, 2.5, 3.0):
+        assert build_research_bet(marked_rows(odds), "nar", context="dashboard")["research_status"] == "out_of_rule"
+    for odds in (0, 0.0, "0", "0倍", "—", "未取得", float("nan"), -1, "bad"):
+        assert build_research_bet(marked_rows(odds), "nar", context="dashboard")["research_status"] == "waiting_odds"
+
+
+def test_nar_monitor_tags_do_not_change_research_eligibility():
+    rows = [
+        row(1, 1, "◎", 2.4, current_rank=5),
+        row(2, 2, "○", 4.1, current_rank=4),
+        row(3, 3, "▲", 8.0, current_rank=3),
+        row(4, 4, "△", 12.0, current_rank=2),
+        row(5, 5, "☆", 20.0, current_rank=1),
+    ]
+    rows[0]["axis_confidence"] = "A"
+    rows[0]["market_ability_score"] = 100
+    rows[1]["market_ability_score"] = 80
+    research = build_research_bet(rows, "nar", context="dashboard")
+    assert research["research_status"] == "eligible"
+    assert research["monitor_flags"]["axis_confidence_a"] is True
+    assert research["monitor_flags"]["ability_gap_1_2_ge_10"] is True
+    assert research["monitor_flags"]["ability_current_top5_match"] is False

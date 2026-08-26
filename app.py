@@ -1676,11 +1676,16 @@ def render_market_research_bet(table: pd.DataFrame, race_mode: str, *, context: 
         clean_text(research.get("reason")),
         f"research_rule_id：{clean_text(research.get('research_rule_id'))}",
     ]
+    monitor_lines = [clean_text(line) for line in research.get("monitor_lines", []) if clean_text(line)]
+    if monitor_lines:
+        note_bits.extend(["🔎 NAR監視情報", *monitor_lines, clean_text(research.get("monitor_note"))])
     notes = "<br>".join(plain_text_to_html(bit) for bit in note_bits if bit)
+    total = int(research.get("total") or 0)
+    total_html = f"<br><br>合計：{total:,}円" if total > 0 else ""
     st.markdown(
         '<div class="ka-dashboard-card">'
         f'<div class="ka-dashboard-value">{lines}</div>'
-        f'<div class="ka-note">{notes}<br><br>合計：{int(research.get("total") or 0):,}円</div>'
+        f'<div class="ka-note">{notes}{total_html}</div>'
         '</div>',
         unsafe_allow_html=True,
     )

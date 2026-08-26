@@ -309,9 +309,13 @@ def _research_guide_text(detail: Mapping[str, Any], source: str) -> str:
         _text(research.get("reason")),
         _text(research.get("trio_condition")),
         _text(research.get("note")),
-        f"合計：{int(research.get('total') or 0):,}円",
         f"research_rule_id：{_text(research.get('research_rule_id'))}",
     ]
+    if int(research.get("total") or 0) > 0:
+        lines.append(f"合計：{int(research.get('total') or 0):,}円")
+    monitor_lines = [_text(line) for line in research.get("monitor_lines", []) if _text(line)]
+    if monitor_lines:
+        lines.extend(["🔎 NAR監視情報", *monitor_lines, _text(research.get("monitor_note"))])
     return "\n".join(line for line in lines if line)
 
 
