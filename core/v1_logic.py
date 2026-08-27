@@ -1,0 +1,518 @@
+from __future__ import annotations
+
+import math
+import re
+import ast
+import json
+from typing import Any, Iterable, Mapping, Sequence
+
+
+V1_MARKS = ("◎", "○", "▲", "☆", "△", "✔︎")
+REPRO_POINTS = {"S": 4.0, "A": 3.0, "B": 2.0, "C": 1.0, "—": 0.0, "-": 0.0, "": 0.0}
+PACE_POINTS = {"○": 1.5, "△": 0.5, "×": -1.0, "—": 0.0, "": 0.0}
+STATE_POINTS = {"A": 1.5, "B": 0.5, "C": -1.0, "—": 0.0, "": 0.0}
+SPECIAL_NAR_CONDITIONS = {("船橋", 2200), ("門別", 1700), ("門別", 1800)}
+
+
+def build_v1_evaluations(
+    rows: Sequence[Mapping[str, Any]],
+    race_mode: str,
+    race_info: Mapping[str, Any] | None = None,
+) -> dict[str, Any]:
+    mode = text(race_mode).lower() or "jra"
+    current = current_condition(rows, race_info or {})
+    horses = [build_v1_horse(row, mode, current) for row in rows]
+    assign_v1_scores_and_marks(horses)
+    recommendations = [horse for horse in sorted(horses, key=v1_sort_key) if horse.get("v1_mark")][:5]
+    return {
+        "race_mode": mode,
+        "current_condition": current,
+        "summary": build_v1_summary(horses),
+        "recommendations": recommendations,
+        "rows": horses,
+        "research_only": False,
+    }
+
+
+def build_v1_horse(row: Mapping[str, Any], race_mode: str, current: Mapping[str, Any]) -> dict[str, Any]:
+    raw = dict(row)
+    runs = recent_runs(raw)
+    reproducibility = (
+        nar_reproducibility(runs, current)
+        if race_mode == "nar"
+        else jra_reproducibility(runs, current)
+    )
+    pace = pace_evaluation(raw)
+    state = state_evaluation(raw, runs, race_mode)
+    ability_rank = to_int(first(raw, "ability_rank", "能力順位", "ability_rank_for_backtest"))
+    ability_value = to_float(first(raw, "ability_value", "能力評価値", "ability_display_score", "raw_score", "_raw_score"))
+    current_rank = to_int(first(raw, "current_evaluation_rank", "AI今回評価順位", "ai_current_rank", "AI順位", "ai_rank"))
+    role = primary_role(raw, reproducibility, pace, state, ability_rank, race_mode, current)
+    raw.update(
+        {
+            "v1_reproducibility": reproducibility["rank"],
+            "v1_reproducibility_reason": reproducibility["reason"],
+            "v1_reproducibility_key": reproducibility["key"],
+            "v1_special_distance": reproducibility.get("special_distance", False),
+            "v1_pace_eval": pace["rank"],
+            "v1_pace_reason": pace["reason"],
+            "v1_state_eval": state["rank"],
+            "v1_state_reason": state["reason"],
+            "v1_role": role,
+            "v1_mark": "",
+            "v1_order": None,
+            "v1_score": 0.0,
+            "_v1_ability_rank": ability_rank,
+            "_v1_ability_value": ability_value,
+            "_v1_current_rank": current_rank,
+        }
+    )
+    return raw
+
+
+def nar_reproducibility(runs: Sequence[Mapping[str, Any]], current: Mapping[str, Any]) -> dict[str, Any]:
+    venue = text(current.get("venue"))
+    distance = to_int(current.get("distance"))
+    key = f"{venue}{distance}m" if venue and distance else ""
+    if not venue or distance is None or not runs:
+        return repro("—", "判定材料不足", key)
+    same = [
+        run
+        for run in runs
+        if venue_key(first(run, "venue", "racecourse", "競馬場", "場所", "previous_track")) == venue
+        and to_int(first(run, "distance", "距離")) == distance
+    ]
+    same_top3 = [run for run in same if finish_in_top3(run)]
+    same_wins = [run for run in same if finish_is_win(run)]
+    near_top3 = [
+        run
+        for run in runs
+        if finish_in_top3(run)
+        and (
+            venue_key(first(run, "venue", "racecourse", "競馬場", "場所", "previous_track")) == venue
+            or to_int(first(run, "distance", "距離")) == distance
+        )
+    ]
+    special = (venue, distance) in SPECIAL_NAR_CONDITIONS
+    if same_wins and len(same_top3) >= 2:
+        return repro("S", f"{key}: 勝利あり・複数好走 / {len(same)}走", key, special)
+    if len(same_top3) >= 2 and len(same[:3]) >= 2:
+        return repro("S", f"{key}: 近走内で複数3着内 / {len(same)}走", key, special)
+    if same_top3:
+        finishes = "・".join(f"{to_int(first(run, 'finish', '着順'))}着" for run in same_top3 if to_int(first(run, "finish", "着順")) is not None)
+        return repro("A", f"{key}: {finishes or '3着内'} / {len(same)}走", key, special)
+    if same:
+        return repro("C", f"{key}: 同条件経験あり・好走なし / {len(same)}走", key, special)
+    if near_top3:
+        return repro("B", f"近い条件で3着内あり / {len(near_top3)}走", key, special)
+    return repro("—", "未経験", key, special)
+
+
+def jra_reproducibility(runs: Sequence[Mapping[str, Any]], current: Mapping[str, Any]) -> dict[str, Any]:
+    venue = text(current.get("venue"))
+    surface = normalize_surface(current.get("surface"))
+    distance = to_int(current.get("distance"))
+    turn = normalize_turn(current.get("turn")) or venue_turn(venue)
+    key = "".join(part for part in [surface, str(distance) if distance else "", turn] if part)
+    if not surface or distance is None or not runs:
+        return repro("—", "判定材料不足", key)
+    full_top3 = []
+    shape_top3 = []
+    shape_count = 0
+    surface_distance_count = 0
+    surface_distance_top3 = []
+    turn_count = 0
+    for run in runs:
+        run_venue = venue_key(first(run, "venue", "racecourse", "競馬場", "場所", "previous_track"))
+        run_surface = normalize_surface(first(run, "surface", "芝ダ", "course_type"))
+        run_distance = to_int(first(run, "distance", "距離"))
+        run_turn = normalize_turn(first(run, "turn", "回り", "direction")) or venue_turn(run_venue)
+        same_full = run_venue == venue and run_surface == surface and run_distance == distance and run_turn == turn
+        same_shape = run_surface == surface and run_distance == distance and run_turn == turn
+        same_sd = run_surface == surface and run_distance == distance
+        if same_shape:
+            shape_count += 1
+        if same_sd:
+            surface_distance_count += 1
+        if run_turn and turn and run_turn == turn:
+            turn_count += 1
+        if finish_in_top3(run):
+            if same_full:
+                full_top3.append(run)
+            if same_shape:
+                shape_top3.append(run)
+            if same_sd:
+                surface_distance_top3.append(run)
+    if full_top3 or len(shape_top3) >= 2:
+        return repro("S", f"{key}: 同型条件で複数好走" if len(shape_top3) >= 2 else f"{key}: 同会場同条件で好走", key)
+    if shape_top3:
+        return repro("A", f"{key}: 3着内実績あり", key)
+    if surface_distance_top3 or surface_distance_count:
+        return repro("B", f"{surface}{distance}m: 実績あり", key)
+    if turn_count:
+        return repro("C", f"{turn}回り経験のみ", key)
+    return repro("—", "条件根拠薄い", key)
+
+
+def repro(rank: str, reason: str, key: str, special_distance: bool = False) -> dict[str, Any]:
+    if special_distance and rank in {"S", "A", "B", "C"}:
+        reason = f"{reason} / 特殊距離"
+    return {"rank": rank, "reason": reason, "key": key, "special_distance": special_distance}
+
+
+def pace_evaluation(row: Mapping[str, Any]) -> dict[str, str]:
+    corner = corner4_group(row)
+    style = text(first(row, "running_style", "脚質"))
+    if corner == "front":
+        suffix = "（逃げ）" if "逃" in style else ""
+        return {"rank": "○", "reason": f"4角前方想定{suffix}"}
+    if corner == "middle":
+        return {"rank": "△", "reason": "4角中団想定"}
+    if corner == "back":
+        return {"rank": "×", "reason": "4角後方想定"}
+    return {"rank": "—", "reason": "位置不明"}
+
+
+def state_evaluation(row: Mapping[str, Any], runs: Sequence[Mapping[str, Any]], race_mode: str) -> dict[str, str]:
+    score = 0
+    reasons: list[str] = []
+    training = text(first(row, "training", "調教評価", "training_display"))
+    if race_mode == "jra" and training:
+        if re.search(r"\bA|A↑|好調|動き抜群", training):
+            score += 1
+            reasons.append("調教良好")
+        elif re.search(r"\bD|D↓|物足り|弱", training):
+            score -= 1
+            reasons.append("調教不安")
+    comment = text(first(row, "stable_comment", "厩舎コメント", "newspaper_comment"))
+    if race_mode == "jra" and comment:
+        if re.search(r"良|順調|好|上向|期待", comment):
+            score += 1
+            reasons.append("コメント前向き")
+        elif re.search(r"不安|重い|慎重|まだ", comment):
+            score -= 1
+            reasons.append("コメント慎重")
+    change = text(first(row, "jockey_change", "騎手継続/乗替", "jockey_display", "騎手詳細"))
+    if "継" in change:
+        score += 1
+        reasons.append("継続騎乗")
+    elif "替" in change or "→" in change:
+        score -= 1
+        reasons.append("乗替")
+    weight_diff = to_float(first(row, "weight_diff", "斤量差", "斤量増減"))
+    if weight_diff is not None:
+        if weight_diff <= -1:
+            score += 1
+            reasons.append("斤量減")
+        elif weight_diff >= 2:
+            score -= 1
+            reasons.append("斤量増")
+    interval = text(first(row, "interval", "レース間隔", "間隔"))
+    if "連闘" in interval or "休み明け" in interval:
+        score -= 1
+        reasons.append(interval)
+    recent = [to_float(first(run, "time_index", "index", "value", "指数")) for run in list(runs)[:3]]
+    recent = [value for value in recent if value is not None]
+    if len(recent) >= 2:
+        if recent[0] > recent[-1]:
+            score += 1
+            reasons.append("近走上昇")
+        elif recent[0] < recent[-1] - 10:
+            score -= 1
+            reasons.append("近走下降")
+    if not reasons:
+        return {"rank": "—", "reason": "材料不足"}
+    if score >= 2:
+        return {"rank": "A", "reason": " / ".join(reasons)}
+    if score <= -2:
+        return {"rank": "C", "reason": " / ".join(reasons)}
+    return {"rank": "B", "reason": " / ".join(reasons)}
+
+
+def primary_role(
+    row: Mapping[str, Any],
+    reproducibility: Mapping[str, Any],
+    pace: Mapping[str, Any],
+    state: Mapping[str, Any],
+    ability_rank: int | None,
+    race_mode: str,
+    current: Mapping[str, Any],
+) -> str:
+    repro_rank = text(reproducibility.get("rank"))
+    if ability_rank is not None and ability_rank <= 3 and repro_rank in {"S", "A", "B"}:
+        return "軸候補" if ability_rank == 1 else "能力上位"
+    if repro_rank in {"S", "A"} and (ability_rank is None or ability_rank >= 4):
+        return "条件スペシャリスト"
+    if pace.get("rank") == "○" and (ability_rank is None or ability_rank >= 5):
+        return "展開穴"
+    if reproducibility.get("special_distance") and repro_rank in {"A", "B", "C"}:
+        return "条件穴"
+    if state.get("rank") == "A" and (ability_rank is None or ability_rank >= 4):
+        return "状態上向き"
+    return "相手候補"
+
+
+def assign_v1_scores_and_marks(horses: list[dict[str, Any]]) -> None:
+    if not horses:
+        return
+    ability_values = [to_float(horse.get("_v1_ability_value")) for horse in horses]
+    numeric_values = [value for value in ability_values if value is not None]
+    max_ability = max(numeric_values) if numeric_values else 0.0
+    min_ability = min(numeric_values) if numeric_values else 0.0
+    ability_span = max(max_ability - min_ability, 1.0)
+    for horse in horses:
+        ability = to_float(horse.get("_v1_ability_value"))
+        ability_rank = to_int(horse.get("_v1_ability_rank"))
+        ability_component = ((ability - min_ability) / ability_span * 10.0) if ability is not None else 0.0
+        if ability_rank is not None:
+            ability_component += max(0.0, 6.0 - min(ability_rank, 6)) * 0.8
+        score = (
+            ability_component
+            + REPRO_POINTS.get(text(horse.get("v1_reproducibility")), 0.0) * 2.2
+            + PACE_POINTS.get(text(horse.get("v1_pace_eval")), 0.0)
+            + STATE_POINTS.get(text(horse.get("v1_state_eval")), 0.0)
+        )
+        if horse.get("v1_special_distance") and horse.get("v1_reproducibility") in {"S", "A", "B"}:
+            score += 1.0
+        horse["v1_score"] = round(score, 3)
+    ordered = sorted(horses, key=v1_sort_key)
+    for horse in horses:
+        horse["v1_mark"] = ""
+        horse["v1_order"] = None
+    for index, mark in enumerate(("◎", "○", "▲")):
+        if index < len(ordered):
+            ordered[index]["v1_mark"] = mark
+            ordered[index]["v1_order"] = index + 1
+    used = {id(horse) for horse in ordered[:3]}
+    star = best_candidate(
+        [horse for horse in ordered if id(horse) not in used],
+        lambda horse: horse.get("v1_role") == "条件スペシャリスト" or horse.get("v1_reproducibility") in {"S", "A"},
+    )
+    if star is not None:
+        star["v1_mark"] = "☆"
+        star["v1_order"] = 4
+        used.add(id(star))
+    delta = best_candidate([horse for horse in ordered if id(horse) not in used], lambda horse: True)
+    if delta is not None:
+        delta["v1_mark"] = "△"
+        delta["v1_order"] = 5
+        used.add(id(delta))
+    check = best_candidate(
+        [horse for horse in ordered if id(horse) not in used],
+        lambda horse: horse.get("v1_role") in {"条件穴", "展開穴"} or (
+            horse.get("v1_reproducibility") in {"A", "B"} and horse.get("v1_pace_eval") == "○"
+        ),
+    )
+    if check is not None:
+        check["v1_mark"] = "✔︎"
+        check["v1_order"] = 6
+
+
+def best_candidate(horses: Sequence[dict[str, Any]], predicate) -> dict[str, Any] | None:
+    candidates = [horse for horse in horses if predicate(horse)]
+    return sorted(candidates, key=v1_sort_key)[0] if candidates else None
+
+
+def v1_sort_key(horse: Mapping[str, Any]) -> tuple[float, float, float]:
+    return (
+        -float(to_float(horse.get("v1_score")) or 0.0),
+        float(to_int(horse.get("_v1_ability_rank")) or 99),
+        float(to_int(first(horse, "horse_no", "馬番", "number")) or 999),
+    )
+
+
+def build_v1_summary(horses: Sequence[Mapping[str, Any]]) -> dict[str, Any]:
+    if not horses:
+        return {}
+    ability_top = sorted(horses, key=lambda horse: (to_int(horse.get("_v1_ability_rank")) or 99, -float(to_float(horse.get("_v1_ability_value")) or -999)))[:3]
+    repro_counts = counts_by(horses, "v1_reproducibility")
+    pace_counts = counts_by(horses, "v1_pace_eval")
+    state_counts = counts_by(horses, "v1_state_eval")
+    current_top = sorted(horses, key=lambda horse: (to_int(horse.get("_v1_current_rank")) or 99, to_int(first(horse, "horse_no", "馬番", "number")) or 999))[:3]
+    return {
+        "能力": " / ".join(horse_label(horse) for horse in ability_top),
+        "再現性": ", ".join(f"{key}:{value}" for key, value in repro_counts.items() if key) or "—",
+        "展開": ", ".join(f"{key}:{value}" for key, value in pace_counts.items() if key) or "—",
+        "状態": ", ".join(f"{key}:{value}" for key, value in state_counts.items() if key) or "—",
+        "今回評価": " / ".join(horse_label(horse) for horse in current_top),
+    }
+
+
+def counts_by(horses: Sequence[Mapping[str, Any]], key: str) -> dict[str, int]:
+    result: dict[str, int] = {}
+    for horse in horses:
+        value = text(horse.get(key)) or "—"
+        result[value] = result.get(value, 0) + 1
+    return result
+
+
+def horse_label(row: Mapping[str, Any]) -> str:
+    no = text(first(row, "horse_no", "馬番", "number"))
+    name = text(first(row, "horse_name", "馬名", "name"))
+    return " ".join(part for part in [no, name] if part)
+
+
+def current_condition(rows: Sequence[Mapping[str, Any]], race_info: Mapping[str, Any]) -> dict[str, Any]:
+    sample = rows[0] if rows else {}
+    venue = venue_key(first(race_info, "venue", "racecourse", "開催場", "競馬場", "場所") or first(sample, "venue", "racecourse", "開催場", "競馬場", "場所"))
+    distance = to_int(first(race_info, "distance", "距離") or first(sample, "distance", "距離"))
+    surface = normalize_surface(first(race_info, "surface", "course_type", "芝ダ") or first(sample, "surface", "course_type", "芝ダ"))
+    turn = normalize_turn(first(race_info, "turn", "回り", "direction") or first(sample, "turn", "回り", "direction")) or venue_turn(venue)
+    return {"venue": venue, "distance": distance, "surface": surface, "turn": turn}
+
+
+def recent_runs(row: Mapping[str, Any]) -> list[Mapping[str, Any]]:
+    for key in ("recent_runs", "_past_runs", "past_runs", "近走", "recent3_runs"):
+        value = row.get(key)
+        if isinstance(value, list):
+            return [run for run in value if isinstance(run, Mapping)]
+        if isinstance(value, str) and value.strip().startswith(("[", "{")):
+            parsed = parse_runs_text(value)
+            if parsed:
+                return parsed
+    runs: list[dict[str, Any]] = []
+    labels = [("前走", 0), ("2走前", 1), ("3走前", 2)]
+    for prefix, _index in labels:
+        run: dict[str, Any] = {}
+        for key, value in row.items():
+            key_text = str(key)
+            if key_text.startswith(prefix):
+                compact = key_text.replace(prefix, "").strip("_ /")
+                run[compact or "index"] = value
+        if run:
+            runs.append(run)
+    return runs
+
+
+def finish_in_top3(run: Mapping[str, Any]) -> bool:
+    finish = to_int(first(run, "finish", "着順", "result", "rank", "position", "previous_finish"))
+    return finish is not None and 1 <= finish <= 3
+
+
+def finish_is_win(run: Mapping[str, Any]) -> bool:
+    return to_int(first(run, "finish", "着順", "result", "rank", "position", "previous_finish")) == 1
+
+
+def parse_runs_text(value: str) -> list[Mapping[str, Any]]:
+    for parser in (json.loads, ast.literal_eval):
+        try:
+            parsed = parser(value)
+        except Exception:
+            continue
+        if isinstance(parsed, list):
+            return [item for item in parsed if isinstance(item, Mapping)]
+    return []
+
+
+def corner4_group(row: Mapping[str, Any]) -> str:
+    text_value = text(first(row, "corner4_group", "corner4_position", "4角位置", "corner4_label", "想定位置"))
+    if any(token in text_value for token in ("front", "前方", "先頭", "先団")):
+        return "front"
+    if any(token in text_value for token in ("middle", "中団")):
+        return "middle"
+    if any(token in text_value for token in ("back", "後方")):
+        return "back"
+    return "unknown"
+
+
+def first(row: Mapping[str, Any], *keys: str) -> Any:
+    for key in keys:
+        if key in row and text(row.get(key)) != "":
+            return row.get(key)
+    return None
+
+
+def text(value: Any) -> str:
+    if value is None:
+        return ""
+    try:
+        if isinstance(value, float) and math.isnan(value):
+            return ""
+    except Exception:
+        pass
+    return re.sub(r"\s+", " ", str(value).replace("\xa0", " ")).strip()
+
+
+def to_float(value: Any) -> float | None:
+    if value is None:
+        return None
+    try:
+        if isinstance(value, float) and math.isnan(value):
+            return None
+    except Exception:
+        pass
+    match = re.search(r"-?\d+(?:\.\d+)?", str(value).replace(",", ""))
+    return float(match.group(0)) if match else None
+
+
+def to_int(value: Any) -> int | None:
+    number = to_float(value)
+    return int(number) if number is not None else None
+
+
+def normalize_surface(value: Any) -> str:
+    value_text = text(value)
+    if "芝" in value_text:
+        return "芝"
+    if "ダ" in value_text or "泥" in value_text:
+        return "ダ"
+    return ""
+
+
+def normalize_turn(value: Any) -> str:
+    value_text = text(value)
+    if "左" in value_text:
+        return "左"
+    if "右" in value_text:
+        return "右"
+    if "直" in value_text:
+        return "直"
+    return ""
+
+
+def venue_key(value: Any) -> str:
+    value_text = text(value)
+    for venue in (
+        "札幌",
+        "函館",
+        "福島",
+        "新潟",
+        "東京",
+        "中山",
+        "中京",
+        "京都",
+        "阪神",
+        "小倉",
+        "門別",
+        "盛岡",
+        "水沢",
+        "浦和",
+        "船橋",
+        "大井",
+        "川崎",
+        "金沢",
+        "笠松",
+        "名古屋",
+        "園田",
+        "姫路",
+        "高知",
+        "佐賀",
+    ):
+        if venue in value_text:
+            return venue
+    return value_text
+
+
+def venue_turn(venue: str) -> str:
+    return {
+        "東京": "左",
+        "中京": "左",
+        "新潟": "左",
+        "中山": "右",
+        "京都": "右",
+        "阪神": "右",
+        "札幌": "右",
+        "函館": "右",
+        "福島": "右",
+        "小倉": "右",
+    }.get(venue, "")

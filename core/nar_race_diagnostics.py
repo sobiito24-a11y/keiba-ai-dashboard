@@ -10,6 +10,7 @@ from typing import Any
 
 from .recent_races import build_recent_races
 from .value_support import training_display as _training_display
+from .v1_logic import build_v1_evaluations
 
 
 FRONT_LABELS = {"逃げ", "先団", "前方"}
@@ -106,6 +107,26 @@ def build_full_field_comparison(
     horses = [horse for horse in horses if horse.get("number")]
     if not horses:
         return {"show": False, "research_only": True}
+    v1 = build_v1_evaluations(records, mode)
+    v1_by_number = {_text(_first(row, "horse_no", "馬番", "number")): row for row in v1.get("rows", [])}
+    for horse in horses:
+        v1_row = v1_by_number.get(_text(horse.get("number")))
+        if v1_row:
+            horse.update(
+                {
+                    "v1_mark": _text(v1_row.get("v1_mark")),
+                    "v1_order": v1_row.get("v1_order"),
+                    "v1_score": v1_row.get("v1_score"),
+                    "v1_role": _text(v1_row.get("v1_role")),
+                    "v1_reproducibility": _text(v1_row.get("v1_reproducibility")),
+                    "v1_reproducibility_reason": _text(v1_row.get("v1_reproducibility_reason")),
+                    "v1_pace_eval": _text(v1_row.get("v1_pace_eval")),
+                    "v1_pace_reason": _text(v1_row.get("v1_pace_reason")),
+                    "v1_state_eval": _text(v1_row.get("v1_state_eval")),
+                    "v1_state_reason": _text(v1_row.get("v1_state_reason")),
+                    "v1_special_distance": bool(v1_row.get("v1_special_distance")),
+                }
+            )
 
     ranked = sorted(
         [horse for horse in horses if horse.get("ability_rank") is not None],
@@ -143,6 +164,8 @@ def build_full_field_comparison(
         "sort_mode": sort_mode if sort_mode in COMPARISON_SORT_LABELS else "horse_number",
         "sort_labels": COMPARISON_SORT_LABELS,
         "rows": horses,
+        "v1_summary": v1.get("summary", {}),
+        "v1_recommendations": v1.get("recommendations", []),
         "top1": top1,
         "top2": top2,
         "gap_1_2": gap_1_2,

@@ -410,6 +410,11 @@ class DetailAnalysisTableTest(unittest.TestCase):
                         "ability_rank": 1,
                         "ability_value": 72.4,
                         "current_evaluation_rank": 1,
+                        "v1_mark": "◎",
+                        "v1_reproducibility": "A",
+                        "v1_reproducibility_reason": "芝1400左：3着内実績あり",
+                        "v1_pace_eval": "△",
+                        "v1_state_eval": "B",
                         "recent3_indices": "★72 / 68 / ★75",
                         "recent3_conditions": "中京1400m / 東京1600m / 中京1400m",
                         "distance_index": "43",
@@ -450,20 +455,27 @@ class DetailAnalysisTableTest(unittest.TestCase):
         self.assertIn("直近②に先着", html)
         self.assertIn("騎手情報", html)
         self.assertIn("川田将雅｜継続｜複35%｜56.0kg（±0）", html)
-        self.assertIn("ka-comparison-sticky-row ka-comparison-sticky-1", html)
-        self.assertIn("ka-comparison-sticky-row ka-comparison-sticky-2", html)
+        self.assertIn("再現性", html)
+        self.assertIn("再現性根拠", html)
+        self.assertIn("芝1400左：3着内実績あり", html)
+        self.assertIn("展開評価", html)
+        self.assertIn("状態評価", html)
         self.assertIn("B/仕上上々", html)
         self.assertIn("前向きさが出て順調。", html)
         self.assertIn("56.0kg（±0）", html)
         self.assertIn("1位との差", html)
         self.assertNotIn("能力1位との差", html)
-        self.assertLess(html.index("印"), html.index("騎手情報"))
-        self.assertLess(html.index("騎手情報"), html.index("能力値"))
         self.assertLess(html.index("能力値"), html.index("能力順位"))
         self.assertLess(html.index("能力順位"), html.index("1位との差"))
-        self.assertLess(html.index("1位との差"), html.index("今回評価順位"))
+        self.assertLess(html.index("1位との差"), html.index("再現性"))
+        self.assertLess(html.index("再現性"), html.index("再現性根拠"))
+        self.assertLess(html.index("再現性根拠"), html.index("4角位置"))
         self.assertLess(html.index("4角位置"), html.index("脚質"))
-        self.assertLess(html.index("脚質"), html.index("近3走指数"))
+        self.assertLess(html.index("脚質"), html.index("展開評価"))
+        self.assertLess(html.index("展開評価"), html.index("状態評価"))
+        self.assertLess(html.index("状態評価"), html.index("騎手情報"))
+        self.assertLess(html.index("騎手情報"), html.index("近3走指数"))
+        self.assertLess(html.index("今回評価順位"), html.rindex("印"))
         self.assertIn("同回り", html)
         self.assertIn("○", html)
         self.assertNotIn(">騎手</td>", html)
