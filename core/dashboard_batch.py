@@ -65,7 +65,7 @@ ProgressCallback = Callable[[int, int, str], None]
 def predict_uploaded_sources(
     sources: Iterable[UploadedSource],
     *,
-    prediction_logic_version: str = "market",
+    prediction_logic_version: str = "v3",
     progress: ProgressCallback | None = None,
 ) -> BatchPredictionReport:
     """Classify every HTML then call the canonical Mobile predictor per race."""
