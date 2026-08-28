@@ -24,11 +24,11 @@ def build_v1_evaluations(
     horses = [build_v1_horse(row, mode, current) for row in rows]
     fill_missing_ability_ranks(horses)
     assign_v1_scores_and_marks(horses)
-    recommendations = [horse for horse in sorted(horses, key=v1_sort_key) if horse.get("v1_mark")][:5]
+    recommendations = final_recommendations(horses)
     return {
         "race_mode": mode,
         "current_condition": current,
-        "summary": build_v1_summary(horses, current),
+        "summary": build_v1_summary(horses, current, recommendations),
         "recommendations": recommendations,
         "rows": horses,
         "research_only": False,
@@ -74,8 +74,11 @@ def build_v1_horse(row: Mapping[str, Any], race_mode: str, current: Mapping[str,
         )
     )
     role = primary_role(raw, reproducibility, pace, state, ability_rank, race_mode, current)
+    baseline_mark = text(first(raw, "ai_current_mark", "mark", "saved_mark", "表示印", "display_mark", "最終印", "印"))
     raw.update(
         {
+            "baseline_current_evaluation_rank": current_rank,
+            "baseline_mark": baseline_mark,
             "v1_reproducibility": reproducibility["rank"],
             "v1_reproducibility_reason": reproducibility["reason"],
             "v1_reproducibility_key": reproducibility["key"],
@@ -88,6 +91,13 @@ def build_v1_horse(row: Mapping[str, Any], race_mode: str, current: Mapping[str,
             "v1_mark": "",
             "v1_order": None,
             "v1_score": 0.0,
+            "v1_base_score": 0.0,
+            "v1_base_rank": None,
+            "v1_final_score": 0.0,
+            "v1_final_rank": None,
+            "v1_final_mark": "",
+            "v1_final_role": role,
+            "v1_final_reason": "",
             "_v1_ability_rank": ability_rank,
             "_v1_ability_value": ability_value,
             "_v1_current_rank": current_rank,
@@ -228,14 +238,22 @@ def pace_evaluation(row: Mapping[str, Any]) -> dict[str, str]:
 def state_evaluation(row: Mapping[str, Any], runs: Sequence[Mapping[str, Any]], race_mode: str) -> dict[str, str]:
     score = 0
     reasons: list[str] = []
+    main_positive = 0
+    main_negative = 0
+    support_positive = 0
+    support_negative = 0
     training = text(first(row, "training", "training_display", "training_short", "調教", "調教評価", "追切評価", "調教/評価/検討材料"))
+    training_grade_match = re.search(r"\b([ABCD])\b|^([ABCD])", training)
+    training_grade = (training_grade_match.group(1) or training_grade_match.group(2)) if training_grade_match else ""
     if race_mode == "jra" and training:
-        if re.search(r"(?:^|[/\s])A|A↑|好調|動き抜群|仕上良|上々|良好", training):
+        if training_grade == "A" or re.search(r"A↑|好調|好気配|動き抜群|仕上抜群|仕上良|仕上上々|上々|良好|力強い", training):
             score += 1
-            reasons.append("調教良好")
-        elif re.search(r"(?:^|[/\s])[CD]|D↓|物足り|弱|不安|平凡", training):
+            main_positive += 1
+            reasons.append(f"調教{training}")
+        elif training_grade in {"C", "D"} or re.search(r"D↓|物足り|弱|不安|平凡|反応平凡|良化遅い", training):
             score -= 1
-            reasons.append("調教不安")
+            main_negative += 1
+            reasons.append(f"調教{training}")
     comment = text(
         first(
             row,
@@ -247,33 +265,44 @@ def state_evaluation(row: Mapping[str, Any], runs: Sequence[Mapping[str, Any]], 
             "新聞コメント",
         )
     )
+    comment_positive = False
+    comment_negative = False
     if race_mode == "jra" and comment:
-        if re.search(r"良|順調|好|上向|期待", comment):
+        if re.search(r"状態はいい|状態は良い|順調|好調|好気配|上向|期待|メド|適性もある|動きもいい|キープ|前向", comment):
             score += 1
+            main_positive += 1
+            comment_positive = True
             reasons.append("コメント前向き")
-        elif re.search(r"不安|重い|慎重|まだ", comment):
+        elif re.search(r"不安|重い|慎重|まだ|ズブ|良化遅い|反応平凡", comment):
             score -= 1
+            main_negative += 1
+            comment_negative = True
             reasons.append("コメント慎重")
     weight_diff = to_float(first(row, "weight_diff", "斤量差", "斤量増減"))
     if weight_diff is not None:
         if race_mode == "jra" and weight_diff <= -2:
             score += 1
+            support_positive += 1
             reasons.append("斤量減")
         elif weight_diff >= 3:
             score -= 1
+            support_negative += 1
             reasons.append("斤量増")
     interval = text(first(row, "interval", "レース間隔", "間隔"))
     if "連闘" in interval or "休み明け" in interval:
         score -= 1
+        support_negative += 1
         reasons.append(interval)
     recent = [to_float(first(run, "time_index", "index", "value", "指数")) for run in list(runs)[:3]]
     recent = [value for value in recent if value is not None]
     if len(recent) >= 2:
         if recent[0] > recent[-1]:
             score += 1
+            support_positive += 1
             reasons.append("近走上昇")
         elif recent[0] < recent[-1] - 10:
             score -= 1
+            support_negative += 1
             reasons.append("近走下降")
     if not reasons:
         return {"rank": "—", "reason": "材料不足"}
@@ -285,10 +314,18 @@ def state_evaluation(row: Mapping[str, Any], runs: Sequence[Mapping[str, Any]], 
         if score < 0:
             return {"rank": "C", "reason": " / ".join(reasons)}
         return {"rank": "—", "reason": "判断保留：" + " / ".join(reasons)}
-    if score >= 2:
+    if training_grade == "A" and comment_positive and main_negative == 0:
         return {"rank": "A", "reason": " / ".join(reasons)}
-    if score <= -1:
+    if main_positive >= 2 and training_grade == "A" and main_negative == 0:
+        return {"rank": "A", "reason": " / ".join(reasons)}
+    if main_negative and (training_grade in {"C", "D"} or comment_negative or score <= -1):
         return {"rank": "C", "reason": " / ".join(reasons)}
+    if main_positive:
+        return {"rank": "B", "reason": " / ".join(reasons)}
+    if support_negative >= 2 and score <= -2:
+        return {"rank": "C", "reason": " / ".join(reasons)}
+    if support_positive:
+        return {"rank": "B", "reason": " / ".join(reasons)}
     return {"rank": "B", "reason": " / ".join(reasons)}
 
 
@@ -337,61 +374,145 @@ def assign_v1_scores_and_marks(horses: list[dict[str, Any]]) -> None:
         )
         if horse.get("v1_special_distance") and horse.get("v1_reproducibility") in {"S", "A", "B"}:
             score += 1.0
-        horse["v1_score"] = round(score, 3)
-    ordered = sorted(horses, key=v1_sort_key)
-    for horse in horses:
-        horse["v1_mark"] = ""
-        horse["v1_order"] = None
-    for index, mark in enumerate(("◎", "○", "▲")):
-        if index < len(ordered):
-            ordered[index]["v1_mark"] = mark
-            ordered[index]["v1_order"] = index + 1
-    used = {id(horse) for horse in ordered[:3]}
-    star = best_candidate(
-        [horse for horse in ordered if id(horse) not in used],
-        lambda horse: horse.get("v1_role") == "条件スペシャリスト" or horse.get("v1_reproducibility") in {"S", "A"},
-    )
+        horse["v1_base_score"] = round(score, 3)
+        horse["v1_score"] = horse["v1_base_score"]
+    base_ordered = sorted(horses, key=v1_base_sort_key)
+    for index, horse in enumerate(base_ordered, start=1):
+        horse["v1_base_rank"] = index
+
+    final_ordered: list[dict[str, Any]] = []
+    used: set[int] = set()
+    for horse in base_ordered[:3]:
+        final_ordered.append(horse)
+        used.add(id(horse))
+
+    remaining = [horse for horse in base_ordered if id(horse) not in used]
+    star = best_candidate(remaining, lambda horse: horse.get("v1_role") == "条件スペシャリスト")
+    if star is None:
+        star = best_candidate(remaining, lambda horse: horse.get("v1_reproducibility") in {"S", "A"})
     if star is not None:
-        star["v1_mark"] = "☆"
-        star["v1_order"] = 4
+        final_ordered.append(star)
         used.add(id(star))
-    delta = best_candidate([horse for horse in ordered if id(horse) not in used], lambda horse: True)
+
+    delta = best_candidate([horse for horse in base_ordered if id(horse) not in used], lambda horse: True)
     if delta is not None:
-        delta["v1_mark"] = "△"
-        delta["v1_order"] = 5
+        final_ordered.append(delta)
         used.add(id(delta))
+
     check = best_candidate(
-        [horse for horse in ordered if id(horse) not in used],
+        [horse for horse in base_ordered if id(horse) not in used],
         lambda horse: horse.get("v1_role") in {"条件穴", "展開穴"} or (
             horse.get("v1_reproducibility") in {"A", "B"} and horse.get("v1_pace_eval") == "○"
         ),
     )
     if check is not None:
-        check["v1_mark"] = "✔︎"
-        check["v1_order"] = 6
+        final_ordered.append(check)
+        used.add(id(check))
+
+    final_ordered.extend(horse for horse in base_ordered if id(horse) not in used)
+    for horse in horses:
+        horse["v1_mark"] = ""
+        horse["v1_order"] = None
+        horse["v1_final_mark"] = ""
+        horse["v1_final_rank"] = None
+        horse["v1_final_score"] = horse.get("v1_base_score", 0.0)
+    for index, horse in enumerate(final_ordered, start=1):
+        role = final_role_for_rank(index, text(horse.get("v1_role")) or "相手候補")
+        mark = final_mark_for_rank(index, role)
+        horse["v1_final_rank"] = index
+        horse["v1_final_score"] = horse.get("v1_base_score", 0.0)
+        horse["v1_final_role"] = role
+        horse["v1_final_mark"] = mark
+        horse["v1_final_reason"] = final_reason(horse)
+        horse["v1_score"] = horse["v1_final_score"]
+        horse["v1_role"] = horse["v1_final_role"]
+        if mark:
+            horse["v1_mark"] = mark
+            horse["v1_order"] = index
 
 
 def best_candidate(horses: Sequence[dict[str, Any]], predicate) -> dict[str, Any] | None:
     candidates = [horse for horse in horses if predicate(horse)]
-    return sorted(candidates, key=v1_sort_key)[0] if candidates else None
+    return sorted(candidates, key=v1_base_sort_key)[0] if candidates else None
 
 
 def v1_sort_key(horse: Mapping[str, Any]) -> tuple[float, float, float]:
+    return v1_final_sort_key(horse)
+
+
+def v1_base_sort_key(horse: Mapping[str, Any]) -> tuple[float, float, float]:
     return (
-        -float(to_float(horse.get("v1_score")) or 0.0),
+        -float(to_float(horse.get("v1_base_score")) or to_float(horse.get("v1_score")) or 0.0),
         float(to_int(horse.get("_v1_ability_rank")) or 99),
-        float(to_int(first(horse, "horse_no", "馬番", "number")) or 999),
+        float(to_int(first(horse, "horse_no", "馬番", "number", "horse_number")) or 999),
     )
 
 
-def build_v1_summary(horses: Sequence[Mapping[str, Any]], current: Mapping[str, Any] | None = None) -> dict[str, Any]:
+def v1_final_sort_key(horse: Mapping[str, Any]) -> tuple[float, float, float]:
+    return (
+        float(to_int(horse.get("v1_final_rank")) or 999),
+        -float(to_float(horse.get("v1_final_score")) or to_float(horse.get("v1_score")) or 0.0),
+        float(to_int(first(horse, "horse_no", "馬番", "number", "horse_number")) or 999),
+    )
+
+
+def final_mark_for_rank(rank: int, role: str) -> str:
+    if rank == 1:
+        return "◎"
+    if rank == 2:
+        return "○"
+    if rank == 3:
+        return "▲"
+    if rank > 5:
+        return "✔︎" if role in {"条件穴", "展開穴"} else ""
+    if role == "条件スペシャリスト":
+        return "☆"
+    if role in {"条件穴", "展開穴"}:
+        return "✔︎"
+    return "△"
+
+
+def final_role_for_rank(rank: int, role: str) -> str:
+    if rank == 1:
+        return "軸候補"
+    if rank in {2, 3} and role == "相手候補":
+        return "能力上位"
+    return role
+
+
+def final_reason(horse: Mapping[str, Any]) -> str:
+    parts = [
+        f"能力{to_int(horse.get('_v1_ability_rank')) or '未成立'}位" if to_int(horse.get("_v1_ability_rank")) is not None else "能力未成立",
+        f"再現性{text(horse.get('v1_reproducibility')) or '—'}",
+        f"展開{text(horse.get('v1_pace_eval')) or '—'}",
+        f"状態{text(horse.get('v1_state_eval')) or '—'}",
+    ]
+    role = text(horse.get("v1_final_role")) or text(horse.get("v1_role"))
+    if role and role != "相手候補":
+        parts.append(role)
+    return " / ".join(parts)
+
+
+def final_recommendations(horses: Sequence[Mapping[str, Any]], limit: int = 5) -> list[Mapping[str, Any]]:
+    return [
+        horse
+        for horse in sorted(horses, key=v1_final_sort_key)
+        if text(horse.get("v1_final_mark")) or text(horse.get("v1_mark"))
+    ][:limit]
+
+
+def build_v1_summary(
+    horses: Sequence[Mapping[str, Any]],
+    current: Mapping[str, Any] | None = None,
+    recommendations: Sequence[Mapping[str, Any]] | None = None,
+) -> dict[str, Any]:
     if not horses:
         return {}
     ability_top = sorted(
         horses,
         key=lambda horse: (to_int(horse.get("_v1_ability_rank")) or 99, -float(to_float(horse.get("_v1_ability_value")) or -999)),
     )[:3]
-    current_top = sorted(horses, key=lambda horse: (to_int(horse.get("_v1_current_rank")) or 99, to_int(first(horse, "horse_no", "馬番", "number")) or 999))[:3]
+    final_top = list(recommendations or final_recommendations(horses))[:5]
     top1, top2 = (ability_top + [None, None])[:2]
     gap_text = ""
     if top1 and top2:
@@ -418,7 +539,8 @@ def build_v1_summary(horses: Sequence[Mapping[str, Any]], current: Mapping[str, 
         "再現性": reproducibility_summary(repro_horses, strong_repro, current or {}),
         "展開": pace_summary(front, middle, back, pace_counts),
         "状態": state_summary(state_up, state_down),
-        "今回評価": current_eval_summary(current_top, specialists),
+        "今回評価": current_eval_summary(final_top),
+        "_今回評価_numbers": [text(first(horse, "horse_no", "馬番", "number")) for horse in final_top],
     }
 
 
@@ -473,11 +595,18 @@ def state_summary(up: Sequence[Mapping[str, Any]], down: Sequence[Mapping[str, A
     return "。".join(parts) if parts else "明確な上向き/下向き材料は少なめ"
 
 
-def current_eval_summary(current_top: Sequence[Mapping[str, Any]], specialists: Sequence[Mapping[str, Any]]) -> str:
-    base = f"今回評価上位：{' / '.join(horse_label(horse) for horse in current_top) or '—'}"
-    if specialists:
-        base += f"。条件浮上：{' / '.join(horse_label(horse) for horse in specialists[:3])}"
-    return base
+def current_eval_summary(final_top: Sequence[Mapping[str, Any]]) -> str:
+    if not final_top:
+        return "今回の結論は未成立"
+    axis = final_top[0]
+    main = final_top[1:3]
+    rise = [horse for horse in final_top[3:] if text(horse.get("v1_final_role")) != "相手候補"]
+    parts = [f"軸：{horse_label(axis)}"]
+    if main:
+        parts.append(f"本線：{' / '.join(horse_label(horse) for horse in main)}")
+    if rise:
+        parts.append(f"浮上：{' / '.join(horse_label(horse) for horse in rise)}")
+    return "。".join(parts)
 
 
 def counts_by(horses: Sequence[Mapping[str, Any]], key: str) -> dict[str, int]:
@@ -504,7 +633,7 @@ def current_condition(rows: Sequence[Mapping[str, Any]], race_info: Mapping[str,
 
 
 def recent_runs(row: Mapping[str, Any]) -> list[Mapping[str, Any]]:
-    for key in ("recent_runs", "_past_runs", "past_runs", "近走", "recent3_runs"):
+    for key in ("recent_runs", "recent_races", "_past_runs", "past_runs", "近走", "recent3_runs"):
         value = row.get(key)
         if isinstance(value, list):
             return [run for run in value if isinstance(run, Mapping)]

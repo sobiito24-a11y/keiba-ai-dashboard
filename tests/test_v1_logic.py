@@ -69,9 +69,16 @@ def test_build_v1_evaluations_assigns_star_and_check_without_odds() -> None:
     ]
     result = build_v1_evaluations(rows, "nar")
     marks = {row["horse_no"]: row["v1_mark"] for row in result["rows"]}
+    final_marks = {row["horse_no"]: row["v1_final_mark"] for row in result["rows"]}
+    final_ranks = [row["v1_final_rank"] for row in result["rows"]]
     assert marks["1"] == "◎"
-    assert "☆" in marks.values()
-    assert "✔︎" in marks.values()
+    assert final_marks["1"] == "◎"
+    assert result["recommendations"][0]["v1_final_role"] == "軸候補"
+    assert "☆" in final_marks.values()
+    assert len(final_ranks) == len(set(final_ranks))
+    assert [row["number"] for row in result["recommendations"]] == [
+        row["number"] for row in sorted(result["rows"], key=lambda row: row["v1_final_rank"])[:5]
+    ]
     assert all(row.get("odds") is None for row in result["rows"])
 
 
@@ -108,9 +115,39 @@ def test_build_v1_evaluations_uses_race_info_and_saved_market_keys() -> None:
     assert "船橋2200m" in by_number["5"]["v1_reproducibility_reason"]
     assert by_number["6"]["v1_reproducibility"] == "C"
     assert by_number["6"]["v1_pace_eval"] == "○"
+    assert by_number["5"]["baseline_current_evaluation_rank"] == 2
     assert "再現性" in result["summary"]
     assert "A:1" not in result["summary"]["再現性"]
     assert "ラップランド" in result["summary"]["再現性"]
+    assert result["summary"]["_今回評価_numbers"] == [row["number"] for row in result["recommendations"]]
+
+
+def test_build_v1_evaluations_reads_saved_recent_races_key() -> None:
+    result = build_v1_evaluations(
+        [
+            {
+                "horse_number": "5",
+                "horse_name": "ラップランド",
+                "market_ability_score": 48.7,
+                "market_ability_rank": 10,
+                "current_evaluation_rank": 12,
+                "mark": "",
+                "recent_races": [
+                    {"racecourse": "船橋", "distance": "2200m", "finish": "1着"},
+                    {"racecourse": "船橋", "distance": "1800m", "finish": "5着"},
+                ],
+            }
+        ],
+        "nar",
+        race_info={"venue": "船橋", "distance": 2200},
+    )
+
+    row = result["rows"][0]
+    assert row["number"] == "5"
+    assert row["v1_reproducibility"] == "A"
+    assert row["v1_final_role"] == "軸候補"
+    assert row["baseline_current_evaluation_rank"] == 12
+    assert row["baseline_mark"] == ""
 
 
 def test_build_v1_evaluations_fills_missing_display_ability_rank_from_saved_values() -> None:
@@ -127,3 +164,32 @@ def test_build_v1_evaluations_fills_missing_display_ability_rank_from_saved_valu
     assert by_number["2"]["ability_rank"] == 1
     assert by_number["1"]["ability_rank"] == 2
     assert result["recommendations"][0]["number"] == "2"
+
+
+def test_jra_state_prioritizes_training_and_comment_over_layoff() -> None:
+    mars = state_evaluation(
+        {
+            "training": "B 好気配",
+            "stable_comment": "前走を見るとクラスにメド。初めての中京だけど、コース適性もあるはず。",
+            "interval": "休み明け",
+        },
+        [],
+        "jra",
+    )
+    tripolitania = state_evaluation(
+        {
+            "training": "A 仕上抜群",
+            "stable_comment": "休み明けでも状態はいい",
+            "interval": "休み明け",
+        },
+        [],
+        "jra",
+    )
+    peisha = state_evaluation({"training": "C 反応平凡"}, [], "jra")
+    mario = state_evaluation({"training": "C 良化遅い", "stable_comment": "ズブさへの懸念"}, [], "jra")
+
+    assert mars["rank"] == "B"
+    assert "調教B 好気配" in mars["reason"]
+    assert tripolitania["rank"] == "A"
+    assert peisha["rank"] == "C"
+    assert mario["rank"] == "C"

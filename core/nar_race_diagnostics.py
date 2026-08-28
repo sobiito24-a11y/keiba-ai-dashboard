@@ -110,7 +110,7 @@ def build_full_field_comparison(
     if not horses:
         return {"show": False, "research_only": True}
     v1 = build_v1_evaluations(records, mode, race_info=info)
-    v1_by_number = {_text(_first(row, "horse_no", "馬番", "number")): row for row in v1.get("rows", [])}
+    v1_by_number = {_text(_first(row, "horse_no", "馬番", "number", "horse_number")): row for row in v1.get("rows", [])}
     for horse in horses:
         v1_row = v1_by_number.get(_text(horse.get("number")))
         if v1_row:
@@ -120,6 +120,15 @@ def build_full_field_comparison(
                     "v1_order": v1_row.get("v1_order"),
                     "v1_score": v1_row.get("v1_score"),
                     "v1_role": _text(v1_row.get("v1_role")),
+                    "v1_base_score": v1_row.get("v1_base_score"),
+                    "v1_base_rank": v1_row.get("v1_base_rank"),
+                    "v1_final_score": v1_row.get("v1_final_score"),
+                    "v1_final_rank": v1_row.get("v1_final_rank"),
+                    "v1_final_mark": _text(v1_row.get("v1_final_mark")),
+                    "v1_final_role": _text(v1_row.get("v1_final_role")),
+                    "v1_final_reason": _text(v1_row.get("v1_final_reason")),
+                    "baseline_current_evaluation_rank": v1_row.get("baseline_current_evaluation_rank"),
+                    "baseline_mark": _text(v1_row.get("baseline_mark")),
                     "v1_reproducibility": _text(v1_row.get("v1_reproducibility")),
                     "v1_reproducibility_reason": _text(v1_row.get("v1_reproducibility_reason")),
                     "v1_pace_eval": _text(v1_row.get("v1_pace_eval")),
@@ -169,13 +178,14 @@ def build_full_field_comparison(
         "sort_labels": COMPARISON_SORT_LABELS,
         "rows": horses,
         "v1_summary": v1.get("summary", {}),
+        "v1_summary_top_horses": v1.get("summary", {}).get("_今回評価_numbers", []),
         "v1_recommendations": [
             horse
             for horse in sorted(
-                [horse for horse in horses if _text(horse.get("v1_mark"))],
+                [horse for horse in horses if _text(horse.get("v1_final_mark"))],
                 key=lambda horse: (
-                    _int(horse.get("v1_order")) or 99,
-                    -(float(horse.get("v1_score") or 0.0)),
+                    _int(horse.get("v1_final_rank")) or 99,
+                    -(float(horse.get("v1_final_score") or 0.0)),
                     _horse_sort_key(horse.get("number")),
                 ),
             )[:5]
@@ -185,6 +195,43 @@ def build_full_field_comparison(
         "gap_1_2": gap_1_2,
         "transfer_watch": transfer_watch,
     }
+
+
+def validate_v1_consistency(comparison: Mapping[str, Any], *, top_n: int = 5) -> dict[str, Any]:
+    """Validate that every visible v1 conclusion reads the same final order."""
+
+    rows = [row for row in comparison.get("rows", []) if isinstance(row, Mapping)]
+    if not rows:
+        return {"ok": True, "errors": []}
+    by_number = {_text(row.get("number")): row for row in rows}
+    final_rows = sorted(
+        [row for row in rows if _int(row.get("v1_final_rank")) is not None],
+        key=lambda row: (_int(row.get("v1_final_rank")) or 999, _horse_sort_key(row.get("number"))),
+    )
+    final_top = [_text(row.get("number")) for row in final_rows[:top_n]]
+    recommendations = [row for row in comparison.get("v1_recommendations", []) if isinstance(row, Mapping)]
+    rec_top = [_text(row.get("number")) for row in recommendations[:top_n]]
+    summary_top = [_text(value) for value in comparison.get("v1_summary_top_horses", [])][: len(rec_top) or top_n]
+
+    errors: list[str] = []
+    if rec_top and rec_top != final_top[: len(rec_top)]:
+        errors.append("recommendations do not match v1_final_rank order")
+    if summary_top and rec_top and summary_top[: len(rec_top)] != rec_top:
+        errors.append("summary top horses do not match recommendations")
+    final_ranks = [_int(row.get("v1_final_rank")) for row in final_rows]
+    if len(final_ranks) != len(set(final_ranks)):
+        errors.append("v1_final_rank is not unique")
+    for rec in recommendations:
+        number = _text(rec.get("number"))
+        row = by_number.get(number)
+        if not row:
+            errors.append(f"recommended horse missing from comparison rows: {number}")
+            continue
+        if _int(rec.get("v1_final_rank")) != _int(row.get("v1_final_rank")):
+            errors.append(f"rank mismatch for horse {number}")
+        if _text(rec.get("v1_final_mark")) != _text(row.get("v1_final_mark")):
+            errors.append(f"mark mismatch for horse {number}")
+    return {"ok": not errors, "errors": errors}
 
 
 def build_nar_full_field_comparison(
@@ -357,6 +404,8 @@ def _diagnostic_horse(row: Mapping[str, Any]) -> dict[str, Any]:
         "ability_rank": ability_rank,
         "ability_value": ability_value,
         "current_evaluation_rank": current_rank,
+        "baseline_current_evaluation_rank": current_rank,
+        "baseline_mark": _text(_first(row, "ai_current_mark", "mark", "saved_mark", "表示印", "display_mark", "最終印", "印")),
         "running_style": _text(_first(row, "running_style_market", "running_style", "脚質")),
         "start_label": start_label,
         "corner3_label": corner3_label,
@@ -439,7 +488,7 @@ def _sort_comparison_horses(horses: Sequence[Mapping[str, Any]], sort_mode: str)
         )
     elif mode == "current":
         key = lambda horse: (
-            horse.get("current_evaluation_rank") if horse.get("current_evaluation_rank") is not None else 999,
+            horse.get("v1_final_rank") if horse.get("v1_final_rank") is not None else 999,
             horse.get("ability_rank") if horse.get("ability_rank") is not None else 999,
             _horse_sort_key(horse.get("number")),
         )

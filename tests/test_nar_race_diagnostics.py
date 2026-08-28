@@ -3,6 +3,7 @@ from core.nar_race_diagnostics import (
     build_nar_full_field_comparison,
     build_nar_race_diagnostics,
     normalize_position_group,
+    validate_v1_consistency,
 )
 
 
@@ -146,7 +147,7 @@ def test_nar_full_field_comparison_sort_modes() -> None:
     assert [horse["number"] for horse in by_ability["rows"]] == ["2", "3", "1"]
     assert [horse["ability_value"] for horse in by_ability["rows"]] == [80.0, 60.0, 50.0]
     assert [horse["recent3_indices"] for horse in by_ability["rows"]] == ["22", "33", "11"]
-    assert [horse["number"] for horse in by_current["rows"]] == ["3", "1", "2"]
+    assert [horse["number"] for horse in by_current["rows"]] == ["2", "3", "1"]
     assert [horse["number"] for horse in by_corner["rows"]][0] == "2"
 
 
@@ -268,6 +269,39 @@ def test_full_field_comparison_passes_race_info_to_v1_axes_and_recent_stars() ->
     assert by_number["6"]["v1_pace_eval"] == "○"
     assert comparison["v1_recommendations"][0]["name"]
     assert "再現性" in comparison["v1_summary"]
+
+
+def test_v1_final_consistency_promotes_condition_specialist_without_overwriting_baseline() -> None:
+    rows = [
+        _row(7, 1, 1, "先団", 馬名="レルアバド", market_ability_score=70, recent_runs=[]),
+        _row(9, 2, 2, "先団", 馬名="セイノスケ", market_ability_score=68, recent_runs=[]),
+        _row(11, 3, 3, "中団", 馬名="ジラルデ", market_ability_score=66, recent_runs=[]),
+        _row(2, 4, 4, "中団", 馬名="ゴッドトレジャー", market_ability_score=64, recent_runs=[]),
+        _row(
+            5,
+            10,
+            12,
+            "後方",
+            馬名="ラップランド",
+            ai_current_mark="",
+            market_ability_score=48.7,
+            recent_runs=[{"racecourse": "船橋", "distance": "2200m", "time_index": "18", "finish": "1着"}],
+        ),
+    ]
+
+    comparison = build_full_field_comparison(rows, race_mode="nar", race_info={"racecourse": "船橋", "distance": 2200})
+    by_number = {horse["number"]: horse for horse in comparison["rows"]}
+    recommendations = comparison["v1_recommendations"]
+
+    assert validate_v1_consistency(comparison)["ok"] is True
+    assert [horse["number"] for horse in recommendations] == comparison["v1_summary_top_horses"][: len(recommendations)]
+    lapland = by_number["5"]
+    assert lapland["v1_reproducibility"] == "A"
+    assert lapland["v1_final_role"] == "条件スペシャリスト"
+    assert lapland["v1_final_mark"] == "☆"
+    assert lapland["v1_final_rank"] == 4
+    assert lapland["baseline_current_evaluation_rank"] == 12
+    assert lapland["baseline_mark"] == ""
 
 
 def test_jockey_info_shows_previous_to_current_for_change() -> None:
