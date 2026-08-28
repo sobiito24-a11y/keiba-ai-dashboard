@@ -602,7 +602,7 @@ def main() -> None:
     # the canonical Mobile functions imported in this module.
     from core.dashboard_application import render_dashboard
 
-    render_dashboard(render_market_compare_result)
+    render_dashboard(render_colab_style_result)
 
 
 def _init_state() -> None:
@@ -1708,18 +1708,15 @@ def render_nar_star_result_trace(result: PredictionResult) -> None:
 
 
 def render_colab_style_result(result: PredictionResult) -> Any:
-    if getattr(result, "logic_version", "v3") in {"v3", "market"}:
-        render_market_compare_result(result)
-        return None
     render_race_header(result)
     render_race_summary(result)
     render_power_map(result)
+    render_race_flow(result)
     render_horse_summary_cards(result)
     render_backtest_reference(result)
-    render_race_flow(result)
     investment_decision = render_investment_decision(result)
     render_overall_table(result)
-    with st.expander("監査・補足情報", expanded=False):
+    with st.expander("研究・監査情報", expanded=False):
         render_raw_text_section(
             "会場別試験評価",
             extract_raw_section(result, ["会場別試験評価", "JRA会場別試験評価"]),
