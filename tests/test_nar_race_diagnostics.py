@@ -236,6 +236,75 @@ def test_full_field_comparison_supports_jra_display_fields_without_diagnostics()
     assert by_number["3"]["corner4_display"] == "前方（逃げ）"
 
 
+def test_full_field_comparison_passes_race_info_to_v1_axes_and_recent_stars() -> None:
+    rows = [
+        _row(
+            5,
+            4,
+            2,
+            "中団",
+            馬名="ラップランド",
+            market_ability_score=31.2,
+            recent_runs=[{"racecourse": "船橋", "distance": "2200m", "time_index": "18", "finish": "3着"}],
+        ),
+        _row(
+            6,
+            8,
+            8,
+            "先団",
+            馬名="ヒロシゲジャック",
+            market_ability_score=20.5,
+            recent_runs=[{"racecourse": "船橋競馬場", "distance": 2200, "time_index": "9", "finish": "8着"}],
+        ),
+    ]
+
+    comparison = build_full_field_comparison(rows, race_mode="nar", race_info={"racecourse": "船橋", "distance": 2200})
+    by_number = {horse["number"]: horse for horse in comparison["rows"]}
+
+    assert by_number["5"]["v1_reproducibility"] == "A"
+    assert "船橋2200m" in by_number["5"]["v1_reproducibility_reason"]
+    assert by_number["5"]["recent3_indices"] == "★18"
+    assert by_number["6"]["v1_reproducibility"] == "C"
+    assert by_number["6"]["v1_pace_eval"] == "○"
+    assert comparison["v1_recommendations"][0]["name"]
+    assert "再現性" in comparison["v1_summary"]
+
+
+def test_jockey_info_shows_previous_to_current_for_change() -> None:
+    comparison = build_full_field_comparison(
+        [
+            _row(
+                1,
+                1,
+                1,
+                "中団",
+                jockey_market="戸崎圭太",
+                jockey_change="乗替",
+                previous_jockey="横山武史",
+                _jockey_course_place_rate=28,
+                weight=56,
+                previous_weight=56,
+            ),
+            _row(
+                2,
+                2,
+                2,
+                "中団",
+                jockey_market="川田将雅",
+                jockey_change="継続",
+                _jockey_course_place_rate=35,
+                weight=54,
+                previous_weight=56,
+            ),
+        ],
+        race_mode="jra",
+    )
+    by_number = {horse["number"]: horse for horse in comparison["rows"]}
+
+    assert by_number["1"]["jockey_info"] == "戸崎圭太｜乗替：横山武史→戸崎圭太｜複28%｜56.0kg（±0）"
+    assert by_number["2"]["jockey_info"] == "川田将雅｜継続｜複35%｜54.0kg（-2.0）"
+
+
 def test_jra_same_turn_is_independent_from_same_course() -> None:
     left_with_left_runs = _row(
         1,

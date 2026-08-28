@@ -22,12 +22,13 @@ def build_v1_evaluations(
     mode = text(race_mode).lower() or "jra"
     current = current_condition(rows, race_info or {})
     horses = [build_v1_horse(row, mode, current) for row in rows]
+    fill_missing_ability_ranks(horses)
     assign_v1_scores_and_marks(horses)
     recommendations = [horse for horse in sorted(horses, key=v1_sort_key) if horse.get("v1_mark")][:5]
     return {
         "race_mode": mode,
         "current_condition": current,
-        "summary": build_v1_summary(horses),
+        "summary": build_v1_summary(horses, current),
         "recommendations": recommendations,
         "rows": horses,
         "research_only": False,
@@ -44,9 +45,34 @@ def build_v1_horse(row: Mapping[str, Any], race_mode: str, current: Mapping[str,
     )
     pace = pace_evaluation(raw)
     state = state_evaluation(raw, runs, race_mode)
-    ability_rank = to_int(first(raw, "ability_rank", "能力順位", "ability_rank_for_backtest"))
-    ability_value = to_float(first(raw, "ability_value", "能力評価値", "ability_display_score", "raw_score", "_raw_score"))
-    current_rank = to_int(first(raw, "current_evaluation_rank", "AI今回評価順位", "ai_current_rank", "AI順位", "ai_rank"))
+    ability_rank = to_int(
+        first(raw, "market_ability_rank", "ability_rank", "saved_ability_rank", "能力順位", "ability_rank_for_backtest")
+    )
+    ability_value = to_float(
+        first(
+            raw,
+            "market_ability_score",
+            "ability_value",
+            "saved_ability_value",
+            "ability_display_score",
+            "能力評価値",
+            "raw_score",
+            "_raw_score",
+        )
+    )
+    current_rank = to_int(
+        first(
+            raw,
+            "current_evaluation_rank",
+            "saved_current_evaluation_rank",
+            "AI今回評価順位",
+            "今回評価順位",
+            "今回順位",
+            "ai_current_rank",
+            "AI順位",
+            "ai_rank",
+        )
+    )
     role = primary_role(raw, reproducibility, pace, state, ability_rank, race_mode, current)
     raw.update(
         {
@@ -65,9 +91,35 @@ def build_v1_horse(row: Mapping[str, Any], race_mode: str, current: Mapping[str,
             "_v1_ability_rank": ability_rank,
             "_v1_ability_value": ability_value,
             "_v1_current_rank": current_rank,
+            "number": text(first(raw, "number", "horse_no", "馬番", "馬", "horse_number")) or text(raw.get("number")),
+            "name": text(first(raw, "name", "horse_name", "馬名")) or text(raw.get("name")),
+            "ability_rank": ability_rank,
+            "ability_value": ability_value,
+            "current_evaluation_rank": current_rank,
         }
     )
     return raw
+
+
+def fill_missing_ability_ranks(horses: list[dict[str, Any]]) -> None:
+    """Fill display-only v1 ability ranks when saved values exist but rank keys do not."""
+
+    ranked = [
+        horse
+        for horse in horses
+        if to_float(horse.get("_v1_ability_value")) is not None
+    ]
+    ranked = sorted(
+        ranked,
+        key=lambda horse: (
+            -float(to_float(horse.get("_v1_ability_value")) or -999999),
+            to_int(first(horse, "horse_no", "馬番", "number")) or 999,
+        ),
+    )
+    for index, horse in enumerate(ranked, start=1):
+        if to_int(horse.get("_v1_ability_rank")) is None:
+            horse["_v1_ability_rank"] = index
+            horse["ability_rank"] = index
 
 
 def nar_reproducibility(runs: Sequence[Mapping[str, Any]], current: Mapping[str, Any]) -> dict[str, Any]:
@@ -176,15 +228,25 @@ def pace_evaluation(row: Mapping[str, Any]) -> dict[str, str]:
 def state_evaluation(row: Mapping[str, Any], runs: Sequence[Mapping[str, Any]], race_mode: str) -> dict[str, str]:
     score = 0
     reasons: list[str] = []
-    training = text(first(row, "training", "調教評価", "training_display"))
+    training = text(first(row, "training", "training_display", "training_short", "調教", "調教評価", "追切評価", "調教/評価/検討材料"))
     if race_mode == "jra" and training:
-        if re.search(r"\bA|A↑|好調|動き抜群", training):
+        if re.search(r"(?:^|[/\s])A|A↑|好調|動き抜群|仕上良|上々|良好", training):
             score += 1
             reasons.append("調教良好")
-        elif re.search(r"\bD|D↓|物足り|弱", training):
+        elif re.search(r"(?:^|[/\s])[CD]|D↓|物足り|弱|不安|平凡", training):
             score -= 1
             reasons.append("調教不安")
-    comment = text(first(row, "stable_comment", "厩舎コメント", "newspaper_comment"))
+    comment = text(
+        first(
+            row,
+            "stable_comment",
+            "stable_comment_market",
+            "stable_comment_summary",
+            "厩舎コメント",
+            "newspaper_comment",
+            "新聞コメント",
+        )
+    )
     if race_mode == "jra" and comment:
         if re.search(r"良|順調|好|上向|期待", comment):
             score += 1
@@ -192,19 +254,12 @@ def state_evaluation(row: Mapping[str, Any], runs: Sequence[Mapping[str, Any]], 
         elif re.search(r"不安|重い|慎重|まだ", comment):
             score -= 1
             reasons.append("コメント慎重")
-    change = text(first(row, "jockey_change", "騎手継続/乗替", "jockey_display", "騎手詳細"))
-    if "継" in change:
-        score += 1
-        reasons.append("継続騎乗")
-    elif "替" in change or "→" in change:
-        score -= 1
-        reasons.append("乗替")
     weight_diff = to_float(first(row, "weight_diff", "斤量差", "斤量増減"))
     if weight_diff is not None:
-        if weight_diff <= -1:
+        if race_mode == "jra" and weight_diff <= -2:
             score += 1
             reasons.append("斤量減")
-        elif weight_diff >= 2:
+        elif weight_diff >= 3:
             score -= 1
             reasons.append("斤量増")
     interval = text(first(row, "interval", "レース間隔", "間隔"))
@@ -222,9 +277,17 @@ def state_evaluation(row: Mapping[str, Any], runs: Sequence[Mapping[str, Any]], 
             reasons.append("近走下降")
     if not reasons:
         return {"rank": "—", "reason": "材料不足"}
+    if race_mode == "nar":
+        if score >= 3 and len(reasons) >= 3:
+            return {"rank": "A", "reason": " / ".join(reasons)}
+        if score > 0:
+            return {"rank": "B", "reason": " / ".join(reasons)}
+        if score < 0:
+            return {"rank": "C", "reason": " / ".join(reasons)}
+        return {"rank": "—", "reason": "判断保留：" + " / ".join(reasons)}
     if score >= 2:
         return {"rank": "A", "reason": " / ".join(reasons)}
-    if score <= -2:
+    if score <= -1:
         return {"rank": "C", "reason": " / ".join(reasons)}
     return {"rank": "B", "reason": " / ".join(reasons)}
 
@@ -321,21 +384,100 @@ def v1_sort_key(horse: Mapping[str, Any]) -> tuple[float, float, float]:
     )
 
 
-def build_v1_summary(horses: Sequence[Mapping[str, Any]]) -> dict[str, Any]:
+def build_v1_summary(horses: Sequence[Mapping[str, Any]], current: Mapping[str, Any] | None = None) -> dict[str, Any]:
     if not horses:
         return {}
-    ability_top = sorted(horses, key=lambda horse: (to_int(horse.get("_v1_ability_rank")) or 99, -float(to_float(horse.get("_v1_ability_value")) or -999)))[:3]
-    repro_counts = counts_by(horses, "v1_reproducibility")
-    pace_counts = counts_by(horses, "v1_pace_eval")
-    state_counts = counts_by(horses, "v1_state_eval")
+    ability_top = sorted(
+        horses,
+        key=lambda horse: (to_int(horse.get("_v1_ability_rank")) or 99, -float(to_float(horse.get("_v1_ability_value")) or -999)),
+    )[:3]
     current_top = sorted(horses, key=lambda horse: (to_int(horse.get("_v1_current_rank")) or 99, to_int(first(horse, "horse_no", "馬番", "number")) or 999))[:3]
+    top1, top2 = (ability_top + [None, None])[:2]
+    gap_text = ""
+    if top1 and top2:
+        top1_value = to_float(top1.get("_v1_ability_value"))
+        top2_value = to_float(top2.get("_v1_ability_value"))
+        if top1_value is not None and top2_value is not None:
+            gap = top1_value - top2_value
+            gap_text = f"。1位-2位差は{gap:.1f}"
+    repro_horses = [
+        horse
+        for horse in sorted(horses, key=lambda horse: (repro_order(horse.get("v1_reproducibility")), to_int(horse.get("_v1_ability_rank")) or 99))
+        if text(horse.get("v1_reproducibility")) in {"S", "A", "B", "C"}
+    ]
+    strong_repro = [horse for horse in repro_horses if text(horse.get("v1_reproducibility")) in {"S", "A"}]
+    pace_counts = counts_by(horses, "v1_pace_eval")
+    front = [horse for horse in horses if text(horse.get("v1_pace_eval")) == "○"]
+    middle = [horse for horse in horses if text(horse.get("v1_pace_eval")) == "△"]
+    back = [horse for horse in horses if text(horse.get("v1_pace_eval")) == "×"]
+    state_up = [horse for horse in horses if text(horse.get("v1_state_eval")) == "A"]
+    state_down = [horse for horse in horses if text(horse.get("v1_state_eval")) == "C"]
+    specialists = [horse for horse in horses if text(horse.get("v1_role")) in {"条件スペシャリスト", "条件穴", "展開穴", "状態上向き"}]
     return {
-        "能力": " / ".join(horse_label(horse) for horse in ability_top),
-        "再現性": ", ".join(f"{key}:{value}" for key, value in repro_counts.items() if key) or "—",
-        "展開": ", ".join(f"{key}:{value}" for key, value in pace_counts.items() if key) or "—",
-        "状態": ", ".join(f"{key}:{value}" for key, value in state_counts.items() if key) or "—",
-        "今回評価": " / ".join(horse_label(horse) for horse in current_top),
+        "能力": f"上位は{' / '.join(horse_label(horse) for horse in ability_top) or '—'}{gap_text}",
+        "再現性": reproducibility_summary(repro_horses, strong_repro, current or {}),
+        "展開": pace_summary(front, middle, back, pace_counts),
+        "状態": state_summary(state_up, state_down),
+        "今回評価": current_eval_summary(current_top, specialists),
     }
+
+
+def repro_order(value: Any) -> int:
+    return {"S": 0, "A": 1, "B": 2, "C": 3, "—": 4}.get(text(value), 4)
+
+
+def reproducibility_summary(
+    repro_horses: Sequence[Mapping[str, Any]],
+    strong_repro: Sequence[Mapping[str, Any]],
+    current: Mapping[str, Any],
+) -> str:
+    key = "".join(
+        part
+        for part in [
+            text(current.get("venue")),
+            f"{to_int(current.get('distance'))}m" if to_int(current.get("distance")) is not None else "",
+        ]
+        if part
+    )
+    if strong_repro:
+        return f"{key or '今回条件'}でS/A評価は{len(strong_repro)}頭：{' / '.join(horse_label(horse) for horse in strong_repro[:3])}"
+    if repro_horses:
+        return f"{key or '今回条件'}の経験・近い条件根拠は{len(repro_horses)}頭：{' / '.join(horse_label(horse) for horse in repro_horses[:3])}"
+    return f"{key or '今回条件'}で明確な再現性根拠は未確認"
+
+
+def pace_summary(
+    front: Sequence[Mapping[str, Any]],
+    middle: Sequence[Mapping[str, Any]],
+    back: Sequence[Mapping[str, Any]],
+    pace_counts: Mapping[str, int],
+) -> str:
+    if front or middle or back:
+        front_text = f"前方{len(front)}頭"
+        middle_text = f"中団{len(middle)}頭"
+        back_text = f"後方{len(back)}頭"
+        labels = " / ".join(horse_label(horse) for horse in list(front)[:4])
+        if labels:
+            return f"{front_text}・{middle_text}・{back_text}。4角前方：{labels}"
+        return f"{front_text}・{middle_text}・{back_text}"
+    unknown = pace_counts.get("—", 0)
+    return f"4角位置データ不足（不明{unknown}頭）"
+
+
+def state_summary(up: Sequence[Mapping[str, Any]], down: Sequence[Mapping[str, Any]]) -> str:
+    parts: list[str] = []
+    if up:
+        parts.append(f"上向き材料：{' / '.join(horse_label(horse) for horse in up[:3])}")
+    if down:
+        parts.append(f"不安材料：{' / '.join(horse_label(horse) for horse in down[:3])}")
+    return "。".join(parts) if parts else "明確な上向き/下向き材料は少なめ"
+
+
+def current_eval_summary(current_top: Sequence[Mapping[str, Any]], specialists: Sequence[Mapping[str, Any]]) -> str:
+    base = f"今回評価上位：{' / '.join(horse_label(horse) for horse in current_top) or '—'}"
+    if specialists:
+        base += f"。条件浮上：{' / '.join(horse_label(horse) for horse in specialists[:3])}"
+    return base
 
 
 def counts_by(horses: Sequence[Mapping[str, Any]], key: str) -> dict[str, int]:
@@ -405,12 +547,34 @@ def parse_runs_text(value: str) -> list[Mapping[str, Any]]:
 
 
 def corner4_group(row: Mapping[str, Any]) -> str:
-    text_value = text(first(row, "corner4_group", "corner4_position", "4角位置", "corner4_label", "想定位置"))
-    if any(token in text_value for token in ("front", "前方", "先頭", "先団")):
+    text_value = text(
+        first(
+            row,
+            "corner4_group",
+            "position_corner4_group_market",
+            "corner4_position",
+            "position_corner4_label_market",
+            "_estimated_position_corner4_label",
+            "4角位置",
+            "corner4_label",
+            "corner4_display",
+            "corner4_evaluation",
+            "4角評価",
+            "4角予想",
+            "想定位置",
+            "position_path_market",
+            "_estimated_position_path",
+            "estimated_position",
+            "estimated_position_path",
+        )
+    )
+    parts = [part.strip() for part in re.split(r"→|>|/|／", text_value) if part.strip()]
+    label = parts[-1] if parts else text_value
+    if any(token in label for token in ("front", "逃げ", "逃", "前方", "先頭", "先団")):
         return "front"
-    if any(token in text_value for token in ("middle", "中団")):
+    if any(token in label for token in ("middle", "中団")):
         return "middle"
-    if any(token in text_value for token in ("back", "後方")):
+    if any(token in label for token in ("back", "後方", "追込", "追")):
         return "back"
     return "unknown"
 

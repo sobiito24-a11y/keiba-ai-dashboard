@@ -1747,7 +1747,7 @@ def render_market_compare_result(result: PredictionResult) -> None:
         render_nar_race_diagnostics(table, result.race_mode, race_info=getattr(result, "race_info", {}) or {}, layout="dashboard")
     else:
         render_jra_race_diagnostics(table, result.race_mode)
-    render_full_field_comparison(table, result.race_mode)
+    render_full_field_comparison(table, result.race_mode, race_info=getattr(result, "race_info", {}) or {})
     with st.expander("馬別コンパクトカードを見る", expanded=False):
         render_market_horse_cards(table, result.race_mode)
     with st.expander("研究買いガイド（参考）", expanded=False):
@@ -2077,8 +2077,13 @@ def nar_position_stage_html(title: str, groups: dict[str, list[dict[str, str]]])
     return '<div class="ka-position-stage">' + "".join(lines) + "</div>"
 
 
-def render_full_field_comparison(table: pd.DataFrame, race_mode: str) -> None:
-    comparison = build_full_field_comparison(table.to_dict("records"), race_mode=race_mode)
+def render_full_field_comparison(
+    table: pd.DataFrame,
+    race_mode: str,
+    *,
+    race_info: dict[str, Any] | None = None,
+) -> None:
+    comparison = build_full_field_comparison(table.to_dict("records"), race_mode=race_mode, race_info=race_info or {})
     if not comparison.get("show"):
         return
     st.subheader("全頭横比較")
@@ -2098,6 +2103,7 @@ def render_full_field_comparison(table: pd.DataFrame, race_mode: str) -> None:
         table.to_dict("records"),
         race_mode=race_mode,
         sort_mode=mode_by_label.get(selected_label, "horse_number"),
+        race_info=race_info or {},
     )
     gap = comparison.get("gap_1_2")
     if gap is not None:
@@ -2272,7 +2278,7 @@ def full_field_comparison_html(comparison: dict[str, Any], *, include_body_weigh
         ("プラス材料", "plus", lambda horse: horse.get("positive_tags") or []),
         ("不安材料", "minus", lambda horse: horse.get("negative_tags") or []),
         ("今回評価順位", "", lambda horse: rank_display(horse.get("current_evaluation_rank"))),
-        ("印", "", lambda horse: clean_text(horse.get("v1_mark")) or clean_text(horse.get("mark")) or "—"),
+        ("印", "", lambda horse: clean_text(horse.get("mark")) or "—"),
     ]
     if include_body_weight or any(clean_text(horse.get("body_weight")) not in {"", "—"} for horse in rows):
         interval_index = next((index for index, item in enumerate(metrics) if item[0] == "レース間隔"), len(metrics) - 2)
@@ -2296,7 +2302,7 @@ def full_field_comparison_html(comparison: dict[str, Any], *, include_body_weigh
             ]
             if part
         ) or "—"
-        mark = clean_text(horse.get("v1_mark")) or clean_text(horse.get("mark"))
+        mark = clean_text(horse.get("mark"))
         header.append(
             "<th>"
             f"{plain_text_to_html(title)}"
@@ -2821,13 +2827,11 @@ def render_market_horse_cards(table: pd.DataFrame, race_mode: str) -> None:
 
 
 def market_horse_cards_ordered(table: pd.DataFrame) -> pd.DataFrame:
-    """Display cards by existing ability value; do not change prediction ranks."""
+    """Display cards by saved final mark order; do not change prediction ranks."""
 
     ordered = table.copy()
-    ordered["_card_ability_value_sort"] = pd.to_numeric(
-        ordered["market_ability_score"] if "market_ability_score" in ordered.columns else pd.Series(pd.NA, index=ordered.index),
-        errors="coerce",
-    )
+    mark_source = ordered["ai_current_mark"] if "ai_current_mark" in ordered.columns else pd.Series("", index=ordered.index)
+    ordered["_card_mark_sort"] = mark_source.map(final_mark_sort_value)
     ordered["_card_ability_rank_sort"] = pd.to_numeric(
         ordered["market_ability_rank"] if "market_ability_rank" in ordered.columns else pd.Series(pd.NA, index=ordered.index),
         errors="coerce",
@@ -2836,13 +2840,22 @@ def market_horse_cards_ordered(table: pd.DataFrame) -> pd.DataFrame:
         ordered["current_evaluation_rank"] if "current_evaluation_rank" in ordered.columns else pd.Series(pd.NA, index=ordered.index),
         errors="coerce",
     )
+    ordered["_card_horse_no_sort"] = pd.to_numeric(
+        ordered["馬番"] if "馬番" in ordered.columns else pd.Series(pd.NA, index=ordered.index),
+        errors="coerce",
+    )
     ordered = ordered.sort_values(
-        ["_card_ability_value_sort", "_card_ability_rank_sort", "_card_current_rank_sort"],
-        ascending=[False, True, True],
+        ["_card_mark_sort", "_card_current_rank_sort", "_card_ability_rank_sort", "_card_horse_no_sort"],
+        ascending=[True, True, True, True],
         na_position="last",
         kind="mergesort",
     )
-    return ordered.drop(columns=["_card_ability_value_sort", "_card_ability_rank_sort", "_card_current_rank_sort"])
+    return ordered.drop(columns=["_card_mark_sort", "_card_ability_rank_sort", "_card_current_rank_sort", "_card_horse_no_sort"])
+
+
+def final_mark_sort_value(value: Any) -> int:
+    mark = clean_text(value)
+    return {"◎": 0, "○": 1, "▲": 2, "☆": 3, "△": 4, "✔︎": 5, "✔": 5}.get(mark, 6)
 
 
 def market_horse_card_html(row: dict[str, Any], race_mode: str) -> str:

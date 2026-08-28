@@ -35,6 +35,10 @@ def test_jra_reproducibility_uses_surface_distance_turn_before_turn_only() -> No
 
 def test_pace_and_state_evaluations_are_display_axes_only() -> None:
     assert pace_evaluation({"corner4_group": "front", "running_style": "逃げ"}) == {"rank": "○", "reason": "4角前方想定（逃げ）"}
+    assert pace_evaluation({"_estimated_position_corner4_label": "逃げ"}) == {"rank": "○", "reason": "4角前方想定"}
+    assert pace_evaluation({"position_corner4_label_market": "先団"})["rank"] == "○"
+    assert pace_evaluation({"_estimated_position_corner4_label": "中団"})["rank"] == "△"
+    assert pace_evaluation({"estimated_position_path": "中団 → 中団 → 後方"})["rank"] == "×"
     assert pace_evaluation({"corner4_group": "back"})["rank"] == "×"
     assert state_evaluation(
         {
@@ -46,6 +50,11 @@ def test_pace_and_state_evaluations_are_display_axes_only() -> None:
         [],
         "jra",
     )["rank"] == "A"
+    assert state_evaluation({"jockey_change": "継続"}, [], "jra") == {"rank": "—", "reason": "材料不足"}
+    assert state_evaluation({"jockey_change": "乗替"}, [], "nar") == {"rank": "—", "reason": "材料不足"}
+    assert state_evaluation({}, [], "nar") == {"rank": "—", "reason": "材料不足"}
+    assert state_evaluation({}, [{"index": 30}, {"index": 20}], "nar")["rank"] == "B"
+    assert state_evaluation({"weight_diff": 3}, [{"index": 30}, {"index": 20}], "nar")["rank"] == "—"
     assert state_evaluation({"interval": "休み明け", "weight_diff": 2}, [], "nar")["rank"] == "C"
 
 
@@ -64,3 +73,57 @@ def test_build_v1_evaluations_assigns_star_and_check_without_odds() -> None:
     assert "☆" in marks.values()
     assert "✔︎" in marks.values()
     assert all(row.get("odds") is None for row in result["rows"])
+
+
+def test_build_v1_evaluations_uses_race_info_and_saved_market_keys() -> None:
+    rows = [
+        {
+            "馬番": "5",
+            "馬名": "ラップランド",
+            "market_ability_score": 31.2,
+            "market_ability_rank": 4,
+            "current_evaluation_rank": 2,
+            "_estimated_position_corner4_label": "中団",
+            "recent_runs": [{"racecourse": "船橋", "distance": "2200m", "finish": "3着"}],
+        },
+        {
+            "馬番": "6",
+            "馬名": "ヒロシゲジャック",
+            "market_ability_score": 20.5,
+            "market_ability_rank": 8,
+            "current_evaluation_rank": 8,
+            "position_corner4_label_market": "先団",
+            "recent_runs": [{"racecourse": "船橋競馬場", "distance": 2200, "finish": "8着"}],
+        },
+    ]
+
+    result = build_v1_evaluations(rows, "nar", race_info={"racecourse": "船橋", "distance": 2200})
+    by_number = {row["number"]: row for row in result["rows"]}
+
+    assert result["current_condition"]["venue"] == "船橋"
+    assert result["current_condition"]["distance"] == 2200
+    assert by_number["5"]["ability_rank"] == 4
+    assert by_number["5"]["ability_value"] == 31.2
+    assert by_number["5"]["v1_reproducibility"] == "A"
+    assert "船橋2200m" in by_number["5"]["v1_reproducibility_reason"]
+    assert by_number["6"]["v1_reproducibility"] == "C"
+    assert by_number["6"]["v1_pace_eval"] == "○"
+    assert "再現性" in result["summary"]
+    assert "A:1" not in result["summary"]["再現性"]
+    assert "ラップランド" in result["summary"]["再現性"]
+
+
+def test_build_v1_evaluations_fills_missing_display_ability_rank_from_saved_values() -> None:
+    result = build_v1_evaluations(
+        [
+            {"馬番": "1", "馬名": "低値", "market_ability_score": 10, "current_evaluation_rank": 2},
+            {"馬番": "2", "馬名": "高値", "market_ability_score": 30, "current_evaluation_rank": 1},
+        ],
+        "nar",
+        race_info={"venue": "船橋", "distance": 1600},
+    )
+    by_number = {row["number"]: row for row in result["rows"]}
+
+    assert by_number["2"]["ability_rank"] == 1
+    assert by_number["1"]["ability_rank"] == 2
+    assert result["recommendations"][0]["number"] == "2"
