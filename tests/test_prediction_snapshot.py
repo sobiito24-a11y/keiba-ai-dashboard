@@ -197,6 +197,36 @@ class PredictionSnapshotTest(unittest.TestCase):
         self.assertEqual(restored.overall_table.loc[0, "ai_current_mark"], "○")
         self.assertEqual(restored.overall_table.loc[0, "market_ability_score"], 88.5)
 
+    def test_jra_candidate_b_display_aliases_survive_save_and_reload(self) -> None:
+        result = result_for()
+        result.overall_table.loc[0, "market_ability_score"] = 50
+        result.overall_table.loc[0, "ability_band_v2"] = "C"
+        result.overall_table.loc[0, "current_evaluation_rank"] = 1
+        result.overall_table.loc[0, "ai_current_mark"] = "◎"
+        result.overall_table.loc[0, "表示印"] = "◎"
+        result.overall_table.loc[1, "market_ability_score"] = 80
+        result.overall_table.loc[1, "ability_band_v2"] = "A"
+        result.overall_table.loc[1, "current_evaluation_rank"] = 2
+        result.overall_table.loc[1, "ai_current_mark"] = "○"
+        result.overall_table.loc[1, "表示印"] = "○"
+        result.overall_table.loc[1, "training_display"] = "A 好気配"
+        result.overall_table.loc[1, "stable_comment_display"] = "順調に仕上がった。"
+        result.horse_evaluation = result.overall_table.copy()
+
+        race = race_snapshot_from_result(result)
+        event = build_event_snapshot([race])
+        restored = restore_prediction_result(load_keiba(keiba_bytes(event))["races"][0])
+        restored_by_no = {str(row["馬番"]): row for row in restored.overall_table.to_dict("records")}
+
+        self.assertEqual(restored_by_no["1"]["baseline_ver3_final_mark"], "◎")
+        self.assertEqual(restored_by_no["1"]["baseline_ver3_current_evaluation_rank"], 1)
+        self.assertEqual(restored_by_no["2"]["shadow_ver3_candidate"], "jra_candidate_b")
+        self.assertEqual(restored_by_no["2"]["ver3_final_mark"], "◎")
+        self.assertEqual(restored_by_no["2"]["ver3_current_evaluation_rank"], 1)
+        self.assertIn("shadow_ver3_candidate_reason", restored.overall_table.columns)
+        self.assertEqual(restored_by_no["2"]["market_ability_score"], 80)
+        self.assertEqual(restored_by_no["2"]["ability_band_v2"], "A")
+
     def test_user_selection_survives_save_and_reload(self) -> None:
         event = build_event_snapshot([race_snapshot_from_result(result_for())])
         loaded = load_keiba(keiba_bytes(event))

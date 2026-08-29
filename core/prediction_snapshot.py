@@ -17,6 +17,7 @@ import pandas as pd
 
 from .models import PredictionResult
 from .prediction_history import build_prediction_snapshot
+from .shadow_ver3 import evaluate_shadow_race as evaluate_shadow_ver3_race
 from .version import APP_VERSION, PREDICTION_LOGIC_VERSION
 
 
@@ -41,6 +42,7 @@ def race_snapshot_from_result(
 ) -> dict[str, Any]:
     """Freeze one Mobile PredictionResult without running another prediction."""
 
+    result = _with_accepted_shadow_ver3_display_aliases(result)
     mobile_snapshot = build_prediction_snapshot(result)
     race_info = dict(mobile_snapshot.get("race_info") or {})
     race_id = _text(race_info.get("race_id"))
@@ -117,6 +119,74 @@ def serialize_prediction_result(result: PredictionResult) -> dict[str, Any]:
             "ver4_summary": result.ver4_summary,
         }
     )
+
+
+def _with_accepted_shadow_ver3_display_aliases(result: PredictionResult) -> PredictionResult:
+    """Persist the accepted JRA Shadow candidate as display aliases without mutating input."""
+
+    if _text(result.race_mode).lower() != "jra":
+        return result
+    cloned = copy.deepcopy(result)
+    cloned.overall_table = _attach_jra_candidate_b_columns(cloned.overall_table, cloned.race_info)
+    cloned.horse_evaluation = _attach_jra_candidate_b_columns(cloned.horse_evaluation, cloned.race_info)
+    return cloned
+
+
+def _attach_jra_candidate_b_columns(table: pd.DataFrame, race_info: Mapping[str, Any] | None) -> pd.DataFrame:
+    if not isinstance(table, pd.DataFrame) or table.empty:
+        return table
+    result = table.copy()
+    try:
+        evaluated = evaluate_shadow_ver3_race(result.to_dict("records"), "jra", dict(race_info or {})).get(
+            "candidate_b",
+            [],
+        )
+    except Exception:
+        return result
+    by_no = {
+        _horse_number(_first(row, "horse_no", "馬番", "馬", "number")): row
+        for row in evaluated
+        if _horse_number(_first(row, "horse_no", "馬番", "馬", "number"))
+    }
+    if not by_no:
+        return result
+
+    result["baseline_ver3_final_mark"] = _first_series(
+        result,
+        ("ver3_final_mark", "最終印", "表示印", "display_mark", "mark", "印", "ai_current_mark"),
+    )
+    result["baseline_ver3_current_evaluation_rank"] = _first_series(
+        result,
+        ("ver3_current_evaluation_rank", "総合評価順位", "current_evaluation_rank", "AI順位", "ai_rank"),
+    )
+    result["shadow_ver3_candidate"] = "jra_candidate_b"
+    for index, row in result.iterrows():
+        candidate = by_no.get(_horse_number(_first(row.to_dict(), "馬番", "馬", "horse_no", "number")))
+        if not candidate:
+            continue
+        result.at[index, "ver3_final_mark"] = _text(candidate.get("candidate_b_mark"))
+        result.at[index, "ver3_current_evaluation_rank"] = candidate.get("candidate_b_rank")
+        result.at[index, "shadow_ver3_candidate_score"] = candidate.get("candidate_b_score")
+        result.at[index, "shadow_reproducibility"] = candidate.get("shadow_reproducibility")
+        result.at[index, "shadow_reproducibility_reason"] = candidate.get("shadow_reproducibility_reason")
+        result.at[index, "shadow_state_eval"] = candidate.get("shadow_state_eval")
+        result.at[index, "shadow_state_reason"] = candidate.get("shadow_state_reason")
+        result.at[index, "shadow_pace_eval"] = candidate.get("shadow_pace_eval")
+        result.at[index, "shadow_pace_reason"] = candidate.get("shadow_pace_reason")
+        reason_parts = [
+            _text(candidate.get("shadow_reproducibility_reason")),
+            _text(candidate.get("shadow_state_reason")),
+            _text(candidate.get("shadow_pace_reason")),
+        ]
+        result.at[index, "shadow_ver3_candidate_reason"] = " / ".join(part for part in reason_parts if part)
+    return result
+
+
+def _first_series(table: pd.DataFrame, names: tuple[str, ...]) -> pd.Series:
+    for name in names:
+        if name in table.columns:
+            return table[name]
+    return pd.Series("", index=table.index, dtype="object")
 
 
 def restore_prediction_result(race_snapshot: Mapping[str, Any]) -> PredictionResult:
