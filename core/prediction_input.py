@@ -51,18 +51,22 @@ def predict_from_html_inputs(
     file_names: Mapping[str, str] | None = None,
     *,
     prediction_logic_version: str,
+    fetch_past_detail: bool | None = None,
 ) -> PredictionResult:
     """Route both UI and Dashboard inputs through the canonical predictors."""
 
     predictor_input = normalize_predictor_html_input(mode, html_files, file_names)
+    kwargs = {"prediction_logic_version": prediction_logic_version}
+    if fetch_past_detail is not None:
+        kwargs["fetch_past_detail"] = fetch_past_detail
     if predictor_input.race_mode == "nar":
         return predict_nar(
             predictor_input.html_files,
             predictor_input.file_names,
-            prediction_logic_version=prediction_logic_version,
+            **kwargs,
         )
     return predict_jra(
         predictor_input.html_files,
         predictor_input.file_names,
-        prediction_logic_version=prediction_logic_version,
+        **kwargs,
     )

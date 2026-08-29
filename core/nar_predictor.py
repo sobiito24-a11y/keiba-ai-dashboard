@@ -12,8 +12,13 @@ def predict_nar(
     file_names: dict[str, str] | None = None,
     *,
     prediction_logic_version: str = "v3",
+    fetch_past_detail: bool = True,
 ) -> PredictionResult:
-    result = predict_nar_from_html(html_files, file_names or {})
+    result = predict_nar_from_html(
+        html_files,
+        file_names or {},
+        fetch_past_detail=fetch_past_detail,
+    )
     if normalize_prediction_logic_version(prediction_logic_version) == "market":
         attach_course_materials_to_result(result, html_files)
         # JSON-shortcut input keeps the raw newspaper under a market-only key

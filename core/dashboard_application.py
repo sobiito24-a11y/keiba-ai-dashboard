@@ -101,7 +101,11 @@ def _render_new_prediction() -> None:
     try:
         sources = [UploadedSource(item.name, item.getvalue()) for item in uploads or []]
         with st.spinner("Mobile予想をレース単位で実行しています…"):
-            report = predict_uploaded_sources(sources, progress=on_progress)
+            report = predict_uploaded_sources(
+                sources,
+                prediction_logic_version="market",
+                progress=on_progress,
+            )
     except BatchPredictionError as exc:
         progress.empty()
         status.empty()
@@ -126,8 +130,13 @@ def _render_last_batch_report() -> None:
         f"認識 {report.recognized_file_count}件 / 予想 {report.predicted_race_count}R / "
         f"スキップ {report.skipped_race_count}R"
     )
+    if report.skipped_race_count:
+        st.warning(
+            f"{report.skipped_race_count}Rは予想作成できませんでした。"
+            "下の詳細で不足HTMLまたは予想失敗理由を確認してください。"
+        )
     if report.warnings or report.errors:
-        with st.expander("分類・予想の詳細", expanded=False):
+        with st.expander("分類・予想の詳細", expanded=bool(report.errors)):
             for message in report.warnings:
                 st.warning(message)
             for message in report.errors:

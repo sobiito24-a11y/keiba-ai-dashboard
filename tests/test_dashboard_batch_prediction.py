@@ -165,6 +165,36 @@ class DashboardBatchPredictionTest(unittest.TestCase):
         self.assertEqual(report.predicted_race_count, 2)
         self.assertFalse(report.errors)
 
+    def test_complete_36_race_batch_uses_mobile_market_mode_for_every_race(self) -> None:
+        sources: list[UploadedSource] = []
+        for race_index in range(1, 37):
+            sources.extend(sources_for("jra", f"20260403{race_index:04d}"))
+        with patch("core.prediction_input.predict_jra", side_effect=predictor("jra")) as jra:
+            report = predict_uploaded_sources(sources)
+        self.assertEqual(report.predicted_race_count, 36)
+        self.assertEqual(report.skipped_race_count, 0)
+        self.assertEqual(jra.call_count, 36)
+
+    def test_batch_retries_without_past_detail_when_one_race_prediction_fails(self) -> None:
+        calls: list[bool | None] = []
+
+        def flaky_predictor(_html_files, file_names, *, prediction_logic_version="market", fetch_past_detail=True):
+            calls.append(fetch_past_detail)
+            if fetch_past_detail is not False:
+                raise RuntimeError("past detail timeout")
+            self_name = next(iter(file_names.values()))
+            race_id = re.search(r"\d{12}", self_name).group(0)
+            if prediction_logic_version != "market":
+                raise AssertionError("Dashboard must use Mobile market mode")
+            return fake_result("jra", race_id)
+
+        with patch("core.prediction_input.predict_jra", side_effect=flaky_predictor):
+            report = predict_uploaded_sources(sources_for("jra", "202601010501"))
+        self.assertEqual(report.predicted_race_count, 1)
+        self.assertEqual(report.skipped_race_count, 0)
+        self.assertEqual(calls, [True, False])
+        self.assertTrue(any("過去走詳細取得を省略" in message for message in report.warnings))
+
     def test_filename_changes_do_not_affect_content_classification(self) -> None:
         entries = [
             UploadedSource("a.html", html_page("jra", "newspaper", "202601010501")),

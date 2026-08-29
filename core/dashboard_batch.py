@@ -65,7 +65,7 @@ ProgressCallback = Callable[[int, int, str], None]
 def predict_uploaded_sources(
     sources: Iterable[UploadedSource],
     *,
-    prediction_logic_version: str = "v3",
+    prediction_logic_version: str = "market",
     progress: ProgressCallback | None = None,
 ) -> BatchPredictionReport:
     """Classify every HTML then call the canonical Mobile predictor per race."""
@@ -76,6 +76,7 @@ def predict_uploaded_sources(
     entries, expansion_warnings = expand_uploaded_sources(source_list)
     bundles, classification_warnings, classification_errors, recognized = group_html_by_race(entries)
     race_snapshots: list[dict] = []
+    prediction_warnings: list[str] = []
     prediction_errors: list[str] = []
     total = len(bundles)
     for index, race_id in enumerate(sorted(bundles), start=1):
@@ -91,21 +92,28 @@ def predict_uploaded_sources(
             prediction_errors.extend(f"{race_id}: {message}" for message in bundle.errors)
             continue
         try:
-            result = predict_from_html_inputs(
-                bundle.race_mode,  # type: ignore[arg-type]
-                bundle.html_files,
-                bundle.file_names,
-                prediction_logic_version=prediction_logic_version,
-            )
-            if result.status != "ok":
-                raise RuntimeError(result.message or "PredictionResult status != ok")
-            if result.overall_table is None or result.horse_evaluation is None:
-                raise RuntimeError("PredictionResultの全頭表または馬評価がありません")
             race_snapshots.append(
-                race_snapshot_from_result(result, source_files=bundle.file_names)
+                _predict_race_snapshot(
+                    bundle,
+                    prediction_logic_version=prediction_logic_version,
+                )
             )
         except Exception as exc:
-            prediction_errors.append(f"{race_id}: 予想失敗: {exc}")
+            try:
+                race_snapshots.append(
+                    _predict_race_snapshot(
+                        bundle,
+                        prediction_logic_version=prediction_logic_version,
+                        fetch_past_detail=False,
+                    )
+                )
+                prediction_warnings.append(
+                    f"{race_id}: 通常予想で失敗したため、過去走詳細取得を省略して作成しました: {exc}"
+                )
+            except Exception as retry_exc:
+                prediction_errors.append(
+                    f"{race_id}: 予想失敗: {exc} / 軽量再試行も失敗: {retry_exc}"
+                )
     if not race_snapshots:
         details = (classification_errors + prediction_errors)[:5]
         suffix = " / ".join(details)
@@ -114,7 +122,7 @@ def predict_uploaded_sources(
         event = build_event_snapshot(race_snapshots)
     except KeibaSnapshotError as exc:
         raise BatchPredictionError(str(exc)) from exc
-    warnings = tuple(expansion_warnings + classification_warnings)
+    warnings = tuple(expansion_warnings + classification_warnings + prediction_warnings)
     errors = tuple(classification_errors + prediction_errors)
     return BatchPredictionReport(
         event_snapshot=event,
@@ -126,6 +134,26 @@ def predict_uploaded_sources(
         warnings=warnings,
         errors=errors,
     )
+
+
+def _predict_race_snapshot(
+    bundle: RaceHtmlBundle,
+    *,
+    prediction_logic_version: str,
+    fetch_past_detail: bool | None = None,
+) -> dict:
+    result = predict_from_html_inputs(
+        bundle.race_mode,  # type: ignore[arg-type]
+        bundle.html_files,
+        bundle.file_names,
+        prediction_logic_version=prediction_logic_version,
+        fetch_past_detail=fetch_past_detail,
+    )
+    if result.status != "ok":
+        raise RuntimeError(result.message or "PredictionResult status != ok")
+    if result.overall_table is None or result.horse_evaluation is None:
+        raise RuntimeError("PredictionResultの全頭表または馬評価がありません")
+    return race_snapshot_from_result(result, source_files=bundle.file_names)
 
 
 def expand_uploaded_sources(
