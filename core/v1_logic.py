@@ -588,15 +588,17 @@ def jra_top5_reason(horse: Mapping[str, Any]) -> str:
     repro = text(horse.get("v1_reproducibility")) or "—"
     pace = text(horse.get("v1_pace_eval")) or "—"
     training = text(horse.get("jra_training_grade")) or "—"
+    state = text(horse.get("v1_state_eval")) or "—"
     score = to_float(horse.get("jra_top5_score"))
     ability_text = f"能力 {pure:.1f}" if pure is not None else "能力材料不足"
-    return (
+    reason = (
         f"{ability_text} / "
         f"再現性{repro} {signed_bonus_text(horse.get('jra_repro_bonus'))} / "
         f"展開{pace} {signed_bonus_text(horse.get('jra_pace_bonus'))} / "
-        f"調教{training} {signed_bonus_text(horse.get('jra_training_bonus'))} "
-        f"→ JRA Top5スコア {score:.2f}" if score is not None else ability_text
+        f"調教{training} {signed_bonus_text(horse.get('jra_training_bonus'))} / "
+        f"状態{state}（参考表示・スコア加点なし）"
     )
+    return f"{reason} → JRA Top5スコア {score:.2f}" if score is not None else reason
 
 
 def signed_bonus_text(value: Any) -> str:

@@ -85,8 +85,17 @@ def load_app_module():
     render_package.__path__ = []
     requests_stub = types.ModuleType("requests")
     requests_stub.RequestException = Exception
+    bs4_stub = types.ModuleType("bs4")
+    bs4_stub.BeautifulSoup = lambda *_args, **_kwargs: SimpleNamespace(
+        select=lambda *_args, **_kwargs: [],
+        select_one=lambda *_args, **_kwargs: None,
+        find=lambda *_args, **_kwargs: None,
+        find_all=lambda *_args, **_kwargs: [],
+        get_text=lambda *_args, **_kwargs: "",
+    )
     stubs = {
         "requests": requests_stub,
+        "bs4": bs4_stub,
         "streamlit": streamlit,
         "core.audit_features": stub_module(
             "core.audit_features",
@@ -211,7 +220,7 @@ class DetailAnalysisTableTest(unittest.TestCase):
             ]
         )
 
-        for race_mode in ("jra", "nar"):
+        for race_mode in ("nar",):
             with self.subTest(race_mode=race_mode):
                 detail = self.render_detail(race_mode, overall_table, horse_evaluation)
                 self.assertEqual(list(detail["馬"]), ["2 二番馬", "1 一番馬"])
@@ -1425,7 +1434,7 @@ class HorseSummaryCardTest(unittest.TestCase):
             ]
         )
 
-        for race_mode in ("jra", "nar"):
+        for race_mode in ("nar",):
             with self.subTest(race_mode=race_mode):
                 overall_before = overall_table.copy(deep=True)
                 evaluation_before = horse_evaluation.copy(deep=True)
@@ -1602,7 +1611,7 @@ class HorseSummaryCardTest(unittest.TestCase):
         self.assertIn("能力評価", html)
         self.assertIn("<span>100</span>", html)
         self.assertIn("width:100%", html)
-        self.assertIn("能力評価値：123.4", html)
+        self.assertIn("純能力：123.4", html)
         self.assertNotIn("補正前能力", html)
         self.assertNotIn("補正後能力", html)
         self.assertEqual(horse_row, horse_before)
@@ -1684,7 +1693,7 @@ class DisplayGroupViewTest(unittest.TestCase):
         evaluation_before = horse_evaluation.copy(deep=True)
         overall_before = overall_table.copy(deep=True)
         result = SimpleNamespace(
-            race_mode="jra",
+            race_mode="nar",
             overall_table=overall_table,
             horse_evaluation=horse_evaluation,
             raw_output="",
@@ -1736,6 +1745,112 @@ class DisplayGroupViewTest(unittest.TestCase):
         self.assertEqual(list(self.streamlit.last_dataframe["グループ"]), ["SS", "A", "A", "B", "C", "Z"])
         pd.testing.assert_frame_equal(horse_evaluation, evaluation_before)
         pd.testing.assert_frame_equal(overall_table, overall_before)
+
+    def test_jra_normal_views_use_top5_source_without_power_map_groups(self) -> None:
+        table = pd.DataFrame(
+            [
+                {
+                    "馬番": 1,
+                    "馬名": "旧本命",
+                    "馬年齢": "牡4",
+                    "グループ": "SS",
+                    "mark_v4": "◎",
+                    "market_ability_score": 70.0,
+                    "market_ability_rank": 2,
+                    "training": "C/平凡",
+                    "_estimated_position_corner4_label": "後方",
+                },
+                {
+                    "馬番": 2,
+                    "馬名": "新上位",
+                    "馬年齢": "牝5",
+                    "グループ": "Z",
+                    "mark_v4": "",
+                    "market_ability_score": 80.0,
+                    "market_ability_rank": 1,
+                    "training": "B/キビキビ",
+                    "_estimated_position_corner4_label": "先団",
+                    "recent_runs": [
+                        {"racecourse": "中京", "surface": "芝", "distance": 1600, "direction": "左", "finish": 2},
+                    ],
+                },
+                {
+                    "馬番": 8,
+                    "馬名": "注意候補",
+                    "馬年齢": "牡6",
+                    "グループ": "Z",
+                    "mark_v4": "",
+                    "market_ability_score": 61.0,
+                    "market_ability_rank": 8,
+                    "training": "A/好調",
+                    "_estimated_position_corner4_label": "先団",
+                    "recent_runs": [
+                        {"racecourse": "中京", "surface": "芝", "distance": 1600, "direction": "左", "finish": 1},
+                    ],
+                },
+            ]
+        )
+        result = SimpleNamespace(
+            race_mode="jra",
+            overall_table=table,
+            horse_evaluation=pd.DataFrame(),
+            race_info={"venue": "中京", "surface": "芝", "distance": 1600, "turn": "左"},
+            raw_output="",
+            ai_race_review="",
+            betting_structure="",
+            debug_info={},
+        )
+
+        rows = self.app.sorted_display_rows(result)
+        self.assertEqual(self.app.horse_no(self.app.pick(rows[0], "馬番", "馬", "number")), "2")
+        self.assertEqual(self.app.display_mark_from_row({"v1_final_mark": "◎", "mark_v4": "△"}, "jra"), "◎")
+
+        comparison = self.app.build_full_field_comparison(
+            table.to_dict("records"),
+            race_mode="jra",
+            sort_mode="current",
+            race_info=result.race_info,
+        )
+        html = self.app.jra_top5_conclusion_html(comparison)
+        self.assertIn("今回の結論（JRA Top5）", html)
+        self.assertIn("純能力", html)
+        self.assertIn("調教", html)
+        self.assertIn("状態は参考表示", html)
+
+        flow = "\n".join(self.app.race_flow_review_lines(rows, "平均", race_mode="jra"))
+        self.assertIn("Top5", flow)
+        self.assertNotIn("勢力図", flow)
+
+        self.streamlit.markdown_calls.clear()
+        self.app.render_power_map(result)
+        self.assertEqual(self.streamlit.markdown_calls, [])
+
+        self.streamlit.markdown_calls.clear()
+        self.streamlit.expander_labels.clear()
+        self.app.render_horse_summary_cards(result)
+        card_markup = "\n".join(self.streamlit.markdown_calls)
+        self.assertIn("JRA Top5", card_markup)
+        self.assertIn("新上位", card_markup)
+        self.assertNotIn("【Z】", card_markup)
+        self.assertNotIn("Zグループの馬も表示", self.streamlit.expander_labels)
+
+        self.streamlit.last_dataframe = None
+        self.app.render_overall_table(result)
+        detail = self.streamlit.last_dataframe
+        self.assertIsNotNone(detail)
+        self.assertEqual(detail.columns[:10].tolist(), [
+            "JRA Top5順位",
+            "JRA Top5スコア",
+            "JRA最終印",
+            "純能力",
+            "能力首位差",
+            "再現性",
+            "展開",
+            "調教",
+            "状態（参考）",
+            "注意馬",
+        ])
+        self.assertNotIn("グループ", detail.columns)
 
 
 if __name__ == "__main__":
