@@ -461,6 +461,17 @@ def attach_v1_predictions_to_records(records: pd.DataFrame) -> pd.DataFrame:
             "v1_state_eval",
             "v1_state_reason",
             "v1_special_distance",
+            "jra_pure_ability_score",
+            "jra_ability_gap_from_top",
+            "jra_repro_bonus",
+            "jra_pace_bonus",
+            "jra_training_bonus",
+            "jra_state_bonus",
+            "jra_top5_score",
+            "jra_top5_rank",
+            "jra_warning_candidate",
+            "jra_warning_strength",
+            "jra_warning_reason",
         ]:
             if column not in updated.columns:
                 updated[column] = None

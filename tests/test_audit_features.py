@@ -5,7 +5,7 @@ import unittest
 
 import pandas as pd
 
-from core.audit_features import add_audit_evaluation_columns
+from core.audit_features import add_audit_evaluation_columns, build_audit_export_table
 
 
 class AuditFeaturesTest(unittest.TestCase):
@@ -165,6 +165,33 @@ class AuditFeaturesTest(unittest.TestCase):
             wrapper_start = source.index("def _run_")
             wrapper_source = source[wrapper_start:]
             self.assertNotIn("add_final_marks_v1_legacy(", wrapper_source)
+
+    def test_jra_top5_audit_columns_are_exported_when_present(self) -> None:
+        frame = pd.DataFrame(
+            [
+                {
+                    "馬番": 1,
+                    "馬名": "トップ",
+                    "jra_pure_ability_score": 76.4,
+                    "jra_ability_gap_from_top": 0.0,
+                    "jra_repro_bonus": 2.0,
+                    "jra_pace_bonus": 2.0,
+                    "jra_training_bonus": 0.75,
+                    "jra_state_bonus": 0.0,
+                    "jra_top5_score": 81.15,
+                    "jra_top5_rank": 1,
+                    "jra_warning_candidate": False,
+                    "jra_warning_strength": "",
+                    "jra_warning_reason": "",
+                }
+            ]
+        )
+
+        exported = build_audit_export_table(frame)
+
+        self.assertEqual(exported.loc[0, "jra_top5_score"], 81.15)
+        self.assertEqual(exported.loc[0, "jra_top5_rank"], 1)
+        self.assertIn("jra_training_bonus", exported.columns)
 
 
 if __name__ == "__main__":

@@ -2190,8 +2190,13 @@ def render_full_field_comparison(
     if not comparison.get("show"):
         return
     st.subheader("今回の結論")
-    st.markdown(ver3_conclusion_html(comparison), unsafe_allow_html=True)
-    st.caption("Ver3高度設定の保存済み今回評価・印を、この画面の結論として表示しています。")
+    is_jra = clean_text(race_mode).lower() == "jra"
+    if is_jra:
+        st.markdown(jra_top5_conclusion_html(comparison), unsafe_allow_html=True)
+        st.caption("JRAは純能力＋再現性＋展開＋調教のTop5スコアを、この画面の結論として表示しています。")
+    else:
+        st.markdown(ver3_conclusion_html(comparison), unsafe_allow_html=True)
+        st.caption("Ver3高度設定の保存済み今回評価・印を、この画面の結論として表示しています。")
     st.subheader("全頭横比較")
     labels = comparison.get("sort_labels") if isinstance(comparison.get("sort_labels"), dict) else {}
     mode_by_label = {label: mode for mode, label in labels.items()}
@@ -2214,8 +2219,12 @@ def render_full_field_comparison(
     gap = comparison.get("gap_1_2")
     if gap is not None:
         st.caption(f"能力1位と2位の差：{float(gap):.1f}（参考表示。印・研究買いには反映しません）")
-    st.markdown(full_field_ver3_comparison_html(comparison), unsafe_allow_html=True)
-    st.caption("Ver3の今回評価順を基準に、保存済みの全頭材料を比較しています。")
+    if is_jra:
+        st.markdown(full_field_jra_top5_comparison_html(comparison), unsafe_allow_html=True)
+        st.caption("JRA Top5スコア順を基準に、保存済みの全頭材料を比較しています。")
+    else:
+        st.markdown(full_field_ver3_comparison_html(comparison), unsafe_allow_html=True)
+        st.caption("Ver3の今回評価順を基準に、保存済みの全頭材料を比較しています。")
     with st.expander("研究・監査情報", expanded=False):
         if comparison.get("transfer_watch"):
             st.markdown(
@@ -2277,6 +2286,15 @@ def ver3_conclusion_html(comparison: dict[str, Any]) -> str:
     )
 
 
+def jra_top5_conclusion_html(comparison: dict[str, Any]) -> str:
+    summary = comparison.get("v1_summary") if isinstance(comparison.get("v1_summary"), dict) else {}
+    recommendations = comparison.get("v1_recommendations")
+    parts = [v1_summary_html(summary, title="JRA Top5サマリー")]
+    if isinstance(recommendations, list) and recommendations:
+        parts.append(v1_recommendations_html(recommendations, title="今回の結論（JRA Top5）"))
+    return "".join(parts)
+
+
 def full_field_ver3_comparison_html(comparison: dict[str, Any]) -> str:
     """Render the normal comparison using only existing Ver3 display fields."""
 
@@ -2316,6 +2334,41 @@ def full_field_ver3_comparison_html(comparison: dict[str, Any]) -> str:
         metrics.insert(class_index, ("転入状態", "transfer", lambda horse: clean_text(horse.get("transfer_status")) or "判定不明"))
         metrics.insert(class_index + 1, ("地方実績", "", lambda horse: clean_text(horse.get("local_experience")) or "判定不明"))
     return comparison_table_html(rows, metrics, mark_key="mark")
+
+
+def full_field_jra_top5_comparison_html(comparison: dict[str, Any]) -> str:
+    rows = comparison.get("rows") or []
+    if not rows:
+        return '<div class="ka-dashboard-card">比較できる出走馬データがありません。</div>'
+    metrics: list[tuple[str, str, Any]] = [
+        ("JRA Top5スコア", "", lambda horse: number_display(horse.get("jra_top5_score"))),
+        ("純能力", "", lambda horse: number_display(horse.get("jra_pure_ability_score"))),
+        ("能力首位差", "", lambda horse: signed_number_display(-to_float(horse.get("jra_ability_gap_from_top"))) if to_float(horse.get("jra_ability_gap_from_top")) is not None else "—"),
+        ("再現性", "", lambda horse: f"{clean_text(horse.get('v1_reproducibility')) or '—'} {signed_number_display(horse.get('jra_repro_bonus'))}"),
+        ("再現性根拠", "", lambda horse: clean_text(horse.get("v1_reproducibility_reason")) or "—"),
+        ("展開", "", lambda horse: f"{clean_text(horse.get('v1_pace_eval')) or '—'} {signed_number_display(horse.get('jra_pace_bonus'))}"),
+        ("展開理由", "", lambda horse: clean_text(horse.get("v1_pace_reason")) or "—"),
+        ("調教", "", lambda horse: f"{clean_text(horse.get('jra_training_grade')) or '—'} {signed_number_display(horse.get('jra_training_bonus'))}"),
+        ("調教詳細", "", lambda horse: clean_text(horse.get("training")) or "—"),
+        ("状態", "", lambda horse: clean_text(horse.get("v1_state_eval")) or "—"),
+        ("状態理由", "", lambda horse: clean_text(horse.get("v1_state_reason")) or "—"),
+        ("騎手情報", "", comparison_jockey_info_text),
+        ("4角位置", "position", lambda horse: clean_text(horse.get("corner4_display")) or comparison_position_icon(clean_text(horse.get("corner4_group")))),
+        ("脚質", "", lambda horse: clean_text(horse.get("running_style")) or "—"),
+        ("近3走指数", "", lambda horse: clean_text(horse.get("recent3_indices")) or "—"),
+        ("近3走条件", "", lambda horse: clean_text(horse.get("recent3_conditions")) or "—"),
+        ("距離指数", "", lambda horse: clean_text(horse.get("distance_index")) or "—"),
+        ("コース指数", "", lambda horse: clean_text(horse.get("course_index")) or "—"),
+        ("同距離", "", lambda horse: clean_text(horse.get("same_distance")) or "—"),
+        ("同コース", "", lambda horse: clean_text(horse.get("same_course")) or "—"),
+        ("同回り", "", lambda horse: clean_text(horse.get("same_turn_display")) or "—"),
+        ("JRA注意", "", lambda horse: clean_text(horse.get("jra_warning_reason")) or "—"),
+        ("JRA Top5順位", "", lambda horse: rank_display(horse.get("v1_final_rank"))),
+        ("JRA最終印", "", lambda horse: clean_text(horse.get("v1_final_mark")) or "—"),
+        ("JRA役割", "", lambda horse: clean_text(horse.get("v1_final_role")) or "—"),
+        ("JRA最終理由", "", lambda horse: clean_text(horse.get("v1_final_reason")) or "—"),
+    ]
+    return comparison_table_html(rows, metrics, mark_key="v1_final_mark")
 
 
 def full_field_comparison_sort_key(table: pd.DataFrame, race_mode: str) -> str:
@@ -2434,7 +2487,7 @@ def v2_recommendations_html(recommendations: list[dict[str, Any]]) -> str:
     )
 
 
-def v1_summary_html(summary: dict[str, Any]) -> str:
+def v1_summary_html(summary: dict[str, Any], *, title: str = "v1監査サマリー") -> str:
     cards = [
         ("能力", clean_text(summary.get("能力")) or "能力値を土台に比較"),
         ("再現性", clean_text(summary.get("再現性")) or "今回条件で走れる根拠"),
@@ -2451,17 +2504,17 @@ def v1_summary_html(summary: dict[str, Any]) -> str:
     )
     return (
         '<div class="ka-dashboard-card">'
-        '<div class="ka-dashboard-title">v1監査サマリー</div>'
+        f'<div class="ka-dashboard-title">{plain_text_to_html(title)}</div>'
         f'<div class="ka-summary-grid">{inner}</div>'
         '<div class="ka-note">能力 → 再現性 → 展開 → 状態 → 今回評価 → 印。市場・人気・オッズは使いません。</div>'
         '</div>'
     )
 
 
-def v1_recommendations_html(recommendations: list[dict[str, Any]]) -> str:
+def v1_recommendations_html(recommendations: list[dict[str, Any]], *, title: str = "v1監査 推奨") -> str:
     cards: list[str] = []
     for horse in recommendations[:5]:
-        title = " ".join(
+        card_title = " ".join(
             part
             for part in [
                 clean_text(horse.get("v1_final_mark")) or clean_text(horse.get("v1_mark")) or clean_text(horse.get("mark")),
@@ -2479,7 +2532,7 @@ def v1_recommendations_html(recommendations: list[dict[str, Any]]) -> str:
         reason = clean_text(horse.get("v1_final_reason"))
         cards.append(
             '<div class="ka-recommend-card">'
-            f'<b>{plain_text_to_html(title or "—")}</b>'
+            f'<b>{plain_text_to_html(card_title or "—")}</b>'
             f'<div>{plain_text_to_html(clean_text(horse.get("v1_final_role")) or clean_text(horse.get("v1_role")) or "相手候補")}</div>'
             f'<div class="ka-note">{plain_text_to_html(" / ".join(axes))}</div>'
             + (f'<div class="ka-note">{plain_text_to_html(reason)}</div>' if reason else "")
@@ -2487,7 +2540,7 @@ def v1_recommendations_html(recommendations: list[dict[str, Any]]) -> str:
         )
     return (
         '<div class="ka-dashboard-card">'
-        '<div class="ka-dashboard-title">v1監査 推奨</div>'
+        f'<div class="ka-dashboard-title">{plain_text_to_html(title)}</div>'
         '<div class="ka-recommend-grid">'
         + "".join(cards)
         + '</div><div class="ka-note">v1最終評価順です。Baseline v0の保存印は変更しません。</div></div>'

@@ -209,3 +209,167 @@ def test_jra_state_prioritizes_training_and_comment_over_layoff() -> None:
     assert tripolitania["rank"] == "A"
     assert peisha["rank"] == "C"
     assert mario["rank"] == "C"
+
+
+def test_jra_top5_uses_market_ability_and_ignores_raw_score() -> None:
+    rows = [
+        {
+            "horse_no": "1",
+            "horse_name": "RawOnly",
+            "raw_score": 999,
+            "_raw_score": 999,
+            "ability_display_score": 999,
+            "market_ability_rank": 9,
+            "training": "A/好調",
+            "_estimated_position_corner4_label": "先団",
+        },
+        {
+            "horse_no": "2",
+            "horse_name": "MarketTop",
+            "market_ability_score": 80,
+            "ability_value": 10,
+            "raw_score": 1,
+            "market_ability_rank": 1,
+            "training": "D/物足り",
+            "_estimated_position_corner4_label": "後方",
+        },
+        {
+            "horse_no": "3",
+            "horse_name": "AbilityFallback",
+            "ability_value": 70,
+            "saved_ability_value": 50,
+            "market_ability_rank": 2,
+            "training": "B/キビキビ",
+            "_estimated_position_corner4_label": "中団",
+        },
+    ]
+
+    result = build_v1_evaluations(rows, "jra", race_info={"venue": "中京", "surface": "芝", "distance": 2000})
+    by_no = {row["number"]: row for row in result["rows"]}
+
+    assert by_no["1"]["jra_pure_ability_score"] is None
+    assert by_no["1"]["jra_top5_score"] == 4.5
+    assert by_no["2"]["jra_pure_ability_score"] == 80.0
+    assert by_no["2"]["jra_training_bonus"] == -2.5
+    assert by_no["3"]["jra_pure_ability_score"] == 70.0
+    assert [row["number"] for row in result["recommendations"][:3]] == ["2", "3", "1"]
+
+
+def test_jra_top5_bonuses_state_zero_and_simple_score_order() -> None:
+    rows = [
+        {
+            "horse_no": "1",
+            "horse_name": "ScoreTop",
+            "market_ability_score": 80,
+            "market_ability_rank": 1,
+            "training": "C/反応平凡",
+            "stable_comment": "不安",
+            "_estimated_position_corner4_label": "後方",
+            "recent_runs": [{"racecourse": "阪神", "surface": "芝", "distance": 1600, "direction": "右", "finish": 2}],
+        },
+        {
+            "horse_no": "2",
+            "horse_name": "ScoreSecond",
+            "market_ability_score": 78,
+            "market_ability_rank": 2,
+            "training": "A/好調",
+            "stable_comment": "順調",
+            "_estimated_position_corner4_label": "先団",
+            "recent_runs": [{"racecourse": "中京", "surface": "芝", "distance": 1600, "direction": "左", "finish": 2}],
+        },
+        {
+            "horse_no": "3",
+            "horse_name": "TieHighAbility",
+            "market_ability_score": 75,
+            "market_ability_rank": 3,
+            "training": "B/キビキビ",
+            "_estimated_position_corner4_label": "中団",
+            "recent_runs": [],
+        },
+        {
+            "horse_no": "4",
+            "horse_name": "TieLowAbility",
+            "market_ability_score": 74,
+            "market_ability_rank": 4,
+            "training": "B/キビキビ",
+            "_estimated_position_corner4_label": "先団",
+            "recent_runs": [],
+        },
+        {
+            "horse_no": "5",
+            "horse_name": "NoForcedSpecialist",
+            "market_ability_score": 60,
+            "market_ability_rank": 8,
+            "training": "D/物足り",
+            "_estimated_position_corner4_label": "後方",
+            "recent_runs": [{"racecourse": "中京", "surface": "芝", "distance": 1600, "direction": "左", "finish": 1}],
+        },
+        {
+            "horse_no": "6",
+            "horse_name": "Plain",
+            "market_ability_score": 70,
+            "market_ability_rank": 5,
+            "training": "",
+            "_estimated_position_corner4_label": "中団",
+            "recent_runs": [],
+        },
+    ]
+
+    result = build_v1_evaluations(rows, "jra", race_info={"venue": "中京", "surface": "芝", "distance": 1600, "turn": "左"})
+    by_no = {row["number"]: row for row in result["rows"]}
+    ordered = [row["number"] for row in result["recommendations"]]
+
+    assert by_no["2"]["jra_repro_bonus"] == 2.0
+    assert by_no["2"]["jra_pace_bonus"] == 2.0
+    assert by_no["2"]["jra_training_bonus"] == 2.5
+    assert by_no["2"]["jra_state_bonus"] == 0.0
+    assert by_no["1"]["jra_repro_bonus"] == 0.5
+    assert by_no["1"]["jra_pace_bonus"] == -2.0
+    assert by_no["1"]["jra_training_bonus"] == -1.25
+    assert ordered[:5] == ["2", "1", "4", "3", "6"]
+    assert by_no["5"]["v1_final_rank"] == 6
+    assert by_no["5"]["v1_final_mark"] == ""
+
+
+def test_jra_warning_candidate_does_not_force_top5() -> None:
+    rows = [
+        {"horse_no": "1", "horse_name": "A", "market_ability_score": 90, "market_ability_rank": 1, "_estimated_position_corner4_label": "中団"},
+        {"horse_no": "2", "horse_name": "B", "market_ability_score": 88, "market_ability_rank": 2, "_estimated_position_corner4_label": "中団"},
+        {"horse_no": "3", "horse_name": "C", "market_ability_score": 86, "market_ability_rank": 3, "_estimated_position_corner4_label": "中団"},
+        {"horse_no": "4", "horse_name": "D", "market_ability_score": 84, "market_ability_rank": 4, "_estimated_position_corner4_label": "中団"},
+        {"horse_no": "5", "horse_name": "E", "market_ability_score": 82, "market_ability_rank": 5, "_estimated_position_corner4_label": "中団"},
+        {
+            "horse_no": "6",
+            "horse_name": "Warning",
+            "market_ability_score": 75,
+            "market_ability_rank": 9,
+            "training": "B/好気配",
+            "_estimated_position_corner4_label": "先団",
+            "recent_runs": [{"racecourse": "中京", "surface": "芝", "distance": 1600, "direction": "左", "finish": 2}],
+        },
+    ]
+
+    result = build_v1_evaluations(rows, "jra", race_info={"venue": "中京", "surface": "芝", "distance": 1600, "turn": "左"})
+    by_no = {row["number"]: row for row in result["rows"]}
+
+    assert [row["number"] for row in result["recommendations"]] == ["1", "2", "3", "4", "5"]
+    assert by_no["6"]["jra_warning_candidate"] is True
+    assert by_no["6"]["jra_warning_strength"] == "strong"
+    assert by_no["6"]["v1_final_mark"] == ""
+
+
+def test_nar_v1_order_is_unchanged_by_jra_top5_branch() -> None:
+    rows = [
+        {"horse_no": "1", "horse_name": "A", "venue": "船橋", "distance": 2200, "ability_value": 100, "ability_rank": 1, "recent_runs": []},
+        {"horse_no": "2", "horse_name": "B", "venue": "船橋", "distance": 2200, "ability_value": 95, "ability_rank": 2, "recent_runs": []},
+        {"horse_no": "3", "horse_name": "C", "venue": "船橋", "distance": 2200, "ability_value": 90, "ability_rank": 3, "recent_runs": []},
+        {"horse_no": "4", "horse_name": "D", "venue": "船橋", "distance": 2200, "ability_value": 10, "ability_rank": 8, "recent_runs": [{"racecourse": "船橋", "distance": 2200, "position": 1}]},
+        {"horse_no": "5", "horse_name": "E", "venue": "船橋", "distance": 2200, "ability_value": 9, "ability_rank": 9, "corner4_group": "front", "recent_runs": [{"racecourse": "船橋", "distance": 1600, "position": 2}]},
+        {"horse_no": "6", "horse_name": "F", "venue": "船橋", "distance": 2200, "ability_value": 8, "ability_rank": 10, "corner4_group": "front", "recent_runs": []},
+    ]
+
+    result = build_v1_evaluations(rows, "nar")
+
+    assert [row["number"] for row in result["recommendations"]] == ["1", "2", "3", "4", "5"]
+    assert {row["number"]: row["v1_final_mark"] for row in result["rows"]}["4"] == "☆"
+    assert all(row.get("jra_top5_score") is None for row in result["rows"])

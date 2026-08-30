@@ -683,6 +683,90 @@ class DetailAnalysisTableTest(unittest.TestCase):
         self.assertNotIn("v2", html)
         self.assertNotIn("Baseline", html)
 
+    def test_jra_top5_comparison_uses_v1_final_fields(self) -> None:
+        html = self.app.full_field_jra_top5_comparison_html(
+            {
+                "race_mode": "jra",
+                "rows": [
+                    {
+                        "number": "2",
+                        "sex_age": "牡4",
+                        "name": "TopFive",
+                        "v1_final_mark": "◎",
+                        "v1_final_rank": 1,
+                        "jra_top5_score": 82.25,
+                        "jra_pure_ability_score": 77.0,
+                        "jra_ability_gap_from_top": 0.0,
+                        "v1_reproducibility": "S",
+                        "jra_repro_bonus": 2.0,
+                        "v1_pace_eval": "○",
+                        "jra_pace_bonus": 2.0,
+                        "jra_training_grade": "B",
+                        "jra_training_bonus": 0.75,
+                        "v1_state_eval": "C",
+                    },
+                    {
+                        "number": "8",
+                        "sex_age": "牝3",
+                        "name": "BaselineOnly",
+                        "mark": "○",
+                        "current_evaluation_rank": 1,
+                        "v1_final_mark": "",
+                        "v1_final_rank": 6,
+                        "jra_top5_score": 70.0,
+                        "jra_pure_ability_score": 69.0,
+                    },
+                ],
+            }
+        )
+
+        self.assertIn("JRA Top5スコア", html)
+        self.assertIn("2 牡4 TopFive", html)
+        self.assertIn("82.2", html)
+        self.assertIn("S +2.0", html)
+        self.assertIn("○ +2.0", html)
+        self.assertIn("B +0.8", html)
+        self.assertNotIn("今回評価順位", html)
+        self.assertNotIn("Baseline印", html)
+
+    def test_render_full_field_comparison_uses_jra_top5_normal_view_for_jra(self) -> None:
+        self.streamlit.markdown_calls = []
+        self.app.render_full_field_comparison(
+            pd.DataFrame(
+                [
+                    {
+                        "race_id": "jra-top5",
+                        "馬番": 1,
+                        "馬名": "BaselineHorse",
+                        "market_ability_score": 70.0,
+                        "market_ability_rank": 2,
+                        "current_evaluation_rank": 1,
+                        "ai_current_mark": "◎",
+                        "training": "D/物足り",
+                    },
+                    {
+                        "race_id": "jra-top5",
+                        "馬番": 2,
+                        "馬名": "TopFiveHorse",
+                        "market_ability_score": 76.0,
+                        "market_ability_rank": 1,
+                        "current_evaluation_rank": 2,
+                        "ai_current_mark": "○",
+                        "training": "A/好調",
+                        "_estimated_position_corner4_label": "先団",
+                        "recent_runs": [{"racecourse": "中京", "surface": "芝", "distance": 1600, "direction": "左", "finish": 2}],
+                    },
+                ]
+            ),
+            "jra",
+            race_info={"venue": "中京", "surface": "芝", "distance": 1600, "turn": "左"},
+        )
+        joined = "\n".join(self.streamlit.markdown_calls)
+
+        self.assertIn("今回の結論（JRA Top5）", joined)
+        self.assertIn("JRA Top5スコア", joined)
+        self.assertNotIn("今回の結論（Ver3高度設定）", joined)
+
     def test_render_full_field_comparison_applies_selected_sort_to_horse_columns(self) -> None:
         self.streamlit.markdown_calls = []
         self.streamlit.selectbox_value = "能力順"
