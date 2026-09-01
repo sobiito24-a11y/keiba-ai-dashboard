@@ -253,6 +253,26 @@ class _Canvas:
             if not rows:
                 self.text("NAR Top5は未取得です。", self.fonts["body"], MUTED)
                 return
+            purchase = rows[0]
+            judgement = _clean(_pick(purchase, "race_purchase_judgement"))
+            purchase_label = _clean(_pick(purchase, "race_purchase_label"))
+            if judgement or purchase_label:
+                self.horse_card(
+                    _join_nonempty(["レース購入判定", judgement, purchase_label], sep=" "),
+                    [
+                        _join_nonempty(
+                            [
+                                f"◎○差{_format_number(_pick(purchase, 'ability_gap_1_2'))}" if _pick(purchase, "ability_gap_1_2") is not None else "",
+                                f"信頼相手{_pick(purchase, 'trusted_partner_count') or 0}頭",
+                                f"候補{_clean(_pick(purchase, 'recommended_ticket_mode')) or 'PASS'}",
+                            ],
+                            sep=" / ",
+                        ),
+                        _clean(_pick(purchase, "win_bet_block_reason")) or "単勝購入可",
+                        f"理由：{_clean(_pick(purchase, 'race_purchase_reason'))}" if _clean(_pick(purchase, "race_purchase_reason")) else "",
+                    ],
+                    is_watch=judgement in {"C", "D"},
+                )
             top5 = [row for row in rows if (_to_float(_pick(row, "nar_top5_rank")) or 999) <= 5] or rows[:5]
             for row in top5:
                 mark = _display_mark(row, result.race_mode)
@@ -265,6 +285,7 @@ class _Canvas:
                     _join_nonempty(
                         [
                             f"純能力{ability}" if ability else "",
+                            f"相手信頼度{_clean(_pick(row, 'partner_trust_level')) or '—'}",
                             f"距離補正{_signed_bonus(_pick(row, 'nar_distance_bonus'))}",
                             f"コース補正{_signed_bonus(_pick(row, 'nar_course_bonus'))}",
                             f"展開補正{_signed_bonus(_pick(row, 'nar_pace_bonus'))}",
@@ -419,6 +440,7 @@ class _Canvas:
                 lines = [
                     f"NAR Top5スコア：{score}" if score else "",
                     f"純能力：{ability_value}" if ability_value else "",
+                    f"相手信頼度：{_clean(_pick(row, 'partner_trust_level')) or '—'}",
                     _join_nonempty(
                         [
                             f"距離補正{_signed_bonus(_pick(row, 'nar_distance_bonus'))}",
@@ -924,18 +946,18 @@ def _jra_row_sort_key(row: dict[str, Any]) -> tuple[int, float, float, int]:
     rank = _to_float(_pick(row, "v1_final_rank", "jra_top5_rank"))
     score = _to_float(_pick(row, "jra_top5_score"))
     ability = _to_float(_pick(row, "jra_pure_ability_score"))
-    number = _to_float(_pick(row, "number", "馬番", "馬"))
+    no = _to_float(_pick(row, "number", "馬番", "馬"))
     return (
         int(rank) if rank is not None else 999,
         -(score if score is not None else -9999.0),
         -(ability if ability is not None else -9999.0),
-        int(number) if number is not None else 999,
+        int(no) if no is not None else 999,
     )
 
 
 def _nar_row_sort_key(row: dict[str, Any]) -> tuple[int, float, float, int]:
-    rank = _to_float(_pick(row, "nar_top5_rank", "current_evaluation_rank"))
-    score = _to_float(_pick(row, "nar_top5_score", "ver3_score"))
+    rank = _to_float(_pick(row, "nar_top5_rank"))
+    score = _to_float(_pick(row, "nar_top5_score"))
     ability = _to_float(_pick(row, "nar_pure_ability_score", "market_ability_score", "ability_value", "saved_ability_value"))
     number = _to_float(_pick(row, "number", "馬番", "馬"))
     return (
@@ -958,10 +980,8 @@ def _jra_comparison_rows(result: PredictionResult) -> list[dict[str, Any]]:
         sort_mode="current",
         race_info=getattr(result, "race_info", {}) or {},
     )
-    return sorted(
-        [row for row in comparison.get("rows", []) if isinstance(row, dict)],
-        key=_jra_row_sort_key,
-    )
+    rows = [row for row in comparison.get("rows", []) if isinstance(row, dict)]
+    return sorted(rows, key=_jra_row_sort_key)
 
 
 def _nar_comparison_rows(result: PredictionResult) -> list[dict[str, Any]]:
@@ -976,16 +996,16 @@ def _nar_comparison_rows(result: PredictionResult) -> list[dict[str, Any]]:
         sort_mode="current",
         race_info=getattr(result, "race_info", {}) or {},
     )
-    return sorted(
-        [row for row in comparison.get("rows", []) if isinstance(row, dict)],
-        key=_nar_row_sort_key,
-    )
+    rows = [row for row in comparison.get("rows", []) if isinstance(row, dict)]
+    return sorted(rows, key=_nar_row_sort_key)
 
 
 def _signed_bonus(value: Any) -> str:
     number = _to_float(value)
-    if number is None or abs(number) < 0.0001:
-        return "+0.0"
+    if number is None:
+        return "±0.0"
+    if abs(number) < 0.0001:
+        return "±0.0"
     return f"{number:+.1f}"
 
 
@@ -999,7 +1019,7 @@ def _conclusion_rows(result: PredictionResult) -> list[dict[str, Any]]:
         rows = _records(result.horse_evaluation)
     selected: list[dict[str, Any]] = []
     for row in rows:
-        mark = _display_mark(row, getattr(result, "race_mode", ""))
+        mark = _display_mark(row, result.race_mode)
         if mark:
             selected.append(row)
     return selected[:7]
@@ -1009,14 +1029,17 @@ def _nar_top5_mark_from_rank(rank: Any) -> str:
     value = _to_float(rank)
     if value is None:
         return ""
-    return {1: "◎", 2: "○", 3: "▲", 4: "△", 5: "△"}.get(int(value), "")
+    return {1: "◎", 2: "○", 3: "▲", 4: "△1", 5: "△2"}.get(int(value), "")
 
 
 def _display_mark(row: dict[str, Any], race_mode: str = "") -> str:
     if _clean(race_mode).lower() == "jra":
-        mark = _clean(_pick(row, "v1_final_mark", "ver3_final_mark"))
+        mark = _clean(_pick(row, "v1_final_mark"))
         if mark:
             return mark
+        fallback = _clean(_pick(row, "ver3_final_mark"))
+        if fallback:
+            return fallback
     if _clean(race_mode).lower() == "nar":
         return _nar_top5_mark_from_rank(_pick(row, "nar_top5_rank"))
     if "mark_v4" in row:
