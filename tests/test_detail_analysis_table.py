@@ -202,6 +202,8 @@ class DetailAnalysisTableTest(unittest.TestCase):
                     "騎手詳細": "騎手1【継続】",
                     "斤量詳細": "55kg",
                     "脚質": "差し",
+                    "_jockey_course_starts": 45,
+                    "_jockey_course_place_rate": 38.1,
                     "単勝オッズ": "5.5",
                     "近3走傾向": "下降",
                     "表示コメント": "一番馬コメント",
@@ -215,6 +217,8 @@ class DetailAnalysisTableTest(unittest.TestCase):
                     "騎手詳細": "騎手2【継続】",
                     "斤量詳細": "56kg",
                     "脚質": "先行",
+                    "jockey_course_runs": 20,
+                    "jockey_course_top3_rate": 25.0,
                     "単勝オッズ": "2.5",
                     "近3走傾向": "上昇",
                     "表示コメント": "二番馬コメント",
@@ -235,6 +239,7 @@ class DetailAnalysisTableTest(unittest.TestCase):
                 self.assertNotIn("グループ", detail.columns)
                 self.assertIn("NAR Top5順位", detail.columns)
                 self.assertEqual(second["騎手"], "騎手2（継）")
+                self.assertEqual(second["騎手成績"], "20走 / 複25％")
                 self.assertEqual(second["斤量"], "56")
                 self.assertEqual(second["状態"], "上昇")
                 self.assertEqual(second["コメント"], "二番馬コメント")
@@ -244,6 +249,7 @@ class DetailAnalysisTableTest(unittest.TestCase):
                     list(first[["距離", "コース", "★", "3走前", "2走前", "前走", "3走平均"]]),
                     ["101", "102", "103", "104", "105", "106", "105"],
                 )
+                self.assertEqual(first["騎手成績"], "45走 / 複38.1％")
                 self.assertEqual(first["状態"], "下降")
                 self.assertEqual(first["コメント"], "一番馬コメント")
 
@@ -1116,7 +1122,9 @@ class DetailAnalysisTableTest(unittest.TestCase):
         source_before = table.copy(deep=True)
         html = self.app.market_horse_card_html(table.iloc[0].to_dict(), "nar")
 
-        self.assertIn("矢野貴之【継続】｜複勝率58%（n=459）", html)
+        self.assertIn("矢野貴之【継続】", html)
+        self.assertIn("騎乗回数 459 / 複勝率 58％", html)
+        self.assertIn("騎手成績：騎乗回数 459 / 複勝率 58％", html)
         self.assertIn("56.0kg（前走比+1.0kg）", html)
         self.assertEqual(table.loc[0, "market_ability_score"], 88.2)
         self.assertEqual(table.loc[0, "market_ability_rank"], 1)
@@ -1140,7 +1148,8 @@ class DetailAnalysisTableTest(unittest.TestCase):
             "nar",
         )
 
-        self.assertIn("矢野貴之【継続】｜複勝率—", html)
+        self.assertIn("矢野貴之【継続】", html)
+        self.assertIn("騎手成績：—", html)
         self.assertIn("56.0kg", html)
         self.assertNotIn("前走比", html)
 
@@ -1165,7 +1174,7 @@ class DetailAnalysisTableTest(unittest.TestCase):
             "nar",
         )
 
-        self.assertIn("差｜和田譲【継続】｜複勝率30%｜54.0kg", html)
+        self.assertIn("差｜和田譲【継続】｜複勝率 30％｜54.0kg", html)
 
     def test_market_source_table_merges_jockey_detail_from_sibling_table_for_display(self) -> None:
         result = SimpleNamespace(
@@ -1197,7 +1206,8 @@ class DetailAnalysisTableTest(unittest.TestCase):
         html = self.app.market_horse_card_html(table.iloc[0].to_dict(), "nar")
 
         self.assertEqual(table.loc[0, "騎手詳細"], "和田譲【継続】")
-        self.assertIn("和田譲【継続】｜複勝率30%", html)
+        self.assertIn("和田譲【継続】", html)
+        self.assertIn("複勝率 30％", html)
 
     def test_market_source_table_keeps_nar_on_baseline_ver3(self) -> None:
         result = SimpleNamespace(
