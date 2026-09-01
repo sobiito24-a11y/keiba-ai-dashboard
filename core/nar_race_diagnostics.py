@@ -548,8 +548,9 @@ def _attach_nar_top5_fields(horses: list[dict[str, Any]]) -> None:
         mark = _mark_text(horse.get("mark"))
         horse["nar_top5_rank"] = rank
         horse["nar_top5_score"] = score
-        horse["nar_top5_mark"] = mark
-        horse["nar_top5_role"] = _nar_top5_role(rank, mark)
+        horse["baseline_ver3_final_mark"] = mark
+        horse["nar_top5_mark"] = _nar_top5_mark_from_rank(rank)
+        horse["nar_top5_role"] = _nar_top5_role(rank, horse["nar_top5_mark"])
         horse["nar_distance_bonus"] = 0.0
         horse["nar_course_bonus"] = 0.0
         horse["nar_pace_bonus"] = 0.0
@@ -584,6 +585,10 @@ def _nar_top5_role(rank: Any, mark: Any) -> str:
     if value in {4, 5}:
         return "相手候補"
     return "監査対象" if _text(mark) else ""
+
+
+def _nar_top5_mark_from_rank(rank: Any) -> str:
+    return {1: "◎", 2: "○", 3: "▲", 4: "△", 5: "△"}.get(_int(rank), "")
 
 
 def _nar_pure_ability_score(row: Mapping[str, Any]) -> float | None:
@@ -871,8 +876,6 @@ def _training_text(row: Mapping[str, Any]) -> str:
     rank = _text(training.get("rank"))
     comment = _text(training.get("comment"))
     if rank:
-        if not comment:
-            comment = _fallback_training_comment(rank)
         return f"{rank}/{comment}" if comment else rank
     value = _text(
         _first(
