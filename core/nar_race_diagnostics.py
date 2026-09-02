@@ -588,7 +588,7 @@ def _attach_nar_top5_fields(horses: list[dict[str, Any]]) -> None:
         horse["nar_repro_bonus"] = 0.0
         horse["nar_warning_candidate"] = bool(warning_reason)
         horse["nar_warning_reason"] = warning_reason
-        horse["nar_top5_reason"] = "純能力順位を正式Top5に使用。Ver3今回評価は補助・監査用に保持。"
+        horse["nar_top5_reason"] = "純能力順位による正式Top5"
 
 
 def _nar_warning_reason(horse: Mapping[str, Any], pure_rank: int | None, ver3_top5: bool) -> str:
@@ -596,7 +596,7 @@ def _nar_warning_reason(horse: Mapping[str, Any], pure_rank: int | None, ver3_to
         return ""
     reasons: list[str] = []
     if ver3_top5:
-        reasons.append("Ver3今回評価Top5")
+        reasons.append("総合注目度上位")
     if horse.get("corner4_group") == "front":
         reasons.append("4角前方想定")
     if horse.get("has_recent_top3"):
@@ -609,7 +609,7 @@ def _nar_warning_reason(horse: Mapping[str, Any], pure_rank: int | None, ver3_to
         reasons.append("コース指数上位")
     if _float(horse.get("distance_index")) is not None and (_float(horse.get("distance_index")) or 0.0) >= 80:
         reasons.append("距離指数上位")
-    return "能力外警戒：" + " / ".join(reasons) if reasons else ""
+    return "能力順位以上に警戒：" + " / ".join(reasons) if reasons else ""
 
 
 def _replace_ability_rank_materials(horse: dict[str, Any], pure_rank: int) -> None:
@@ -639,7 +639,7 @@ def _nar_top5_role(rank: Any, mark: Any) -> str:
 
 
 def _nar_top5_mark_from_rank(rank: Any) -> str:
-    return {1: "◎", 2: "○", 3: "▲", 4: "△1", 5: "△2"}.get(_int(rank), "")
+    return {1: "◎", 2: "○", 3: "▲", 4: "△", 5: "△"}.get(_int(rank), "")
 
 
 def _nar_pure_ability_score(row: Mapping[str, Any]) -> float | None:
