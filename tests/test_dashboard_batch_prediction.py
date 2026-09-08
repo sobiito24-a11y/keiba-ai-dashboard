@@ -2,8 +2,10 @@ from __future__ import annotations
 
 import io
 import re
+import tempfile
 import unittest
 import zipfile
+from pathlib import Path
 from unittest.mock import patch
 
 import pandas as pd
@@ -13,12 +15,15 @@ from core.dashboard_batch import (
     UploadedSource,
     expand_uploaded_sources,
     group_html_by_race,
+    predict_html_sources,
     predict_uploaded_sources,
 )
 from core.models import PredictionResult
 from core.prediction_input import predict_from_html_inputs
+from core.prediction_snapshot import load_keiba
 from core.prediction_snapshot import restore_prediction_result
 from core.prediction_snapshot import race_snapshot_from_result
+from tools.build_keiba_from_collected import build_keiba_from_collected
 
 
 def html_page(mode: str, kind: str, race_id: str, *, extra: str = "") -> bytes:
@@ -174,6 +179,57 @@ class DashboardBatchPredictionTest(unittest.TestCase):
         self.assertEqual(report.predicted_race_count, 36)
         self.assertEqual(report.skipped_race_count, 0)
         self.assertEqual(jra.call_count, 36)
+
+    def test_batch_has_no_artificial_36_race_limit(self) -> None:
+        sources: list[UploadedSource] = []
+        for race_index in range(1, 49):
+            sources.extend(sources_for("jra", f"20260404{race_index:04d}"))
+        with patch("core.prediction_input.predict_jra", side_effect=predictor("jra")) as jra:
+            report = predict_html_sources(sources, prediction_logic_version="market", race_date="2026-08-14")
+        self.assertEqual(report.predicted_race_count, 48)
+        self.assertEqual(report.skipped_race_count, 0)
+        self.assertEqual(jra.call_count, 48)
+
+    def test_date_mismatch_is_skipped_after_canonical_prediction(self) -> None:
+        def dated_predictor(_html_files, file_names, *, prediction_logic_version="market"):
+            self_name = next(iter(file_names.values()))
+            race_id = re.search(r"\d{12}", self_name).group(0)
+            result = fake_result("jra", race_id)
+            if race_id.endswith("02"):
+                result.race_info["date"] = "2026-08-13"
+            return result
+
+        sources = sources_for("jra", "202604040001") + sources_for("jra", "202604040002")
+        with patch("core.prediction_input.predict_jra", side_effect=dated_predictor):
+            report = predict_html_sources(sources, prediction_logic_version="market", race_date="20260814")
+
+        self.assertEqual(report.predicted_race_count, 1)
+        self.assertEqual(report.skipped_race_count, 1)
+        self.assertTrue(any("対象日不一致" in error for error in report.errors))
+
+    def test_build_keiba_from_collected_writes_loadable_snapshot(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            html_root = root / "html"
+            for race_index in range(1, 42):
+                race_id = f"20260405{race_index:04d}"
+                race_dir = html_root / "jra" / race_id
+                race_dir.mkdir(parents=True)
+                for kind in ("newspaper", "speed", "style"):
+                    (race_dir / f"{race_id}_{kind}.html").write_bytes(html_page("jra", kind, race_id))
+            output = root / "20260814_jra.keiba"
+            with patch("core.prediction_input.predict_jra", side_effect=predictor("jra")):
+                report = build_keiba_from_collected(
+                    html_root,
+                    race_date="20260814",
+                    output_path=output,
+                    mode="jra",
+                ).batch_report
+
+            loaded = load_keiba(output.read_bytes())
+            self.assertEqual(report.predicted_race_count, 41)
+            self.assertEqual(len(loaded["races"]), 41)
+            self.assertEqual(loaded["scope"]["race_modes"], ["jra"])
 
     def test_batch_retries_without_past_detail_when_one_race_prediction_fails(self) -> None:
         calls: list[bool | None] = []

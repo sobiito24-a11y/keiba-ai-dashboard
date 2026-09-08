@@ -27,6 +27,52 @@ HTMLはファイル名だけでなく、canonical、og:url、ページURL、DOM�
 
 同一race_id・同一kindの異なるHTMLは自動上書きしません。重複エラーとしてそのレースをスキップし、他レースの処理を継続します。バイト同一の重複だけは1件へ統合します。
 
+## 朝の自動予想
+
+Mobile側のnetkeiba HTML collectorとDashboard側の一括予想処理を使い、HTML収集から`.keiba`作成まで1コマンドで実行できます。Dashboard専用の予想ロジックは追加せず、通常画面と同じ`prediction_logic_version="market"`でPrediction Snapshotを作成します。
+
+地方のみ:
+
+```bash
+python tools\morning_pipeline.py ^
+  --today ^
+  --mode nar ^
+  --data-root "C:\Users\28011\Documents\Codex\Keiba_AI_Data\morning"
+```
+
+JRAのみ:
+
+```bash
+python tools\morning_pipeline.py ^
+  --today ^
+  --mode jra ^
+  --data-root "C:\Users\28011\Documents\Codex\Keiba_AI_Data\morning"
+```
+
+全部:
+
+```bash
+python tools\morning_pipeline.py ^
+  --today ^
+  --mode all ^
+  --data-root "C:\Users\28011\Documents\Codex\Keiba_AI_Data\morning"
+```
+
+保存先は日付ごとに分かれます。
+
+```text
+Keiba_AI_Data/
+  morning/
+    20260908/
+      html/
+        jra/
+        nar/
+      logs/
+      20260908_all.keiba
+```
+
+実行終了後は、Dashboardを起動し、「保存した予想を開く」から`YYYYMMDD_all.keiba`を開いて閲覧します。既存HTMLは通常再利用し、再取得・再作成する場合だけ`--overwrite`を指定します。
+
 ## 保存した予想を開く
 
 1. 「保存した予想を開く」を選ぶ

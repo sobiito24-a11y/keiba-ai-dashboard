@@ -70,11 +70,38 @@ def predict_uploaded_sources(
 ) -> BatchPredictionReport:
     """Classify every HTML then call the canonical Mobile predictor per race."""
 
+    return predict_html_sources(
+        sources,
+        prediction_logic_version=prediction_logic_version,
+        progress=progress,
+    )
+
+
+def predict_html_sources(
+    sources: Iterable[UploadedSource],
+    *,
+    prediction_logic_version: str = "market",
+    progress: ProgressCallback | None = None,
+    race_date: str = "",
+    race_mode: str = "",
+) -> BatchPredictionReport:
+    """Predict race snapshots from HTML/ZIP sources using the Dashboard batch path."""
+
     source_list = list(sources)
     if not source_list:
         raise BatchPredictionError("HTMLまたはZIPを追加してください。")
     entries, expansion_warnings = expand_uploaded_sources(source_list)
     bundles, classification_warnings, classification_errors, recognized = group_html_by_race(entries)
+    mode_filter = str(race_mode or "").strip().lower()
+    if mode_filter:
+        if mode_filter not in {"jra", "nar"}:
+            raise BatchPredictionError(f"未対応のrace_modeです: {race_mode}")
+        bundles = {
+            race_id: bundle
+            for race_id, bundle in bundles.items()
+            if bundle.race_mode == mode_filter
+        }
+    requested_date = normalize_requested_race_date(race_date)
     race_snapshots: list[dict] = []
     prediction_warnings: list[str] = []
     prediction_errors: list[str] = []
@@ -92,7 +119,7 @@ def predict_uploaded_sources(
             prediction_errors.extend(f"{race_id}: {message}" for message in bundle.errors)
             continue
         try:
-            race_snapshots.append(
+            snapshot = (
                 _predict_race_snapshot(
                     bundle,
                     prediction_logic_version=prediction_logic_version,
@@ -100,7 +127,7 @@ def predict_uploaded_sources(
             )
         except Exception as exc:
             try:
-                race_snapshots.append(
+                snapshot = (
                     _predict_race_snapshot(
                         bundle,
                         prediction_logic_version=prediction_logic_version,
@@ -114,6 +141,17 @@ def predict_uploaded_sources(
                 prediction_errors.append(
                     f"{race_id}: 予想失敗: {exc} / 軽量再試行も失敗: {retry_exc}"
                 )
+                continue
+        if requested_date:
+            try:
+                snapshot_date = normalize_requested_race_date(str(snapshot.get("date") or ""))
+            except BatchPredictionError:
+                snapshot_date = ""
+            if snapshot_date != requested_date:
+                message = f"{race_id}: 対象日不一致: expected={requested_date}, actual={snapshot_date or 'unknown'}"
+                prediction_errors.append(message)
+                continue
+        race_snapshots.append(snapshot)
     if not race_snapshots:
         details = (classification_errors + prediction_errors)[:5]
         suffix = " / ".join(details)
@@ -134,6 +172,16 @@ def predict_uploaded_sources(
         warnings=warnings,
         errors=errors,
     )
+
+
+def normalize_requested_race_date(value: str) -> str:
+    text = str(value or "").strip()
+    if not text:
+        return ""
+    match = re.fullmatch(r"(\d{4})-?(\d{2})-?(\d{2})", text)
+    if not match:
+        raise BatchPredictionError(f"日付形式が不正です: {value}")
+    return f"{match.group(1)}-{match.group(2)}-{match.group(3)}"
 
 
 def _predict_race_snapshot(
