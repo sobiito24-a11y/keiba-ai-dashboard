@@ -15,6 +15,9 @@ if str(ROOT) not in sys.path:
 from tools.build_keiba_from_collected import build_keiba_from_collected, compact_date  # noqa: E402
 
 
+COLLECTOR_NO_RACES_EXIT_CODE = 3
+
+
 @dataclass(frozen=True)
 class PipelinePaths:
     data_root: Path
@@ -22,6 +25,12 @@ class PipelinePaths:
     html_root: Path
     logs_root: Path
     output_path: Path
+
+
+@dataclass(frozen=True)
+class CollectorRunResult:
+    mode: str
+    no_races: bool = False
 
 
 def default_data_root() -> Path:
@@ -64,7 +73,7 @@ def run_collector(
     overwrite: bool,
     headless: bool,
     no_pause_on_login: bool,
-) -> None:
+) -> CollectorRunResult:
     collector = mobile_root / "tools" / "netkeiba_html_collector.py"
     if not collector.exists():
         raise SystemExit(f"Mobile collector was not found: {collector}")
@@ -88,8 +97,12 @@ def run_collector(
         command.append("--no-pause-on-login")
     print(f"STEP collect {mode.upper()}")
     completed = subprocess.run(command, cwd=str(mobile_root), check=False)
+    if completed.returncode == COLLECTOR_NO_RACES_EXIT_CODE:
+        print(f"{mode.upper()}: 0 races -> skip")
+        return CollectorRunResult(mode=mode, no_races=True)
     if completed.returncode != 0:
         raise SystemExit(f"{mode.upper()} HTML collection failed with exit code {completed.returncode}")
+    return CollectorRunResult(mode=mode, no_races=False)
 
 
 def run_pipeline(
@@ -101,7 +114,7 @@ def run_pipeline(
     overwrite: bool,
     headless: bool,
     no_pause_on_login: bool,
-) -> Path:
+) -> Path | None:
     normalized_mode = str(mode or "").strip().lower()
     modes = selected_modes(normalized_mode)
     paths = pipeline_paths(data_root.expanduser().resolve(), race_date, normalized_mode)
@@ -114,16 +127,27 @@ def run_pipeline(
     print("====================================")
     print(f"data root: {paths.data_root}")
     print(f"html root: {paths.html_root}")
+    collector_results: list[CollectorRunResult] = []
     for item in modes:
-        run_collector(
-            mobile_root=mobile_root.expanduser().resolve(),
-            mode=item,
-            race_date=race_date,
-            paths=paths,
-            overwrite=overwrite,
-            headless=headless,
-            no_pause_on_login=no_pause_on_login,
+        collector_results.append(
+            run_collector(
+                mobile_root=mobile_root.expanduser().resolve(),
+                mode=item,
+                race_date=race_date,
+                paths=paths,
+                overwrite=overwrite,
+                headless=headless,
+                no_pause_on_login=no_pause_on_login,
+            )
         )
+
+    if collector_results and all(result.no_races for result in collector_results):
+        print("====================================")
+        print("Prediction")
+        print("No races were found for the requested date and mode.")
+        print("Output: none")
+        print("====================================")
+        return None
 
     print("STEP build .keiba")
     build_report = build_keiba_from_collected(
