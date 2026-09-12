@@ -160,6 +160,21 @@ def _attach_jra_candidate_b_columns(table: pd.DataFrame, race_info: Mapping[str,
         ("ver3_current_evaluation_rank", "総合評価順位", "current_evaluation_rank", "AI順位", "ai_rank"),
     )
     result["shadow_ver3_candidate"] = "jra_candidate_b"
+    _ensure_object_columns(
+        result,
+        (
+            "ver3_final_mark",
+            "ver3_current_evaluation_rank",
+            "shadow_ver3_candidate_score",
+            "shadow_reproducibility",
+            "shadow_reproducibility_reason",
+            "shadow_state_eval",
+            "shadow_state_reason",
+            "shadow_pace_eval",
+            "shadow_pace_reason",
+            "shadow_ver3_candidate_reason",
+        ),
+    )
     for index, row in result.iterrows():
         candidate = by_no.get(_horse_number(_first(row.to_dict(), "馬番", "馬", "horse_no", "number")))
         if not candidate:
@@ -187,6 +202,14 @@ def _first_series(table: pd.DataFrame, names: tuple[str, ...]) -> pd.Series:
         if name in table.columns:
             return table[name]
     return pd.Series("", index=table.index, dtype="object")
+
+
+def _ensure_object_columns(table: pd.DataFrame, names: tuple[str, ...]) -> None:
+    for name in names:
+        if name in table.columns:
+            table[name] = table[name].astype("object")
+        else:
+            table[name] = pd.Series([None] * len(table), index=table.index, dtype="object")
 
 
 def restore_prediction_result(race_snapshot: Mapping[str, Any]) -> PredictionResult:

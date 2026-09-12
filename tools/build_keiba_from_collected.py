@@ -27,6 +27,7 @@ HTML_SUFFIXES = {".html", ".htm"}
 class BuildKeibaReport:
     batch_report: BatchPredictionReport
     output_path: Path
+    diagnostics_log_path: Path | None = None
 
 
 def build_keiba_from_collected(
@@ -36,6 +37,7 @@ def build_keiba_from_collected(
     output_path: str | Path,
     mode: str = "all",
     overwrite: bool = False,
+    logs_dir: str | Path | None = None,
 ) -> BuildKeibaReport:
     input_path = Path(input_dir).expanduser().resolve()
     if not input_path.exists() or not input_path.is_dir():
@@ -60,9 +62,55 @@ def build_keiba_from_collected(
         race_date=race_date,
         race_mode="" if selected_mode == "all" else selected_mode,
     )
+    diagnostics_log_path = write_diagnostics_log(
+        report,
+        race_date=race_date,
+        mode=selected_mode,
+        output_path=output,
+        logs_dir=logs_dir,
+    )
     output.parent.mkdir(parents=True, exist_ok=True)
     output.write_bytes(keiba_bytes(report.event_snapshot))
-    return BuildKeibaReport(batch_report=report, output_path=output)
+    return BuildKeibaReport(
+        batch_report=report,
+        output_path=output,
+        diagnostics_log_path=diagnostics_log_path,
+    )
+
+
+def write_diagnostics_log(
+    report: BatchPredictionReport,
+    *,
+    race_date: str,
+    mode: str,
+    output_path: Path,
+    logs_dir: str | Path | None = None,
+) -> Path:
+    log_root = Path(logs_dir).expanduser().resolve() if logs_dir else output_path.parent / "logs"
+    log_root.mkdir(parents=True, exist_ok=True)
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    log_path = log_root / f"build_keiba_{race_date}_{mode}_{timestamp}.log"
+    lines = [
+        "Keiba AI build_keiba_from_collected",
+        f"date: {race_date}",
+        f"mode: {mode}",
+        f"output: {output_path}",
+        f"HTML files: {report.html_file_count}",
+        f"Recognized: {report.recognized_file_count}",
+        f"Predicted: {report.predicted_race_count}",
+        f"Skipped: {report.skipped_race_count}",
+        f"Warnings: {len(report.warnings)}",
+        f"Errors: {len(report.errors)}",
+        "",
+        "[Warnings]",
+        *(f"WARNING: {message}" for message in report.warnings),
+        "",
+        "[Errors]",
+        *(f"ERROR: {message}" for message in report.errors),
+        "",
+    ]
+    log_path.write_text("\n".join(lines), encoding="utf-8")
+    return log_path
 
 
 def html_sources_from_directory(input_dir: Path) -> list[UploadedSource]:
@@ -103,6 +151,7 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--today", action="store_true", help="Use today's date in the local environment.")
     parser.add_argument("--mode", choices=("all", "jra", "nar"), default="all")
     parser.add_argument("--output", help="Output .keiba path.")
+    parser.add_argument("--logs-dir", help="Directory for full warning/error logs.")
     parser.add_argument("--overwrite", action="store_true", help="Overwrite an existing .keiba file.")
     args = parser.parse_args(argv)
     if args.today and args.date:
@@ -124,25 +173,35 @@ def main(argv: list[str] | None = None) -> int:
     print(f"mode: {args.mode}")
     print(f"input: {Path(args.input).expanduser().resolve()}")
     print(f"output: {Path(args.output).expanduser().resolve()}")
-    report = build_keiba_from_collected(
+    build_report = build_keiba_from_collected(
         args.input,
         race_date=args.date,
         output_path=args.output,
         mode=args.mode,
         overwrite=args.overwrite,
-    ).batch_report
+        logs_dir=args.logs_dir,
+    )
+    report = build_report.batch_report
     print(f"HTML files: {report.html_file_count}")
     print(f"Recognized: {report.recognized_file_count}")
     print(f"Predicted: {report.predicted_race_count}")
     print(f"Skipped: {report.skipped_race_count}")
-    print(f"Warnings: {len(report.warnings)}")
-    for message in report.warnings[:20]:
-        print(f"WARNING: {message}")
-    print(f"Errors: {len(report.errors)}")
-    for message in report.errors[:20]:
-        print(f"ERROR: {message}")
+    print_limited_messages("Warnings", report.warnings, build_report.diagnostics_log_path)
+    print_limited_messages("Errors", report.errors, build_report.diagnostics_log_path)
+    print(f"Diagnostics log: {build_report.diagnostics_log_path}")
     print(f"Output: {Path(args.output).expanduser().resolve()}")
     return 0
+
+
+def print_limited_messages(label: str, messages: tuple[str, ...], log_path: Path | None, limit: int = 20) -> None:
+    print(f"{label}: {len(messages)}")
+    prefix = label.upper().rstrip("S")
+    for message in messages[:limit]:
+        print(f"{prefix}: {message}")
+    remaining = max(0, len(messages) - limit)
+    if remaining:
+        suffix = f" Full log: {log_path}" if log_path else ""
+        print(f"{prefix}: ... and {remaining} more.{suffix}")
 
 
 if __name__ == "__main__":

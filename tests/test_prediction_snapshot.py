@@ -27,6 +27,13 @@ from core.prediction_snapshot import (
 )
 
 
+def strict_string_dtype():
+    try:
+        return pd.StringDtype(storage="pyarrow")
+    except Exception:
+        return "string"
+
+
 def result_for(
     race_id: str = "202601010501",
     *,
@@ -226,6 +233,37 @@ class PredictionSnapshotTest(unittest.TestCase):
         self.assertIn("shadow_ver3_candidate_reason", restored.overall_table.columns)
         self.assertEqual(restored_by_no["2"]["market_ability_score"], 80)
         self.assertEqual(restored_by_no["2"]["ability_band_v2"], "A")
+
+    def test_jra_candidate_b_display_aliases_assign_into_strict_string_columns(self) -> None:
+        result = result_for()
+        result.overall_table.loc[0, "market_ability_score"] = 50
+        result.overall_table.loc[0, "ability_band_v2"] = "C"
+        result.overall_table.loc[0, "current_evaluation_rank"] = 1
+        result.overall_table.loc[0, "ai_current_mark"] = "◎"
+        result.overall_table.loc[1, "market_ability_score"] = 80
+        result.overall_table.loc[1, "ability_band_v2"] = "A"
+        result.overall_table.loc[1, "current_evaluation_rank"] = 2
+        result.overall_table.loc[1, "ai_current_mark"] = "○"
+        result.overall_table.loc[1, "training_display"] = "A 好気配"
+        result.overall_table.loc[1, "stable_comment_display"] = "順調に仕上がった。"
+        dtype = strict_string_dtype()
+        for column in (
+            "ver3_current_evaluation_rank",
+            "shadow_ver3_candidate_score",
+            "shadow_reproducibility",
+            "shadow_state_eval",
+            "shadow_pace_eval",
+        ):
+            result.overall_table[column] = pd.Series(["", ""], dtype=dtype)
+        result.horse_evaluation = result.overall_table.copy()
+
+        race = race_snapshot_from_result(result)
+        restored = restore_prediction_result(load_keiba(keiba_bytes(build_event_snapshot([race])))["races"][0])
+        restored_by_no = {str(row["馬番"]): row for row in restored.overall_table.to_dict("records")}
+
+        self.assertEqual(restored_by_no["2"]["shadow_ver3_candidate"], "jra_candidate_b")
+        self.assertEqual(restored_by_no["2"]["ver3_final_mark"], "◎")
+        self.assertEqual(restored_by_no["2"]["ver3_current_evaluation_rank"], 1)
 
     def test_user_selection_survives_save_and_reload(self) -> None:
         event = build_event_snapshot([race_snapshot_from_result(result_for())])

@@ -12,6 +12,7 @@ import pandas as pd
 
 from core.dashboard_batch import (
     BatchPredictionError,
+    BatchPredictionReport,
     UploadedSource,
     expand_uploaded_sources,
     group_html_by_race,
@@ -23,7 +24,7 @@ from core.prediction_input import predict_from_html_inputs
 from core.prediction_snapshot import load_keiba
 from core.prediction_snapshot import restore_prediction_result
 from core.prediction_snapshot import race_snapshot_from_result
-from tools.build_keiba_from_collected import build_keiba_from_collected
+from tools.build_keiba_from_collected import build_keiba_from_collected, write_diagnostics_log
 
 
 def html_page(mode: str, kind: str, race_id: str, *, extra: str = "") -> bytes:
@@ -230,6 +231,32 @@ class DashboardBatchPredictionTest(unittest.TestCase):
             self.assertEqual(report.predicted_race_count, 41)
             self.assertEqual(len(loaded["races"]), 41)
             self.assertEqual(loaded["scope"]["race_modes"], ["jra"])
+
+    def test_build_keiba_diagnostics_log_keeps_all_errors(self) -> None:
+        report = BatchPredictionReport(
+            event_snapshot={"races": []},
+            input_file_count=0,
+            html_file_count=0,
+            recognized_file_count=0,
+            predicted_race_count=22,
+            skipped_race_count=36,
+            warnings=(),
+            errors=tuple(f"race-{index}: error detail" for index in range(36)),
+        )
+        with tempfile.TemporaryDirectory() as temp:
+            log_path = write_diagnostics_log(
+                report,
+                race_date="20260912",
+                mode="all",
+                output_path=Path(temp) / "20260912_all.keiba",
+                logs_dir=Path(temp) / "logs",
+            )
+
+            text = log_path.read_text(encoding="utf-8")
+
+        self.assertIn("Errors: 36", text)
+        self.assertIn("race-0: error detail", text)
+        self.assertIn("race-35: error detail", text)
 
     def test_batch_retries_without_past_detail_when_one_race_prediction_fails(self) -> None:
         calls: list[bool | None] = []

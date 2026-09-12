@@ -156,6 +156,7 @@ def run_pipeline(
         output_path=paths.output_path,
         mode=normalized_mode,
         overwrite=overwrite,
+        logs_dir=paths.logs_root,
     )
     report = build_report.batch_report
     scope = report.event_snapshot.get("scope") or {}
@@ -166,6 +167,8 @@ def run_pipeline(
     print(f"skipped: {report.skipped_race_count}")
     print(f"race modes: {', '.join(scope.get('race_modes') or [])}")
     print(f"venues: {', '.join(scope.get('venues') or [])}")
+    if getattr(build_report, "diagnostics_log_path", None):
+        print(f"diagnostics log: {build_report.diagnostics_log_path}")
     print("Output:")
     print(paths.output_path)
     print("NEXT:")

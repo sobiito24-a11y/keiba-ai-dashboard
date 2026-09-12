@@ -21,6 +21,13 @@ RACE_INFO = {
 }
 
 
+def strict_string_dtype():
+    try:
+        return pd.StringDtype(storage="pyarrow")
+    except Exception:
+        return "string"
+
+
 def comparison_row(number: int, name: str, core: float, odds: float, popularity: int, **extra):
     row = {
         "馬番": number,
@@ -88,6 +95,33 @@ class TanabataOnyankoponRegressionTest(unittest.TestCase):
         self.assertEqual(row["_previous_class_label"], "G3")
         self.assertEqual(row["_days_since_last"], 14)
         self.assertEqual(row["調教評価"], "B 復調気配")
+
+    def test_newspaper_facts_assign_into_strict_string_columns(self) -> None:
+        dtype = strict_string_dtype()
+        source = pd.DataFrame(
+            {
+                "馬番": [9],
+                "馬名": ["オニャンコポン"],
+                "_ver3_ability_core": [90.0],
+                "オッズ": pd.Series([""], dtype=dtype),
+                "人気": pd.Series([""], dtype=dtype),
+                "斤量": pd.Series([""], dtype=dtype),
+                "騎手": pd.Series([""], dtype=dtype),
+                "_current_load_weight": pd.Series([""], dtype=dtype),
+                "_current_jockey": pd.Series([""], dtype=dtype),
+                "_jockey_changed": pd.Series([""], dtype=dtype),
+            }
+        )
+
+        merged = apply_jra_newspaper_html_features(source, FIXTURE.read_text(encoding="utf-8"))
+
+        row = merged.iloc[0]
+        self.assertEqual(row["オッズ"], 73.5)
+        self.assertEqual(row["人気"], 15)
+        self.assertEqual(row["斤量"], 54.0)
+        self.assertEqual(row["騎手"], "吉田豊")
+        self.assertEqual(row["_current_load_weight"], 54.0)
+        self.assertEqual(row["_current_jockey"], "吉田豊")
 
     def test_newspaper_zero_match_does_not_assign_empty_strings_to_int_columns(self) -> None:
         source = pd.DataFrame([comparison_row(99, "該当なし", 80.0, 12.3, 4)])

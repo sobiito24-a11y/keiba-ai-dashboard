@@ -1475,6 +1475,8 @@ def apply_jra_newspaper_html_features(df, newspaper_html):
         )
         if target_is_numeric:
             values = pd.to_numeric(source_values, errors="coerce")
+            if target == "人気":
+                values = values.astype("Int64")
             present = values.notna()
         else:
             values = source_values.fillna("").astype(str).str.strip()
@@ -1483,14 +1485,18 @@ def apply_jra_newspaper_html_features(df, newspaper_html):
             return
         if target not in result.columns:
             result[target] = (
-                pd.Series(pd.NA, index=result.index, dtype="Float64")
+                pd.Series(
+                    pd.NA,
+                    index=result.index,
+                    dtype="Int64" if target == "人気" else "Float64",
+                )
                 if target_is_numeric
                 else pd.Series([""] * len(result), index=result.index, dtype="object")
             )
-        elif target_is_numeric and pd.api.types.is_integer_dtype(result[target]):
-            non_integer_values = values.loc[present].dropna().map(float).mod(1).ne(0).any()
-            if bool(non_integer_values):
-                result[target] = result[target].astype("Float64")
+        elif target_is_numeric:
+            result[target] = pd.to_numeric(result[target], errors="coerce").astype(
+                "Int64" if target == "人気" else "Float64"
+            )
         elif not target_is_numeric:
             result[target] = result[target].astype("object")
         result.loc[present, target] = values.loc[present]
@@ -1516,6 +1522,8 @@ def apply_jra_newspaper_html_features(df, newspaper_html):
             continue
         if target not in result.columns:
             result[target] = pd.Series([None] * len(result), index=result.index, dtype="object")
+        else:
+            result[target] = result[target].astype("object")
         for index, value in result[source].items():
             if _jra_newspaper_value_present(value) and not _jra_newspaper_value_present(result.at[index, target]):
                 result.at[index, target] = value
@@ -1529,14 +1537,21 @@ def apply_jra_newspaper_html_features(df, newspaper_html):
         )
     if "_新聞斤量" in result.columns:
         if "_current_load_weight" not in result.columns:
-            result["_current_load_weight"] = pd.NA
+            result["_current_load_weight"] = pd.Series(pd.NA, index=result.index, dtype="Float64")
+        else:
+            result["_current_load_weight"] = pd.to_numeric(
+                result["_current_load_weight"],
+                errors="coerce",
+            ).astype("Float64")
         load_values = pd.to_numeric(result["_新聞斤量"], errors="coerce")
         load_present = load_values.notna()
         if bool(load_present.any()):
             result.loc[load_present, "_current_load_weight"] = load_values.loc[load_present]
     if "_新聞騎手" in result.columns:
         if "_current_jockey" not in result.columns:
-            result["_current_jockey"] = ""
+            result["_current_jockey"] = pd.Series([""] * len(result), index=result.index, dtype="object")
+        else:
+            result["_current_jockey"] = result["_current_jockey"].astype("object")
         jockey_values = result["_新聞騎手"].fillna("").astype(str).str.strip()
         jockey_present = jockey_values.ne("")
         if bool(jockey_present.any()):
@@ -1544,6 +1559,8 @@ def apply_jra_newspaper_html_features(df, newspaper_html):
     if "_新聞騎手変更" in result.columns:
         if "_jockey_changed" not in result.columns:
             result["_jockey_changed"] = False
+        else:
+            result["_jockey_changed"] = result["_jockey_changed"].astype("object")
         changed = result["_新聞騎手変更"].fillna("").astype(str).str.contains("替")
         result.loc[changed, "_jockey_changed"] = True
 
