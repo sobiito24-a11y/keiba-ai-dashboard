@@ -29,6 +29,8 @@ from core.betting_recommendation import (
 )
 from core.condition_fit import condition_fit_badge_text, resolved_condition_fit
 from core.course_materials import four_corner_rates_display
+from core.jra_purchase_navigator import build_jra_purchase_navigation
+from core.jra_purchase_navigation_ui import jra_purchase_navigation_html
 from core.investment_decision import (
     InvestmentDecision,
     build_investment_decision,
@@ -2428,9 +2430,15 @@ def jra_comparison_from_result(result: PredictionResult, *, sort_mode: str = "cu
 
 def render_jra_top5_result_summary(result: PredictionResult) -> None:
     comparison = jra_comparison_from_result(result, sort_mode="current")
-    if not comparison.get("rows"):
-        return
-    st.markdown(jra_top5_conclusion_html(comparison), unsafe_allow_html=True)
+    if comparison.get("rows"):
+        st.markdown(jra_top5_conclusion_html(comparison), unsafe_allow_html=True)
+    navigation = build_jra_purchase_navigation(
+        comparison.get("rows", []), race_mode=result.race_mode,
+        race_info=getattr(result, "race_info", {}) or {},
+    )
+    navigation_html = jra_purchase_navigation_html(navigation)
+    if navigation_html:
+        st.markdown(navigation_html, unsafe_allow_html=True)
 
 
 def nar_comparison_from_result(result: PredictionResult, *, sort_mode: str = "current") -> dict[str, Any]:
