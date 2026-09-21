@@ -7,6 +7,7 @@ from __future__ import annotations
 import math
 import unicodedata
 from decimal import Decimal
+from datetime import date
 from typing import Any, Mapping, Sequence
 
 
@@ -64,7 +65,7 @@ def calculate_top5_swap_count(pure_top5: set[str], jra_top5: set[str]) -> int:
     return len(pure_top5 - jra_top5)
 
 
-def build_jra_buy_candidates(rows: Sequence[Mapping[str, Any]]) -> dict[str, Any]:
+def build_jra_buy_candidates(rows: Sequence[Mapping[str, Any]], status: str = "強軸") -> dict[str, Any]:
     """Derive display candidates from canonical ranks/marks, without editing rows."""
     candidates, attention, seen = [], [], set()
     for row in sorted(rows, key=lambda r: _rank(r.get("jra_top5_rank")) or math.inf):
@@ -74,14 +75,65 @@ def build_jra_buy_candidates(rows: Sequence[Mapping[str, Any]]) -> dict[str, Any
         seen.add(number)
         mark = str(row.get("v1_final_mark") or "").strip().replace("\ufe0e", "").replace("\ufe0f", "")
         horse = {"number": str(number), "name": str(row.get("name") or "")}
-        role = "中心" if rank == 1 else "本線" if rank <= 3 else "狙い" if mark == "✔" else None
+        if status == "上位混戦":
+            role = "本線" if rank <= 3 else "押さえ" if rank <= 5 else "狙い" if mark == "✔" else None
+        elif status == "評価分裂":
+            role = "本線参考" if rank <= 3 else "狙い" if mark == "✔" else None
+        else:
+            role = "中心" if rank == 1 else "本線" if rank <= 3 else "狙い" if mark == "✔" else None
         if role:
             candidates.append(dict(horse, role=role))
         elif rank > 5 and (mark == "✓" or str(row.get("jra_warning_candidate")).lower() in {"true", "1"}):
             attention.append(horse)
-    return {"buy_candidates": candidates, "buy_groups": {
-        role: [h for h in candidates if h["role"] == role] for role in ("中心", "本線", "狙い")
+    return {"buy_candidates": [] if status == "評価分裂" else candidates,
+            "reference_candidates": candidates if status == "評価分裂" else [], "buy_groups": {
+        role: [h for h in candidates if h["role"] == role] for role in ("中心", "本線", "押さえ", "本線参考", "狙い")
     }, "hole_attention": attention}
+
+
+def _saved_interval_days(row: Mapping[str, Any], race_info: Mapping[str, Any]) -> int | None:
+    for key in ("_days_since_last", "レース間隔日数", "days_since_last", "_新聞前走間隔日数"):
+        value = _number(row.get(key))
+        if value is not None and value >= 0 and value.is_integer():
+            return int(value)
+    # Only an explicitly labelled previous run; never infer from older runs or today's date.
+    runs = row.get("_past_runs")
+    if not isinstance(runs, list):
+        return None
+    previous = [r for r in runs if isinstance(r, Mapping) and r.get("label") == "前走"]
+    if len(previous) != 1:
+        return None
+    try:
+        current = date.fromisoformat(str(race_info.get("race_date")))
+        last = date.fromisoformat(str(previous[0].get("race_date")))
+    except ValueError:
+        return None
+    days = (current - last).days
+    return days if days >= 0 else None
+
+
+def build_jra_layoff_warnings(rows: Sequence[Mapping[str, Any]], race_info: Mapping[str, Any],
+                             saved_rows: Sequence[Mapping[str, Any]] = ()) -> list[dict[str, Any]]:
+    """Join only saved interval/date material; scores and marks never cross this boundary."""
+    saved: dict[int, list[Mapping[str, Any]]] = {}
+    for row in saved_rows:
+        number = _rank(row.get("number", row.get("馬番")))
+        if number is not None:
+            saved.setdefault(number, []).append(row)
+    warnings, seen = [], set()
+    for row in sorted(rows, key=lambda r: _rank(r.get("jra_top5_rank")) or math.inf):
+        number = _rank(row.get("number"))
+        if number is None or number in seen:
+            continue
+        seen.add(number)
+        days = _saved_interval_days(row, race_info)
+        matches = saved.get(number, [])
+        if days is None and len(matches) == 1:
+            days = _saved_interval_days(matches[0], race_info)
+        if days is not None and days >= 90:
+            warnings.append({"number": str(number), "name": str(row.get("name") or ""),
+                             "days": days, "is_top1": _rank(row.get("jra_top5_rank")) == 1})
+    return warnings
 
 
 def classify_jra_race_structure(
@@ -113,6 +165,7 @@ def _race_kind(info: Mapping[str, Any]) -> str:
 
 def build_jra_purchase_navigation(
     rows: Sequence[Mapping[str, Any]], *, race_mode: str, race_info: Mapping[str, Any],
+    saved_rows: Sequence[Mapping[str, Any]] = (),
 ) -> dict[str, Any]:
     """Consume canonical comparison fields only; never mutate or re-rank input.
 
@@ -181,5 +234,6 @@ def build_jra_purchase_navigation(
     result.update(status=status, description=DESCRIPTIONS[status], guides=list(GUIDES[status]),
                   horses=ordered, groups=groups, axis=axis, partners=partners,
                   leaders_match=match, top5_score_gap=score_gap, ability_gap=ability_gap, swap_count=swaps)
-    result.update(build_jra_buy_candidates(rows))
+    result.update(build_jra_buy_candidates(rows, status))
+    result["layoff_warnings"] = build_jra_layoff_warnings(rows, race_info, saved_rows)
     return result

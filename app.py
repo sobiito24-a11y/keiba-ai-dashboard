@@ -2435,6 +2435,7 @@ def render_jra_top5_result_summary(result: PredictionResult) -> None:
     navigation = build_jra_purchase_navigation(
         comparison.get("rows", []), race_mode=result.race_mode,
         race_info=getattr(result, "race_info", {}) or {},
+        saved_rows=result.overall_table.to_dict("records") if result.overall_table is not None else [],
     )
     navigation_html = jra_purchase_navigation_html(navigation)
     if navigation_html:

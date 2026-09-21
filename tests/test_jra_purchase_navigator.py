@@ -223,7 +223,11 @@ def test_compact_main_and_details_preserved(status,label):
         assert text in details.get_text()
     details.decompose();main=soup.get_text()
     assert label in main
-    for text in ('今回の買い候補','中心','本線','狙い','穴注意','買い方'):assert text in main
+    title = '今回の判断' if status == '評価分裂' else '今回の買い候補'
+    for text in (title,'本線','狙い','穴注意','買い方'):assert text in main
+    assert ('中心' in main) == (status == '強軸')
+    assert ('押さえ' in main) == (status == '上位混戦')
+    assert ('本線参考' in main) == (status == '評価分裂')
     for text in ('CORE','ABILITY','SETUP','Top5 2位差','運用ガイド',status):assert text not in main
 
 
@@ -237,3 +241,66 @@ def test_saved_snapshot_candidates_roundtrip():
     from core.jra_purchase_navigator import build_jra_buy_candidates
     assert build_jra_buy_candidates(restored.horse_evaluation.to_dict('records'))==build_jra_buy_candidates(prediction.horse_evaluation.to_dict('records'))
     assert serialize_prediction_result(prediction)==original
+
+
+@pytest.mark.parametrize('status', ['強軸','上位混戦','評価分裂'])
+def test_final_structure_specific_candidate_ranges(status):
+    from core.jra_purchase_navigator import build_jra_buy_candidates
+    rr=rows()
+    for r in rr:
+        r['v1_final_mark']='✔︎' if r['jra_top5_rank'] in (1,4,6) else '✓' if r['jra_top5_rank']==7 else ''
+    frozen=copy.deepcopy(rr)
+    nav=build_jra_buy_candidates(rr+rr,status)
+    chosen=nav['reference_candidates'] if status=='評価分裂' else nav['buy_candidates']
+    expected={
+        '強軸':[('1','中心'),('2','本線'),('3','本線'),('4','狙い'),('5','狙い')],
+        '上位混戦':[('1','本線'),('2','本線'),('3','本線'),('4','押さえ'),('6','押さえ'),('5','狙い')],
+        '評価分裂':[('1','本線参考'),('2','本線参考'),('3','本線参考'),('4','狙い'),('5','狙い')],
+    }
+    assert [(h['number'],h['role']) for h in chosen]==expected[status]
+    assert [h['number'] for h in nav['hole_attention']]==['7']
+    if status=='評価分裂':assert nav['buy_candidates']==[]
+    assert rr==frozen
+    for r in rr:r.update(odds=999,popularity=999,finish=1)
+    assert build_jra_buy_candidates(rr,status)==nav
+
+
+@pytest.mark.parametrize('days,warning',[(89,False),(90,True),(365,True),(None,False),(-1,False),('不明',False),(float('nan'),False),(True,False)])
+def test_layoff_boundary_display_only(days,warning):
+    rr=rows();rr[0]['_days_since_last']=days
+    frozen=copy.deepcopy(rr)
+    nav=build(rr)
+    assert bool(nav['layoff_warnings'])==warning
+    if warning:
+        assert nav['layoff_warnings'][0]['days']==days
+        html=jra_purchase_navigation_html(nav)
+        assert f'長期休養明け：{days}日' in html
+        assert '軸評価は高いが、休養明けのため固定は慎重' in html
+    assert json.dumps(rr,sort_keys=True)==json.dumps(frozen,sort_keys=True)
+    rr[0].pop('_days_since_last');base=build(rr)
+    assert {k:v for k,v in nav.items() if k!='layoff_warnings'}=={k:v for k,v in base.items() if k!='layoff_warnings'}
+
+
+def test_saved_previous_date_join_and_no_guessed_dates():
+    rr=rows()
+    saved=[{'馬番':'1','_past_runs':[{'label':'前走','race_date':'2025-09-20'}], 'jra_top5_rank':99,'v1_final_mark':'✓'}]
+    frozen=copy.deepcopy(saved)
+    nav=build_jra_purchase_navigation(rr,race_mode='jra',race_info={'surface':'芝','race_date':'2026-09-20'},saved_rows=saved)
+    assert nav['layoff_warnings']==[{'number':'1','name':'馬1','days':365,'is_top1':True}]
+    assert nav['buy_groups']['中心'][0]['number']=='1'
+    assert saved==frozen
+    for past in [{'label':'2走前','race_date':'2025-09-20'}, {'label':'前走','race_date':'09/20'}, {'label':'前走','race_date':'2027-09-20'}]:
+        saved[0]['_past_runs']=[past]
+        assert not build_jra_purchase_navigation(rr,race_mode='jra',race_info={'surface':'芝','race_date':'2026-09-20'},saved_rows=saved)['layoff_warnings']
+
+
+def test_layoff_snapshot_roundtrip_and_nar_jump_exclusion():
+    from core.jra_purchase_navigator import build_jra_layoff_warnings
+    p=result_for();p.overall_table=__import__('pandas').DataFrame([{'馬番':'1','_days_since_last':365}])
+    original=serialize_prediction_result(p)
+    restored=restore_prediction_result(load_keiba(keiba_bytes(build_event_snapshot([race_snapshot_from_result(p)])))['races'][0])
+    assert build_jra_layoff_warnings(rows(),{},restored.overall_table.to_dict('records'))[0]['days']==365
+    assert serialize_prediction_result(p)==original
+    assert build_jra_purchase_navigation(rows(),race_mode='nar',race_info={'surface':'芝'},saved_rows=p.overall_table.to_dict('records'))=={'show':False}
+    jump=build_jra_purchase_navigation(rows(),race_mode='jra',race_info={'surface':'障害'},saved_rows=p.overall_table.to_dict('records'))
+    assert jump['status']=='対象外' and 'layoff_warnings' not in jump
