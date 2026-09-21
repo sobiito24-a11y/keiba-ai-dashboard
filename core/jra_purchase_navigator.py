@@ -9,6 +9,7 @@ import unicodedata
 from decimal import Decimal
 from datetime import date
 from typing import Any, Mapping, Sequence
+from .jra_display_mark import jra_display_mark_from_row
 
 
 DESCRIPTIONS = {
@@ -73,7 +74,7 @@ def build_jra_buy_candidates(rows: Sequence[Mapping[str, Any]], status: str = "�
         if number is None or rank is None or number in seen:
             continue
         seen.add(number)
-        mark = str(row.get("v1_final_mark") or "").strip().replace("\ufe0e", "").replace("\ufe0f", "")
+        mark = jra_display_mark_from_row(row).replace("\ufe0e", "").replace("\ufe0f", "")
         horse = {"number": str(number), "name": str(row.get("name") or "")}
         if status == "上位混戦":
             role = "本線" if rank <= 3 else "押さえ" if rank <= 5 else "狙い" if mark == "✔" else None
@@ -83,7 +84,7 @@ def build_jra_buy_candidates(rows: Sequence[Mapping[str, Any]], status: str = "�
             role = "中心" if rank == 1 else "本線" if rank <= 3 else "狙い" if mark == "✔" else None
         if role:
             candidates.append(dict(horse, role=role))
-        elif rank > 5 and (mark == "✓" or str(row.get("jra_warning_candidate")).lower() in {"true", "1"}):
+        elif mark == "✓":
             attention.append(horse)
     return {"buy_candidates": [] if status == "評価分裂" else candidates,
             "reference_candidates": candidates if status == "評価分裂" else [], "buy_groups": {

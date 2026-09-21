@@ -30,6 +30,7 @@ from core.betting_recommendation import (
 from core.condition_fit import condition_fit_badge_text, resolved_condition_fit
 from core.course_materials import four_corner_rates_display
 from core.jra_purchase_navigator import build_jra_purchase_navigation
+from core.jra_display_mark import jra_display_mark_from_row
 from core.jra_purchase_navigation_ui import jra_purchase_navigation_html
 from core.investment_decision import (
     InvestmentDecision,
@@ -2433,7 +2434,7 @@ def render_jra_top5_result_summary(result: PredictionResult) -> None:
     if comparison.get("rows"):
         st.markdown(jra_top5_conclusion_html(comparison), unsafe_allow_html=True)
     navigation = build_jra_purchase_navigation(
-        comparison.get("rows", []), race_mode=result.race_mode,
+        jra_enriched_display_rows(result, comparison=comparison), race_mode=result.race_mode,
         race_info=getattr(result, "race_info", {}) or {},
         saved_rows=result.overall_table.to_dict("records") if result.overall_table is not None else [],
     )
@@ -5531,16 +5532,18 @@ def nar_short_attention_reason(row: dict[str, Any]) -> str:
     return clean_text(row.get("nar_top5_role")) or "純能力Top5"
 
 
-def jra_enriched_display_rows(result: PredictionResult, rows: list[dict[str, Any]] | None = None) -> list[dict[str, Any]]:
+def jra_enriched_display_rows(result: PredictionResult, rows: list[dict[str, Any]] | None = None,
+                              *, comparison: dict[str, Any] | None = None) -> list[dict[str, Any]]:
     source_rows = list(rows or result_rows(result))
     if not source_rows:
-        return []
-    comparison = build_full_field_comparison(
-        source_rows,
-        race_mode="jra",
-        sort_mode="current",
-        race_info=getattr(result, "race_info", {}) or {},
-    )
+        return list((comparison or {}).get("rows", []))
+    if comparison is None:
+        comparison = build_full_field_comparison(
+            source_rows,
+            race_mode="jra",
+            sort_mode="current",
+            race_info=getattr(result, "race_info", {}) or {},
+        )
     comparison_by_number = {
         normalize_horse_number_key(row.get("number")): row
         for row in comparison.get("rows", [])
@@ -6312,12 +6315,7 @@ def horse_evaluation_card_html(row: dict[str, Any], race_mode: str) -> str:
 
 def display_mark_from_row(row: dict[str, Any], race_mode: str = "") -> str:
     if clean_text(race_mode).lower() == "jra":
-        mark = clean_text(row.get("v1_final_mark"))
-        if mark:
-            return mark
-        mark = clean_text(row.get("ver3_final_mark"))
-        if mark:
-            return mark
+        return jra_display_mark_from_row(row)
     if clean_text(race_mode).lower() == "nar":
         return nar_display_mark_from_row(row)
     if "mark_v4" in row and not is_missing_value(row.get("mark_v4")):

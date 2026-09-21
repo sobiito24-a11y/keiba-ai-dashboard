@@ -194,21 +194,21 @@ def test_buy_candidates_canonical_marks_dedup_attention_and_odds():
     original=copy.deepcopy(rr)
     nav=build(rr)
     assert [(h['number'],h['role']) for h in nav['buy_candidates']]==[('1','中心'),('2','本線'),('3','本線'),('5','狙い')]
-    assert [h['number'] for h in nav['hole_attention']]==['7']
+    assert [h['number'] for h in nav['hole_attention']]==['6','7']
     assert rr==original
     assert build_jra_buy_candidates(rr+rr)==build_jra_buy_candidates(rr)
     for r in rr:r.update(odds=999,popularity=99,market_rank=88,finish=1)
     assert build(rr)==nav
 
 
-def test_warning_flag_only_attention_and_legacy_marks_ignored():
+def test_warning_flag_without_visible_mark_is_not_attention():
     rr=rows()
     for r in rr:
         r['v1_mark']='✔︎'
         r['jra_warning_candidate']=int(r['number'])==7
     nav=build(rr)
     assert len(nav['buy_candidates'])==3
-    assert [h['number'] for h in nav['hole_attention']]==['7']
+    assert nav['hole_attention']==[]
 
 
 @pytest.mark.parametrize('status,label',[('強軸','軸あり'),('上位混戦','複数候補'),('評価分裂','見送り寄り')])
@@ -304,3 +304,70 @@ def test_layoff_snapshot_roundtrip_and_nar_jump_exclusion():
     assert build_jra_purchase_navigation(rows(),race_mode='nar',race_info={'surface':'芝'},saved_rows=p.overall_table.to_dict('records'))=={'show':False}
     jump=build_jra_purchase_navigation(rows(),race_mode='jra',race_info={'surface':'障害'},saved_rows=p.overall_table.to_dict('records'))
     assert jump['status']=='対象外' and 'layoff_warnings' not in jump
+
+
+def test_hanshin_20260921_r8_actual_display_mark_regression():
+    from pathlib import Path
+    from core.jra_display_mark import jra_display_mark_from_row
+    fixture=json.loads((Path(__file__).parent/'fixtures/jra_20260921_hanshin8_display_marks.json').read_text(encoding='utf-8'))
+    rr=fixture['rows'];frozen=copy.deepcopy(rr)
+    nav=build_jra_purchase_navigation(rr,race_mode='jra',race_info=fixture['race_info'])
+    assert nav['status']=='上位混戦'
+    for role,numbers in [('本線',['4','8','6']),('押さえ',['3','2']),('狙い',['7','12'])]:
+        assert [h['number'] for h in nav['buy_groups'][role]]==numbers
+    assert [h['number'] for h in nav['hole_attention']]==['10']
+    assert len({h['number'] for h in nav['buy_candidates']})==7
+    assert {h['number']:jra_display_mark_from_row(h) for h in rr}=={'4':'◎','8':'○','6':'▲','3':'△','2':'△','7':'✔︎','10':'✓','11':'','9':'','1':'','5':'','12':'✔︎'}
+    assert rr==frozen
+    for r in rr:r.update(odds=999,popularity=99)
+    assert build_jra_purchase_navigation(rr,race_mode='jra',race_info=fixture['race_info'])==nav
+
+
+@pytest.mark.parametrize('row,expected',[
+    ({'v1_final_mark':'△','ver3_final_mark':'✔︎','表示印':'✓'},'△'),
+    ({'v1_final_mark':'','ver3_final_mark':'✔︎','表示印':'✓'},'✔︎'),
+    ({'v1_final_mark':None,'ver3_final_mark':'','表示印':'✓'},'✓'),
+    ({'mark_v4':'✔︎','表示印':'✓'},'✔︎'),
+    ({'mark_v4':float('nan'),'表示印':'','display_mark':'✓'},''),
+    ({'display_mark':'✓'},'✓'),
+    ({'印':'','最終印':'✔︎'},'✔︎'),
+])
+def test_jra_shared_display_precedence(row,expected):
+    import app
+    from core.jra_display_mark import jra_display_mark_from_row
+    assert jra_display_mark_from_row(row)==expected
+    assert app.display_mark_from_row(row,'jra')==expected
+
+
+@pytest.mark.parametrize('status',['強軸','上位混戦','評価分裂'])
+def test_display_checks_obey_rank_role_priority(status):
+    from core.jra_purchase_navigator import build_jra_buy_candidates
+    rr=rows()
+    for r in rr:r['v1_final_mark']='✓' if r['jra_top5_rank']==1 else '✔︎'
+    nav=build_jra_buy_candidates(rr,status)
+    chosen=nav['reference_candidates'] if status=='評価分裂' else nav['buy_candidates']
+    assert chosen[0]['role']=={'強軸':'中心','上位混戦':'本線','評価分裂':'本線参考'}[status]
+    assert not nav['hole_attention']
+    assert len(chosen)==len({h['number'] for h in chosen})
+
+
+def test_real_snapshot_display_merge_used_by_navigation():
+    import app
+    from pathlib import Path
+    from unittest.mock import patch
+    from bs4 import BeautifulSoup
+    f=json.loads((Path(__file__).parent/'fixtures/jra_20260921_hanshin8_display_marks.json').read_text(encoding='utf-8'))
+    source=copy.deepcopy(f['rows'])
+    # The comparison omits legacy display fields; the real table restores them from the saved rows.
+    comparison={'rows':[{k:v for k,v in r.items() if k not in ('ver3_final_mark','表示印')} for r in source]}
+    p=result_for();p.race_info=f['race_info'];p.horse_evaluation=__import__('pandas').DataFrame(source)
+    original=serialize_prediction_result(p)
+    merged=app.jra_enriched_display_rows(p,comparison=comparison)
+    assert [app.display_mark_from_row(h,'jra') for h in merged]==['◎','○','▲','△','△','✔︎','✓','','','','','✔︎']
+    with patch.object(app,'jra_comparison_from_result',return_value=comparison),patch.object(app.st,'markdown') as render:
+        app.render_jra_top5_result_summary(p)
+    html=render.call_args_list[-1].args[0]
+    text=BeautifulSoup(html,'html.parser').get_text()
+    assert '狙い：7番 レッドフレーザー / 12番 リリーサンダー' in text
+    assert '穴注意：10番 エアフォースワン' in text
+    assert serialize_prediction_result(p)==original
