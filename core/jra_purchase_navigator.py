@@ -64,6 +64,26 @@ def calculate_top5_swap_count(pure_top5: set[str], jra_top5: set[str]) -> int:
     return len(pure_top5 - jra_top5)
 
 
+def build_jra_buy_candidates(rows: Sequence[Mapping[str, Any]]) -> dict[str, Any]:
+    """Derive display candidates from canonical ranks/marks, without editing rows."""
+    candidates, attention, seen = [], [], set()
+    for row in sorted(rows, key=lambda r: _rank(r.get("jra_top5_rank")) or math.inf):
+        number, rank = _rank(row.get("number")), _rank(row.get("jra_top5_rank"))
+        if number is None or rank is None or number in seen:
+            continue
+        seen.add(number)
+        mark = str(row.get("v1_final_mark") or "").strip().replace("\ufe0e", "").replace("\ufe0f", "")
+        horse = {"number": str(number), "name": str(row.get("name") or "")}
+        role = "中心" if rank == 1 else "本線" if rank <= 3 else "狙い" if mark == "✔" else None
+        if role:
+            candidates.append(dict(horse, role=role))
+        elif rank > 5 and (mark == "✓" or str(row.get("jra_warning_candidate")).lower() in {"true", "1"}):
+            attention.append(horse)
+    return {"buy_candidates": candidates, "buy_groups": {
+        role: [h for h in candidates if h["role"] == role] for role in ("中心", "本線", "狙い")
+    }, "hole_attention": attention}
+
+
 def classify_jra_race_structure(
     *, leaders_match: bool | None, top5_score_gap: Any,
     ability_gap: Any, swap_count: Any,
@@ -161,4 +181,5 @@ def build_jra_purchase_navigation(
     result.update(status=status, description=DESCRIPTIONS[status], guides=list(GUIDES[status]),
                   horses=ordered, groups=groups, axis=axis, partners=partners,
                   leaders_match=match, top5_score_gap=score_gap, ability_gap=ability_gap, swap_count=swaps)
+    result.update(build_jra_buy_candidates(rows))
     return result

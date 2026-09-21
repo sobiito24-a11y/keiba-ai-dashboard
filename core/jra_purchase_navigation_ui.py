@@ -11,11 +11,11 @@ def jra_purchase_navigation_html(navigation: Mapping[str, Any]) -> str:
     def text(value: Any) -> str:
         return escape(str(value), quote=True)
 
-    def horses(items) -> str:
+    def horses(items, empty="該当なし") -> str:
         return " / ".join(
             f'<span style="display:inline-block;max-width:100%;">{text(h["number"])}番 {text(h["name"])}</span>'
             for h in items
-        ) or "該当なし"
+        ) or empty
 
     parts = ['<section class="ka-dashboard-card" aria-label="JRA 買い方ナビ" style="overflow-wrap:anywhere;">',
              '<div class="ka-dashboard-title">JRA 買い方ナビ</div>']
@@ -23,9 +23,15 @@ def jra_purchase_navigation_html(navigation: Mapping[str, Any]) -> str:
     if status in {"対象外", "判定材料不足"}:
         parts.append(f'<p><strong>{text(navigation["description"] if status == "対象外" else status)}</strong></p>')
     else:
-        parts += [f'<p><strong style="font-size:1.1rem;">レース判定：{text(status)}</strong><br>{text(navigation["description"])}</p>']
-        if status == "評価分裂":
-            parts.append('<p><strong>見送り優先</strong>：印順購入は非推奨。買う場合は少額で候補を広めに確認。</p>')
+        display_status = {"強軸": "軸あり", "上位混戦": "複数候補", "評価分裂": "見送り寄り"}[status]
+        buying = {"強軸": "中心を軸候補に、本線・狙いから相手を選ぶ", "上位混戦": "中心固定はせず、本線・狙いを含めて複数候補で考える", "評価分裂": "候補の評価が割れているため、無理に買わない"}[status]
+        parts.append(f'<p><strong style="font-size:1.1rem;">今回の買い候補</strong> ― {display_status}</p>')
+        for role in ("中心", "本線", "狙い"):
+            parts.append(f'<p><strong>{role}</strong>：{horses(navigation["buy_groups"][role], empty="なし" if role == "狙い" else "該当なし")}</p>')
+        parts.append(f'<p><strong>穴注意</strong>：{horses(navigation["hole_attention"], empty="なし")}</p>')
+        parts.append(f'<p><strong>買い方</strong>：{buying}</p>')
+        parts.append('<details><summary>詳細を見る</summary>')
+        parts.append(f'<p>{text(navigation["description"])}</p>')
         parts += [
                   '<div class="ka-note" style="display:flex;flex-wrap:wrap;gap:.35rem 1rem;">',
                   '<span>純能力1位とTop5 1位：'+('一致' if navigation['leaders_match'] else '不一致')+'</span>',
@@ -41,6 +47,6 @@ def jra_purchase_navigation_html(navigation: Mapping[str, Any]) -> str:
         for role, label in labels.items():
             parts.append(f'<p><strong>{role}</strong> <span class="ka-note">{label}</span><br>{horses(navigation["groups"][role])}</p>')
         parts.append('<strong>運用ガイド</strong><ul>'+''.join(f'<li>{text(g)}</li>' for g in navigation['guides'])+'</ul>')
-        parts.append('<div class="ka-note">◎は現行Top5の最上位評価、強軸はレース構造の判定です。◎でも上位混戦・評価分裂になる場合があります。</div>')
+        parts.append('<div class="ka-note">◎は現行Top5の最上位評価です。軸あり・複数候補・見送り寄りは別のレース構造判定です。中心はTop5 1位を示し、単独軸の推奨とは限りません。買い候補はTop5 1〜3位と最終印✔︎。穴注意は自動追加しません。</div></details>')
     parts.append('</section>')
     return ''.join(parts)

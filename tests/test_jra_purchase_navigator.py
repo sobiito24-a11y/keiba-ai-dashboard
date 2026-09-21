@@ -183,3 +183,57 @@ with patch.object(app, 'jra_comparison_from_result', return_value={'rows':rows()
     nar=AppTest.from_string(script.replace("race_mode='jra',race_info", "race_mode='nar',race_info"),default_timeout=20).run()
     assert not nar.exception
     assert all('JRA 買い方ナビ' not in m.value for m in nar.markdown)
+
+
+def test_buy_candidates_canonical_marks_dedup_attention_and_odds():
+    from core.jra_purchase_navigator import build_jra_buy_candidates
+    rr=rows()
+    for r in rr:
+        r['v1_final_mark']={1:'✔︎',2:'✔',3:'▲',4:'△',5:'✔︎',6:'✓',7:'✓'}.get(r['number'] if isinstance(r['number'],int) else int(r['number']))
+        r['odds']=2.0
+    original=copy.deepcopy(rr)
+    nav=build(rr)
+    assert [(h['number'],h['role']) for h in nav['buy_candidates']]==[('1','中心'),('2','本線'),('3','本線'),('5','狙い')]
+    assert [h['number'] for h in nav['hole_attention']]==['7']
+    assert rr==original
+    assert build_jra_buy_candidates(rr+rr)==build_jra_buy_candidates(rr)
+    for r in rr:r.update(odds=999,popularity=99,market_rank=88,finish=1)
+    assert build(rr)==nav
+
+
+def test_warning_flag_only_attention_and_legacy_marks_ignored():
+    rr=rows()
+    for r in rr:
+        r['v1_mark']='✔︎'
+        r['jra_warning_candidate']=int(r['number'])==7
+    nav=build(rr)
+    assert len(nav['buy_candidates'])==3
+    assert [h['number'] for h in nav['hole_attention']]==['7']
+
+
+@pytest.mark.parametrize('status,label',[('強軸','軸あり'),('上位混戦','複数候補'),('評価分裂','見送り寄り')])
+def test_compact_main_and_details_preserved(status,label):
+    from bs4 import BeautifulSoup
+    nav=build(rows());nav['status']=status
+    soup=BeautifulSoup(jra_purchase_navigation_html(nav),'html.parser')
+    details=soup.find('details')
+    assert details is not None and not details.has_attr('open')
+    assert details.find('summary').get_text()=='詳細を見る'
+    for text in ('CORE','ABILITY','SETUP','Top5 2位差','純能力2位差','Top5入替','運用ガイド'):
+        assert text in details.get_text()
+    details.decompose();main=soup.get_text()
+    assert label in main
+    for text in ('今回の買い候補','中心','本線','狙い','穴注意','買い方'):assert text in main
+    for text in ('CORE','ABILITY','SETUP','Top5 2位差','運用ガイド',status):assert text not in main
+
+
+def test_saved_snapshot_candidates_roundtrip():
+    prediction=result_for()
+    prediction.horse_evaluation=__import__('pandas').DataFrame(rows())
+    prediction.horse_evaluation.loc[4,'v1_final_mark']='✔︎'
+    original=serialize_prediction_result(prediction)
+    event=build_event_snapshot([race_snapshot_from_result(prediction)])
+    restored=restore_prediction_result(load_keiba(keiba_bytes(event))['races'][0])
+    from core.jra_purchase_navigator import build_jra_buy_candidates
+    assert build_jra_buy_candidates(restored.horse_evaluation.to_dict('records'))==build_jra_buy_candidates(prediction.horse_evaluation.to_dict('records'))
+    assert serialize_prediction_result(prediction)==original
