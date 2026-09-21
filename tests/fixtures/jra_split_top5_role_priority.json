@@ -1,0 +1,200 @@
+{
+  "source_file": "20260921_all.keiba",
+  "source_sha256": "dd3848d91d6d72d247e087011eb0473d5ed42f0e712f815a97d3b75fe76bf19b",
+  "race_id": "202609040710",
+  "race_info": {
+    "class_label": "B級",
+    "class_rank": 50,
+    "direction": "右",
+    "distance": 2200,
+    "distance_label": "芝2200m",
+    "going": "良",
+    "label": "芝2200m右",
+    "race_data": "15:05発走 / 芝2200m (右 B) / 天候:曇 / 馬場:良",
+    "race_data2": "4回 阪神 7日目 サラ系３歳以上 ３勝クラス (混)[指] ハンデ 16頭 本賞金:1870,750,470,280,187万円",
+    "race_date": "2026-09-21",
+    "race_name": "キタサンブラックC",
+    "racecourse": "阪神",
+    "raw": "15:05発走 / 芝2200m (右 B) / 天候:曇 / 馬場:良",
+    "side": "",
+    "surface": "芝"
+  },
+  "rows": [
+    {
+      "number": "4",
+      "name": "ミスタージーティー",
+      "_v1_ability_rank": 2,
+      "jra_pure_ability_score": 98.7,
+      "jra_top5_rank": 1,
+      "jra_top5_score": 101.45,
+      "v1_final_mark": "◎",
+      "ver3_final_mark": "○",
+      "表示印": "▲"
+    },
+    {
+      "number": "15",
+      "name": "ベトルス",
+      "_v1_ability_rank": 1,
+      "jra_pure_ability_score": 100.5,
+      "jra_top5_rank": 2,
+      "jra_top5_score": 99.25,
+      "v1_final_mark": "○",
+      "ver3_final_mark": "◎",
+      "表示印": "○"
+    },
+    {
+      "number": "14",
+      "name": "サトノクローク",
+      "_v1_ability_rank": 3,
+      "jra_pure_ability_score": 96.5,
+      "jra_top5_rank": 3,
+      "jra_top5_score": 99.25,
+      "v1_final_mark": "▲",
+      "ver3_final_mark": "▲",
+      "表示印": "△"
+    },
+    {
+      "number": "8",
+      "name": "アルマデオロ",
+      "_v1_ability_rank": 6,
+      "jra_pure_ability_score": 94.0,
+      "jra_top5_rank": 4,
+      "jra_top5_score": 96.75,
+      "v1_final_mark": "✔︎",
+      "ver3_final_mark": "✔︎",
+      "表示印": "✓"
+    },
+    {
+      "number": "11",
+      "name": "ジョイボーイ",
+      "_v1_ability_rank": 4,
+      "jra_pure_ability_score": 94.6,
+      "jra_top5_rank": 5,
+      "jra_top5_score": 95.35,
+      "v1_final_mark": "△",
+      "ver3_final_mark": "△",
+      "表示印": "◎"
+    },
+    {
+      "number": "16",
+      "name": "ロードガレリア",
+      "_v1_ability_rank": 7,
+      "jra_pure_ability_score": 93.8,
+      "jra_top5_rank": 6,
+      "jra_top5_score": 94.55,
+      "v1_final_mark": "",
+      "ver3_final_mark": "",
+      "表示印": "✓"
+    },
+    {
+      "number": "5",
+      "name": "スパークリシャール",
+      "_v1_ability_rank": 5,
+      "jra_pure_ability_score": 94.6,
+      "jra_top5_rank": 7,
+      "jra_top5_score": 93.35,
+      "v1_final_mark": "",
+      "ver3_final_mark": "△",
+      "表示印": "△"
+    },
+    {
+      "number": "3",
+      "name": "レジェンドシップ",
+      "_v1_ability_rank": 10,
+      "jra_pure_ability_score": 89.9,
+      "jra_top5_rank": 8,
+      "jra_top5_score": 92.65,
+      "v1_final_mark": "",
+      "ver3_final_mark": "✔︎",
+      "表示印": ""
+    },
+    {
+      "number": "2",
+      "name": "テーオーダグラス",
+      "_v1_ability_rank": 8,
+      "jra_pure_ability_score": 91.3,
+      "jra_top5_rank": 9,
+      "jra_top5_score": 92.05,
+      "v1_final_mark": "",
+      "ver3_final_mark": "",
+      "表示印": ""
+    },
+    {
+      "number": "12",
+      "name": "サークルオブジョイ",
+      "_v1_ability_rank": 9,
+      "jra_pure_ability_score": 90.2,
+      "jra_top5_rank": 10,
+      "jra_top5_score": 90.95,
+      "v1_final_mark": "",
+      "ver3_final_mark": "",
+      "表示印": ""
+    },
+    {
+      "number": "1",
+      "name": "キタサンハナビラ",
+      "_v1_ability_rank": 12,
+      "jra_pure_ability_score": 89.1,
+      "jra_top5_rank": 11,
+      "jra_top5_score": 89.85,
+      "v1_final_mark": "",
+      "ver3_final_mark": "✔︎",
+      "表示印": ""
+    },
+    {
+      "number": "10",
+      "name": "ナリタエスペランサ",
+      "_v1_ability_rank": 15,
+      "jra_pure_ability_score": 87.1,
+      "jra_top5_rank": 12,
+      "jra_top5_score": 89.85,
+      "v1_final_mark": "",
+      "ver3_final_mark": "✔︎",
+      "表示印": ""
+    },
+    {
+      "number": "7",
+      "name": "チルカーノ",
+      "_v1_ability_rank": 11,
+      "jra_pure_ability_score": 89.6,
+      "jra_top5_rank": 13,
+      "jra_top5_score": 88.35,
+      "v1_final_mark": "",
+      "ver3_final_mark": "",
+      "表示印": ""
+    },
+    {
+      "number": "6",
+      "name": "シンゼンカガ",
+      "_v1_ability_rank": 13,
+      "jra_pure_ability_score": 88.6,
+      "jra_top5_rank": 14,
+      "jra_top5_score": 87.35,
+      "v1_final_mark": "",
+      "ver3_final_mark": "",
+      "表示印": ""
+    },
+    {
+      "number": "9",
+      "name": "ファームツエンティ",
+      "_v1_ability_rank": 14,
+      "jra_pure_ability_score": 87.5,
+      "jra_top5_rank": 15,
+      "jra_top5_score": 86.25,
+      "v1_final_mark": "",
+      "ver3_final_mark": "",
+      "表示印": ""
+    },
+    {
+      "number": "13",
+      "name": "タイセイフェリーク",
+      "_v1_ability_rank": 16,
+      "jra_pure_ability_score": 86.3,
+      "jra_top5_rank": 16,
+      "jra_top5_score": 85.05,
+      "v1_final_mark": "",
+      "ver3_final_mark": "",
+      "表示印": ""
+    }
+  ]
+}

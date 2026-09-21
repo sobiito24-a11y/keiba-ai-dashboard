@@ -79,16 +79,16 @@ def build_jra_buy_candidates(rows: Sequence[Mapping[str, Any]], status: str = "�
         if status == "上位混戦":
             role = "本線" if rank <= 3 else "押さえ" if rank <= 5 else "狙い" if mark == "✔" else None
         elif status == "評価分裂":
-            role = "本線参考" if rank <= 3 else "狙い" if mark == "✔" else None
+            role = "本線参考" if rank <= 3 else "押さえ参考" if rank <= 5 else "狙い" if mark == "✔" else None
         else:
-            role = "中心" if rank == 1 else "本線" if rank <= 3 else "狙い" if mark == "✔" else None
+            role = "中心" if rank == 1 else "本線" if rank <= 3 else "押さえ参考" if rank <= 5 else "狙い" if mark == "✔" else None
         if role:
             candidates.append(dict(horse, role=role))
         elif mark == "✓":
             attention.append(horse)
-    return {"buy_candidates": [] if status == "評価分裂" else candidates,
-            "reference_candidates": candidates if status == "評価分裂" else [], "buy_groups": {
-        role: [h for h in candidates if h["role"] == role] for role in ("中心", "本線", "押さえ", "本線参考", "狙い")
+    return {"buy_candidates": [] if status == "評価分裂" else [h for h in candidates if h["role"] != "押さえ参考"],
+            "reference_candidates": candidates if status == "評価分裂" else [h for h in candidates if h["role"] == "押さえ参考"], "buy_groups": {
+        role: [h for h in candidates if h["role"] == role] for role in ("中心", "本線", "押さえ", "本線参考", "押さえ参考", "狙い")
     }, "hole_attention": attention}
 
 

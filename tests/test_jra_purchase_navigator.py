@@ -194,7 +194,8 @@ def test_buy_candidates_canonical_marks_dedup_attention_and_odds():
     original=copy.deepcopy(rr)
     nav=build(rr)
     assert [(h['number'],h['role']) for h in nav['buy_candidates']]==[('1','中心'),('2','本線'),('3','本線'),('5','狙い')]
-    assert [h['number'] for h in nav['hole_attention']]==['6','7']
+    assert [h['number'] for h in nav['hole_attention']]==['7']
+    assert [h['number'] for h in nav['buy_groups']['押さえ参考']]==['4','6']
     assert rr==original
     assert build_jra_buy_candidates(rr+rr)==build_jra_buy_candidates(rr)
     for r in rr:r.update(odds=999,popularity=99,market_rank=88,finish=1)
@@ -226,7 +227,7 @@ def test_compact_main_and_details_preserved(status,label):
     title = '今回の判断' if status == '評価分裂' else '今回の買い候補'
     for text in (title,'本線','狙い','穴注意','買い方'):assert text in main
     assert ('中心' in main) == (status == '強軸')
-    assert ('押さえ' in main) == (status == '上位混戦')
+    assert '押さえ' in main
     assert ('本線参考' in main) == (status == '評価分裂')
     for text in ('CORE','ABILITY','SETUP','Top5 2位差','運用ガイド',status):assert text not in main
 
@@ -253,11 +254,13 @@ def test_final_structure_specific_candidate_ranges(status):
     nav=build_jra_buy_candidates(rr+rr,status)
     chosen=nav['reference_candidates'] if status=='評価分裂' else nav['buy_candidates']
     expected={
-        '強軸':[('1','中心'),('2','本線'),('3','本線'),('4','狙い'),('5','狙い')],
+        '強軸':[('1','中心'),('2','本線'),('3','本線'),('5','狙い')],
         '上位混戦':[('1','本線'),('2','本線'),('3','本線'),('4','押さえ'),('6','押さえ'),('5','狙い')],
-        '評価分裂':[('1','本線参考'),('2','本線参考'),('3','本線参考'),('4','狙い'),('5','狙い')],
+        '評価分裂':[('1','本線参考'),('2','本線参考'),('3','本線参考'),('4','押さえ参考'),('6','押さえ参考'),('5','狙い')],
     }
     assert [(h['number'],h['role']) for h in chosen]==expected[status]
+    if status=='強軸':
+        assert [(h['number'],h['role']) for h in nav['reference_candidates']]==[('4','押さえ参考'),('6','押さえ参考')]
     assert [h['number'] for h in nav['hole_attention']]==['7']
     if status=='評価分裂':assert nav['buy_candidates']==[]
     assert rr==frozen
@@ -371,3 +374,44 @@ def test_real_snapshot_display_merge_used_by_navigation():
     assert '狙い：7番 レッドフレーザー / 12番 リリーサンダー' in text
     assert '穴注意：10番 エアフォースワン' in text
     assert serialize_prediction_result(p)==original
+
+
+def test_hanshin_20260921_r10_top5_role_priority_regression():
+    from pathlib import Path
+    from bs4 import BeautifulSoup
+    f=json.loads((Path(__file__).parent/'fixtures/jra_split_top5_role_priority.json').read_text(encoding='utf-8'))
+    rr=f['rows'];before=copy.deepcopy(rr)
+    nav=build_jra_purchase_navigation(rr,race_mode='jra',race_info=f['race_info'])
+    assert f['race_id']=='202609040710' and nav['status']=='評価分裂'
+    assert [h['number'] for h in nav['buy_groups']['本線参考']]==['4','15','14']
+    assert [(h['number'],h['name']) for h in nav['buy_groups']['押さえ参考']]==[('8','アルマデオロ'),('11','ジョイボーイ')]
+    assert [(h['number'],h['name']) for h in nav['buy_groups']['狙い']]==[('3','レジェンドシップ'),('1','キタサンハナビラ'),('10','ナリタエスペランサ')]
+    assert [(h['number'],h['name']) for h in nav['hole_attention']]==[('16','ロードガレリア')]
+    assert not nav['buy_candidates']
+    shown=nav['reference_candidates']+nav['hole_attention']
+    assert len(shown)==len({h['number'] for h in shown})==9
+    assert rr==before
+    soup=BeautifulSoup(jra_purchase_navigation_html(nav),'html.parser');soup.find('details').decompose()
+    text=soup.get_text()
+    assert '押さえ参考：8番 アルマデオロ / 11番 ジョイボーイ' in text
+    assert '狙い：3番 レジェンドシップ / 1番 キタサンハナビラ / 10番 ナリタエスペランサ' in text
+    assert '穴注意：16番 ロードガレリア' in text
+
+
+@pytest.mark.parametrize('mark4,mark5',[('✔︎','✓'),('✓','✔︎'),('△','△')])
+def test_strong_axis_top4_top5_are_reference_not_default_candidates(mark4,mark5):
+    from bs4 import BeautifulSoup
+    rr=rows();rr[3]['v1_final_mark']=mark4;rr[4]['v1_final_mark']=mark5
+    rr[5]['v1_final_mark']='✔︎';rr[6]['v1_final_mark']='✓'
+    before=copy.deepcopy(rr);nav=build(rr)
+    assert nav['status']=='強軸'
+    assert [(h['number'],h['role']) for h in nav['buy_candidates']]==[('1','中心'),('2','本線'),('3','本線'),('5','狙い')]
+    assert [(h['number'],h['role']) for h in nav['reference_candidates']]==[('4','押さえ参考'),('6','押さえ参考')]
+    assert [h['number'] for h in nav['hole_attention']]==['7']
+    shown=nav['buy_candidates']+nav['reference_candidates']+nav['hole_attention']
+    assert len(shown)==len({h['number'] for h in shown})==7
+    soup=BeautifulSoup(jra_purchase_navigation_html(nav),'html.parser');soup.find('details').decompose()
+    text=soup.get_text()
+    assert '押さえ参考：4番 馬4 / 6番 馬6' in text
+    assert '狙い：5番 馬5' in text and '穴注意：7番 馬7' in text
+    assert rr==before
