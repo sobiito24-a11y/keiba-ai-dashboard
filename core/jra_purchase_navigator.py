@@ -67,28 +67,29 @@ def calculate_top5_swap_count(pure_top5: set[str], jra_top5: set[str]) -> int:
 
 
 def build_jra_buy_candidates(rows: Sequence[Mapping[str, Any]], status: str = "強軸") -> dict[str, Any]:
-    """Derive display candidates from canonical ranks/marks, without editing rows."""
+    """Select by the table's final display mark; ranks only sort within roles."""
     candidates, attention, seen = [], [], set()
-    for row in sorted(rows, key=lambda r: _rank(r.get("jra_top5_rank")) or math.inf):
-        number, rank = _rank(row.get("number")), _rank(row.get("jra_top5_rank"))
-        if number is None or rank is None or number in seen:
+    def order(row):
+        score = _number(row.get("jra_top5_score"))
+        return (_rank(row.get("jra_top5_rank")) or math.inf,
+                -score if score is not None else math.inf)
+    roles = {"◎": "中心", "○": "本線", "▲": "本線", "✔": "狙い", "△": "押さえ参考"}
+    # Python's stable sort preserves the detail table order for exact ties.
+    for row in sorted(rows, key=order):
+        number = _rank(row.get("number"))
+        if number is None or number in seen:
             continue
         seen.add(number)
         mark = jra_display_mark_from_row(row).replace("\ufe0e", "").replace("\ufe0f", "")
         horse = {"number": str(number), "name": str(row.get("name") or "")}
-        if status == "上位混戦":
-            role = "本線" if rank <= 3 else "押さえ" if rank <= 5 else "狙い" if mark == "✔" else None
-        elif status == "評価分裂":
-            role = "本線参考" if rank <= 3 else "押さえ参考" if rank <= 5 else "狙い" if mark == "✔" else None
-        else:
-            role = "中心" if rank == 1 else "本線" if rank <= 3 else "押さえ参考" if rank <= 5 else "狙い" if mark == "✔" else None
+        role = roles.get(mark)
         if role:
             candidates.append(dict(horse, role=role))
         elif mark == "✓":
             attention.append(horse)
     return {"buy_candidates": [] if status == "評価分裂" else [h for h in candidates if h["role"] != "押さえ参考"],
             "reference_candidates": candidates if status == "評価分裂" else [h for h in candidates if h["role"] == "押さえ参考"], "buy_groups": {
-        role: [h for h in candidates if h["role"] == role] for role in ("中心", "本線", "押さえ", "本線参考", "押さえ参考", "狙い")
+        role: [h for h in candidates if h["role"] == role] for role in ("中心", "本線", "押さえ参考", "狙い")
     }, "hole_attention": attention}
 
 

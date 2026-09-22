@@ -26,12 +26,15 @@ def jra_purchase_navigation_html(navigation: Mapping[str, Any]) -> str:
         display_status = {"強軸": "軸あり", "上位混戦": "複数候補", "評価分裂": "見送り寄り"}[status]
         buying = {"強軸": "中心を軸候補に、本線・狙いから相手を選ぶ", "上位混戦": "1頭固定せず、本線・押さえ・狙いから絞る", "評価分裂": "評価が割れているため、無理に買わない"}[status]
         title = "今回の判断" if status == "評価分裂" else "今回の買い候補"
-        roles = {"強軸": ("中心", "本線", "押さえ参考", "狙い"), "上位混戦": ("本線", "押さえ", "狙い"), "評価分裂": ("本線参考", "押さえ参考", "狙い")}[status]
+        roles = ("中心", "本線", "狙い", "押さえ参考")
         parts.append(f'<p><strong style="font-size:1.1rem;">{title}</strong> ― {display_status}</p>')
         for role in roles:
             parts.append(f'<p><strong>{role}</strong>：{horses(navigation["buy_groups"][role], empty="なし" if role == "狙い" else "該当なし")}</p>')
         parts.append(f'<p><strong>穴注意</strong>：{horses(navigation["hole_attention"], empty="なし")}</p>')
+        visible_numbers = {h["number"] for role in roles for h in navigation["buy_groups"][role]} | {h["number"] for h in navigation["hole_attention"]}
         for horse in navigation.get("layoff_warnings", []):
+            if horse["number"] not in visible_numbers:
+                continue
             parts.append(f'<p>⚠️ {horses([horse])} 長期休養明け：{horse["days"]}日</p>')
             if horse['is_top1']:
                 parts.append('<p class="ka-note">軸評価は高いが、休養明けのため固定は慎重</p>')
@@ -53,6 +56,6 @@ def jra_purchase_navigation_html(navigation: Mapping[str, Any]) -> str:
         for role, label in labels.items():
             parts.append(f'<p><strong>{role}</strong> <span class="ka-note">{label}</span><br>{horses(navigation["groups"][role])}</p>')
         parts.append('<strong>運用ガイド</strong><ul>'+''.join(f'<li>{text(g)}</li>' for g in navigation['guides'])+'</ul>')
-        parts.append('<div class="ka-note">◎は現行Top5の最上位評価です。レース構造判定とは別です。全タイプでTop5の順位役割を優先し、Top5外の✔︎は狙い、✓は穴注意です。軸ありの買い候補は中心・本線・狙いです。4〜5位は押さえ参考として表示し、デフォルト買い候補には含めません。複数候補は本線・押さえ・狙いを買い候補に含めます。見送り寄りは全頭参考表示です。穴注意は候補を広げる場合の参考です。休養注意は順位・スコア・印を変更しません。</div></details>')
+        parts.append('<div class="ka-note">買い候補は詳細分析表のJRA最終印が◎・○・▲・✔︎の馬です。△は押さえ参考、✓は穴注意として別表示します。見送り寄りは参考情報です。Top5は評価位置の確認とグループ内の並び順に使用し、役割は変更しません。休養注意も順位・スコア・印を変更しません。</div></details>')
     parts.append('</section>')
     return ''.join(parts)
