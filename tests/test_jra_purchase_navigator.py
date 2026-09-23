@@ -178,8 +178,10 @@ with patch.object(app, 'jra_comparison_from_result', return_value={'rows':rows()
 '''
     at=AppTest.from_string(script,default_timeout=20).run()
     assert not at.exception
-    assert 'Existing JRA prediction' in at.markdown[1].value
-    assert 'JRA 最終購入判断' in at.markdown[0].value
+    assert len(at.markdown)==1
+    assert '今回の結論' in at.markdown[0].value
+    assert 'JRA 最終購入判断' not in at.markdown[0].value
+    assert '<strong' in at.markdown[0].value
     nar=AppTest.from_string(script.replace("race_mode='jra',race_info", "race_mode='nar',race_info"),default_timeout=20).run()
     assert not nar.exception
     assert all('JRA 最終購入判断' not in m.value for m in nar.markdown)
