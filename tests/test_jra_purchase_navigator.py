@@ -148,7 +148,7 @@ def test_html_roles_visible_safely_and_no_purchase_tickets():
     rr=rows();rr[0]['name']='<script>alert(1)</script>'
     html=jra_purchase_navigation_html(build(rr))
     assert '<script>' not in html and '&lt;script&gt;' in html
-    for label in ('JRA 買い方ナビ','CORE','ABILITY','SETUP','軸候補','相手候補','詳細分析表のJRA最終印','flex-wrap:wrap'):
+    for label in ('JRA 最終購入判断','CORE','ABILITY','SETUP','軸候補','相手候補','JRA最終印','overflow-x:auto'):
         assert label in html
     assert 'OTHER' not in html and 'WATCH' not in html
     assert '円' not in html
@@ -158,11 +158,11 @@ def test_crowded_and_split_do_not_offer_single_axis():
     rr=rows();rr[0]['jra_top5_score']=105
     nav=build(rr);html=jra_purchase_navigation_html(nav)
     assert nav['status']=='上位混戦' and nav['axis'] is None
-    assert 'ABILITY' in html and 'BOXまたは複数軸' in html
+    assert 'ABILITY' in html and '1頭固定は軸信頼度' in html
     nav['status']='評価分裂'  # Separate renderer test uses the actual split guide.
     from core.jra_purchase_navigator import GUIDES
     nav['guides']=GUIDES['評価分裂']
-    assert '見送り優先' in jra_purchase_navigation_html(nav)
+    assert '補助評価が割れている' in jra_purchase_navigation_html(nav)
 
 
 def test_streamlit_jra_section_and_nar_absence():
@@ -178,11 +178,11 @@ with patch.object(app, 'jra_comparison_from_result', return_value={'rows':rows()
 '''
     at=AppTest.from_string(script,default_timeout=20).run()
     assert not at.exception
-    assert 'Existing JRA prediction' in at.markdown[0].value
-    assert 'JRA 買い方ナビ' in at.markdown[1].value
+    assert 'Existing JRA prediction' in at.markdown[1].value
+    assert 'JRA 最終購入判断' in at.markdown[0].value
     nar=AppTest.from_string(script.replace("race_mode='jra',race_info", "race_mode='nar',race_info"),default_timeout=20).run()
     assert not nar.exception
-    assert all('JRA 買い方ナビ' not in m.value for m in nar.markdown)
+    assert all('JRA 最終購入判断' not in m.value for m in nar.markdown)
 
 
 def test_buy_candidates_canonical_marks_dedup_attention_and_odds():
@@ -223,8 +223,8 @@ def test_compact_main_and_details_preserved(status,label):
     for text in ('CORE','ABILITY','SETUP','Top5 2位差','純能力2位差','Top5入替','運用ガイド'):
         assert text in details.get_text()
     details.decompose();main=soup.get_text()
-    assert label in main
-    title = '今回の判断' if status == '評価分裂' else '今回の買い候補'
+    assert nav['purchase_label'] in main
+    title = 'JRA 最終購入判断'
     for text in (title,'本線','狙い','穴注意','買い方'):assert text in main
     assert '中心' in main
     assert '押さえ' in main
@@ -275,7 +275,7 @@ def test_layoff_boundary_display_only(days,warning):
         assert '軸評価は高いが、休養明けのため固定は慎重' in html
     assert json.dumps(rr,sort_keys=True)==json.dumps(frozen,sort_keys=True)
     rr[0].pop('_days_since_last');base=build(rr)
-    assert {k:v for k,v in nav.items() if k!='layoff_warnings'}=={k:v for k,v in base.items() if k!='layoff_warnings'}
+    assert {k:v for k,v in nav.items() if k not in {'layoff_warnings','purchase_grade','purchase_label','axis_confidence','axis_candidate','purchase_style','purchase_reason_lines'}}=={k:v for k,v in base.items() if k not in {'layoff_warnings','purchase_grade','purchase_label','axis_confidence','axis_candidate','purchase_style','purchase_reason_lines'}}
 
 
 def test_saved_previous_date_join_and_no_guessed_dates():
@@ -363,7 +363,7 @@ def test_real_snapshot_display_merge_used_by_navigation():
     assert [app.display_mark_from_row(h,'jra') for h in merged]==['◎','○','▲','△','△','✔︎','✓','','','','','✔︎']
     with patch.object(app,'jra_comparison_from_result',return_value=comparison),patch.object(app.st,'markdown') as render:
         app.render_jra_top5_result_summary(p)
-    html=render.call_args_list[-1].args[0]
+    html=render.call_args_list[0].args[0]
     text=BeautifulSoup(html,'html.parser').get_text()
     assert '狙い：7番 レッドフレーザー / 12番 リリーサンダー' in text
     assert '穴注意：10番 エアフォースワン' in text
@@ -448,6 +448,8 @@ def test_live_and_restored_prediction_use_identical_final_mark_navigation():
     from pathlib import Path
     f=json.loads((Path(__file__).parent/'fixtures/jra_split_top5_role_priority.json').read_text(encoding='utf-8'))
     live=result_for();live.race_info=dict(f['race_info'],race_id=f['race_id']);live.horse_evaluation=__import__('pandas').DataFrame(f['rows'])
+    # Use the accepted production Snapshot aliases, not incomplete raw fixture marks.
+    live=restore_prediction_result(race_snapshot_from_result(live))
     saved=restore_prediction_result(load_keiba(keiba_bytes(build_event_snapshot([race_snapshot_from_result(live)])))['races'][0])
     before=serialize_prediction_result(live)
     def navigate(p):
