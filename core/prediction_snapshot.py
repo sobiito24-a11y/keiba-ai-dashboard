@@ -49,7 +49,7 @@ def race_snapshot_from_result(
     if not race_id:
         raise KeibaSnapshotError("PredictionResultにrace_idがありません。")
     race_number = _race_number_from_id(race_id) or _text(race_info.get("race_number"))
-    return _json_ready(
+    snapshot = _json_ready(
         {
             "race_id": race_id,
             "race_mode": "nar" if result.race_mode == "nar" else "jra",
@@ -73,6 +73,14 @@ def race_snapshot_from_result(
             },
         }
     )
+
+    probability_snapshot = mobile_snapshot.get("jra_win_probability_calibration")
+    if probability_snapshot is not None:
+        snapshot["jra_win_probability_calibration"] = probability_snapshot
+        by_no = {str(h["horse_no"]): h for h in probability_snapshot["horses"]}
+        for horse in snapshot["horses"]:
+            horse.update({k: v for k, v in by_no.get(str(horse["horse_no"]), {}).items() if k != "horse_no"})
+    return snapshot
 
 
 def build_event_snapshot(races: Iterable[Mapping[str, Any]]) -> dict[str, Any]:
@@ -238,6 +246,8 @@ def restore_prediction_result(race_snapshot: Mapping[str, Any]) -> PredictionRes
         logic_version=_text(payload.get("logic_version")) or "market",
         ver4_summary=dict(payload.get("ver4_summary") or {}),
     )
+    if mode == "jra" and isinstance(race_snapshot.get("jra_win_probability_calibration"), Mapping):
+        result.debug_info["jra_win_probability_calibration"] = copy.deepcopy(race_snapshot["jra_win_probability_calibration"])
     return result
 
 
