@@ -80,6 +80,14 @@ def race_snapshot_from_result(
         by_no = {str(h["horse_no"]): h for h in probability_snapshot["horses"]}
         for horse in snapshot["horses"]:
             horse.update({k: v for k, v in by_no.get(str(horse["horse_no"]), {}).items() if k != "horse_no"})
+    nar_probability = mobile_snapshot.get("nar_winprob_calibration")
+    if nar_probability is not None:
+        snapshot["nar_winprob_calibration"] = nar_probability
+    extra = {str(h["horse_no"]): h for h in mobile_snapshot.get("horses", [])}
+    for horse in snapshot["horses"]:
+        for key, value in extra.get(str(horse["horse_no"]), {}).items():
+            if key.startswith(("nar_winprob_", "jra_rescue_shadow")) or key == "nar_win_probability":
+                horse[key] = value
     return snapshot
 
 
@@ -248,6 +256,15 @@ def restore_prediction_result(race_snapshot: Mapping[str, Any]) -> PredictionRes
     )
     if mode == "jra" and isinstance(race_snapshot.get("jra_win_probability_calibration"), Mapping):
         result.debug_info["jra_win_probability_calibration"] = copy.deepcopy(race_snapshot["jra_win_probability_calibration"])
+    if mode == "nar" and isinstance(race_snapshot.get("nar_winprob_calibration"), Mapping):
+        from .nar_win_probability import NAR_WINPROB_FIELDS
+        cal = copy.deepcopy(race_snapshot["nar_winprob_calibration"])
+        result.debug_info["nar_winprob_calibration"] = cal
+        by_no = {str(h["horse_no"]): h for h in cal.get("horses", [])}
+        for table in (result.overall_table, result.horse_evaluation):
+            if table is not None and "馬番" in table.columns:
+                for key in NAR_WINPROB_FIELDS:
+                    table[key] = table["馬番"].map(lambda n: by_no.get(str(int(float(n))), {}).get(key))
     return result
 
 
