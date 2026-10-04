@@ -195,7 +195,7 @@ def test_buy_candidates_canonical_marks_dedup_attention_and_odds():
         r['odds']=2.0
     original=copy.deepcopy(rr)
     nav=build(rr)
-    assert [(h['number'],h['role']) for h in nav['buy_candidates']]==[('1','狙い'),('2','狙い'),('3','本線'),('5','狙い')]
+    assert [(h['number'],h['role']) for h in nav['buy_candidates']]==[('1','中心'),('2','本線'),('3','本線'),('5','狙い')]
     assert [h['number'] for h in nav['hole_attention']]==['6','7']
     assert [h['number'] for h in nav['buy_groups']['押さえ参考']]==['4']
     assert rr==original
@@ -255,7 +255,7 @@ def test_final_structure_specific_candidate_ranges(status):
     frozen=copy.deepcopy(rr)
     nav=build_jra_buy_candidates(rr+rr,status)
     chosen=nav['reference_candidates'] if status=='評価分裂' else nav['buy_candidates']
-    assert [(h['number'],h['role']) for h in chosen]==[('1','狙い'),('4','狙い'),('5','狙い')]
+    assert [(h['number'],h['role']) for h in chosen]==[('1','中心'),('2','本線'),('3','本線'),('4','狙い'),('5','狙い')]
     if status!='評価分裂':assert nav['reference_candidates']==[]
     assert [h['number'] for h in nav['hole_attention']]==['7']
     if status=='評価分裂':assert nav['buy_candidates']==[]
@@ -338,6 +338,18 @@ def test_jra_shared_display_precedence(row,expected):
     assert app.display_mark_from_row(row,'jra')==expected
 
 
+def test_formal_top5_rank_is_source_for_first_three_roles():
+    from core.jra_display_mark import jra_display_mark_from_row
+    rows_to_check = [
+        {'jra_top5_rank': 1, 'v1_final_mark': '△'},
+        {'jra_top5_rank': 2, 'v1_final_mark': '✓'},
+        {'jra_top5_rank': 3, 'v1_final_mark': '✔︎'},
+        {'jra_top5_rank': 4, 'v1_final_mark': '✔︎'},
+        {'jra_top5_rank': 5, 'v1_final_mark': '☆'},
+    ]
+    assert [jra_display_mark_from_row(row) for row in rows_to_check] == ['◎', '○', '▲', '✔︎', '☆']
+
+
 @pytest.mark.parametrize('status',['強軸','上位混戦','評価分裂'])
 def test_display_checks_override_rank_role(status):
     from core.jra_purchase_navigator import build_jra_buy_candidates
@@ -345,8 +357,8 @@ def test_display_checks_override_rank_role(status):
     for r in rr:r['v1_final_mark']='✓' if r['jra_top5_rank']==1 else '✔︎'
     nav=build_jra_buy_candidates(rr,status)
     chosen=nav['reference_candidates'] if status=='評価分裂' else nav['buy_candidates']
-    assert all(h['role']=='狙い' for h in chosen)
-    assert [h['number'] for h in nav['hole_attention']]==['1']
+    assert [h['number'] for h in chosen]==['1','2','3','4','6','5','7']
+    assert nav['hole_attention']==[]
     assert len(chosen)==len({h['number'] for h in chosen})
 
 
@@ -425,15 +437,15 @@ def test_marks_alone_select_multiple_low_rank_main_horses(status):
     for r in rr:r['v1_final_mark']=marks[int(r['number'])]
     before=copy.deepcopy(rr)
     nav=build_jra_buy_candidates(rr,status)
-    assert nav['buy_groups']['中心']==[]
-    assert [h['number'] for h in nav['buy_groups']['本線']]==['4','6','7']
-    assert [h['number'] for h in nav['buy_groups']['押さえ参考']]==['1']
+    assert [h['number'] for h in nav['buy_groups']['中心']]==['1']
+    assert [h['number'] for h in nav['buy_groups']['本線']]==['2','3','4','6','7']
+    assert nav['buy_groups']['押さえ参考']==[]
     assert [h['number'] for h in nav['buy_groups']['狙い']]==['5']
-    assert [h['number'] for h in nav['hole_attention']]==['2']
-    assert '3' not in {h['number'] for group in nav['buy_groups'].values() for h in group}
+    assert nav['hole_attention']==[]
+    assert '3' in {h['number'] for group in nav['buy_groups'].values() for h in group}
     assert rr==before
     if status=='評価分裂':assert nav['buy_candidates']==[]
-    else:assert [h['number'] for h in nav['buy_candidates']]==['4','6','5','7']
+    else:assert [h['number'] for h in nav['buy_candidates']]==['1','2','3','4','6','5','7']
 
 
 def test_role_sorting_uses_rank_score_then_original_order_and_handles_missing():
