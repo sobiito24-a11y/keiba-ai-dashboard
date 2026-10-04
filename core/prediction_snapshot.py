@@ -254,6 +254,10 @@ def restore_prediction_result(race_snapshot: Mapping[str, Any]) -> PredictionRes
         logic_version=_text(payload.get("logic_version")) or "market",
         ver4_summary=dict(payload.get("ver4_summary") or {}),
     )
+    if mode == "jra":
+        # Runtime-only guard: exporting an old snapshot must not fill missing
+        # official scores/probabilities with today's producer.
+        result._jra_snapshot_restored = True
     if mode == "jra" and isinstance(race_snapshot.get("jra_win_probability_calibration"), Mapping):
         result.debug_info["jra_win_probability_calibration"] = copy.deepcopy(race_snapshot["jra_win_probability_calibration"])
     if mode == "nar" and isinstance(race_snapshot.get("nar_winprob_calibration"), Mapping):
