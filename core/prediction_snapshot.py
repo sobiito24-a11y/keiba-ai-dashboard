@@ -277,20 +277,23 @@ def restore_prediction_result(race_snapshot: Mapping[str, Any]) -> PredictionRes
 
 def update_material_reference(event_snapshot, race_id, result):
     """Add only same-day reference diagnostics to the downloadable in-memory event."""
-    from .material_reconsideration import key_for, material_snapshot
-    key=key_for(result.race_mode)
-    saved=material_snapshot(result).get(key)
-    if not saved or saved.get('calculation_context') != 'same_day_saved_inputs_reference':
+    from .material_reconsideration import key_for, material_snapshot, ensure_condition_materials
+    from .condition_material_v2 import key_for as condition_key
+    ensure_condition_materials(result)
+    additions={k:v for k,v in material_snapshot(result).items()
+               if k==condition_key(result.race_mode) or v.get('calculation_context')=='same_day_saved_inputs_reference'}
+    if not additions:
         return dict(event_snapshot)
     event=copy.deepcopy(dict(event_snapshot))
     for race in event.get('races',[]):
         if str(race.get('race_id')) != str(race_id):
             continue
         debug=race.setdefault('prediction_result',{}).setdefault('debug_info',{})
-        if isinstance(debug.get(key),dict) and debug[key].get('horses'):
-            break
-        debug[key]=copy.deepcopy(saved)
-        race.setdefault('mobile_snapshot',{})[key]=copy.deepcopy(saved)
+        for key,saved in additions.items():
+            if isinstance(debug.get(key),dict) and debug[key].get('horses'):
+                continue
+            debug[key]=copy.deepcopy(saved)
+            race.setdefault('mobile_snapshot',{})[key]=copy.deepcopy(saved)
         break
     return event
 
