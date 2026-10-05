@@ -374,7 +374,7 @@ def test_real_snapshot_display_merge_used_by_navigation():
     p=result_for();p.race_info=f['race_info'];p.horse_evaluation=__import__('pandas').DataFrame(source)
     original=serialize_prediction_result(p)
     merged=app.jra_enriched_display_rows(p,comparison=comparison)
-    assert [app.display_mark_from_row(h,'jra') for h in merged]==['◎','○','▲','△','△','✔︎','✓','','','','','✔︎']
+    assert [app.display_mark_from_row(h,'jra') for h in merged]==['◎','○','▲','✔︎','✔︎','△','△','✓','','','','']
     with patch.object(app,'jra_comparison_from_result',return_value=comparison),patch.object(app.st,'markdown') as render:
         app.render_jra_top5_result_summary(p)
     html=render.call_args_list[0].args[0]

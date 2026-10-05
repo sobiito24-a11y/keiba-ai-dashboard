@@ -19,7 +19,7 @@ def test_old_keiba_compatible_and_new_probability_roundtrip(monkeypatch):
     assert jra_win_probability_snapshot(restored)==race['jra_win_probability_calibration']
     after=app.sorted_display_rows(restored)
     fields=['jra_top5_rank','jra_top5_score','v1_final_mark','jra_pure_ability_score','jra_position_bonus']
-    assert [{k:h.get(k) for k in fields} for h in after]==[{k:h.get(k) for k in fields} for h in before]
+    assert {str(h['number']): {k:h.get(k) for k in fields} for h in after}=={str(h['number']): {k:h.get(k) for k in fields} for h in before}
     race.pop('jra_win_probability_calibration')
     old=restore_prediction_result(race)
     # Missing historical probabilities must stay missing, never be regenerated.
