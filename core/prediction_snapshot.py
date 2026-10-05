@@ -270,7 +270,29 @@ def restore_prediction_result(race_snapshot: Mapping[str, Any]) -> PredictionRes
             if table is not None and "馬番" in table.columns:
                 for key in NAR_WINPROB_FIELDS:
                     table[key] = table["馬番"].map(lambda n: by_no.get(str(int(float(n))), {}).get(key))
+    from .material_reconsideration import ensure_current_material_reference
+    ensure_current_material_reference(result)
     return result
+
+
+def update_material_reference(event_snapshot, race_id, result):
+    """Add only same-day reference diagnostics to the downloadable in-memory event."""
+    from .material_reconsideration import key_for, material_snapshot
+    key=key_for(result.race_mode)
+    saved=material_snapshot(result).get(key)
+    if not saved or saved.get('calculation_context') != 'same_day_saved_inputs_reference':
+        return dict(event_snapshot)
+    event=copy.deepcopy(dict(event_snapshot))
+    for race in event.get('races',[]):
+        if str(race.get('race_id')) != str(race_id):
+            continue
+        debug=race.setdefault('prediction_result',{}).setdefault('debug_info',{})
+        if isinstance(debug.get(key),dict) and debug[key].get('horses'):
+            break
+        debug[key]=copy.deepcopy(saved)
+        race.setdefault('mobile_snapshot',{})[key]=copy.deepcopy(saved)
+        break
+    return event
 
 
 def replace_race_result(

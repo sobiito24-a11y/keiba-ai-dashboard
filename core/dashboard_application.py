@@ -170,7 +170,7 @@ def _render_saved_prediction_open() -> None:
     st.session_state.dashboard_selected_race_id = ""
     st.session_state.dashboard_rendered_race_id = ""
     st.session_state.dashboard_loaded_signature = signature
-    st.success(f"保存時点の予想 {len(event['races'])}Rを読み込みました（再計算なし）。")
+    st.success(f"保存時点の正式予想 {len(event['races'])}Rを読み込みました（正式予想の再計算なし）。当日の未保存材料判定のみ参考補完します。")
 
 
 def is_keiba_filename(filename: Any) -> bool:
@@ -191,7 +191,7 @@ def _render_event(event: Mapping[str, Any], render_mobile_result: RenderMobileRe
     result = restore_prediction_result(selected)
     st.session_state.prediction_result = result
     st.markdown(
-        '<div class="ka-snapshot-note">選択レースのMobile PredictionResultを表示中。保存ファイル読込時は再計算しません。</div>',
+        '<div class="ka-snapshot-note">保存済み正式予想を表示中。正式予想は再計算しません。当日の好材料・不安材料が未保存の場合のみ、保存材料から参考判定を補います。</div>',
         unsafe_allow_html=True,
     )
     render_mobile_result(result)
@@ -211,6 +211,9 @@ def _render_event(event: Mapping[str, Any], render_mobile_result: RenderMobileRe
         if dict(after_selection) != dict(before_selection)
         else dict(event)
     )
+    from .prediction_snapshot import update_material_reference
+    updated = update_material_reference(updated, race_id, result)
+    selected = next((r for r in updated.get("races", []) if str(r.get("race_id")) == race_id), selected)
     st.session_state.dashboard_event_snapshot = updated
     _render_save_buttons(updated, selected)
 
