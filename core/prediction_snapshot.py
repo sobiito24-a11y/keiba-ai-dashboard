@@ -46,6 +46,8 @@ def race_snapshot_from_result(
     if result.race_mode == "nar":
         from .nar_top5_order import attach
         result = attach(copy.deepcopy(result))
+    from .jockey_positive import attach as attach_jockey_evidence
+    result = attach_jockey_evidence(copy.deepcopy(result))
     mobile_snapshot = build_prediction_snapshot(result)
     race_info = dict(mobile_snapshot.get("race_info") or {})
     race_id = _text(race_info.get("race_id"))
