@@ -43,6 +43,9 @@ def race_snapshot_from_result(
     """Freeze one Mobile PredictionResult without running another prediction."""
 
     result = _with_accepted_shadow_ver3_display_aliases(result)
+    if result.race_mode == "nar":
+        from .nar_top5_order import attach
+        result = attach(copy.deepcopy(result))
     mobile_snapshot = build_prediction_snapshot(result)
     race_info = dict(mobile_snapshot.get("race_info") or {})
     race_id = _text(race_info.get("race_id"))
