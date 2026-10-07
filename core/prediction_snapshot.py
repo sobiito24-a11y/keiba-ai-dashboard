@@ -275,6 +275,8 @@ def restore_prediction_result(race_snapshot: Mapping[str, Any]) -> PredictionRes
             if table is not None and "馬番" in table.columns:
                 for key in NAR_WINPROB_FIELDS:
                     table[key] = table["馬番"].map(lambda n: by_no.get(str(int(float(n))), {}).get(key))
+    from .axis_confidence_v2 import restore as restore_axis
+    restore_axis(result, race_snapshot)
     from .material_reconsideration import ensure_current_material_reference
     ensure_current_material_reference(result)
     return result
