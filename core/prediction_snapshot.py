@@ -48,6 +48,8 @@ def race_snapshot_from_result(
         result = attach(copy.deepcopy(result))
     from .jockey_positive import attach as attach_jockey_evidence
     result = attach_jockey_evidence(copy.deepcopy(result))
+    from .race_insight_snapshot import KEY as insight_key, freeze as freeze_insight
+    result.debug_info = {**(result.debug_info or {}), insight_key: freeze_insight(result)}
     mobile_snapshot = build_prediction_snapshot(result)
     race_info = dict(mobile_snapshot.get("race_info") or {})
     race_id = _text(race_info.get("race_id"))
@@ -119,6 +121,8 @@ def build_event_snapshot(races: Iterable[Mapping[str, Any]]) -> dict[str, Any]:
 
 
 def serialize_prediction_result(result: PredictionResult) -> dict[str, Any]:
+    from .race_insight_snapshot import KEY as insight_key, freeze as freeze_insight
+    debug = {**(result.debug_info or {}), insight_key: freeze_insight(result)}
     return _json_ready(
         {
             "race_mode": result.race_mode,
@@ -135,7 +139,7 @@ def serialize_prediction_result(result: PredictionResult) -> dict[str, Any]:
             "status": result.status,
             "message": result.message,
             "raw_output": result.raw_output,
-            "debug_info": result.debug_info,
+            "debug_info": debug,
             "logic_version": result.logic_version,
             "ver4_summary": result.ver4_summary,
         }
