@@ -1735,6 +1735,8 @@ def render_colab_style_result(result: PredictionResult) -> Any:
         render_jra_top5_result_summary(result)
     else:
         render_nar_top5_result_summary(result)
+    from core.independent_ai_ui import render as render_independent_ai
+    render_independent_ai(result)
     from core.material_reconsideration import render_reconsideration
     render_reconsideration(result)
     render_prediction_detail_table(result)
