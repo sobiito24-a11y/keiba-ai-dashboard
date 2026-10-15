@@ -49,6 +49,11 @@ def build_keiba_from_collected(
         raise SystemExit(f"output already exists: {output}. Use --overwrite to replace it.")
 
     sources = html_sources_from_directory(input_path)
+    # Odds observations never enter the prediction input set.
+    from core.html_classifier import classify_html, decode_uploaded_html
+    sources = [s for s in sources if "_odds" not in Path(s.file_name).stem.lower()
+               and classify_html(s.file_name, decode_uploaded_html(s.data),
+                                 'nar' if selected_mode == 'nar' else 'jra').kind != 'odds']
     if not sources:
         raise SystemExit(f"HTML files were not found under: {input_path}")
 
@@ -70,7 +75,11 @@ def build_keiba_from_collected(
         logs_dir=logs_dir,
     )
     output.parent.mkdir(parents=True, exist_ok=True)
-    output.write_bytes(keiba_bytes(report.event_snapshot))
+    from core.race_odds_collection import attach_collected
+    from dataclasses import replace
+    enriched = attach_collected(report.event_snapshot, input_path)
+    report = replace(report, event_snapshot=enriched)
+    output.write_bytes(keiba_bytes(enriched))
     return BuildKeibaReport(
         batch_report=report,
         output_path=output,

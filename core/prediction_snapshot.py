@@ -95,6 +95,8 @@ def race_snapshot_from_result(
         for key, value in extra.get(str(horse["horse_no"]), {}).items():
             if key.startswith(("nar_winprob_", "jra_rescue_shadow")) or key == "nar_win_probability":
                 horse[key] = value
+    from .race_odds import KEY as odds_key, state_for
+    snapshot[odds_key] = state_for(result)
     return snapshot
 
 
@@ -285,7 +287,8 @@ def restore_prediction_result(race_snapshot: Mapping[str, Any]) -> PredictionRes
     restore_development(result, race_snapshot)
     from .material_reconsideration import ensure_current_material_reference
     ensure_current_material_reference(result)
-    return result
+    from .race_odds import restore as restore_odds
+    return restore_odds(result, race_snapshot)
 
 
 def update_material_reference(event_snapshot, race_id, result):
