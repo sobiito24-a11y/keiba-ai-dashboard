@@ -53,6 +53,7 @@ def render_dashboard(render_mobile_result: RenderMobileResult) -> None:
         key="dashboard_action",
     )
     if action == "新規一括予想":
+        st.session_state.pop("research_loaded",None)
         _render_new_prediction()
     else:
         _render_saved_prediction_open()
@@ -147,22 +148,33 @@ def _render_saved_prediction_open() -> None:
     st.subheader("保存した予想を開く")
     st.caption(".keiba内のPrediction Snapshotを直接表示します。HTML再解析・予想再計算は行いません。")
     uploaded = st.file_uploader(
-        ".keibaファイルを選択",
+        "予想データ（.keiba／研究データ付きZIP）",
         accept_multiple_files=False,
         key="dashboard_saved_prediction",
     )
     if uploaded is None:
+        st.session_state.pop("research_loaded",None)
+        st.session_state.dashboard_event_snapshot=None
+        st.session_state.dashboard_loaded_signature=""
         return
-    if not is_keiba_filename(uploaded.name):
-        st.error(".keibaファイルを選択してください。")
+    if not (is_keiba_filename(uploaded.name) or uploaded.name.lower().endswith(".zip")):
+        st.session_state.pop("research_loaded",None)
+        st.session_state.dashboard_event_snapshot=None
+        st.session_state.dashboard_loaded_signature=""
+        st.error(".keibaまたは研究データ付きZIPを選択してください。")
         return
     payload = uploaded.getvalue()
     signature = f"{uploaded.name}:{len(payload)}:{hashlib.sha256(payload).hexdigest()}"
-    if st.session_state.dashboard_loaded_signature == signature:
+    if st.session_state.dashboard_loaded_signature == signature and st.session_state.get("research_loaded"):
         return
     try:
-        event = load_keiba(payload)
-    except KeibaSnapshotError as exc:
+        from .research_bundle import attach_upload
+        original, _ = attach_upload(payload, st.session_state)
+        event = load_keiba(original)
+    except (KeibaSnapshotError, ValueError) as exc:
+        st.session_state.pop("research_loaded",None)
+        st.session_state.dashboard_event_snapshot=None
+        st.session_state.dashboard_loaded_signature=""
         st.error(str(exc))
         return
     st.session_state.dashboard_event_snapshot = event

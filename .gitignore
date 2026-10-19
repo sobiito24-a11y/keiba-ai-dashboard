@@ -15,3 +15,8 @@ results/*
 !collected_html/jra/.gitkeep
 !collected_html/nar/.gitkeep
 !results/.gitkeep
+
+# Private research predictions and portable original archives.
+/research/predictions.sqlite*
+/research/portable/
+/research/bundles/
