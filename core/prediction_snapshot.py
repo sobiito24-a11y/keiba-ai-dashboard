@@ -97,7 +97,8 @@ def race_snapshot_from_result(
                 horse[key] = value
     from .race_odds import KEY as odds_key, state_for
     snapshot[odds_key] = state_for(result)
-    return snapshot
+    from .resolved_marks import reconcile_snapshot
+    return reconcile_snapshot(snapshot, result)
 
 
 def build_event_snapshot(races: Iterable[Mapping[str, Any]]) -> dict[str, Any]:
