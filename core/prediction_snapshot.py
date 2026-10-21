@@ -81,6 +81,8 @@ def race_snapshot_from_result(
         }
     )
 
+    from .model_b import KEY as model_b_key, freeze as freeze_model_b
+    snapshot[model_b_key] = _json_ready(freeze_model_b(result))
     probability_snapshot = mobile_snapshot.get("jra_win_probability_calibration")
     if probability_snapshot is not None:
         snapshot["jra_win_probability_calibration"] = probability_snapshot
@@ -266,6 +268,9 @@ def restore_prediction_result(race_snapshot: Mapping[str, Any]) -> PredictionRes
         logic_version=_text(payload.get("logic_version")) or "market",
         ver4_summary=dict(payload.get("ver4_summary") or {}),
     )
+    from .model_b import KEY as model_b_key
+    if isinstance(race_snapshot.get(model_b_key), Mapping):
+        result.debug_info[model_b_key] = copy.deepcopy(race_snapshot[model_b_key])
     if mode == "jra":
         # Runtime-only guard: exporting an old snapshot must not fill missing
         # official scores/probabilities with today's producer.
