@@ -42,6 +42,8 @@ def _assert_comparison(view):
     for row in rows:
         assert row.select_one("[data-horse-open]")["data-horse-open"] == row["data-horse"]
         assert not row.select(".mark,.focus-badge,.candidate-category")
+        for rank in row.select('.metric-rank'):
+            rank.extract()  # Permit index-only ranks, never the formal marks.
         assert not any(mark in row.get_text() for mark in "◎○▲✔△")
 
     selected = [view[index]["no"] for index in select_indices(view, "no")]
