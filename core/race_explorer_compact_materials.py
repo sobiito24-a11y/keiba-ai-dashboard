@@ -113,7 +113,9 @@ def pickup_feature_html(features, grade=None):
     """Make existing pickup facts concise without repeating the training box."""
     seen = set()
     out = []
-    for raw in features or ():
+    # Keep original top-three pickup selection: removing a repeated grade
+    # must not promote an originally hidden fourth feature into the card.
+    for raw in list(features or ())[:3]:
         pieces = _pieces(raw)
         if not pieces:
             continue
