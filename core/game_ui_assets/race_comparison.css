@@ -138,3 +138,9 @@
   .race-explorer .explorer-table .col-materials{min-width:0;width:176px;max-width:176px}
   .race-explorer .explorer-table .material-chip-list .evidence-chip{font-size:9.5px}
 }
+
+
+/* Restore category colors inside pickup facts (override legacy uniform chips). */
+.race-explorer .pickup-features>.evidence-chip.evidence-support{background:#eaf4fa;color:#285d83;border-color:#a8c6dc}
+.race-explorer .pickup-features>.evidence-chip.evidence-reference{background:#f1f2f5;color:#515967;border-color:#c7cbd3}
+.race-explorer .pickup-features>.evidence-chip.evidence-caution{background:#fff4df;color:#86571f;border-color:#e8cc98}
