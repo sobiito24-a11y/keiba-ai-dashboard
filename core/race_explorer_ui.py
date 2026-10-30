@@ -7,6 +7,7 @@ from .race_explorer_common import comparison_index_html, number_badge, plain, va
 from .race_explorer_cards import detail_html, pickup_html
 from .race_explorer_columns import columns, records
 from .race_explorer_visuals import ability_html, development_html
+from .race_explorer_signal_rules import signals, badge_html
 
 
 def _cell(horse, cells, key):
@@ -38,7 +39,18 @@ def _cell(horse, cells, key):
         return value(item)+'kg' if item is not None else '<span class="missing-cell">未取得</span>'
     if key == 'weight_delta':
         return value(cells.get('weight_delta_label'))
-    if key.startswith('record_') or key == 'materials':
+    if key == 'materials':
+        # Saved judgement materials and separate experimental badges.
+        tags = signals(horse, cells)
+        plus = cells.get('plus')
+        caution = cells.get('caution')
+        core = badge_html(tags, compact=True)
+        if plus:
+            core += '<span class="evidence-chip evidence-support" title="保存済みプラス材料">＋ 保存材料：'+value(plus)+'</span>'
+        if caution:
+            core += '<span class="evidence-chip evidence-caution" title="保存済み注意材料">注意：'+value(caution)+'</span>'
+        return '<span class="comparison-snippet material-chip-list">'+(core or value(item))+'</span>'
+    if key.startswith('record_'):
         return '<span class="comparison-snippet">'+value(item)+'</span>'
     if item is None:
         return '<span class="missing-cell">未取得</span>'
@@ -84,7 +96,7 @@ def lineup_html(view):
             content.append('<td class="'+cls+'" data-label="'+plain(spec['label'])+'" title="'+plain(tooltip)+'">'+_cell(horse, row, key)+'</td>')
         rows.append('<tr data-row="'+plain(no)+'" data-horse="'+plain(no)+'">'+''.join(content)+'</tr>')
     return ('<section class="lineup-workspace" id="lineup-workspace"><div class="explorer-section-heading"><div><span class="eyebrow">COMPARE ALL RUNNERS</span><h2>全頭予想・比較一覧</h2></div><span class="count">全'+str(len(view))+'頭</span></div>'
-            '<p class="help">自分の✓は何頭でも選べます。予測・保存・買い目には反映しません。列見出しで並び替え、馬名から詳細を開けます。</p>'
+            '<p class="help">自分の✓は何頭でも選べます。予測・保存・買い目には反映しません。列見出しで並び替え、馬名から詳細を開けます。</p>''<p class="evidence-intro">判断材料の色分け：青緑＝過去の複合条件一致、青＝基礎指標、灰＝参考、橙＝注意。条件一致＝馬券を買うべき、ではありません。馬名クリックで根拠と検証母数を確認できます。</p>'
             '<div class="lineup-toolbar"><label>表示 <select id="lineup-filter"><option value="all">全頭表示</option><option value="selected">自分の✓だけ表示</option></select></label>'
             '<label>並び順 <select id="lineup-sort">'+_options(schema, 'no')+'</select></label>'
             '<label>方向 <select id="lineup-direction"><option value="asc">昇順</option><option value="desc">降順</option></select></label>'
