@@ -75,6 +75,9 @@ def test_nar_compacts_saved_evidence_and_removes_duplicate_visible_course_distan
 def test_pickup_training_duplicate_hidden_but_caution_explicit_in_nar_and_jra():
     for mode in ("jra", "nar"):
         h = horse(mode=mode)
+        if mode == "nar":
+            # NAR has no training-grade column; do not invent one.
+            h["explorer_facts"]["features"][1] = "距離変更"
         html = BeautifulSoup(pickup_html([h]), "html.parser")
         features = html.select_one(".pickup-features")
         assert features and "調教B" not in features.get_text()
