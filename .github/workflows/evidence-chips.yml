@@ -4,6 +4,9 @@ on:
   pull_request:
     paths:
       - 'core/race_explorer_signal_rules.py'
+      - 'core/race_explorer_compact_materials.py'
+      - 'core/game_ui_assets/race_comparison.css'
+      - 'tests/test_race_explorer_compact_materials.py'
       - 'core/race_explorer_cards.py'
       - 'core/race_explorer_ui.py'
       - 'core/game_ui_assets/race_cards.css'
@@ -25,5 +28,5 @@ jobs:
           python-version: '3.11'
           cache: pip
       - run: pip install -r requirements-test.txt
-      - run: python -m compileall -q core/race_explorer_signal_rules.py core/race_explorer_cards.py core/race_explorer_ui.py tests/test_jra_class_evidence_chips.py
-      - run: pytest -q tests/test_jra_class_evidence_chips.py tests/test_race_explorer_cards.py tests/test_race_explorer_ui.py tests/test_race_explorer_columns.py
+      - run: python -m compileall -q core/race_explorer_signal_rules.py core/race_explorer_compact_materials.py core/race_explorer_cards.py core/race_explorer_ui.py tests/test_jra_class_evidence_chips.py
+      - run: pytest -q tests/test_jra_class_evidence_chips.py tests/test_race_explorer_compact_materials.py tests/test_race_explorer_cards.py tests/test_race_explorer_ui.py tests/test_race_explorer_columns.py
