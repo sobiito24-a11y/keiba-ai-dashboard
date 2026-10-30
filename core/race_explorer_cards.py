@@ -75,7 +75,7 @@ def _prices_html(horse):
 def _feature_chip(item):
     """Color a factual feature without turning changes into positive evidence."""
     raw = _unmarked(item) or ""
-    count = re.search(r"(\\d+)回3着以内", raw)
+    count = re.search(r"(\d+)回3着以内", raw)
     positive = ("調教A" in raw or (count is not None and int(count.group(1)) > 0))
     caution = "休養" in raw or "注意" in raw
     level = "caution" if caution else "support" if positive else "reference"
