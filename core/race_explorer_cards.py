@@ -6,6 +6,7 @@ from .final_candidate_selection import select_indices
 from .prediction_table_ui import number
 from .race_explorer_common import comparison_index_html, number_badge, plain, value
 from .race_explorer_columns import records
+from .race_explorer_signal_rules import signals, badge_html, evidence_note
 
 
 RUN_LABELS = ("3走前", "2走前", "前走")
@@ -77,10 +78,14 @@ def pickup_html(view):
     if not selected:
         return '<p class="no-data">保存されたレースピックアップはありません</p>'
     cards = []
+    comparison_cells = records(view)
+    has_research_evidence = False
     for index in selected:
         horse = view[index]
         facts = _facts(horse)
         metrics = _metrics(horse, facts)
+        tags = signals(horse, comparison_cells.get(str(horse.get('no')), {}))
+        has_research_evidence |= bool(tags)
         no = plain(horse.get("no") if horse.get("no") is not None else "")
         name = value(horse.get("name"))
         jockey = facts.get("current_jockey")
@@ -111,11 +116,13 @@ def pickup_html(view):
             '<span class="pickup-state pickup-state-' + ('jra' if horse.get("mode") == "jra" else 'nar') + '">' + ''.join(state) + '</span>' +
             '<span class="pickup-changes"><span>今回斤量 ' + value(facts.get("weight_label")) +
             '</span><span>騎手 ' + value(_unmarked(facts.get("jockey_change"))) + '</span></span>' +
+            badge_html(tags) +
             ('<span class="pickup-features">' + features + '</span>' if features else '') +
             _prices_html(horse) +
             '<span class="pickup-open">詳細を見る <span aria-hidden="true">↗</span></span>'
             '</button>')
-    return '<div class="pickup-grid">' + ''.join(cards) + '</div>'
+    note = ('<p class="evidence-intro">青緑＝過去の複合条件一致、青＝基礎指標、グレー＝参考研究。色は買い推奨・予想確率ではありません。</p>' if has_research_evidence else '')
+    return note + '<div class="pickup-grid">' + ''.join(cards) + '</div>'
 
 
 def _definition_list(items, css_class):
@@ -217,6 +224,7 @@ def detail_html(horse):
         else:
             stats.append(_stat(label, comparison_index_html(cells[key], cells.get(rank_key),
                                                             ranked=rank_key is not None), key))
+    research_tags = signals(horse, cells)
     corner = cells.get("corner")
     if corner is None:
         missing.append('4角想定')
@@ -251,6 +259,10 @@ def detail_html(horse):
         '<section class="detail-source-comment"><h4>厩舎コメント原文</h4>' +
         ('<p class="detail-comment-source">出典：' + value(source) + '</p>' if source else '') +
         '<p class="detail-comment-original">' + original + '</p></section>' +
+        ('<section class="detail-research-evidence"><h4>クラス別・参考材料</h4>' +
+         badge_html(research_tags) + '<ul class="research-evidence-explanations">' +
+         ''.join('<li>' + value(tag['detail']) + '</li>' for tag in research_tags) + '</ul>' +
+         evidence_note(research_tags) + '</section>' if research_tags else '') +
         '<section class="detail-interpretation"><h4>AIによる解釈・考察</h4>' +
         _material_html(facts.get("interpretation")) + '</section>' +
         '<div class="detail-materials"><section class="detail-plus"><h4>プラス材料</h4>' +
