@@ -105,6 +105,13 @@ def signals(horse, cells):
     return tuple(result)
 
 
+def compact_label(raw):
+    """One short visual label; class and reference level live in color/aria/detail."""
+    result = _norm(raw)
+    result = re.sub(r"^(?:(?:参考|2歳)[：:])+\s*", "", result)
+    return result
+
+
 def badge_html(tags, compact=False):
     """Text plus color, never only color. Escape all HTML-facing data."""
     if not tags:
@@ -113,10 +120,11 @@ def badge_html(tags, compact=False):
     for tag in tags:
         level = tag["level"] if tag["level"] in ("match", "support", "reference") else "reference"
         prefix = "＋ 条件一致：" if level == "match" else "＋ 確認：" if level == "support" else "参考："
+        visible = compact_label(tag["label"]) if compact else prefix + tag["label"]
         items.append('<span class="evidence-chip evidence-' + level +
                      '" title="' + escape(tag["detail"], quote=True) +
                      '" aria-label="' + escape(prefix + tag["label"] + "。過去の探索的な比較条件であり、買い推奨ではありません。", quote=True) +
-                     '">' + escape(prefix + tag["label"]) + '</span>')
+                     '">' + escape(visible) + '</span>')
     return '<span class="evidence-chips' + (' compact' if compact else '') + '">' + ''.join(items) + '</span>'
 
 
