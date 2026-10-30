@@ -63,7 +63,7 @@ def test_pickup_has_no_marks_order_or_formal_scores_and_shares_detail_target(mod
     for card in doc.select(".pickup-card"):
         assert card["aria-controls"] == "horse-detail-" + card["data-horse-open"]
         assert card["type"] == "button" and card["aria-expanded"] == "false"
-        assert len(card.select(".pickup-features > span")) == 3
+        assert len(card.select(".pickup-features > span")) == (2 if mode == "jra" else 3)
         assert card.select_one(".pickup-ability b").text == "-2.5"
         assert "中2週" in card.text and "+1kg" in card.text and "55kg" in card.text
         assert "前走騎手 → 今回騎手" in card.text
