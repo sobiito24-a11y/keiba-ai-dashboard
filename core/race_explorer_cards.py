@@ -72,6 +72,17 @@ def _prices_html(horse):
             '<small class="pickup-price-time">提供元更新 ' + value(observed) + '</small></span>')
 
 
+def _feature_chip(item):
+    """Color a factual feature without turning changes into positive evidence."""
+    raw = _unmarked(item) or ""
+    count = re.search(r"(\\d+)回3着以内", raw)
+    positive = ("調教A" in raw or (count is not None and int(count.group(1)) > 0))
+    caution = "休養" in raw or "注意" in raw
+    level = "caution" if caution else "support" if positive else "reference"
+    prefix = "注意：" if caution else "＋ " if positive else "参考："
+    return '<span class="evidence-chip evidence-' + level + '">' + plain(prefix) + value(raw) + '</span>'
+
+
 def pickup_html(view):
     """Use the existing Top5/reference membership, presented in horse-number order."""
     selected = select_indices(view, "no")
@@ -100,8 +111,7 @@ def pickup_html(view):
         ))
         state.append('<span class="pickup-state-item pickup-ability"><small>純能力</small><b>' +
                      value(_ability(horse, metrics).get("value")) + '</b></span>')
-        features = ''.join('<span>' + value(_unmarked(item)) + '</span>'
-                           for item in _items(facts.get("features"))[:3])
+        features = ''.join(_feature_chip(item) for item in _items(facts.get("features"))[:3])
         cards.append(
             '<button type="button" class="pickup-card" data-horse-open="' + no +
             '" aria-expanded="false" aria-controls="horse-detail-' + no +
