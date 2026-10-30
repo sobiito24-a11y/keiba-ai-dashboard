@@ -36,7 +36,7 @@ def clean_short(raw, max_chars=23):
     return text if len(text) <= max_chars else text[:max_chars-1] + "…"
 
 
-def _redundant(text, full, badges=(), training=None, course_rank=None, ability_rank=None):
+def _redundant(text, full, badges=(), training=None, course_rank=None, distance_rank=None, ability_rank=None):
     """Suppress only facts already shown unambiguously elsewhere in the card."""
     if text in _EMPTY:
         return True
@@ -47,6 +47,8 @@ def _redundant(text, full, badges=(), training=None, course_rank=None, ability_r
     if metric:
         target = int(metric[1])
         if "コース" in text and course_rank == target:
+            return True
+        if "距離" in text and distance_rank == target:
             return True
         if ("純能力" in text or "能力" in text) and ability_rank == target:
             return True
@@ -66,12 +68,12 @@ def _chip(label, original, level, more=False):
 
 
 def chips(raw, *, level="support", badges=(), training=None, course_rank=None,
-          ability_rank=None, limit=2, existing=()):
+          distance_rank=None, ability_rank=None, limit=2, existing=()):
     """Returns display HTML, with a count for additional *nonduplicate* facts."""
     visible, extras, seen = [], [], set(existing)
     for original in _split(raw):
         text = clean_short(original, 23)
-        if _redundant(text, original, badges, training, course_rank, ability_rank):
+        if _redundant(text, original, badges, training, course_rank, distance_rank, ability_rank):
             continue
         key = re.sub(r"\s+", "", text)
         if not text or key in seen:
@@ -90,8 +92,8 @@ def chips(raw, *, level="support", badges=(), training=None, course_rank=None,
 
 
 def feature_chips(raw, *, training=None, limit=2):
-    """Pickup facts: 0/3好走は青にしない。休養は注意、変化は中立。"""
-    visible, extras, seen = [], [], set()
+    """Pickup facts: ensure caution remains visible even if listed after two positives."""
+    entries, seen = [], set()
     for original in _split(raw):
         text = clean_short(original, 23)
         if _redundant(text, original, training=training):
@@ -106,11 +108,18 @@ def feature_chips(raw, *, training=None, limit=2):
                         "好走" in original or "斤量減" in original)
         caution = bool(re.search(r"休養|注意|斤量増|調教[CD]", original))
         level = "caution" if caution else "support" if positive else "reference"
-        entry = _chip(text, original, level)
-        if len(visible) < limit:
-            visible.append(entry)
-        else:
-            extras.append(original)
-    if extras:
-        visible.append(_chip("ほか" + str(len(extras)) + "件", " / ".join(extras), "reference", more=True))
-    return "".join(visible)
+        entries.append((text, original, level))
+    included = list(range(min(len(entries), limit)))
+    # An existing concern must not disappear under "ほかn件".
+    missing_caution = next((idx for idx, item in enumerate(entries)
+                            if item[2] == "caution" and idx not in included), None)
+    if missing_caution is not None and included:
+        replaced = next((idx for idx in reversed(included) if entries[idx][2] != "caution"), None)
+        if replaced is not None:
+            included[included.index(replaced)] = missing_caution
+    included.sort()
+    result = [_chip(*entries[idx][:2], entries[idx][2]) for idx in included]
+    omitted = [entry[1] for idx, entry in enumerate(entries) if idx not in included]
+    if omitted:
+        result.append(_chip("ほか" + str(len(omitted)) + "件", " / ".join(omitted), "reference", more=True))
+    return "".join(result)
