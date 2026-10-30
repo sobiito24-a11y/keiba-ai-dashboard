@@ -7,6 +7,7 @@ from .prediction_table_ui import number
 from .race_explorer_common import comparison_index_html, number_badge, plain, value
 from .race_explorer_columns import records
 from .race_explorer_signal_rules import signals, badge_html, evidence_note
+from .race_explorer_compact_materials import pickup_feature_html
 
 
 RUN_LABELS = ("3走前", "2走前", "前走")
@@ -72,17 +73,6 @@ def _prices_html(horse):
             '<small class="pickup-price-time">提供元更新 ' + value(observed) + '</small></span>')
 
 
-def _feature_chip(item):
-    """Color a factual feature without turning changes into positive evidence."""
-    raw = _unmarked(item) or ""
-    count = re.search(r"(\d+)回3着以内", raw)
-    positive = ("調教A" in raw or (count is not None and int(count.group(1)) > 0))
-    caution = "休養" in raw or "注意" in raw
-    level = "caution" if caution else "support" if positive else "reference"
-    prefix = "注意：" if caution else "＋ " if positive else "参考："
-    return '<span class="evidence-chip evidence-' + level + '">' + plain(prefix) + value(raw) + '</span>'
-
-
 def pickup_html(view):
     """Use the existing Top5/reference membership, presented in horse-number order."""
     selected = select_indices(view, "no")
@@ -111,7 +101,9 @@ def pickup_html(view):
         ))
         state.append('<span class="pickup-state-item pickup-ability"><small>純能力</small><b>' +
                      value(_ability(horse, metrics).get("value")) + '</b></span>')
-        features = ''.join(_feature_chip(item) for item in _items(facts.get("features"))[:3])
+        features = pickup_feature_html(
+            facts.get("features"),
+            facts.get("training") if horse.get("mode") == "jra" else None)
         cards.append(
             '<button type="button" class="pickup-card" data-horse-open="' + no +
             '" aria-expanded="false" aria-controls="horse-detail-' + no +
@@ -126,7 +118,7 @@ def pickup_html(view):
             '<span class="pickup-state pickup-state-' + ('jra' if horse.get("mode") == "jra" else 'nar') + '">' + ''.join(state) + '</span>' +
             '<span class="pickup-changes"><span>今回斤量 ' + value(facts.get("weight_label")) +
             '</span><span>騎手 ' + value(_unmarked(facts.get("jockey_change"))) + '</span></span>' +
-            badge_html(tags) +
+            badge_html(tags, compact=True) +
             ('<span class="pickup-features">' + features + '</span>' if features else '') +
             _prices_html(horse) +
             '<span class="pickup-open">詳細を見る <span aria-hidden="true">↗</span></span>'

@@ -7,7 +7,8 @@ from .race_explorer_common import comparison_index_html, number_badge, plain, va
 from .race_explorer_cards import detail_html, pickup_html
 from .race_explorer_columns import columns, records
 from .race_explorer_visuals import ability_html, development_html
-from .race_explorer_signal_rules import signals, badge_html
+from .race_explorer_signal_rules import signals
+from .race_explorer_compact_materials import compact_materials_html
 
 
 def _cell(horse, cells, key):
@@ -40,16 +41,13 @@ def _cell(horse, cells, key):
     if key == 'weight_delta':
         return value(cells.get('weight_delta_label'))
     if key == 'materials':
-        # Saved judgement materials and separate experimental badges.
-        tags = signals(horse, cells)
-        plus = cells.get('plus')
-        caution = cells.get('caution')
-        core = badge_html(tags, compact=True)
-        if plus:
-            core += '<span class="evidence-chip evidence-support" title="保存済みプラス材料">＋ 保存材料：'+value(plus)+'</span>'
-        if caution:
-            core += '<span class="evidence-chip evidence-caution" title="保存済み注意材料">注意：'+value(caution)+'</span>'
-        return '<span class="comparison-snippet material-chip-list">'+(core or value(item))+'</span>'
+        # Short visual summaries only; records(), source facts, and detail_html()
+        # retain the full wording and remain the sortable/searchable data.
+        content = compact_materials_html(
+            signals(horse, cells), cells.get('plus'), cells.get('caution'),
+            cells.get('training') if horse.get('mode') == 'jra' else None)
+        return ('<span class="comparison-snippet material-chip-list">'+content+'</span>'
+                if content else '<span class="missing-cell">未取得</span>')
     if key.startswith('record_'):
         return '<span class="comparison-snippet">'+value(item)+'</span>'
     if item is None:
