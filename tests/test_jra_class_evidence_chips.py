@@ -114,3 +114,16 @@ def test_escaping_and_no_unmarked_auto_escalation():
     assert "&lt;script&gt;" in html
     pickup_html([h])
     assert (h["rank"],h["mark"]) == (old_rank,old_mark)
+
+
+def test_pickup_factual_features_are_colored_conservatively():
+    h = make_horse()
+    h["explorer_facts"]["features"] = [
+        "東京芝1600m：3戦0回3着以内（近3走の範囲）",
+        "休養明け（93日）",
+        "調教A",
+    ]
+    doc = BeautifulSoup(pickup_html([h]), "html.parser")
+    assert "3戦0回" in doc.select_one(".pickup-features .evidence-reference").get_text()
+    assert "休養明け" in doc.select_one(".pickup-features .evidence-caution").get_text()
+    assert "調教A" in doc.select_one(".pickup-features .evidence-support").get_text()
