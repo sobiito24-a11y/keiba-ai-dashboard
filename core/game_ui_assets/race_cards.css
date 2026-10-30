@@ -74,3 +74,20 @@
  .race-explorer .pickup-state{grid-template-columns:repeat(2,minmax(0,1fr))}
  .race-explorer .pickup-state-nar{grid-template-columns:repeat(3,minmax(0,1fr))}
 }
+
+
+/* Race-class evidence: color identifies evidence type, NEVER purchase priority. */
+.race-explorer .evidence-intro{margin:9px 0;padding:8px 10px;border-left:3px solid #6a9aab;background:#edf4f8;color:#37566c;font-size:11px;line-height:1.6}
+.race-explorer .evidence-chips,.race-explorer .material-chip-list{display:flex;flex-wrap:wrap;align-items:flex-start;gap:4px;min-width:0}
+.race-explorer .evidence-chip{display:inline-flex;max-width:100%;box-sizing:border-box;white-space:normal;overflow-wrap:anywhere;align-items:center;line-height:1.35;border:1px solid #b7c9d4;border-radius:5px;padding:3px 6px;font-size:10px;font-weight:650;background:#eff4fa;color:#35556f}
+.race-explorer .evidence-match{border-color:#89bfba;background:#e5f4f1;color:#176b65}
+.race-explorer .evidence-support{border-color:#a8c6dc;background:#eaf4fa;color:#285d83}
+.race-explorer .evidence-reference{border-color:#c7cbd3;background:#f1f2f5;color:#515967}
+.race-explorer .evidence-caution{border-color:#e8cc98;background:#fff4df;color:#86571f}
+.race-explorer .pickup-card .evidence-chips{width:100%;margin:5px 0 2px}
+.race-explorer .explorer-table .evidence-chips.compact{display:contents}
+.race-explorer .explorer-table .col-materials{min-width:210px}
+.race-explorer .detail-research-evidence{border-top:1px solid #dce5ed;margin-top:10px;padding-top:12px}
+.race-explorer .detail-research-evidence .research-evidence-explanations{margin:8px 0;padding-left:20px;line-height:1.6;color:#41566b;font-size:12px}
+.race-explorer .detail-research-evidence .evidence-warning{margin:8px 0;font-size:11px;color:#6b5b46}
+@media (max-width:640px){.race-explorer .evidence-chip{font-size:10px;padding:3px 5px}.race-explorer .evidence-intro{font-size:10px}}
