@@ -106,7 +106,9 @@ def columns(view):
         _spec("record_venue", "同競馬場実績", "text"),
         _spec("record_distance", "同距離実績", "text"),
         _spec("record_venue_distance", "同競馬場・同距離実績", "text"),
-        _spec("materials", "判断材料", "text"),
+        # Keep full material data available to filters and horse detail,
+        # but restore the compact table: show materials only on horse selection.
+        _spec("materials", "判断材料", "text", table_hidden=True),
     ))
     return result
 

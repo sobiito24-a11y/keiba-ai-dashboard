@@ -101,8 +101,12 @@ def test_html_color_is_not_probability_and_no_bet_action():
     assert detail.select(".detail-research-evidence .research-evidence-explanations")
     assert "26頭中20頭" in detail.get_text()
     listing = BeautifulSoup(lineup_html([h]), "html.parser")
-    assert listing.select("td.col-materials .evidence-match")
-    assert listing.select("td.col-materials .evidence-caution")
+    # No color badges inside the always-visible table.
+    assert not listing.select("td.col-materials")
+    assert listing.select("th.col-name")
+    # Select a horse to expand details; its evidence is shown at the top.
+    assert detail.select(".detail-quick-evidence .evidence-match")
+    assert detail.select(".detail-quick-evidence .evidence-caution")
     assert "自分の✓" in listing.get_text()
 
 

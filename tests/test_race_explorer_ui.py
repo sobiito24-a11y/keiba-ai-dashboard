@@ -125,7 +125,9 @@ def test_normal_workspace_has_formal_a_values_and_retains_twelve_collapsed_analy
         for rank in section.select('.metric-rank'):
             rank.extract()  # Index ranks are distinct from hidden formal marks.
         assert not any(mark in section.text for mark in ('◎', '○', '▲', '✔', '△'))
-    assert '保存済みの距離実績' in doc.select_one('#lineup-workspace').text
+    # Material stays out of the main table and is available in the selected detail.
+    assert '保存済みの距離実績' not in doc.select_one('#lineup-workspace').text
+    assert any('保存済みの距離実績' in card for card in payload['cards'])
     assert not doc.select('input[name="research-model"], [data-model-switch]')
     assert view == before
 

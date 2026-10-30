@@ -7,7 +7,7 @@ from .prediction_table_ui import number
 from .race_explorer_common import comparison_index_html, number_badge, plain, value
 from .race_explorer_columns import records
 from .race_explorer_signal_rules import signals, badge_html, evidence_note
-from .race_explorer_compact_materials import pickup_feature_html
+from .race_explorer_compact_materials import pickup_feature_html, compact_materials_html
 
 
 RUN_LABELS = ("3走前", "2走前", "前走")
@@ -227,6 +227,14 @@ def detail_html(horse):
             stats.append(_stat(label, comparison_index_html(cells[key], cells.get(rank_key),
                                                             ranked=rank_key is not None), key))
     research_tags = signals(horse, cells)
+    # Present short, color-coded material immediately after the clicked name;
+    # the original detailed sources remain lower in the same expanded panel.
+    quick_materials = compact_materials_html(
+        research_tags,
+        facts.get("plus", metrics.get("plus")),
+        facts.get("caution", metrics.get("caution")),
+        cells.get("training") if horse.get("mode") == "jra" else None,
+    )
     corner = cells.get("corner")
     if corner is None:
         missing.append('4角想定')
@@ -245,6 +253,10 @@ def detail_html(horse):
     return (
         '<section class="explorer-detail"><header class="detail-header">' + number_badge(horse) +
         '<div><h3>' + value(horse.get("name")) + '</h3><p>馬別詳細</p></div></header>' +
+        ('<section class="detail-quick-evidence" aria-label="選択した馬のプラス・注意材料">' +
+         '<h4>プラス・注意材料</h4><div class="detail-quick-evidence-chips">' +
+         quick_materials + '</div><p>比較用の材料です。買い推奨ではありません。全文は下の詳細欄で確認できます。</p></section>'
+         if quick_materials else '') +
         _definition_list(basic, "detail-basic") +
         '<section class="detail-evaluation"><h4>評価・指数</h4><div class="detail-stats">' +
         ''.join(stats) + '</div>' +

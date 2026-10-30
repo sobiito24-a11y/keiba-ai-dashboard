@@ -115,7 +115,13 @@ def test_no_marks_mutated_and_raw_list_filter_value_retained():
             caution="△ 休養明け", runs=[], current_weight=55))
     before=deepcopy(horse)
     doc=show(lineup_html([horse]))
-    txt=doc.select_one("td.col-materials").get_text(" ")
+    assert doc.select("td.col-materials") == []
+    # Detailed cards are mounted only when a horse name is selected.
+    from core.race_explorer_cards import detail_html
+    selected = show(detail_html(horse))
+    quick = selected.select_one(".detail-quick-evidence")
+    assert quick is not None
+    txt = quick.get_text(" ")
     assert "能力Top3×調教AB×4角前方" in txt
     assert "近走同回り好走" in txt
     assert "今回調教B" not in txt
