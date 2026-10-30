@@ -116,3 +116,28 @@
  .column-sort{font-size:10.5px;padding:3px 0;min-height:32px;line-height:1.25}.column-filter{display:none}
  .race-explorer .shared-horse-detail{position:sticky;width:calc(100vw - 26px);left:0}.race-explorer .explorer-table .lineup-detail td{padding:7px!important}
 }
+
+
+/* Compact all-runner judgement: restore text cut off by the generic 2-line clamp.
+   Keep the existing 220px desktop / 176px mobile column widths unchanged. */
+.race-explorer .explorer-table .col-materials{min-width:0;max-width:none;overflow-wrap:anywhere}
+.race-explorer .explorer-table .comparison-snippet.material-chip-list{
+ display:flex;flex-wrap:wrap;align-content:flex-start;align-items:flex-start;
+ gap:3px;max-width:100%;min-width:0;max-height:none;overflow:visible;
+ -webkit-line-clamp:unset;line-clamp:unset;-webkit-box-orient:initial;white-space:normal;
+}
+.race-explorer .explorer-table .material-chip-list .evidence-chips.compact{display:contents}
+.race-explorer .explorer-table .material-chip-list .evidence-chip,
+.race-explorer .explorer-table .material-chip-list .evidence-more{
+ max-width:100%;min-width:0;overflow-wrap:anywhere;word-break:normal;
+ font-size:10px;line-height:1.3;padding:2px 4px;
+}
+.race-explorer .evidence-more{display:inline-flex;align-items:center;box-sizing:border-box;
+ background:#f1f2f5;color:#515967;border:1px solid #d1d5dc;border-radius:5px;
+ font-size:10px;line-height:1.3;padding:2px 5px;max-width:100%;overflow-wrap:anywhere}
+@media(max-width:700px){
+ .race-explorer .explorer-table .col-materials{min-width:0;width:176px}
+ .race-explorer .explorer-table .comparison-snippet.material-chip-list{max-height:none;overflow:visible}
+ .race-explorer .explorer-table .material-chip-list .evidence-chip,
+ .race-explorer .explorer-table .material-chip-list .evidence-more{font-size:9.5px}
+}
