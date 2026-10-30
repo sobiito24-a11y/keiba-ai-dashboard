@@ -126,4 +126,6 @@ def test_pickup_factual_features_are_colored_conservatively():
     doc = BeautifulSoup(pickup_html([h]), "html.parser")
     assert "3戦0回" in doc.select_one(".pickup-features .evidence-reference").get_text()
     assert "休養明け" in doc.select_one(".pickup-features .evidence-caution").get_text()
-    assert "調教A" in doc.select_one(".pickup-features .evidence-support").get_text()
+    # 調教A is already visible in the dedicated status box; no duplicate chip.
+    assert "調教A" not in doc.select_one(".pickup-features").get_text()
+    assert "調教A" in doc.select_one(".pickup-state").get_text()
