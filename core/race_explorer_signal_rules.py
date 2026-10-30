@@ -112,11 +112,14 @@ def badge_html(tags, compact=False):
     items = []
     for tag in tags:
         level = tag["level"] if tag["level"] in ("match", "support", "reference") else "reference"
-        prefix = "＋ 条件一致：" if level == "match" else "＋ 確認：" if level == "support" else "参考："
+        # Class/year and reference are apparent in the race header and color key.
+        # Show just the matching condition; keep full provenance in accessible text.
+        label = re.sub(r"^(?:参考：)?2歳：|^参考：", "", tag["label"])
+        status = "条件一致" if level == "match" else "基礎指標" if level == "support" else "研究参考"
         items.append('<span class="evidence-chip evidence-' + level +
-                     '" title="' + escape(tag["detail"], quote=True) +
-                     '" aria-label="' + escape(prefix + tag["label"] + "。過去の探索的な比較条件であり、買い推奨ではありません。", quote=True) +
-                     '">' + escape(prefix + tag["label"]) + '</span>')
+                     '" title="' + escape(status + "／" + tag["detail"], quote=True) +
+                     '" aria-label="' + escape(status + "：" + tag["label"] + "。過去の探索的な比較条件であり、買い推奨ではありません。", quote=True) +
+                     '">' + escape(label) + '</span>')
     return '<span class="evidence-chips' + (' compact' if compact else '') + '">' + ''.join(items) + '</span>'
 
 
