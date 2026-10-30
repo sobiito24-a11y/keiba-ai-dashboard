@@ -92,7 +92,9 @@ def compact_materials_html(tags, plus, caution, training=None):
         seen_caution.add(canonical)
         cautions.append(raw)
 
-    remaining = max(0, 2 - len(shown_tags))
+    # A research composite can coexist with two independent extra facts;
+    # otherwise show only two positives before the compact 'more' counter.
+    remaining = max(0, (3 if shown_tags else 2) - len(shown_tags))
     visible_plus, hidden_plus = positives[:remaining], positives[remaining:]
     visible_caution, hidden_caution = cautions[:1], cautions[1:]
     output = badge_html(shown_tags, compact=True)
