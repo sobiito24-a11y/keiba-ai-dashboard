@@ -94,7 +94,8 @@ def test_html_color_is_not_probability_and_no_bet_action():
     h = make_horse()
     d = BeautifulSoup(pickup_html([h]), "html.parser")
     assert d.select(".pickup-card .evidence-match")
-    assert "条件一致" in d.get_text()
+    assert "条件一致" in d.select_one(".evidence-match")["aria-label"]
+    assert "2歳：" not in d.select_one(".evidence-match").get_text()
     assert "76.9%" not in d.get_text()  # explanation is in detail, not a purchase lure
     detail = BeautifulSoup(detail_html(h), "html.parser")
     assert detail.select(".detail-research-evidence .research-evidence-explanations")
