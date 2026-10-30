@@ -50,6 +50,7 @@ def _cell(horse, cells, key):
         # the full raw material and typed filter/sort cell stay unchanged.
         core += chips(plus, badges=tags, training=cells.get("training"),
                       course_rank=cells.get("course_rank"),
+                      distance_rank=cells.get("distance_rank"),
                       ability_rank=cells.get("ability_rank"), level="support", limit=2)
         core += chips(caution, level="caution", limit=2)
         return '<span class="comparison-snippet material-chip-list">'+(core or value(item))+'</span>'
