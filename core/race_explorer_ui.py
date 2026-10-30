@@ -8,6 +8,7 @@ from .race_explorer_cards import detail_html, pickup_html
 from .race_explorer_columns import columns, records
 from .race_explorer_visuals import ability_html, development_html
 from .race_explorer_signal_rules import signals, badge_html
+from .race_explorer_compact_materials import chips
 
 
 def _cell(horse, cells, key):
@@ -45,10 +46,12 @@ def _cell(horse, cells, key):
         plus = cells.get('plus')
         caution = cells.get('caution')
         core = badge_html(tags, compact=True)
-        if plus:
-            core += '<span class="evidence-chip evidence-support" title="保存済みプラス材料">＋ 保存材料：'+value(plus)+'</span>'
-        if caution:
-            core += '<span class="evidence-chip evidence-caution" title="保存済み注意材料">注意：'+value(caution)+'</span>'
+        # Cosmetic-only: shorter facts, remove duplicated training/rank facts;
+        # the full raw material and typed filter/sort cell stay unchanged.
+        core += chips(plus, badges=tags, training=cells.get("training"),
+                      course_rank=cells.get("course_rank"),
+                      ability_rank=cells.get("ability_rank"), level="support", limit=2)
+        core += chips(caution, level="caution", limit=2)
         return '<span class="comparison-snippet material-chip-list">'+(core or value(item))+'</span>'
     if key.startswith('record_'):
         return '<span class="comparison-snippet">'+value(item)+'</span>'
