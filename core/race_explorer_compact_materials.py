@@ -9,7 +9,7 @@ import re
 from .race_explorer_signal_rules import badge_html, compact_label
 
 
-_JUDGEMENT = re.compile(r"^[\s◎○▲✔✓△＋+\-]+\s*")
+_JUDGEMENT = re.compile(r"^[\s◎○▲✔✓△＋+]+\s*")
 _LEAD = re.compile(r"^(?:プラス材料|保存材料|今回プラス|参考|今回の好材料)[：:\s]+")
 _SEP = re.compile(r"\s+[/／]\s+|\s*[；;\n]\s*")
 _GRADE_ONLY = re.compile(r"^(?:今回)?調教(?:評価)?([ABCD])$")
