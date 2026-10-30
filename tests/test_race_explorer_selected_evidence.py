@@ -46,7 +46,7 @@ def test_table_has_no_materials_column_but_raw_values_and_pickup_preserved(mode)
     doc=BeautifulSoup(lineup_html([horse]), "html.parser")
     assert not doc.select("th.col-materials,td.col-materials")
     assert doc.select_one("button.horse-select[data-horse-open='2']")
-    assert doc.select_one("button.column-filter[data-column='name']")
+    assert doc.select_one("button.column-filter[data-column-filter='name']")
     pickup=BeautifulSoup(pickup_html([horse]), "html.parser")
     assert pickup.select_one(".pickup-card[data-horse-open='2']")
     assert horse == before
@@ -72,13 +72,14 @@ def test_selected_horse_immediately_shows_positive_and_caution_with_full_source(
 
 def test_selection_wiring_embeds_detail_not_always_visible_on_table():
     horse=sample("jra")
-    doc=BeautifulSoup(document([horse], "sample-20261030"), "html.parser")
+    doc=BeautifulSoup(lineup_html([horse]), "html.parser")
     row=doc.select_one("tr[data-horse='2']")
     assert row is not None
     assert "近走同回り好走" not in row.get_text()
-    payload=json.loads(doc.select_one("#race-data").string)
-    assert 'detail-quick-evidence' in payload["cards"][0]
     assert "data-horse-open" in str(row)
-    script=doc.select_one("script:not([type])")
-    assert script and "function selectHorse" in script.text
-    assert "shared-horse-detail" in script.text
+    assert "detail-quick-evidence" in detail_html(horse)
+    # Existing client handler inserts the detail card only when the name is selected.
+    from pathlib import Path
+    script=(Path(__file__).resolve().parents[1] / "core" / "game_ui_assets" / "race.js").read_text(encoding="utf-8")
+    assert "function selectHorse" in script
+    assert "shared-horse-detail" in script
