@@ -78,3 +78,32 @@ def test_reference_does_not_mutate_ability_or_formal_marks():
     assert nar.overall_table["表示印"].iat[0] == ""
     assert nar.overall_table["nar_form_ref_rank"].iat[0] == 1
     assert nar.debug_info["nar_form_reference"]["research_only"] is True
+
+
+def test_frozen_newspaper_passing_order_and_margin_are_used_only_on_matching_date():
+    row = example(1, 50, 1)
+    row["_past_runs"][0]["position"] = 5  # past finish, not past 4c
+    evidence = {
+        "horses": [{
+            "horse_no": "1", "horse_name": "馬1",
+            "recent_runs": [{
+                "label": "前走", "date": "11/01",
+                "passing_order": "- 出 - 2 2", "margin": 0.7,
+            }],
+        }],
+    }
+    ranked = evaluate_nar_rows([row], {"date": "2026-11-04"}, evidence)
+    assert ranked[0]["nar_form_ref_prior_corner"] == 2
+    assert "前走4着以下も勝ち馬と1秒以内" in ranked[0]["nar_form_ref_reason"]
+    # A same-horse but different-date result is not a valid join.
+    evidence["horses"][0]["recent_runs"][0]["date"] = "10/30"
+    ranked = evaluate_nar_rows([row], {"date": "2026-11-04"}, evidence)
+    assert ranked[0]["nar_form_ref_prior_corner"] is None
+    assert "前走4着以下も勝ち馬と1秒以内" not in ranked[0]["nar_form_ref_reason"]
+
+
+def test_head_to_head_only_from_pre_race_frozen_text():
+    row = example()
+    row["対戦"] = "直近⑪に先着"
+    rows = evaluate_nar_rows([row], {"date": "2026-11-04"})
+    assert "直近直接対戦で先着" in rows[0]["nar_form_ref_reason"]
