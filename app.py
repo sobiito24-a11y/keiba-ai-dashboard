@@ -1845,8 +1845,9 @@ def render_market_compare_result(result: PredictionResult) -> None:
             render_jra_race_diagnostics(table, result.race_mode)
     render_market_user_selection(result, table)
     render_market_audit_details(result, table)
-    from core.newspaper_v2_ui import render_newspaper_v2_shadow
-    render_newspaper_v2_shadow(result)
+    with st.expander("新聞モデル比較（研究・監査のみ）", expanded=False):
+        from core.newspaper_v2_ui import render_newspaper_v2_shadow
+        render_newspaper_v2_shadow(result)
 
 
 
@@ -2224,31 +2225,33 @@ def render_market_race_facts(result: PredictionResult, table: pd.DataFrame) -> N
     st.subheader("レースの事実整理")
     all_debug = getattr(result, "debug_info", {}) or {}
     debug = (all_debug.get("market_compare") or {})
-    if clean_text(result.race_mode).lower() == "jra":
-        comparison = build_full_field_comparison(
-            table.to_dict("records"),
-            race_mode="jra",
-            sort_mode="current",
-            race_info=getattr(result, "race_info", {}) or {},
-        )
-        summary = jra_top5_summary_lines(comparison)
-    else:
-        comparison = build_full_field_comparison(
-            table.to_dict("records"),
-            race_mode="nar",
-            sort_mode="current",
-            race_info=getattr(result, "race_info", {}) or {},
-        )
-        summary = nar_top5_summary_lines(comparison)
-    st.markdown(
-        '<div class="ka-dashboard-card">' + "<br>".join(plain_text_to_html(line) for line in summary) + "</div>",
-        unsafe_allow_html=True,
+    # The facts panel must not promote a final rank, marks, or Top5 picks.
+    # Past model outputs remain in debug/audit for historical verification.
+    ability_rows = []
+    for horse in table.to_dict("records"):
+        ability = to_float(pick(horse, "market_ability_score", "ver3_ability_core", "能力評価値"))
+        if ability is not None:
+            ability_rows.append((float(ability), horse_no(pick(horse, "馬番", "馬", "horse_no")), clean_text(pick(horse, "馬名"))))
+    ability_rows.sort(key=lambda x: (-x[0], int(x[1] or 999)))
+    st.caption(
+        f"出走馬 {len(table)}頭 / 純能力取得 {len(ability_rows)}頭"
+        + (f" / 純能力首位：{ability_rows[0][1]}番 {ability_rows[0][2]}（{ability_rows[0][0]:.1f}）" if ability_rows else "")
+        + "。この欄は事実の整理のみで、最終評価ではありません。"
     )
     course = all_debug.get("course_materials") if isinstance(all_debug.get("course_materials"), dict) else {}
     pace = debug.get("pace") or race_pace_snapshot(table)
     horses = pace.get("horses") or {}
     counts = pace.get("counts") or {}
     provider_pace = clean_text(course.get("pace"))
+    if result.race_mode == "nar":
+        lap_status = clean_text(course.get("lap_prediction_status")).lower()
+        if not lap_status:
+            for horse in table.to_dict("records"):
+                lap_status = clean_text(pick(horse, "_lap_prediction_status", "lap_prediction_status_market")).lower()
+                if lap_status:
+                    break
+        if any(term in lap_status for term in ("実値なし", "未取得", "存在しない", "missing", "unavailable")):
+            provider_pace = ""
     pace_label = {"H": "ハイペース", "M": "平均ペース", "S": "スローペース"}.get(provider_pace, "")
     front_count = int(counts.get("逃", 0)) + int(counts.get("先", 0))
     course_lines: list[str] = []
@@ -2275,8 +2278,8 @@ def render_market_race_facts(result: PredictionResult, table: pd.DataFrame) -> N
         + "</div>",
         unsafe_allow_html=True,
     )
-    if result.race_mode == "nar":
-        st.caption("NAR正式Top5は純能力順位1〜5位です。Ver3評価は補助・監査用として確認します。")
+    if result.race_mode == "nar" and not provider_pace:
+        st.caption("地方のペース実値は未確認。先行馬の構成から見た参考展開のみ表示しています。")
 
 
 def render_nar_race_diagnostics(
@@ -4187,11 +4190,16 @@ def render_market_full_table(table: pd.DataFrame, race_mode: str) -> None:
             "馬番": no,
             "馬名": clean_text(pick(row, "馬名")),
             "馬齢": market_horse_age_text(row) or "—",
-            "印": ver3_mark_text(pick(row, "ver3_final_mark", *VER3_MARK_COLUMNS)),
-            "今回評価順位": clean_text(pick(row, "ver3_current_evaluation_rank", "総合評価順位")) or "—",
             "能力帯": clean_text(pick(row, "ability_band_v2", "能力帯", "ability_band")) or "Z",
-            "能力順位": clean_text(canonical_nar_ability_rank(row)) or "—",
-            "能力値": format_index_value(pick(row, "nar_pure_ability_score", "ver3_ability_value", *VER3_ABILITY_VALUE_COLUMNS)),
+            "能力順位": clean_text(
+                pick(row, "jra_pure_ability_rank", "market_ability_rank", "ability_rank")
+                if race_mode == "jra" else canonical_nar_ability_rank(row)
+            ) or "—",
+            "能力値": format_index_value(
+                pick(row, "jra_pure_ability_score", "market_ability_score", "ver3_ability_value", *VER3_ABILITY_VALUE_COLUMNS)
+                if race_mode == "jra"
+                else pick(row, "nar_pure_ability_score", "market_ability_score", "ver3_ability_value", *VER3_ABILITY_VALUE_COLUMNS)
+            ),
             "実オッズ": format_odds(pick(row, "actual_odds")) or "—",
             "騎手": market_jockey_display_text(row, include_place_rate=False),
             "騎手複勝率": jockey_place_rate_column_text(row),
