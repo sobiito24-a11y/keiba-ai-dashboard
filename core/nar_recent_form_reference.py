@@ -9,7 +9,7 @@ import math
 import re
 from typing import Any, Mapping
 
-VERSION = "nar_recent_form_reference_v1_20261104"
+VERSION = "nar_recent_form_reference_v2_20261104"
 RESEARCH_COLUMNS = (
     "nar_form_ref_score", "nar_form_ref_rank", "nar_form_ref_reason",
     "nar_form_ref_flag", "nar_form_ref_status", "nar_form_ref_pace",
@@ -68,6 +68,45 @@ def _previous_four_corner(run: Mapping[str, Any]) -> int | None:
     return None
 
 
+def _frozen_newspaper_run(
+    row: Mapping[str, Any], previous: Mapping[str, Any],
+    shadow: Mapping[str, Any] | None,
+) -> Mapping[str, Any]:
+    """Use the captured newspaper run only if horse and past date match."""
+    if not isinstance(shadow, Mapping) or not previous:
+        return {}
+    horses = shadow.get("horses")
+    if not isinstance(horses, list):
+        return {}
+    number = _no(row)
+    actual_name = str(row.get("馬名") or row.get("horse_name") or "").strip()
+    for horse in horses:
+        if not isinstance(horse, Mapping) or str(horse.get("horse_no")) != number:
+            continue
+        if actual_name and str(horse.get("horse_name") or "").strip() != actual_name:
+            return {}
+        for run in horse.get("recent_runs") or []:
+            if not isinstance(run, Mapping) or run.get("label") != "前走":
+                continue
+            day = str(previous.get("race_date") or "")
+            month_day = str(run.get("date") or "")
+            if re.fullmatch(r"\d{4}-\d{2}-\d{2}", day) and re.fullmatch(r"\d{1,2}/\d{1,2}", month_day):
+                if tuple(map(int, day.split("-")[1:])) == tuple(map(int, month_day.split("/"))):
+                    return run
+            return {}  # Same horse, but unmatched date: never cross-join.
+    return {}
+
+
+def _newspaper_passing_four_corner(value: Any) -> int | None:
+    """Extract last corner from true newspaper passing order, not finish."""
+    passing = str(value or "").strip()
+    # OCR/text like "- 出 - 8 8" and "- 1 2 2" are allowed.
+    if not passing or not re.fullmatch(r"[\d\s,/出-]+", passing):
+        return None
+    numbers = re.findall(r"\d+", passing)
+    return _int(numbers[-1]) if numbers else None
+
+
 def _trusted_pace(row: Mapping[str, Any]) -> str:
     status = str(row.get("_lap_prediction_status") or row.get("lap_prediction_status_market") or "").lower()
     if any(flag in status for flag in ("実値なし", "未取得", "存在しない", "missing", "unavailable", "not found")):
@@ -81,6 +120,7 @@ def _trusted_pace(row: Mapping[str, Any]) -> str:
 def evaluate_nar_rows(
     rows: list[Mapping[str, Any]],
     race_info: Mapping[str, Any] | None = None,
+    newspaper_shadow: Mapping[str, Any] | None = None,
 ) -> list[dict[str, Any]]:
     """All-runner reference scores; never modifies input rows or formal scores."""
     info = race_info or {}
@@ -118,7 +158,11 @@ def evaluate_nar_rows(
         finish = _int(last.get("position"))  # FINISH, not 4th-corner.
         finish2 = _int(second.get("position"))
         corner = _int(row.get("netkeiba_corner4_rank") or row.get("_netkeiba_corner4_rank"))
+        newspaper = _frozen_newspaper_run(row, last, newspaper_shadow)
         past_corner = _previous_four_corner(last)
+        if past_corner is None:
+            past_corner = _newspaper_passing_four_corner(newspaper.get("passing_order"))
+        margin = _num(newspaper.get("margin"))
         bonus = 0.0
         reasons: list[str] = []
         flags: list[str] = []
@@ -139,6 +183,12 @@ def evaluate_nar_rows(
         if past_corner is not None and past_corner <= 3:
             bonus += 2.0
             reasons.append("前走4角3位内（実データ）")
+            if corner is not None and corner <= 3:
+                bonus += 1.0
+                reasons.append("前走・今回とも前方")
+        if finish is not None and finish >= 4 and margin is not None and 0 <= margin <= 1.0:
+            bonus += 1.3
+            reasons.append("前走4着以下も勝ち馬と1秒以内")
         if (venue and distance and finish is not None and finish <= 3
                 and str(last.get("venue") or last.get("racecourse") or "") == venue
                 and _int(last.get("distance")) == distance):
@@ -213,7 +263,10 @@ def attach_nar_form_reference(result: Any) -> Any:
     for attr in ("overall_table", "horse_evaluation"):
         table = getattr(result, attr, None)
         if isinstance(table, pd.DataFrame) and not table.empty:
-            reviewed = evaluate_nar_rows(table.to_dict("records"), result.race_info)
+            reviewed = evaluate_nar_rows(
+                table.to_dict("records"), result.race_info,
+                (getattr(result, "debug_info", None) or {}).get("nar_newspaper_v2_shadow"),
+            )
             setattr(result, attr, pd.DataFrame(reviewed, index=table.index))
     debug = dict(getattr(result, "debug_info", None) or {})
     debug["nar_form_reference"] = {
