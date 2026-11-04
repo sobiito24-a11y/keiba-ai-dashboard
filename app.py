@@ -1837,7 +1837,10 @@ def render_market_compare_result(result: PredictionResult) -> None:
         st.caption("NARは全頭の純能力を基準に比較します。前走内容の参考順位は研究用で、既存の順位・印・購入判定を変更しません。")
     render_market_race_facts(result, table)
     if clean_text(result.race_mode).lower() == "nar":
-        render_nar_form_reference_table(table, getattr(result, "race_info", {}) or {})
+        render_nar_form_reference_table(
+            table, getattr(result, "race_info", {}) or {},
+            (getattr(result, "debug_info", None) or {}).get("nar_newspaper_v2_shadow"),
+        )
     with st.expander("旧AI診断・研究メモ（監査）", expanded=False):
         if clean_text(result.race_mode).lower() == "nar":
             render_nar_race_diagnostics(table, result.race_mode, race_info=getattr(result, "race_info", {}) or {}, layout="dashboard")
@@ -1857,9 +1860,11 @@ def render_market_compare_result(result: PredictionResult) -> None:
 
 
 
-def render_nar_form_reference_table(table: pd.DataFrame, race_info: dict[str, Any]) -> None:
+def render_nar_form_reference_table(
+    table: pd.DataFrame, race_info: dict[str, Any], newspaper_shadow: dict[str, Any] | None = None,
+) -> None:
     """Independent pre-race NAR research panel; all horses, no marks or Top5 cut."""
-    evaluated = evaluate_nar_rows(table.to_dict("records"), race_info)
+    evaluated = evaluate_nar_rows(table.to_dict("records"), race_info, newspaper_shadow)
     if not evaluated:
         return
     records = []
@@ -1881,7 +1886,7 @@ def render_nar_form_reference_table(table: pd.DataFrame, race_info: dict[str, An
     records.sort(key=lambda x: (x["参考順位"] if isinstance(x["参考順位"], int) else 999, int(x["馬番"] or 999)))
     st.subheader("NAR 前走内容・全頭参考順位（研究）")
     st.caption(
-        "純能力を土台に、前走着順・今回の4角想定・同会場距離実績・直接対戦・指数変化を控えめに補足。"
+        "純能力を土台に、前走着順・競馬新聞の前走4角通過順・着差・今回の4角想定・同会場距離実績・直接対戦・指数変化を控えめに補足。"
         "前走4角は実データがある場合だけ採用。ペース未取得は加減点しません。"
         "これは確率・最終印・買い目ではなく、回収率の改善は未検証です。"
     )
