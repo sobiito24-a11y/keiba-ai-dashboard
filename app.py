@@ -31,6 +31,7 @@ from core.condition_fit import condition_fit_badge_text, resolved_condition_fit
 from core.course_materials import four_corner_rates_display
 from core.jra_purchase_navigator import build_jra_purchase_navigation
 from core.position_signals import nar_position_reference
+from core.nar_recent_form_reference import evaluate_nar_rows
 from core.condition_support import condition_support_text, condition_support_html
 from core.jra_display_mark import jra_display_mark_from_row
 from core.jra_purchase_navigation_ui import jra_purchase_navigation_html
@@ -1833,11 +1834,10 @@ def render_market_compare_result(result: PredictionResult) -> None:
             "状態は参考表示で、Top5スコアには加算しません。"
         )
     else:
-        st.caption(
-            "NARは純能力順位1〜5位を正式Top5として表示します。"
-            "総合注目度・旧印は研究・監査情報に保持します。"
-        )
+        st.caption("NARは全頭の純能力を基準に比較します。前走内容の参考順位は研究用で、既存の順位・印・購入判定を変更しません。")
     render_market_race_facts(result, table)
+    if clean_text(result.race_mode).lower() == "nar":
+        render_nar_form_reference_table(table, getattr(result, "race_info", {}) or {})
     with st.expander("旧AI診断・研究メモ（監査）", expanded=False):
         if clean_text(result.race_mode).lower() == "nar":
             render_nar_race_diagnostics(table, result.race_mode, race_info=getattr(result, "race_info", {}) or {}, layout="dashboard")
@@ -1854,6 +1854,40 @@ def render_market_compare_result(result: PredictionResult) -> None:
     render_market_audit_details(result, table)
     from core.newspaper_v2_ui import render_newspaper_v2_shadow
     render_newspaper_v2_shadow(result)
+
+
+
+def render_nar_form_reference_table(table: pd.DataFrame, race_info: dict[str, Any]) -> None:
+    """Independent pre-race NAR research panel; all horses, no marks or Top5 cut."""
+    evaluated = evaluate_nar_rows(table.to_dict("records"), race_info)
+    if not evaluated:
+        return
+    records = []
+    for row in evaluated:
+        old_rank = pick(row, "market_ability_rank", "ability_rank", "nar_pure_ability_rank")
+        rank = row.get("nar_form_ref_rank")
+        records.append({
+            "馬番": horse_no(pick(row, "馬番", "horse_no", "number")),
+            "馬名": clean_text(pick(row, "馬名", "horse_name")),
+            "純能力順位": old_rank if pd.notna(old_rank) else "—",
+            "参考順位": rank if rank is not None else "—",
+            "参考スコア": row.get("nar_form_ref_score") if row.get("nar_form_ref_score") is not None else "—",
+            "今回4角想定": pick(row, "netkeiba_corner4_rank", "_netkeiba_corner4_rank") or "—",
+            "前走4角": row.get("nar_form_ref_prior_corner") or "未取得",
+            "前走内容の根拠": row.get("nar_form_ref_reason", ""),
+            "再確認材料": row.get("nar_form_ref_flag", ""),
+            "ペース実値": row.get("nar_form_ref_pace", "未確認"),
+        })
+    records.sort(key=lambda x: (x["参考順位"] if isinstance(x["参考順位"], int) else 999, int(x["馬番"] or 999)))
+    st.subheader("NAR 前走内容・全頭参考順位（研究）")
+    st.caption(
+        "純能力を土台に、前走着順・今回の4角想定・同会場距離実績・直接対戦・指数変化を控えめに補足。"
+        "前走4角は実データがある場合だけ採用。ペース未取得は加減点しません。"
+        "これは確率・最終印・買い目ではなく、回収率の改善は未検証です。"
+    )
+    st.dataframe(pd.DataFrame.from_records(records), use_container_width=True, hide_index=True)
+
+
 
 
 def market_source_table(result: PredictionResult) -> pd.DataFrame:
