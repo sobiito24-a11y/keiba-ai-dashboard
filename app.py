@@ -1828,31 +1828,21 @@ def render_market_compare_result(result: PredictionResult) -> None:
     if table.empty:
         st.info("Ver3表示に必要な全頭データを取得できませんでした。")
         return
-    if clean_text(result.race_mode).lower() == "jra":
-        st.caption(
-            "JRAは純能力＋再現性＋展開＋調教でTop5を評価します。"
-            "状態は参考表示で、Top5スコアには加算しません。"
-        )
-    else:
-        st.caption("NARは全頭の純能力を基準に比較します。前走内容の参考順位は研究用で、既存の順位・印・購入判定を変更しません。")
+    st.caption("JRA・NARとも全頭の独立指標を表示。最終評価・印・総合順位は通常画面では使用しません。旧計算値は監査用に保存します。")
     render_market_race_facts(result, table)
+    render_full_field_comparison(table, result.race_mode, race_info=getattr(result, "race_info", {}) or {})
     if clean_text(result.race_mode).lower() == "nar":
         render_nar_form_reference_table(
             table, getattr(result, "race_info", {}) or {},
             (getattr(result, "debug_info", None) or {}).get("nar_newspaper_v2_shadow"),
         )
+    with st.expander("全頭の詳細情報", expanded=False):
+        render_market_full_table(table, result.race_mode)
     with st.expander("旧AI診断・研究メモ（監査）", expanded=False):
         if clean_text(result.race_mode).lower() == "nar":
             render_nar_race_diagnostics(table, result.race_mode, race_info=getattr(result, "race_info", {}) or {}, layout="dashboard")
         else:
             render_jra_race_diagnostics(table, result.race_mode)
-    render_full_field_comparison(table, result.race_mode, race_info=getattr(result, "race_info", {}) or {})
-    with st.expander("馬別コンパクトカードを見る", expanded=False):
-        render_market_horse_cards(table, result.race_mode, race_info=getattr(result, "race_info", {}) or {}, materials=material_map(result))
-    with st.expander("研究買いガイド（参考）", expanded=False):
-        render_market_research_bet(table, result.race_mode, context="dashboard")
-    with st.expander("従来の全頭表を見る", expanded=False):
-        render_market_full_table(table, result.race_mode)
     render_market_user_selection(result, table)
     render_market_audit_details(result, table)
     from core.newspaper_v2_ui import render_newspaper_v2_shadow
@@ -2458,60 +2448,99 @@ def render_full_field_comparison(
     *,
     race_info: dict[str, Any] | None = None,
 ) -> None:
-    comparison = build_full_field_comparison(table.to_dict("records"), race_mode=race_mode, race_info=race_info or {})
-    if not comparison.get("show"):
-        return
-    is_jra = clean_text(race_mode).lower() == "jra"
-    if is_jra:
-        st.subheader("今回の結論")
-        st.markdown(jra_top5_conclusion_html(comparison), unsafe_allow_html=True)
-        st.caption("JRAは純能力＋再現性＋展開＋調教のTop5スコアを、この画面の結論として表示しています。")
-    st.subheader("全頭横比較")
-    labels = comparison.get("sort_labels") if isinstance(comparison.get("sort_labels"), dict) else {}
-    mode_by_label = {label: mode for mode, label in labels.items()}
-    options = list(mode_by_label.keys()) or ["馬番順"]
-    if hasattr(st, "selectbox"):
-        selected_label = st.selectbox(
-            "表示順",
-            options,
-            index=0,
-            key=full_field_comparison_sort_key(table, race_mode),
-        )
-    else:
-        selected_label = options[0]
+    """Primary JRA/NAR full-field display: independent evidence, not final scores.
+
+    Legacy Top5/mark calculations remain unchanged and available in debug/audit.
+    """
+    mode = clean_text(race_mode).lower()
     comparison = build_full_field_comparison(
-        table.to_dict("records"),
-        race_mode=race_mode,
-        sort_mode=mode_by_label.get(selected_label, "horse_number"),
-        race_info=race_info or {},
+        table.to_dict("records"), race_mode=mode,
+        sort_mode="horse_number", race_info=race_info or {},
     )
-    gap = comparison.get("gap_1_2")
-    if gap is not None:
-        st.caption(f"能力1位と2位の差：{float(gap):.1f}（参考表示。印・研究買いには反映しません）")
-    if is_jra:
-        st.markdown(full_field_jra_top5_comparison_html(comparison), unsafe_allow_html=True)
-        st.caption("JRA Top5スコア順を基準に、保存済みの全頭材料を比較しています。")
+    rows = list(comparison.get("rows") or [])
+    if not rows:
+        st.info("全頭比較の材料を取得できませんでした。")
+        return
+
+    def number_or(value: Any, fallback: float) -> float:
+        direct = to_float(value)
+        if direct is not None:
+            return float(direct)
+        # Text indices may be formatted as '63 / 1位'. Parse only the
+        # leading *score*, never accidentally parse a trailing rank.
+        match = re.match(r"^\s*(-?\d+(?:\.\d+)?)", clean_text(value))
+        return float(match.group(1)) if match else fallback
+
+    raw = {
+        normalize_horse_number_key(pick(row, "馬番", "馬", "horse_no", "number")): row
+        for row in table.to_dict("records")
+    }
+
+    def sort_key(horse: dict[str, Any], selected: str) -> tuple[float, ...]:
+        no = number_or(horse.get("number"), 999)
+        ability = number_or(horse.get("ability_rank"), 999)
+        original = raw.get(normalize_horse_number_key(horse.get("number")), {})
+        corner = number_or(pick(original, "netkeiba_corner4_rank", "_netkeiba_corner4_rank"), 999)
+        if selected == "純能力順":
+            return (ability, no)
+        if selected == "4角想定順":
+            return (corner, ability, no)
+        if selected == "コース指数順":
+            return (-number_or(horse.get("course_index"), -999999), ability, no)
+        if selected == "距離指数順":
+            return (-number_or(horse.get("distance_index"), -999999), ability, no)
+        return (no,)
+
+    st.subheader("全頭横比較")
+    st.caption("最終評価・印による並び替えはしません。純能力、コース・距離、4角、近走、騎手などをそれぞれ独立して比較します。")
+    sort_options = ["馬番順", "純能力順", "コース指数順", "距離指数順", "4角想定順"]
+    selected = st.selectbox(
+        "表示順", sort_options, index=0,
+        key=full_field_comparison_sort_key(table, race_mode) + "_independent",
+    )
+    rows = sorted(rows, key=lambda horse: sort_key(horse, selected))
+    metrics: list[tuple[str, str, Any]] = [
+        ("純能力", "", lambda h: number_display(
+            h.get("jra_pure_ability_score") if mode == "jra" else h.get("nar_pure_ability_score")
+        ) if (h.get("jra_pure_ability_score") if mode == "jra" else h.get("nar_pure_ability_score")) is not None
+         else number_display(h.get("ability_value"))),
+        ("純能力順位", "", lambda h: rank_display(h.get("ability_rank"))),
+        ("コース指数", "", lambda h: clean_text(h.get("course_index")) or "—"),
+        ("距離指数", "", lambda h: clean_text(h.get("distance_index")) or "—"),
+        ("4角想定", "position", lambda h: (
+            (clean_text(pick(raw.get(normalize_horse_number_key(h.get("number")), {}), "netkeiba_corner4_rank", "_netkeiba_corner4_rank")) + "位 / ")
+            if pick(raw.get(normalize_horse_number_key(h.get("number")), {}), "netkeiba_corner4_rank", "_netkeiba_corner4_rank")) is not None else ""
+        ) + (clean_text(h.get("corner4_display")) or comparison_position_icon(clean_text(h.get("corner4_group"))))),
+        ("脚質", "", lambda h: clean_text(h.get("running_style")) or "—"),
+        ("近3走指数", "", lambda h: clean_text(h.get("recent3_indices")) or "—"),
+        ("近3走条件", "", lambda h: clean_text(h.get("recent3_conditions")) or "—"),
+        ("同距離実績", "", lambda h: clean_text(h.get("same_distance")) or "—"),
+        ("同コース実績", "", lambda h: clean_text(h.get("same_course")) or "—"),
+        ("騎手・乗替・複勝率", "", comparison_jockey_info_text),
+        ("斤量", "", lambda h: clean_text(h.get("weight")) or "—"),
+        ("休養・間隔", "", lambda h: clean_text(h.get("interval")) or "—"),
+        ("クラス実績", "", lambda h: clean_text(h.get("class_record")) or "—"),
+    ]
+    if mode == "jra":
+        metrics.extend([
+            ("同回り", "", lambda h: clean_text(h.get("same_turn_display")) or "—"),
+            ("調教", "", lambda h: clean_text(h.get("training")) or "—"),
+            ("厩舎コメント", "", lambda h: clean_text(h.get("stable_comment")) or "—"),
+        ])
     else:
-        st.markdown(full_field_nar_top5_comparison_html(comparison), unsafe_allow_html=True)
-        st.caption("NARは保存済みの純能力・展開・条件データを全頭で比較しています。")
-    with st.expander("研究・監査情報", expanded=False):
-        if comparison.get("transfer_watch"):
-            st.markdown(
-                '<div class="ka-dashboard-card">'
-                '<b>🧪 Ver4.1監視</b><br>'
-                '能力1位はJRA→NAR初戦。能力2位との入替候補を未見100R検証中。'
-                '<div class="ka-note">研究表示のみで、印は変更しません。</div>'
-                '</div>',
-                unsafe_allow_html=True,
-            )
-        consistency = validate_v1_consistency(comparison)
-        if not consistency.get("ok"):
-            st.warning("v1表示の整合性を確認してください: " + " / ".join(consistency.get("errors", [])))
-        render_v1_overview(comparison)
-        render_v2_overview(comparison)
-        st.markdown(full_field_v2_comparison_html(comparison), unsafe_allow_html=True)
-        st.markdown(full_field_comparison_html(comparison), unsafe_allow_html=True)
-        st.caption("Baseline v0・v1・v2は研究/監査用です。保存データは書き換えません。")
+        metrics.extend([
+            ("前走相手", "", lambda h: clean_text(h.get("matchup")) or "—"),
+            ("転入状態", "", lambda h: clean_text(h.get("transfer_status")) or "—"),
+        ])
+    metrics.extend([
+        ("プラス材料", "plus", lambda h: h.get("positive_tags") or []),
+        ("不安材料", "minus", lambda h: h.get("negative_tags") or []),
+    ])
+    # Blank mark key deliberately omits marks in every horse header.
+    st.markdown(
+        comparison_table_html(rows, metrics, mark_key="_no_final_mark_display"),
+        unsafe_allow_html=True,
+    )
 
 
 def ver3_conclusion_html(comparison: dict[str, Any]) -> str:
