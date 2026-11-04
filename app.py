@@ -1885,6 +1885,26 @@ def render_nar_form_reference_table(
         })
     records.sort(key=lambda x: (x["参考順位"] if isinstance(x["参考順位"], int) else 999, int(x["馬番"] or 999)))
     st.subheader("NAR 前走内容・全頭参考順位（研究）")
+    watch = [
+        row for row in evaluated
+        if "再確認" in str(row.get("nar_form_ref_flag") or "")
+    ]
+    if watch:
+        watch = sorted(
+            watch,
+            key=lambda row: (
+                int(pick(row, "market_ability_rank", "ability_rank") or 999),
+                int(horse_no(pick(row, "馬番", "horse_no")) or 999),
+            ),
+        )
+        labels = [
+            f"{horse_no(pick(row, '馬番', 'horse_no'))}番"
+            f" {clean_text(pick(row, '馬名', 'horse_name'))}"
+            f"（{row['nar_form_ref_flag'].split(' / ')[0]}）"
+            for row in watch[:4]
+        ]
+        extra = f"、ほか{len(watch) - 4}頭" if len(watch) > 4 else ""
+        st.caption("前走内容からの再確認候補： " + " / ".join(labels) + extra)
     st.caption(
         "純能力を土台に、前走着順・競馬新聞の前走4角通過順・着差・今回の4角想定・同会場距離実績・直接対戦・指数変化を控えめに補足。"
         "前走4角は実データがある場合だけ採用。ペース未取得は加減点しません。"
@@ -2441,14 +2461,11 @@ def render_full_field_comparison(
     comparison = build_full_field_comparison(table.to_dict("records"), race_mode=race_mode, race_info=race_info or {})
     if not comparison.get("show"):
         return
-    st.subheader("今回の結論")
     is_jra = clean_text(race_mode).lower() == "jra"
     if is_jra:
+        st.subheader("今回の結論")
         st.markdown(jra_top5_conclusion_html(comparison), unsafe_allow_html=True)
         st.caption("JRAは純能力＋再現性＋展開＋調教のTop5スコアを、この画面の結論として表示しています。")
-    else:
-        st.markdown(nar_top5_conclusion_html(comparison), unsafe_allow_html=True)
-        st.caption("NARは純能力順位1〜5位を正式Top5として表示します。購入判定は順位・印を変更しません。")
     st.subheader("全頭横比較")
     labels = comparison.get("sort_labels") if isinstance(comparison.get("sort_labels"), dict) else {}
     mode_by_label = {label: mode for mode, label in labels.items()}
@@ -2476,7 +2493,7 @@ def render_full_field_comparison(
         st.caption("JRA Top5スコア順を基準に、保存済みの全頭材料を比較しています。")
     else:
         st.markdown(full_field_nar_top5_comparison_html(comparison), unsafe_allow_html=True)
-        st.caption("NAR Top5順位を基準に、保存済みの全頭材料を比較しています。")
+        st.caption("NARは保存済みの純能力・展開・条件データを全頭で比較しています。")
     with st.expander("研究・監査情報", expanded=False):
         if comparison.get("transfer_watch"):
             st.markdown(
