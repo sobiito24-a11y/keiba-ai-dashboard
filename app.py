@@ -1893,7 +1893,7 @@ def render_nar_form_reference_table(
         watch = sorted(
             watch,
             key=lambda row: (
-                int(pick(row, "market_ability_rank", "ability_rank") or 999),
+                int(to_float(pick(row, "market_ability_rank", "ability_rank")) or 999),
                 int(horse_no(pick(row, "馬番", "horse_no")) or 999),
             ),
         )
