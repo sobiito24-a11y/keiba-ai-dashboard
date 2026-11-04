@@ -1,0 +1,21 @@
+name: NAR/JRA independent view checks
+
+on:
+  pull_request:
+  push:
+    branches: [main, feature/nar-recent-form-reference-20261104]
+
+jobs:
+  independent-view:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Syntax-check application and core modules
+        run: python -m compileall -q app.py core tests/test_dashboard_independent_ui.py tests/test_nar_recent_form_reference.py
+      - name: Install focused test dependencies
+        run: python -m pip install pytest pandas
+      - name: Run independent-view and NAR research tests
+        run: python -m pytest -q tests/test_dashboard_independent_ui.py tests/test_nar_recent_form_reference.py

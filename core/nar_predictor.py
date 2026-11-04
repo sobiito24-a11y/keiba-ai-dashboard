@@ -5,6 +5,7 @@ from .condition_fit import extract_condition_fit_sources
 from .course_materials import attach_course_materials_to_result
 from .nar_notebook_logic import apply_nar_newspaper_html_features, predict_nar_from_html
 from .ver4_engine import apply_prediction_logic, prediction_logic_version as normalize_prediction_logic_version
+from .nar_recent_form_reference import attach_nar_form_reference, neutralize_unverified_nar_pace
 
 
 def predict_nar(
@@ -41,6 +42,9 @@ def predict_nar(
                 sources[number] = merged
             debug["condition_fit_sources"] = sources
             result.debug_info = debug
+    if normalize_prediction_logic_version(prediction_logic_version) == "market":
+        # Do not treat an unavailable netkeiba lap figure as an actual H pace.
+        result = neutralize_unverified_nar_pace(result)
     result = apply_prediction_logic(result, prediction_logic_version)
     from .newspaper_v2_engine import attach_newspaper_v2_shadow
     result = attach_newspaper_v2_shadow(result, html_files)
@@ -54,4 +58,6 @@ def predict_nar(
     result = attach_axis(attach_f2(attach(attach_material_reconsideration(result)), html_files))
     from .independent_ai import attach as attach_independent
     from .game_ui_frames import attach_saved_frames
-    return attach_saved_frames(attach_independent(attach_development(result, html_files)), html_files)
+    result = attach_independent(attach_development(result, html_files))
+    # Separate, research-only whole-field ranking; it never touches formal marks.
+    return attach_saved_frames(attach_nar_form_reference(result), html_files)
