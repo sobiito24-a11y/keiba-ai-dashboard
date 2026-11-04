@@ -2494,6 +2494,19 @@ def render_full_field_comparison(
             return (-number_or(horse.get("distance_index"), -999999), ability, no)
         return (no,)
 
+    def display_ability(horse: dict[str, Any]) -> str:
+        main = horse.get("jra_pure_ability_score") if mode == "jra" else horse.get("nar_pure_ability_score")
+        return number_display(main if main is not None else horse.get("ability_value"))
+
+    def display_corner(horse: dict[str, Any]) -> str:
+        original = raw.get(normalize_horse_number_key(horse.get("number")), {})
+        rank = number_or(pick(original, "netkeiba_corner4_rank", "_netkeiba_corner4_rank"), 999)
+        rank_text = f"{int(rank)}位 / " if rank < 999 else ""
+        label = clean_text(horse.get("corner4_display"))
+        if not label:
+            label = comparison_position_icon(clean_text(horse.get("corner4_group")))
+        return rank_text + label
+
     st.subheader("全頭横比較")
     st.caption("最終評価・印による並び替えはしません。純能力、コース・距離、4角、近走、騎手などをそれぞれ独立して比較します。")
     sort_options = ["馬番順", "純能力順", "コース指数順", "距離指数順", "4角想定順"]
@@ -2503,17 +2516,11 @@ def render_full_field_comparison(
     )
     rows = sorted(rows, key=lambda horse: sort_key(horse, selected))
     metrics: list[tuple[str, str, Any]] = [
-        ("純能力", "", lambda h: number_display(
-            h.get("jra_pure_ability_score") if mode == "jra" else h.get("nar_pure_ability_score")
-        ) if (h.get("jra_pure_ability_score") if mode == "jra" else h.get("nar_pure_ability_score")) is not None
-         else number_display(h.get("ability_value"))),
+        ("純能力", "", display_ability),
         ("純能力順位", "", lambda h: rank_display(h.get("ability_rank"))),
         ("コース指数", "", lambda h: clean_text(h.get("course_index")) or "—"),
         ("距離指数", "", lambda h: clean_text(h.get("distance_index")) or "—"),
-        ("4角想定", "position", lambda h: (
-            (clean_text(pick(raw.get(normalize_horse_number_key(h.get("number")), {}), "netkeiba_corner4_rank", "_netkeiba_corner4_rank")) + "位 / ")
-            if pick(raw.get(normalize_horse_number_key(h.get("number")), {}), "netkeiba_corner4_rank", "_netkeiba_corner4_rank")) is not None else ""
-        ) + (clean_text(h.get("corner4_display")) or comparison_position_icon(clean_text(h.get("corner4_group"))))),
+        ("4角想定", "position", display_corner),
         ("脚質", "", lambda h: clean_text(h.get("running_style")) or "—"),
         ("近3走指数", "", lambda h: clean_text(h.get("recent3_indices")) or "—"),
         ("近3走条件", "", lambda h: clean_text(h.get("recent3_conditions")) or "—"),
