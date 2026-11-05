@@ -95,10 +95,13 @@ def lineup_html(view):
             tooltip = str(row.get(key) if row.get(key) is not None else '未取得')
             content.append('<td class="'+cls+'" data-label="'+plain(spec['label'])+'" title="'+plain(tooltip)+'">'+_cell(horse, row, key)+'</td>')
         rows.append('<tr data-row="'+plain(no)+'" data-horse="'+plain(no)+'">'+''.join(content)+'</tr>')
+    nar_help = ('<p class="help">NAR前走参考順位は過去走・4角による研究用の全頭参考順位。'
+                '純能力・購入判断は変更しません。回収率改善は未検証です。</p>'
+                if view and view[0].get("mode") == "nar" else '')
     return ('<section class="lineup-workspace" id="lineup-workspace"><div class="explorer-section-heading"><div><span class="eyebrow">COMPARE ALL RUNNERS</span><h2>全頭予想・比較一覧</h2></div><span class="count">全'+str(len(view))+'頭</span></div>'
             '<p class="help">自分の✓は何頭でも選べます。予測・保存・買い目には反映しません。列見出しで並び替え、馬名から詳細を開けます。</p>'
-            '<p class="help">NAR前走参考順位は過去走・4角の参考評価。純能力や最終順位を変更せず、回収率改善も未検証です。</p>' if view and view[0].get("mode") == "nar" else ''
-            +'<p class="help">プラス・注意材料は馬名を選択すると表示される馬別詳細で確認できます。レースピックアップにも表示しています。</p>'
+            +nar_help+
+            '<p class="help">プラス・注意材料は馬名を選択すると表示される馬別詳細で確認できます。レースピックアップにも表示しています。</p>'
             '<div class="lineup-toolbar"><label>表示 <select id="lineup-filter"><option value="all">全頭表示</option><option value="selected">自分の✓だけ表示</option></select></label>'
             '<label>並び順 <select id="lineup-sort">'+_options(schema, 'no')+'</select></label>'
             '<label>方向 <select id="lineup-direction"><option value="asc">昇順</option><option value="desc">降順</option></select></label>'
