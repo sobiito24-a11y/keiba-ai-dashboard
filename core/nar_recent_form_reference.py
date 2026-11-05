@@ -45,7 +45,11 @@ def _past(row: Mapping[str, Any], label: str, race_date: str) -> Mapping[str, An
     if not isinstance(values, list):
         return {}
     for value in values:
-        if not isinstance(value, Mapping) or value.get("key", value.get("run_key")) != label:
+        if not isinstance(value, Mapping):
+            continue
+        run_id = value.get("key") or value.get("run_key") or value.get("label")
+        aliases = {"race1": {"race1", "前走"}, "race2": {"race2", "2走前"}, "race3": {"race3", "3走前"}}
+        if run_id not in aliases.get(label, {label}):
             continue
         previous_date = str(value.get("race_date") or "")
         if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", previous_date):
