@@ -144,3 +144,13 @@
 .race-explorer .pickup-features>.evidence-chip.evidence-support{background:#eaf4fa;color:#285d83;border-color:#a8c6dc}
 .race-explorer .pickup-features>.evidence-chip.evidence-reference{background:#f1f2f5;color:#515967;border-color:#c7cbd3}
 .race-explorer .pickup-features>.evidence-chip.evidence-caution{background:#fff4df;color:#86571f;border-color:#e8cc98}
+
+/* Literal pre-race newspaper remarks below the existing three-run index. */
+.run-short-review{display:block;margin-top:4px;font-size:.78em;line-height:1.35;overflow-wrap:anywhere;max-height:4.1em;overflow:hidden;opacity:.88}
+.detail-run-short-review{font-size:.9em;line-height:1.55;overflow-wrap:anywhere}
+.detail-jra-career{margin-top:14px}
+.career-performance-list{list-style:none;padding:0;margin:8px 0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px 12px}
+.career-performance-list li{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid rgba(127,127,127,.2);padding:4px 0;min-width:0}
+.career-performance-list li span{overflow-wrap:anywhere}
+.career-performance-list li b{white-space:nowrap;font-variant-numeric:tabular-nums}
+@media(max-width:600px){.career-performance-list{grid-template-columns:1fr}}
