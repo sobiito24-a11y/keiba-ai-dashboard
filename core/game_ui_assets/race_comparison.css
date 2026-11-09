@@ -155,16 +155,15 @@
 .career-performance-list li b{white-space:nowrap;font-variant-numeric:tabular-nums}
 @media(max-width:600px){.career-performance-list{grid-template-columns:1fr}}
 
-/* Read-only two-line positional context inside the EXISTING style/corner cells. */
-.race-explorer .explorer-table th.col-style,.race-explorer .explorer-table td.col-style{width:114px;min-width:104px}
+/* Two saved measurements; no additional horizontal columns and no scores changed. */
+.race-explorer .explorer-table th.col-start,.race-explorer .explorer-table td.col-start{width:86px;min-width:80px}
 .race-explorer .explorer-table th.col-corner,.race-explorer .explorer-table td.col-corner{width:86px;min-width:78px}
-.race-explorer .position-path,.race-explorer .corner-ability-cell{display:flex;flex-direction:column;gap:2px;align-items:center;justify-content:center;min-height:35px;line-height:1.25;white-space:normal}
-.race-explorer .position-path strong,.race-explorer .corner-position-main{font-size:12px;font-weight:650}
-.race-explorer .position-path small,.race-explorer .corner-ability-cell small{display:block;font-size:10px;line-height:1.3;color:#526d81;font-weight:500;white-space:normal}
-.race-explorer .position-path .position-path-check{display:inline-block;border:1px solid #ebd3a7;border-radius:4px;padding:1px 3px;background:#fff7e8;color:#835a23;font-size:9px}
+.race-explorer .early-style-cell,.race-explorer .corner-ability-cell{display:flex;flex-direction:column;gap:3px;align-items:center;justify-content:center;min-height:36px;line-height:1.25;white-space:normal}
+.race-explorer .early-position-main,.race-explorer .corner-position-main{font-size:13px;font-weight:650;white-space:nowrap}
+.race-explorer .early-style-cell small,.race-explorer .corner-ability-cell small{font-size:10px;line-height:1.35;color:#587084;font-weight:500;white-space:nowrap}
 @media(max-width:700px){
- .race-explorer .explorer-table th.col-style,.race-explorer .explorer-table td.col-style{width:102px;min-width:96px}
+ .race-explorer .explorer-table th.col-start,.race-explorer .explorer-table td.col-start{width:78px;min-width:74px}
  .race-explorer .explorer-table th.col-corner,.race-explorer .explorer-table td.col-corner{width:78px;min-width:74px}
- .race-explorer .position-path strong,.race-explorer .corner-position-main{font-size:11px}
- .race-explorer .position-path small,.race-explorer .corner-ability-cell small{font-size:9px}
+ .race-explorer .early-position-main,.race-explorer .corner-position-main{font-size:11px}
+ .race-explorer .early-style-cell small,.race-explorer .corner-ability-cell small{font-size:9px}
 }
