@@ -5,6 +5,7 @@ from bs4 import BeautifulSoup
 
 from core.race_explorer_columns import columns, records
 from core.race_explorer_cards import pickup_html
+from core.race_explorer_ui import lineup_html
 from core.race_explorer_race_gate import (
     race_profile, research_plan, race_gate_html, formal_reference_html,
 )
@@ -51,9 +52,11 @@ def test_jra_open_has_separate_research_challengers_without_rewriting_formal():
     assert any(x == "研究補完" for x in plan["roles"].values())
     assert all("final" not in h for h in horses)
     assert horses == before
-    assert columns(horses)[4]["key"] == "research_signal"
-    assert cells["6"]["research_signal"].startswith("補")
-    assert "相" in cells["6"]["research_signal"]
+    assert [x["key"] for x in columns(horses)[:5]] == ["user", "frame", "no", "name", "age"]
+    assert any(x["code"] == "相" for x in plan["signs"]["6"])
+    doc = BeautifulSoup(lineup_html(horses), "html.parser")
+    assert doc.select_one('tr[data-horse="6"] .gate-number-sign').text == "補"
+    assert "相" in doc.select_one('tr[data-horse="6"] .gate-inline-signs').text
 
 
 def test_nar_keeps_all_saved_top5_and_does_not_use_h_pace_for_routing():
