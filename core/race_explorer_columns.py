@@ -106,7 +106,8 @@ def columns(view):
           for key, label in _RUNS),
         _spec("average", "3走平均", "number"),
         _spec("maximum", "★最高指数", "number"),
-        _spec("style", "序盤傾向→4角", "text"),
+        _spec("style", "保存脚質", "text", table_hidden=True),
+        _spec("start", "序盤傾向", "rank"),
         _spec("corner", "4角想定", "rank"),
         _spec("rest_days", "前走間隔", "number", unit="日"),
     ])
@@ -224,6 +225,7 @@ def records(view):
             reference_score=_reference_score(horse),
             average=_number(metrics.get("average")), maximum=_number(metrics.get("maximum")),
             style=_text(metrics.get("style", horse.get("style"))),
+            start=_integer(horse.get("start")),
             corner=_integer(metrics.get("corner", horse.get("corner"))),
             rest_days=_integer(facts.get("rest_days"), minimum=0), training=grade,
             weight=current_weight if current_weight is not None and current_weight > 0 else None,
