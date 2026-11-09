@@ -92,10 +92,10 @@ def pickup_html(view, selected=None, gate=None):
         research_tags = ''
         if isinstance(gate, dict):
             role = gate.get('roles', {}).get(index, '参考')
-            tags = gate.get('signs', {}).get(str(horse.get('no')), ())
+            research_domain_tags = gate.get('signs', {}).get(str(horse.get('no')), ())
             warning = gate.get('warnings', {}).get(str(horse.get('no')))
             research_tags = ('<span class="pickup-research-tags"><span class="gate-member-label">'+plain('補完' if role == '研究補完' else '研究候補')+'</span>'+
-                             ''.join('<span class="gate-reason" title="'+plain(t['detail'])+'">'+plain(t['code']+' '+t['label'])+'</span>' for t in tags)+
+                             ''.join('<span class="gate-reason" title="'+plain(t['detail'])+'">'+plain(t['code']+' '+t['label'])+'</span>' for t in research_domain_tags)+
                              ('<span class="gate-caution">注意：'+plain(warning)+'</span>' if warning else '')+'</span>')
         jockey = facts.get("current_jockey")
         if jockey is None:
