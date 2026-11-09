@@ -164,7 +164,7 @@ def document(view, race_key='', paper_decision=None, portable=None):
     css = ''.join((ASSETS/name).read_text(encoding='utf-8') for name in ('race.css', 'race_cards.css', 'race_comparison.css'))
     script = '\n'.join((ASSETS/name).read_text(encoding='utf-8') for name in ('race_comparison.js', 'race.js'))
     return ('<!doctype html><html lang="ja"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>'+css+'</style><body class="race-explorer"><main>'
-            +_accordion('race-pickup', 'レース判定・馬券内候補', '正式評価と別の研究候補（最大6頭）を確認できます。', race_gate_html(view, gate) + pickup_html(view, gate['indices'], gate))
+            +_accordion('race-pickup', 'レース判定・馬券内候補', '重点：'+plain(gate['profile']['focus'])+' · 研究候補'+str(len(gate['indices']))+'頭', race_gate_html(view, gate) + pickup_html(view, gate['indices'], gate))
             +_accordion('race-development', 'レース展開予想', '保存されたペース・脚質・4角想定を確認できます。', development_html(view, context).replace('レース展開予測', 'レース展開予想'))
             +_accordion('race-ability', '純能力の見える化', '全出走馬の指数を共通の尺度で比較できます。', ability_html(view))
             +odds_status(view)+lineup_html(view)
