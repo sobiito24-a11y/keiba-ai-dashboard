@@ -106,7 +106,7 @@ def columns(view):
           for key, label in _RUNS),
         _spec("average", "3走平均", "number"),
         _spec("maximum", "★最高指数", "number"),
-        _spec("style", "想定脚質", "text"),
+        _spec("style", "序盤傾向→4角", "text"),
         _spec("corner", "4角想定", "rank"),
         _spec("rest_days", "前走間隔", "number", unit="日"),
     ])
