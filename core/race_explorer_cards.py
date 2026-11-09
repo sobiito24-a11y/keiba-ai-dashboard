@@ -73,9 +73,9 @@ def _prices_html(horse):
             '<small class="pickup-price-time">提供元更新 ' + value(observed) + '</small></span>')
 
 
-def pickup_html(view):
-    """Use the existing Top5/reference membership, presented in horse-number order."""
-    selected = select_indices(view, "no")
+def pickup_html(view, selected=None, gate=None):
+    """Existing Top5/reference by default; optional read-only research view."""
+    selected = select_indices(view, "no") if selected is None else sorted(selected, key=lambda i: (number(view[i].get('no')) or 999, i))
     if not selected:
         return '<p class="no-data">保存されたレースピックアップはありません</p>'
     cards = []
@@ -89,6 +89,14 @@ def pickup_html(view):
         has_research_evidence |= bool(tags)
         no = plain(horse.get("no") if horse.get("no") is not None else "")
         name = value(horse.get("name"))
+        research_tags = ''
+        if isinstance(gate, dict):
+            role = gate.get('roles', {}).get(index, '参考')
+            tags = gate.get('signs', {}).get(str(horse.get('no')), ())
+            warning = gate.get('warnings', {}).get(str(horse.get('no')))
+            research_tags = ('<span class="pickup-research-tags"><span class="gate-member-label">'+plain('補完' if role == '研究補完' else '研究候補')+'</span>'+
+                             ''.join('<span class="gate-reason" title="'+plain(t['detail'])+'">'+plain(t['code']+' '+t['label'])+'</span>' for t in tags)+
+                             ('<span class="gate-caution">注意：'+plain(warning)+'</span>' if warning else '')+'</span>')
         jockey = facts.get("current_jockey")
         if jockey is None:
             jockey = horse.get("jockey")
@@ -112,6 +120,7 @@ def pickup_html(view):
             '<span class="pickup-identity"><strong>' + name + '</strong>'
             '<span class="pickup-basics">' + value(horse.get("age")) +
             ' · ' + value(jockey) + '</span></span></span>'
+            research_tags +
             '<span class="pickup-position"><span>想定脚質 ' +
             value(_unmarked(metrics.get("style", horse.get("style")))) +
             '</span><span>4角想定 ' + _corner(horse, metrics) + '</span></span>'
@@ -124,6 +133,9 @@ def pickup_html(view):
             '<span class="pickup-open">詳細を見る <span aria-hidden="true">↗</span></span>'
             '</button>')
     note = ('<p class="evidence-intro">青緑＝過去の複合条件一致、青＝基礎指標、グレー＝参考研究。色は買い推奨・予想確率ではありません。</p>' if has_research_evidence else '')
+    if isinstance(gate, dict):
+        note = ('<p class="help">研究候補は最大6頭。再＝近走安定、同＝同条件、展＝位置と適性、相＝上級戦実績、伸＝指数上昇、騎＝騎手。'
+                '正式印や最終評価の変更・購入推奨ではありません。</p>') + note
     return note + '<div class="pickup-grid">' + ''.join(cards) + '</div>'
 
 
