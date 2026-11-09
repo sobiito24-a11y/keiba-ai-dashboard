@@ -107,7 +107,6 @@ def columns(view):
         _spec("average", "3走平均", "number"),
         _spec("maximum", "★最高指数", "number"),
         _spec("style", "序盤傾向", "text"),
-        _spec("start_rank", "序盤想定順位", "rank", table_hidden=True),
         _spec("corner", "4角想定", "rank"),
         _spec("rest_days", "前走間隔", "number", unit="日"),
     ])
