@@ -9,6 +9,7 @@ from .race_explorer_columns import columns, records
 from .race_explorer_visuals import ability_html, development_html
 from .race_explorer_signal_rules import signals
 from .race_explorer_compact_materials import compact_materials_html
+from .race_explorer_race_gate import research_plan, race_gate_html, formal_reference_html
 
 
 def _cell(horse, cells, key):
@@ -16,7 +17,24 @@ def _cell(horse, cells, key):
     if key == 'user':
         return '<label class="user-check-target"><input type="checkbox" class="user-horse-check" data-user-check="'+plain(horse.get('no'))+'" aria-label="自分のチェック '+plain(horse.get('no'))+' '+plain(horse.get('name'))+'"></label>'
     if key == 'no':
-        return number_badge(horse)
+        sign = ('補' if cells.get('research_role') == '研究補完' else
+                '候' if cells.get('research_member') else None)
+        return number_badge(horse) + ('<small class="gate-number-sign" title="研究候補（正式印とは別）">'+plain(sign)+'</small>' if sign else '')
+    if key == 'research_signal':
+        if not item:
+            return '<span class="missing-cell">―</span>'
+        role = cells.get('research_role')
+        marker = '補' if role == '研究補完' else '候' if role else ''
+        remaining = str(item)
+        if marker and remaining.startswith(marker):
+            remaining = remaining[len(marker):].strip()
+        title = (cells.get('research_reason') or '保存されたレース前情報からの研究用サイン')
+        warning = cells.get('research_warning')
+        if warning:
+            title += ' / 注意：' + warning
+        return ('<span class="gate-cell-sign" title="'+plain(title)+'">' +
+                ('<b class="gate-member-label">'+plain(marker)+'</b>' if marker else '') +
+                ('<small>'+plain(remaining)+'</small>' if remaining else '') + '</span>')
     if key == 'name':
         no = plain(horse.get('no'))
         return '<button type="button" class="horse-select" data-horse-open="'+no+'" aria-expanded="false" aria-controls="horse-detail-'+no+'"><span class="horse-name-age"><strong>'+value(item)+'</strong><span class="horse-age" title="性齢">'+value(cells.get('age'), '―')+'</span></span></button>'
@@ -73,11 +91,11 @@ def _options(schema, first=None):
 def lineup_html(view):
     schema, cells = columns(view), records(view)
     shown_schema = [spec for spec in schema if not spec.get('table_hidden')]
-    widths = dict(user=42, frame=36, no=44, name=190, jockey=85, score=120, nar_form_rank=115, frozen_review=128, career_course=142,
+    widths = dict(user=42, frame=36, no=44, name=190, research_signal=85, jockey=85, score=120, nar_form_rank=115, frozen_review=128, career_course=142,
                   rank=70, popularity=70, style=70, corner=70, training=60,
                   run_old=134, run_middle=134, run_latest=134, jockey_change=160,
                   record_venue=190, record_distance=190, record_venue_distance=190, materials=220)
-    mobile_widths = dict(user=34, frame=28, no=34, name=118, jockey=68,
+    mobile_widths = dict(user=34, frame=28, no=34, name=118, research_signal=72, jockey=68,
                          score=100, reference_score=110, nar_form_rank=93, frozen_review=104, career_course=112, popularity=56, style=56,
                          corner=62, training=48, run_old=108, run_middle=108,
                          run_latest=108, jockey_change=128, record_venue=156,
@@ -134,6 +152,7 @@ def document(view, race_key='', paper_decision=None, portable=None):
     from .game_race_ui import ASSETS, comparison_data, comparison_html, nar_watch_html, paper_html, odds_status
     context = view[0].get('race_context', {}) if view else {}
     schema, cells = columns(view), records(view)
+    gate = research_plan(view, cells)
     horses = []
     for horse in view:
         sort = dict(horse.get('sort_values') or {})
@@ -146,11 +165,11 @@ def document(view, race_key='', paper_decision=None, portable=None):
     css = ''.join((ASSETS/name).read_text(encoding='utf-8') for name in ('race.css', 'race_cards.css', 'race_comparison.css'))
     script = '\n'.join((ASSETS/name).read_text(encoding='utf-8') for name in ('race_comparison.js', 'race.js'))
     return ('<!doctype html><html lang="ja"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>'+css+'</style><body class="race-explorer"><main>'
-            +_accordion('race-pickup', 'レースピックアップ', '既存候補の状態・特徴を必要なときに確認できます。', pickup_html(view))
+            +_accordion('race-pickup', 'レース判定・馬券内候補', '正式評価と別の研究候補（最大6頭）を確認できます。', race_gate_html(view, gate) + pickup_html(view, gate['indices'], gate))
             +_accordion('race-development', 'レース展開予想', '保存されたペース・脚質・4角想定を確認できます。', development_html(view, context).replace('レース展開予測', 'レース展開予想'))
             +_accordion('race-ability', '純能力の見える化', '全出走馬の指数を共通の尺度で比較できます。', ability_html(view))
             +odds_status(view)+lineup_html(view)
             +'<details class="detail-analysis" id="detail-analysis" data-persist-panel><summary>詳細分析・研究機能 <span>独立指標10項目</span></summary>'+comparison_html(view, view[0].get('mode', 'jra') if view else 'jra')+'</details>'
-            +'<details class="advanced-research" id="saved-research" data-persist-panel><summary>買い目・保存済み研究情報</summary>'+nar_watch_html(view, portable)+paper_html(view, race_key, paper_decision)+'</details>'
+            +'<details class="advanced-research" id="saved-research" data-persist-panel><summary>買い目・保存済み研究情報</summary>'+formal_reference_html(view)+nar_watch_html(view, portable)+paper_html(view, race_key, paper_decision)+'</details>'
             +'<section id="selected-section" hidden><div id="selected-card"></div></section><p id="selection-status" class="sr-only" role="status" aria-live="polite"></p>'
             +'<noscript>比較する馬の選択や詳細表示にはJavaScriptを有効にしてください。</noscript></main><script type="application/json" id="race-data">'+data+'</script><script>'+script+'</script></body></html>')
