@@ -1,0 +1,28 @@
+name: Research free NAR settled payoffs
+
+on:
+  pull_request:
+    paths:
+      - 'research/nar_official_payoff_capture.py'
+      - '.github/workflows/research-nar-official-payoffs.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  retrieve:
+    if: github.head_ref == 'research/nar-official-payoffs-20261109'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install requests beautifulsoup4
+      - name: Retrieve official daily NAR dividend pages
+        run: python research/nar_official_payoff_capture.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: nar-public-daily-payouts-20261107-08
+          path: research/nar_payout_capture/
