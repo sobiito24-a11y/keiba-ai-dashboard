@@ -40,11 +40,9 @@ def test_saved_start_and_corner_display_two_lines_without_prediction_mutation():
         assert row.select_one('.col-corner .position-two-line small').text == "能力13位"
         assert doc.select_one('th[data-column="style"] .column-label').text == "序盤傾向"
         assert doc.select_one('th[data-column="corner"] .column-label').text == "4角想定"
-        # Corner remains a numeric rank; a separate hidden start rank enables numeric sorting.
+        # Corner remains numeric; saved source ranks are reused without extra columns.
         assert next(x for x in columns(view) if x["key"] == "corner")["type"] == "rank"
-        hidden = next(x for x in columns(view) if x["key"] == "start_rank")
-        assert hidden["table_hidden"] is True and hidden["type"] == "rank"
-        assert doc.select_one('#lineup-sort option[value="start_rank"]').text == "序盤想定順位"
+        assert not any(x['key'] == 'start_rank' for x in columns(view))
         assert len(doc.select("thead th")) == len([s for s in columns(view) if not s.get("table_hidden")])
 
 
