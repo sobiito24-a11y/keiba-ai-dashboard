@@ -71,6 +71,8 @@ def columns(view):
         _spec("user", "自分の✓", "boolean"),
         _spec("frame", "枠番", "number"), _spec("no", "馬番", "number"),
         _spec("name", "馬名・性齢", "text"), _spec("age", "性齢", "text", table_hidden=True),
+        _spec("research_signal", "研究サイン", "text"),
+        _spec("research_reason", "研究サイン根拠", "text", table_hidden=True),
         _spec("jockey", "騎手", "text"), _spec("odds", "単勝", "number"),
         _spec("popularity", "人気", "rank"),
         _spec("ability", "純能力指数", "number", rank_key="ability_rank"),
@@ -255,4 +257,17 @@ def records(view):
             item[key + "_date"] = _text(run.get("date"))
             item[key + "_is_maximum"] = run.get("is_maximum") is True and item[key] is not None
         result[no] = item
+    # Purely additive research UI cells; no source rank/score/mark is rewritten.
+    from .race_explorer_race_gate import research_plan
+    gate = research_plan(view, result)
+    by_index = {str(view[i].get("no")): i for i in gate["indices"]}
+    for no, item in result.items():
+        tags = gate["signs"].get(no, ())
+        role = gate["roles"].get(by_index.get(no))
+        prefix = "補" if role == "研究補完" else "候" if role else None
+        item["research_member"] = role is not None
+        item["research_role"] = role
+        item["research_signal"] = " ".join(filter(None, (prefix, "・".join(x["code"] for x in tags)))) or None
+        item["research_reason"] = " / ".join(x["label"] + "：" + x["detail"] for x in tags) or None
+        item["research_warning"] = gate["warnings"].get(no)
     return result
