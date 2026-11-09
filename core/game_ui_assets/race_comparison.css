@@ -154,3 +154,17 @@
 .career-performance-list li span{overflow-wrap:anywhere}
 .career-performance-list li b{white-space:nowrap;font-variant-numeric:tabular-nums}
 @media(max-width:600px){.career-performance-list{grid-template-columns:1fr}}
+
+/* Display-only: saved start rank + historical style, saved 4corner rank + ability rank. */
+.race-explorer .explorer-table .col-style{width:79px;min-width:77px}
+.race-explorer .explorer-table .col-corner{width:82px;min-width:79px}
+.race-explorer .position-two-line{display:flex;flex-direction:column;justify-content:center;align-items:center;gap:2px;min-height:38px;font-variant-numeric:tabular-nums;white-space:normal}
+.race-explorer .position-two-line strong{font-size:13px;font-weight:650;line-height:1.3;white-space:nowrap}
+.race-explorer .position-two-line small{display:block;font-size:10px;font-weight:400;line-height:1.25;margin:0;color:#587187;white-space:nowrap}
+@media(max-width:700px){
+ .race-explorer .explorer-table .col-style{width:73px;min-width:72px}
+ .race-explorer .explorer-table .col-corner{width:77px;min-width:76px}
+ .race-explorer .position-two-line{min-height:35px}
+ .race-explorer .position-two-line strong{font-size:12px}
+ .race-explorer .position-two-line small{font-size:9px}
+}
