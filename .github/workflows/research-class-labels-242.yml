@@ -1,0 +1,31 @@
+name: Research class labels 242R
+
+on:
+  pull_request:
+    paths:
+      - 'research/jra_class_labels_242r_20261109.py'
+      - '.github/workflows/research-class-labels-242.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  labels:
+    if: github.head_ref == 'research/class-stratified-242r-20261109'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install parsers
+        run: python -m pip install requests beautifulsoup4
+      - name: Collect race conditions
+        run: python research/jra_class_labels_242r_20261109.py
+      - name: Upload audit CSV
+        uses: actions/upload-artifact@v4
+        with:
+          name: jra-class-labels-242r
+          path: research/class_labels_242/
