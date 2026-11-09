@@ -46,7 +46,7 @@ def test_normal_layout_full_field_manual_checks_and_source_nonmutation(mode, cou
     assert (rows, records, info, view) == saved
     section_order = [heading.text for heading in doc.select(
         '.overview-accordion > summary .overview-title, #lineup-workspace h2')]
-    assert section_order == ['レースピックアップ', 'レース展開予想', '純能力の見える化', '全頭予想・比較一覧']
+    assert section_order == ['レース判定・馬券内候補', 'レース展開予想', '純能力の見える化', '全頭予想・比較一覧']
     overviews=doc.select('details.overview-accordion')
     assert [panel['id'] for panel in overviews]==['race-pickup','race-development','race-ability']
     for panel in overviews:
