@@ -11,36 +11,16 @@ from .race_explorer_signal_rules import signals
 from .race_explorer_compact_materials import compact_materials_html
 
 
-def _position_path(cells, field_size):
-    """Visual comparison of historical style and predicted 4th-corner band.
-
-    Never infer a start position or replace the stored style/corner forecast.
-    Sorting and filtering continue to use the original source values.
-    """
-    style = cells.get('style')
-    labels = {'逃': '逃げ型', '逃げ': '逃げ型',
-              '先': '先行型', '先行': '先行型',
-              '差': '差し型', '差し': '差し型',
-              '追': '追込型', '追込': '追込型', '追い込み': '追込型'}
-    prior = labels.get(style)
-    if not prior:
-        return '<span class="missing-cell">脚質 未取得</span>'
-    corner = cells.get('corner')
-    if (not isinstance(corner, int) or isinstance(corner, bool)
-            or not isinstance(field_size, int) or field_size < 1
-            or not 1 <= corner <= field_size):
-        return '<span class="position-path"><strong>'+plain(prior)+'</strong><small>→ 4角未取得</small></span>'
-    band = min(3, ((corner - 1) * 4) // field_size)
-    target = ('前方', '好位', '中団', '後方')[band]
-    mismatch = ((prior == '逃げ型' and band >= 2) or
-                (prior == '先行型' and band >= 2) or
-                (prior == '差し型' and band == 0) or
-                (prior == '追込型' and band <= 1))
-    caution = ('<small class="position-path-check" title="保存脚質と今回の4角想定の位置帯が異なります。予測の誤りや好走を意味するものではありません。">差あり</small>'
-               if mismatch else '')
-    return ('<span class="position-path" title="左は過去の保存脚質。右は今回の保存4角想定を頭数で4区分した位置帯。スタート直後の実測・予測ではありません。">'
-            '<strong>'+plain(prior)+'</strong><small>→ '+plain(target)+'想定</small>'+caution+'</span>')
-
+def _start_style_cell(cells):
+    """Two saved pre-race inputs side by side with corner: do not predict anew."""
+    rank = cells.get('start')
+    text = {'逃':'逃げ', '逃げ':'逃げ', '先':'先行', '先行':'先行',
+            '差':'差し', '差し':'差し', '追':'追込', '追込':'追込',
+            '追い込み':'追込', '追込み':'追込'}.get(cells.get('style'))
+    top = ('<b class="early-position-main">'+value(rank)+'番手</b>'
+           if rank is not None else '<b class="missing-cell">未取得</b>')
+    return ('<span class="early-style-cell" title="上段は今回の保存スタート順位、下段は過去の保存脚質です。脚質はスタート直後の予測順位ではありません。">'
+            +top+'<small>'+(plain(text) if text else '脚質未取得')+'</small></span>')
 
 def _cell(horse, cells, key, field_size=None):
     item = cells.get(key)
@@ -58,8 +38,8 @@ def _cell(horse, cells, key, field_size=None):
         return comparison_index_html(item, ranked=False)
     if key == 'nar_form_rank':
         return '<b class="metric-number">'+value(item)+'位</b>' if item is not None else '<span class="missing-cell">未取得</span>'
-    if key == 'style':
-        return _position_path(cells, field_size)
+    if key == 'start':
+        return _start_style_cell(cells)
     if key == 'corner':
         main = ('<b class="corner-position-main">'+value(item)+'番手</b>' if item is not None
                 else '<span class="missing-cell">未取得</span>')
@@ -111,11 +91,11 @@ def lineup_html(view):
     schema, cells = columns(view), records(view)
     shown_schema = [spec for spec in schema if not spec.get('table_hidden')]
     widths = dict(user=42, frame=36, no=44, name=190, jockey=85, score=120, nar_form_rank=115, frozen_review=128, career_course=142,
-                  rank=70, popularity=70, style=114, corner=86, training=60,
+                  rank=70, popularity=70, start=86, corner=86, training=60,
                   run_old=134, run_middle=134, run_latest=134, jockey_change=160,
                   record_venue=190, record_distance=190, record_venue_distance=190, materials=220)
     mobile_widths = dict(user=34, frame=28, no=34, name=118, jockey=68,
-                         score=100, reference_score=110, nar_form_rank=93, frozen_review=104, career_course=112, popularity=56, style=102,
+                         score=100, reference_score=110, nar_form_rank=93, frozen_review=104, career_course=112, popularity=56, start=78,
                          corner=78, training=48, run_old=108, run_middle=108,
                          run_latest=108, jockey_change=128, record_venue=156,
                          record_distance=156, record_venue_distance=156, materials=176)
@@ -160,7 +140,7 @@ def lineup_html(view):
             '<div id="active-column-filters" aria-label="適用中の絞り込み"></div>'
             '<p id="lineup-empty" class="no-data" hidden>条件に合う馬がいません。絞り込みを解除するか、全頭表示に切り替えてください。</p>'
             '<div class="table-scroll explorer-table-scroll" tabindex="0" aria-label="全頭比較・縦横スクロール"><table class="explorer-table" style="--comparison-width:'+str(table_width)+'px;--comparison-mobile-width:'+str(mobile_width)+'px"><thead><tr>'+''.join(headers)+'</tr></thead><tbody>'+''.join(rows)+'</tbody></table></div>'
-            '<p class="help">「序盤傾向→4角」は過去の保存脚質と今回の4角予想を並べた比較表示。スタート直後の位置予測ではありません。「差あり」は位置帯の食い違いで、好走・不利の判定ではありません。4角列は従来どおり4角順位でソートし、下段の能力順位も従来の保存値です。</p>'
+            '<p class="help">「序盤傾向」は上段が保存されたスタート順位、下段が保存脚質（逃げ・先行・差し・追込）。「4角想定」は上段が保存4角順位、下段が純能力順位です。各見出しのソートは上段の数値で動き、脚質・純能力の並び替えは別の項目で可能です。</p>'
             '<p class="help">下段は各指数の順位です。上位3位の記号は各指数の順位表示で、総合評価や印ではありません。過去走は3走前 → 2走前 → 前走。★は保存された最高指数との一致です。</p></section>')
 
 
