@@ -119,7 +119,7 @@ def pickup_html(view, selected=None, gate=None):
             '<span class="pickup-header">' + number_badge(horse) +
             '<span class="pickup-identity"><strong>' + name + '</strong>'
             '<span class="pickup-basics">' + value(horse.get("age")) +
-            ' · ' + value(jockey) + '</span></span></span>'
+            ' · ' + value(jockey) + '</span></span></span>' +
             research_tags +
             '<span class="pickup-position"><span>想定脚質 ' +
             value(_unmarked(metrics.get("style", horse.get("style")))) +
