@@ -6,6 +6,8 @@ on:
       - 'research/lead_history_source_probe.py'
       - 'research/collect_lead_history_public.py'
       - 'research/lead_history_public_race_ids_zlib.b64'
+      - 'research/lead_history_additional_public_ids_zlib.b64'
+      - 'research/collect_lead_history_additional.py'
       - '.github/workflows/research-lead-history.yml'
 
 permissions:
@@ -22,8 +24,8 @@ jobs:
         with:
           python-version: '3.11'
       - run: python -m pip install requests beautifulsoup4
-      - run: python research/collect_lead_history_public.py
+      - run: python research/collect_lead_history_additional.py
       - uses: actions/upload-artifact@v4
         with:
-          name: lead-history-public-729r
-          path: research/lead_history_public_results/
+          name: lead-history-public-additional-1187r
+          path: research/lead_history_public_additional/
