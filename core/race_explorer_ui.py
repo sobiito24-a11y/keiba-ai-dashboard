@@ -20,24 +20,16 @@ def _cell(horse, cells, key):
         sign = ('補' if cells.get('research_role') == '研究補完' else
                 '候' if cells.get('research_member') else None)
         return number_badge(horse) + ('<small class="gate-number-sign" title="研究候補（正式印とは別）">'+plain(sign)+'</small>' if sign else '')
-    if key == 'research_signal':
-        if not item:
-            return '<span class="missing-cell">―</span>'
-        role = cells.get('research_role')
-        marker = '補' if role == '研究補完' else '候' if role else ''
-        remaining = str(item)
-        if marker and remaining.startswith(marker):
-            remaining = remaining[len(marker):].strip()
-        title = (cells.get('research_reason') or '保存されたレース前情報からの研究用サイン')
-        warning = cells.get('research_warning')
-        if warning:
-            title += ' / 注意：' + warning
-        return ('<span class="gate-cell-sign" title="'+plain(title)+'">' +
-                ('<b class="gate-member-label">'+plain(marker)+'</b>' if marker else '') +
-                ('<small>'+plain(remaining)+'</small>' if remaining else '') + '</span>')
     if key == 'name':
         no = plain(horse.get('no'))
-        return '<button type="button" class="horse-select" data-horse-open="'+no+'" aria-expanded="false" aria-controls="horse-detail-'+no+'"><span class="horse-name-age"><strong>'+value(item)+'</strong><span class="horse-age" title="性齢">'+value(cells.get('age'), '―')+'</span></span></button>'
+        tags = cells.get('research_tags') or ()
+        titles = ' / '.join(tag['label']+'：'+tag['detail'] for tag in tags)
+        warning = cells.get('research_warning')
+        if warning:
+            titles += ' / 注意：'+warning
+        sign = ('<small class="gate-inline-signs" title="'+plain(titles)+'">'+plain('・'.join(tag['code'] for tag in tags))+'</small>' if tags else '')
+        caution = ('<small class="gate-inline-caution" title="'+plain(warning)+'">注意</small>' if warning else '')
+        return '<button type="button" class="horse-select" data-horse-open="'+no+'" aria-expanded="false" aria-controls="horse-detail-'+no+'"><span class="horse-name-age"><strong>'+value(item)+'</strong><span class="horse-age" title="性齢">'+value(cells.get('age'), '―')+'</span></span>'+sign+caution+'</button>'
     if key in ('score', 'ability', 'distance', 'course', 'star', 'away'):
         rank_key = 'rank' if key == 'score' else key + '_rank'
         return comparison_index_html(item, cells.get(rank_key))
@@ -90,12 +82,14 @@ def _options(schema, first=None):
 
 def lineup_html(view):
     schema, cells = columns(view), records(view)
+    gate = research_plan(view, cells)
+    role_by_number = {str(view[i].get('no')): role for i, role in gate['roles'].items()}
     shown_schema = [spec for spec in schema if not spec.get('table_hidden')]
-    widths = dict(user=42, frame=36, no=44, name=190, research_signal=85, jockey=85, score=120, nar_form_rank=115, frozen_review=128, career_course=142,
+    widths = dict(user=42, frame=36, no=44, name=190, jockey=85, score=120, nar_form_rank=115, frozen_review=128, career_course=142,
                   rank=70, popularity=70, style=70, corner=70, training=60,
                   run_old=134, run_middle=134, run_latest=134, jockey_change=160,
                   record_venue=190, record_distance=190, record_venue_distance=190, materials=220)
-    mobile_widths = dict(user=34, frame=28, no=34, name=118, research_signal=72, jockey=68,
+    mobile_widths = dict(user=34, frame=28, no=34, name=118, jockey=68,
                          score=100, reference_score=110, nar_form_rank=93, frozen_review=104, career_course=112, popularity=56, style=56,
                          corner=62, training=48, run_old=108, run_middle=108,
                          run_latest=108, jockey_change=128, record_venue=156,
@@ -111,7 +105,11 @@ def lineup_html(view):
     rows = []
     for horse in sorted(view, key=lambda h: (number(h.get('no')) is None, number(h.get('no')) or 0)):
         no = str(horse.get('no', ''))
-        row = cells[no]
+        row = dict(cells[no])
+        row['research_role'] = role_by_number.get(no)
+        row['research_member'] = bool(row['research_role'])
+        row['research_tags'] = gate['signs'].get(no, ())
+        row['research_warning'] = gate['warnings'].get(no)
         content = []
         for spec in shown_schema:
             key = spec['key']
@@ -125,7 +123,8 @@ def lineup_html(view):
     return ('<section class="lineup-workspace" id="lineup-workspace"><div class="explorer-section-heading"><div><span class="eyebrow">COMPARE ALL RUNNERS</span><h2>全頭予想・比較一覧</h2></div><span class="count">全'+str(len(view))+'頭</span></div>'
             '<p class="help">自分の✓は何頭でも選べます。予測・保存・買い目には反映しません。列見出しで並び替え、馬名から詳細を開けます。</p>'
             +nar_help+
-            '<p class="help">プラス・注意材料は馬名を選択すると表示される馬別詳細で確認できます。レースピックアップにも表示しています。</p>'
+            '<p class="help">馬番下の候＝研究候補、補＝圏外からの研究補完。馬名下の再・同・展・相・伸・騎は保存された事前情報の根拠。正式印・最終評価とは別です。</p>'
+            '<p class="help">プラス・注意材料は馬名を選択すると表示される馬別詳細で確認できます。レース判定・馬券内候補にも表示しています。</p>'
             '<div class="lineup-toolbar"><label>表示 <select id="lineup-filter"><option value="all">全頭表示</option><option value="selected">自分の✓だけ表示</option></select></label>'
             '<label>並び順 <select id="lineup-sort">'+_options(schema, 'no')+'</select></label>'
             '<label>方向 <select id="lineup-direction"><option value="asc">昇順</option><option value="desc">降順</option></select></label>'
