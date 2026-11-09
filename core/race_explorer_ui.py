@@ -27,8 +27,22 @@ def _cell(horse, cells, key):
         return comparison_index_html(item, ranked=False)
     if key == 'nar_form_rank':
         return '<b class="metric-number">'+value(item)+'位</b>' if item is not None else '<span class="missing-cell">未取得</span>'
+    if key == 'style':
+        start = cells.get('start_rank')
+        main = value(start)+'番手' if start is not None else '<span class="missing-cell">未取得</span>'
+        # Saved historical running style, not a newly inferred start position.
+        label = {'逃': '逃げ', '先': '先行', '差': '差し', '追': '追込',
+                 '逃げ': '逃げ', '先行': '先行', '差し': '差し',
+                 '追込': '追込', '追い込み': '追込'}.get(item, item)
+        detail = value(label) if label is not None else '脚質未取得'
+        return ('<span class="position-two-line"><strong>'+main+'</strong>'
+                '<small>'+detail+'</small></span>')
     if key == 'corner':
-        return value(item)+'番手' if item is not None else '<span class="missing-cell">未取得</span>'
+        main = value(item)+'番手' if item is not None else '<span class="missing-cell">未取得</span>'
+        saved_rank = cells.get('ability_rank')
+        detail = '能力'+value(saved_rank)+'位' if saved_rank is not None else '能力順位未取得'
+        return ('<span class="position-two-line"><strong>'+main+'</strong>'
+                '<small>'+detail+'</small></span>')
     if key in ('run_old','run_middle','run_latest'):
         star = ' <span class="maximum-match" title="保存された最高指数と一致">★</span>' if cells.get(key+'_is_maximum') else ''
         note = cells.get(key+'_note')
@@ -74,12 +88,12 @@ def lineup_html(view):
     schema, cells = columns(view), records(view)
     shown_schema = [spec for spec in schema if not spec.get('table_hidden')]
     widths = dict(user=42, frame=36, no=44, name=190, jockey=85, score=120, nar_form_rank=115, frozen_review=128, career_course=142,
-                  rank=70, popularity=70, style=70, corner=70, training=60,
+                  rank=70, popularity=70, style=79, corner=82, training=60,
                   run_old=134, run_middle=134, run_latest=134, jockey_change=160,
                   record_venue=190, record_distance=190, record_venue_distance=190, materials=220)
     mobile_widths = dict(user=34, frame=28, no=34, name=118, jockey=68,
-                         score=100, reference_score=110, nar_form_rank=93, frozen_review=104, career_course=112, popularity=56, style=56,
-                         corner=62, training=48, run_old=108, run_middle=108,
+                         score=100, reference_score=110, nar_form_rank=93, frozen_review=104, career_course=112, popularity=56, style=73,
+                         corner=77, training=48, run_old=108, run_middle=108,
                          run_latest=108, jockey_change=128, record_venue=156,
                          record_distance=156, record_venue_distance=156, materials=176)
     widths['reference_score'] = 120
@@ -123,6 +137,7 @@ def lineup_html(view):
             '<div id="active-column-filters" aria-label="適用中の絞り込み"></div>'
             '<p id="lineup-empty" class="no-data" hidden>条件に合う馬がいません。絞り込みを解除するか、全頭表示に切り替えてください。</p>'
             '<div class="table-scroll explorer-table-scroll" tabindex="0" aria-label="全頭比較・縦横スクロール"><table class="explorer-table" style="--comparison-width:'+str(table_width)+'px;--comparison-mobile-width:'+str(mobile_width)+'px"><thead><tr>'+''.join(headers)+'</tr></thead><tbody>'+''.join(rows)+'</tbody></table></div>'
+            '<p class="help">序盤傾向の上段は保存されたスタート想定順位、下段は過去の脚質。4角想定の下段は保存純能力順位です。新たな先頭争い予測や加点ではありません。ソート・フィルターは従来の列仕様を維持します。</p>'
             '<p class="help">下段は各指数の順位です。上位3位の記号は各指数の順位表示で、総合評価や印ではありません。過去走は3走前 → 2走前 → 前走。★は保存された最高指数との一致です。</p></section>')
 
 
