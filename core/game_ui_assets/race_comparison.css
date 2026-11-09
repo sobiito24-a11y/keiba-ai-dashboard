@@ -184,3 +184,8 @@
  .race-explorer .explorer-table th.col-research_signal,.race-explorer .explorer-table td.col-research_signal{width:72px;min-width:65px;padding:5px 3px}
  .race-explorer .gate-cell-sign small{font-size:9px}
 }
+
+/* Small always-visible research evidence below each sticky horse name. */
+.race-explorer .explorer-table .gate-inline-signs{display:inline-block;margin-left:3px;padding:1px 4px;border-radius:4px;background:#edf4f8;border:1px solid #cbdce6;color:#31556d;font-size:10px;line-height:1.4;white-space:nowrap}
+.race-explorer .explorer-table .gate-inline-caution{display:inline-block;margin-left:3px;padding:1px 3px;border-radius:4px;background:#fff6e8;border:1px solid #e9d4aa;color:#7a5324;font-size:9px;line-height:1.4}
+@media(max-width:700px){.race-explorer .explorer-table .gate-inline-signs{font-size:9px;margin:3px 0 0}.race-explorer .explorer-table .gate-inline-caution{font-size:9px;margin:3px 0 0}}
