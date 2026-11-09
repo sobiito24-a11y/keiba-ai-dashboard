@@ -137,7 +137,7 @@ def lineup_html(view):
             '<div id="active-column-filters" aria-label="適用中の絞り込み"></div>'
             '<p id="lineup-empty" class="no-data" hidden>条件に合う馬がいません。絞り込みを解除するか、全頭表示に切り替えてください。</p>'
             '<div class="table-scroll explorer-table-scroll" tabindex="0" aria-label="全頭比較・縦横スクロール"><table class="explorer-table" style="--comparison-width:'+str(table_width)+'px;--comparison-mobile-width:'+str(mobile_width)+'px"><thead><tr>'+''.join(headers)+'</tr></thead><tbody>'+''.join(rows)+'</tbody></table></div>'
-            '<p class="help">序盤傾向の上段は保存されたスタート想定順位、下段は過去の脚質。4角想定の下段は保存純能力順位です。新たな先頭争い予測や加点ではありません。序盤順位を数値で並べる場合は「序盤想定順位」を選択してください。</p>'
+            '<p class="help">序盤傾向の上段は保存されたスタート想定順位、下段は過去の脚質。4角想定の下段は保存純能力順位です。新たな先頭争い予測や加点ではありません。ソート・フィルターは従来の列仕様を維持します。</p>'
             '<p class="help">下段は各指数の順位です。上位3位の記号は各指数の順位表示で、総合評価や印ではありません。過去走は3走前 → 2走前 → 前走。★は保存された最高指数との一致です。</p></section>')
 
 
