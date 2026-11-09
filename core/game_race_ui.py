@@ -50,6 +50,18 @@ def index_display(cell):
                 badge='◎' if rank == 1 else '○' if rank <= 3 else '△' if rank <= 5 else '—')
 
 
+def _saved_start_rank(row):
+    """Only the explicit netkeiba pre-race projected start order, no inference."""
+    raw = row.get('netkeiba_start_rank')
+    if isinstance(raw, bool):
+        return None
+    try:
+        n = float(raw)
+    except (TypeError, ValueError, OverflowError):
+        return None
+    return int(n) if n >= 1 and n < 1000 and n.is_integer() else None
+
+
 def build_view(rows, records, source_rows=(), mode='jra', race_info=None, materials=None, frames=None):
     """A whitelisted projection of the existing UI records, in their exact order."""
     sources = {horse_key(h): h for h in source_rows}
@@ -91,7 +103,7 @@ def build_view(rows, records, source_rows=(), mode='jra', race_info=None, materi
                         average=dict(value=number(pick(source,'平均指数','近3走平均','3走平均','recent3_avg','recent3_mean')),rank=None),
                         maximum=number(pick(source,'最高指数','max_index','最高タイム指数')),
                         distance=index_display(rec.get('距離')), course=index_display(rec.get('コース')),
-                        corner=corner4_rank(row), style=rec.get('脚質', '—'), development=a.get('development') or '—',
+                        corner=corner4_rank(row), start=_saved_start_rank(row), style=rec.get('脚質', '—'), development=a.get('development') or '—',
                         training=training(row) if mode == 'jra' else '', rest=rest_text(row),
                         stable=(a.get('stable') or {}).get('grade') or '—',
                         comment=text(pick(row, 'stable_comment_market', '厩舎コメント', '新聞コメント', 'stable_comment')) if mode == 'jra' else '',
