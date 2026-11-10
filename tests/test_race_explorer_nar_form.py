@@ -52,9 +52,10 @@ def test_nar_actual_explorer_has_reference_rank_sort_and_horse_evidence():
     assert doc.select_one('#lineup-sort option[value="nar_hybrid_score"]') is not None
     assert doc.select_one('#filter-column option[value="nar_hybrid_reason"]') is not None
     detail = BeautifulSoup(detail_html(revised[1]), "html.parser")
-    assert detail.select_one(".detail-nar-form h4").text == "NAR前走参考順位（研究）"
-    assert "前走4角 2番手" in detail.select_one(".detail-nar-form").text
-    assert "回収率改善は未検証" in detail.select_one(".detail-nar-form").text
+    assert detail.select_one(".detail-nar-hybrid h4").text == "今回評価（研究）"
+    assert "未取得" in detail.select_one(".detail-nar-hybrid").text
+    assert not detail.select(".detail-nar-form")
+    assert "正式順位・印・購入判断は変更しません" in detail.select_one(".detail-nar-hybrid").text
 
 
 def test_jra_is_not_affected_by_nar_reference_projection():
