@@ -42,17 +42,19 @@ def test_nar_prev_corner_is_actual_and_ranks_are_never_replaced():
     assert reviewed[0]["nar_form_ref_rank"] == 7 and reviewed[0]["ability_rank"] == "8"
     assert [a, b] == base and reviewed[0] is not a
     assert all(item["frozen_review_version"] == FROZEN_VERSION for item in reviewed)
-    # Research columns must be present on the *real* normal table.
+    # The frozen NAR audit stays available in the view, but the user
+    # requested that NAR見直し and the previous-form rank leave the main table.
     cols = columns(reviewed)
-    assert next(c for c in cols if c["key"] == "frozen_review")["label"] == "NAR見直し"
-    assert "frozen_review_reason" in [c["key"] for c in cols]
+    assert "frozen_review" not in [c["key"] for c in cols]
+    assert "nar_form_rank" not in [c["key"] for c in cols]
+    assert "nar_hybrid_score" in [c["key"] for c in cols]
     table = BeautifulSoup(lineup_html(reviewed), "html.parser")
-    assert table.select_one("th.col-frozen_review")
-    assert table.select_one('#lineup-sort option[value="frozen_review"]')
-    assert "前走×4角再確認" in table.text
-    assert "回収率改善は未検証" in table.text
+    assert not table.select("th.col-frozen_review, th.col-nar_form_rank")
+    assert table.select_one("th.col-nar_hybrid_score")
+    assert "印・正式順位・購入判断は変更しません" in table.text
     detail = BeautifulSoup(detail_html(reviewed[0]), "html.parser")
-    assert "購入推奨には反映しません" in detail.select_one(".detail-frozen-review").text
+    assert not detail.select(".detail-frozen-review, .detail-nar-form")
+    assert detail.select_one(".detail-nar-hybrid")
 
 
 def test_past_finish_does_not_stand_in_for_missing_nar_corner():

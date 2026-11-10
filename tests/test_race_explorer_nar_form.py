@@ -40,31 +40,34 @@ def test_nar_actual_explorer_has_reference_rank_sort_and_horse_evidence():
     assert (view, source) == original
 
     specs = columns(revised)
-    assert "nar_form_rank" in [spec["key"] for spec in specs]
-    assert "NAR前走参考順位" in [spec["label"] for spec in specs]
-    assert "nar_form_reason" in [spec["key"] for spec in specs]
-    assert records(revised)["2"]["nar_form_rank"] in (1, 2)
+    assert "nar_form_rank" not in [spec["key"] for spec in specs]
+    assert "NAR前走参考順位" not in [spec["label"] for spec in specs]
+    assert "NAR見直し" not in [spec["label"] for spec in specs]
+    assert "nar_hybrid_score" in [spec["key"] for spec in specs]
+    assert records(revised)["2"]["nar_hybrid_score"] is None
     doc = BeautifulSoup(lineup_html(revised), "html.parser")
-    assert doc.select_one("th.col-nar_form_rank .column-label").text == "NAR前走参考順位"
-    assert len(doc.select("td.col-nar_form_rank")) == 2
-    assert doc.select_one('#lineup-sort option[value="nar_form_rank"]') is not None
-    assert doc.select_one('#filter-column option[value="nar_form_reason"]') is not None
+    assert doc.select_one("th.col-nar_hybrid_score .column-label").text == "今回評価"
+    assert len(doc.select("td.col-nar_hybrid_score")) == 2
+    assert not doc.select("th.col-nar_form_rank, th.col-frozen_review")
+    assert doc.select_one('#lineup-sort option[value="nar_hybrid_score"]') is not None
+    assert doc.select_one('#filter-column option[value="nar_hybrid_reason"]') is not None
     detail = BeautifulSoup(detail_html(revised[1]), "html.parser")
-    assert detail.select_one(".detail-nar-form h4").text == "NAR前走参考順位（研究）"
-    assert "前走4角 2番手" in detail.select_one(".detail-nar-form").text
-    assert "回収率改善は未検証" in detail.select_one(".detail-nar-form").text
+    assert detail.select_one(".detail-nar-hybrid h4").text == "今回評価（研究）"
+    assert "未取得" in detail.select_one(".detail-nar-hybrid").text
+    assert not detail.select(".detail-nar-form")
+    assert "正式順位・印・購入判断は変更しません" in detail.select_one(".detail-nar-hybrid").text
 
 
 def test_jra_is_not_affected_by_nar_reference_projection():
     view = [dict(mode="jra", no="1", name="中央馬", ability_rank="1")]
     projected = with_nar_form_reference(view, [_source(1, 80, 2)], {"date": "2026-11-04"})
     assert projected == view and projected is not view
-    assert "nar_form_rank" not in [c["key"] for c in columns(projected)]
-    assert not BeautifulSoup(lineup_html(projected), "html.parser").select(".col-nar_form_rank")
+    assert "nar_hybrid_score" not in [c["key"] for c in columns(projected)]
+    assert not BeautifulSoup(lineup_html(projected), "html.parser").select(".col-nar_hybrid_score")
 
 
 def test_unnamed_or_missing_ability_is_not_filled_with_invented_numbers():
     view = [dict(mode="nar", no="1", name="不明馬", ability_rank=None)]
     projected = with_nar_form_reference(view, [{}], {"date": "2026-11-04"})
     assert projected[0]["nar_form_ref_rank"] is None
-    assert records(projected)["1"]["nar_form_rank"] is None
+    assert records(projected)["1"]["nar_hybrid_score"] is None
