@@ -1757,12 +1757,17 @@ def render_game_prediction(result):
             for message in dict.fromkeys(audit): st.caption(message)
     view = build_view(rows, records, sources, result.race_mode, result.race_info, saved_materials(result), frames)
     if result_race_mode(result) == "nar":
-        # The game-style all-runner explorer is the actual main UI.
-        # Show the independent past-form rank here, not only in an unused legacy screen.
-        from core.race_explorer_nar_form import with_nar_form_reference
-        view = with_nar_form_reference(
-            view, sources, result.race_info, getattr(result, "debug_info", None),
-        )
+        # Read-only hybrid shadow, using the exact saved pre-race race
+        # snapshot, not reconstructed scores or current results.
+        from core.nar_hybrid_evaluation import with_nar_hybrid_evaluation
+        event = st.session_state.get("dashboard_event_snapshot")
+        event_races = list(event.get("races") or []) if isinstance(event, Mapping) else []
+        matches = [race for race in event_races
+                   if str(race.get("race_id") or "") == str(rid)]
+        if len(matches) == 1:
+            view = with_nar_hybrid_evaluation(view, matches[0], event_races)
+        # Keep old research metrics out of the visible table without
+        # mutating any saved formal or pure-ability ranking.
     # Outcome-free, frozen 2026-11-08 comparisons. Never overwrite the model.
     from core.frozen_research_review import with_frozen_reviews
     view = with_frozen_reviews(view)
