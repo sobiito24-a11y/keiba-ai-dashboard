@@ -1,0 +1,15 @@
+name: NAR official CSV research (temporary)
+on:
+  push:
+    branches: [research/nar-past-popularity-20261110]
+jobs:
+  inspect-nar-monthly:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Inspect official NAR monthly free CSV
+        run: python tools/nar_popularity_research.py --inspect
