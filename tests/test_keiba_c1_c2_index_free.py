@@ -1,6 +1,8 @@
 import unittest,sys,datetime,copy
 from pathlib import Path
-sys.path.insert(0,str(Path(__file__).resolve().parent))
+THIS_DIR=Path(__file__).resolve().parent
+MODEL_DIR=THIS_DIR if (THIS_DIR/"keiba_c1_c2_independent_research.py").exists() else THIS_DIR.parent/"tools"
+sys.path.insert(0,str(MODEL_DIR))
 import keiba_c1_c2_independent_research as m
 
 BASE={'date':'2026-11-07','venue':'東京','surface':'芝','distance':1600,'current_level':1,
