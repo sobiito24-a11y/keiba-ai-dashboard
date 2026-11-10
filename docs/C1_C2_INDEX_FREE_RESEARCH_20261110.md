@@ -91,7 +91,7 @@
 
 例：
 ```
-python keiba_c1_c2_independent_research.py --archives-dir ./files --results-csv ./result_rows.csv --output-dir ./output --holdout-date 2026-11-07
-python test_keiba_c1_c2.py
+python tools/keiba_c1_c2_independent_research.py --archives-dir ./files --results-csv ./result_rows.csv --output-dir ./output --holdout-date 2026-11-07
+python tests/test_keiba_c1_c2_index_free.py
 ```
 `result_rows.csv` は少なくとも `race_id,horse_no,finish` の列が必要。予想結果CSVがなくても独立スコア・順位は作成可能だが、的中検証はできない。コードは**ネットワークも決済も使わない**。
