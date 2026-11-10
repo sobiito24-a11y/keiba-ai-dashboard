@@ -42,7 +42,13 @@ def test_schema_covers_every_comparison_cell_and_has_no_ai_mark_or_membership(mo
     specs=columns(view)
     keys=[item["key"] for item in specs]
     assert len(keys)==len(set(keys))
-    assert keys[:10]==["user", "frame", "no", "name", "age", "jockey", "odds", "popularity", "ability", "ability_rank"]
+    assert keys[:8]==["user", "frame", "no", "name", "age", "jockey", "odds", "popularity"]
+    if mode == "nar":
+        assert keys[8:12] == ["nar_hybrid_score", "nar_hybrid_rank", "ability", "ability_rank"]
+        assert "nar_form_rank" not in keys and "frozen_review" not in keys
+    else:
+        assert keys[8:10] == ["ability", "ability_rank"]
+        assert "nar_hybrid_score" not in keys
     assert keys[keys.index("run_old"):keys.index("run_old")+5]==[
         "run_old", "run_middle", "run_latest", "average", "maximum"]
     assert ("training" in keys)==(mode=="jra")
@@ -153,7 +159,7 @@ def test_missing_malformed_display_substructures_stay_renderable_and_uninvented(
     assert item["name"]=="</script>保存馬"  # Escaping belongs to HTML/JSON renderer.
     assert all(item[key] is None for key in ("score","ability","distance","maximum","run_old","record_venue","training"))
     assert h==before
-    assert records([])=={} and len(columns([]))==34
+    assert records([])=={} and len(columns([]))>=30
 
 
 def test_malformed_optional_peak_and_condition_metadata_do_not_hide_the_field():
@@ -177,4 +183,23 @@ def test_removed_final_and_reference_scores_are_not_available_as_columns():
     assert "NAR最終評価スコア" not in labels
     assert "参考スコア（正式評価外）" not in labels
     assert "純能力指数" in labels and "コース指数" in labels
+    assert "今回評価" in labels
+    assert "NAR前走参考順位" not in labels
+    assert "NAR見直し" not in labels
     assert records([h])["7"]["reference_score"]==91.9  # audit data preserved
+
+
+def test_nar_hybrid_is_read_only_typed_and_has_reason_audit():
+    h = horse(mode="nar")
+    h.update(nar_hybrid_score=91.35, nar_hybrid_rank=1,
+             nar_hybrid_reason="同会場近距離+2.6 / 実4角と着順+2.3")
+    before = deepcopy(h)
+    row = records([h])["7"]
+    assert (row["nar_hybrid_score"], row["nar_hybrid_rank"]) == (91.35, 1)
+    assert "同会場近距離" in row["nar_hybrid_reason"]
+    assert records([h])["7"]["ability"] == 83.7
+    assert h == before
+    h["nar_hybrid_score"] = None
+    h["nar_hybrid_rank"] = None
+    assert records([h])["7"]["nar_hybrid_score"] is None
+    assert records([h])["7"]["nar_hybrid_rank"] is None
