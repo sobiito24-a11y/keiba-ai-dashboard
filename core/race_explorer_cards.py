@@ -210,17 +210,15 @@ def detail_html(horse):
         basic.append(("調教評価", facts.get("training")))
     form_html = ""
     if horse.get("mode") == "nar":
-        rank = cells.get("nar_form_rank")
-        reason = cells.get("nar_form_reason")
-        flag = cells.get("nar_form_flag")
-        past_corner = horse.get("nar_form_ref_prior_corner")
+        score = cells.get("nar_hybrid_score")
+        rank = cells.get("nar_hybrid_rank")
+        reason = cells.get("nar_hybrid_reason")
         form_html = (
-            '<section class="detail-nar-form"><h4>NAR前走参考順位（研究）</h4>'
-            '<p><b>' + (value(rank) + '位' if rank is not None else '未取得') + '</b>'
-            '｜前走4角 ' + (value(past_corner) + '番手' if past_corner is not None else '未取得') + '</p>'
-            '<p>評価根拠：' + value(reason) + '</p>'
-            '<p>再確認材料：' + value(flag) + '</p>'
-            '<p class="detail-note">純能力や最終評価の置き換えではなく、回収率改善は未検証です。</p>'
+            '<section class="detail-nar-hybrid"><h4>今回評価（研究）</h4>'
+            '<p><b>' + (value(score) if score is not None else '未取得') + '</b>'
+            '｜' + (value(rank) + '位' if rank is not None else '順位未取得') + '</p>'
+            '<p>補正根拠：' + value(reason) + '</p>'
+            '<p class="detail-note">純能力を土台に過去の同条件・実4角・騎手・厳密対戦で補正した検証用評価。正式順位・印・購入判断は変更しません。</p>'
             '</section>'
         )
     metric_values = [
@@ -299,7 +297,7 @@ def detail_html(horse):
          '<p><b>' + value(cells.get("frozen_review")) + '</b></p>'
          '<p>' + value(cells.get("frozen_review_reason")) + '</p>'
          '<p class="detail-note">検証用の比較材料であり、最終順位・印・購入推奨には反映しません。</p>'
-         '</section>' if horse.get("frozen_review_version") else '') +
+         '</section>' if horse.get("frozen_review_version") and horse.get("mode") == "jra" else '') +
         '<section class="detail-evaluation"><h4>評価・指数</h4><div class="detail-stats">' +
         ''.join(stats) + '</div>' +
         '<p class="detail-note">指数の順位は各指標ごとに独立して表示しています。総合点や最終印による順位付けは行いません。</p>' +
