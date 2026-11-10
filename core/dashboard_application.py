@@ -8,6 +8,7 @@ import streamlit as st
 
 from .dashboard_batch import BatchPredictionError, UploadedSource, predict_uploaded_sources
 from .models import PredictionResult
+from .position_warning import find_position_conflicts
 from .prediction_snapshot import (
     KeibaSnapshotError,
     keiba_bytes,
@@ -206,6 +207,17 @@ def _render_event(event: Mapping[str, Any], render_mobile_result: RenderMobileRe
         '<div class="ka-snapshot-note">保存済み正式予想を表示中。正式予想は再計算しません。当日の好材料・不安材料が未保存の場合のみ、保存材料から参考判定を補います。</div>',
         unsafe_allow_html=True,
     )
+    # Read-only warning: a stored running style of 逃/先 and a stored
+    # start-position label of 後方 disagree. This is not a negative score.
+    conflicts = find_position_conflicts(selected)
+    if conflicts:
+        labels = " / ".join(
+            f'{horse["horse_no"]}番 {horse["horse_name"]}（{horse["style"]}→{horse["start"]}）'
+            for horse in conflicts
+        )
+        st.info(f"位置?｜脚質と序盤予測が矛盾：{labels}")
+        st.caption("位置? は再確認サインです。減点・消し・印変更には使用しません。")
+
     render_mobile_result(result)
 
     # Do not rebuild a loaded historical snapshot on ordinary display. Only
