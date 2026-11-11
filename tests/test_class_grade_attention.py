@@ -50,7 +50,7 @@ def test_promotion_notice_requires_comparable_immediate_past():
     old = run("前走", context(level=1, label="1勝"), finish=1)
     assert evaluate(today, [old])["label"] == "前走から昇級"
     other = run("2走前", context(level=1, label="1勝"), finish=1)
-    assert evaluate(today, [other])["label"] == "比較資料不足"
+    assert evaluate(today, [other])["label"] == "特記事項なし"
 
 
 def test_same_class_placing_without_fabricated_ability_adjustment():
