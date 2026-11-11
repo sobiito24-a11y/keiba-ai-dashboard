@@ -121,3 +121,75 @@ def test_actual_saved_run_names_win_over_inconsistent_legacy_grade_labels():
     assert "交流Jpn2 4着" in outcome["display"]
     assert "Jpn1" not in outcome["reason"]
     assert outcome["scoring_effect"] == 0
+
+
+def test_nar_c2_ichikumi_race_name_is_visible_despite_missing_comparison_context():
+    old = run("前走", context(mode="NAR", level=12, age="不明",
+                                 venue="高知", label="C2"), finish=3, surface="ダ")
+    old["race_name"] = "C2一"
+    result = evaluate(context(mode="NAR", level=12, age="一般", venue="高知",
+                              label="C2"), [old], current_surface="ダ")
+    assert result["label"] == "比較資料不足"
+    assert result["display"] == "前走 C2一 3着"
+    assert "前走 C2一 3着" in result["reason"]
+    assert result["scoring_effect"] == 0
+
+
+def test_nagoya_c23_group_is_not_collapsed_into_c2():
+    old = run("前走", context(mode="NAR", level=12, age="不明",
+                                 venue="名古屋", label="C2"), finish=5, surface="ダ")
+    old["race_name"] = "C23組"
+    result = evaluate(context(mode="NAR", level=12, age="一般",
+                              venue="名古屋", label="C2"), [old])
+    assert result["display"] == "前走 C23組 5着"
+    assert "前走 C2 5着" not in result["reason"]
+
+
+def test_named_local_race_never_assumes_today_class():
+    old = run("前走", context(mode="NAR", level=None, age="不明",
+                                 venue="高知", label="不明"), finish=7)
+    old["race_name"] = "スポンサー協賛杯"
+    result = evaluate(context(mode="NAR", level=13, age="一般", label="C1"), [old])
+    assert result["display"] == "前走 スポンサー協賛杯 7着（級未確認）"
+    assert result["scoring_effect"] == 0
+
+
+def test_ordinary_jra_previous_class_is_displayed_without_rank_bonus():
+    old = run("前走", context(level=4, age="不明", label="OP"), finish=9)
+    old["race_name"] = "藤森ステークス OP"
+    result = evaluate(context(level=4), [old])
+    assert result["display"] == "前走 OP 9着"
+    assert result["label"] == "比較資料不足"
+
+
+def test_literal_jpnii_overrides_wrong_legacy_jpn1():
+    old = run("前走", context(mode="NAR", level=8, age="3歳限定",
+                                venue="大井", label="Jpn1"), finish=4, surface="ダ")
+    old["race_name"] = "東京盃競走 JpnII"
+    outcome = evaluate(context(level=4), [old], current_surface="ダ")
+    assert outcome["display"] == "交流Jpn2 4着"
+    assert "Jpn1" not in outcome["reason"]
+    assert outcome["scoring_effect"] == 0
+
+
+def test_past_after_current_date_is_excluded_by_profile_gate():
+    from core.candidate_profile import facts
+    row = dict(_past_runs=[dict(label="前走", race_date="2026-11-13",
+                               racecourse="高知", race_name="C2一",
+                               surface="ダ", distance=1400, position=1, value=67)])
+    f = facts(row, dict(race_date="2026-11-11", racecourse="高知",
+                        surface="ダ", race_data2="サラ系一般 C2"))
+    assert f["class_attention"]["display"] == "前走情報未取得"
+
+
+def test_screenshot_nar_previous_class_is_available_in_profile():
+    from core.candidate_profile import facts
+    row = dict(_past_runs=[dict(label="前走", race_date="2026-11-05",
+                               racecourse="船橋", race_name="C2一 二 三",
+                               class_label="C2", surface="ダ", distance=1500,
+                               position=2, value=49)])
+    f = facts(row, dict(race_date="2026-11-11", racecourse="船橋",
+                        surface="ダ", race_data2="サラ系一般 C2"))
+    assert "C2一二三" in f["class_attention"]["display"]
+    assert "2着" in f["class_attention"]["display"]
+    assert f["class_attention"]["scoring_effect"] == 0
