@@ -9,6 +9,7 @@ from .race_explorer_columns import columns, records
 from .race_explorer_visuals import ability_html, development_html
 from .race_explorer_signal_rules import signals
 from .race_explorer_compact_materials import compact_materials_html
+from .rest_interval_attention import attention as rest_attention
 
 
 def _cell(horse, cells, key):
@@ -55,7 +56,16 @@ def _cell(horse, cells, key):
     if key == 'popularity':
         return value(item)+'番人気' if item is not None else '<span class="missing-cell">未取得</span>'
     if key == 'rest_days':
-        return value(cells.get('rest_label'))+('<small>'+value(item)+'日</small>' if item is not None else '')
+        # Keep the saved interval text/day count. This extra small annotation
+        # is visual guidance only, never a new score or a forecast probability.
+        base = value(cells.get('rest_label')) + (
+            '<small>'+value(item)+'日</small>' if item is not None else '')
+        note = rest_attention(item, horse.get('mode'), cells.get('training'))
+        if not note:
+            return base
+        label, kind, reason = note
+        return (base + '<small class="rest-attention rest-attention-'+plain(kind)+
+                '" title="'+plain(reason)+'">'+value(label)+'</small>')
     if key == 'weight':
         return value(item)+'kg' if item is not None else '<span class="missing-cell">未取得</span>'
     if key == 'weight_delta':
