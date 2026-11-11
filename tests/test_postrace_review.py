@@ -97,7 +97,7 @@ def test_bet_type_payout_unit_and_order_are_not_guessed():
     q["payouts"][1]["selection"] = "1-2-1"
     with pytest.raises(ValueError, match="重複"):
         validate(race(), q)
-    q["payouts"][1]["selection"] = "2-1-3"
+    q["payouts"][1]["selection"] = "2-1-9"
     with pytest.raises(ValueError, match="存在"):
         validate(race(), q)
     q["payouts"] = [dict(bet_type="馬単", selection="2-1", payout_yen=7850, stake_yen=100)]
