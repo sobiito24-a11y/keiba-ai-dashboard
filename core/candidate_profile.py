@@ -43,13 +43,24 @@ def facts(row,info):
     for run in runs:
         ctx=conservative_class(dict(venue=run['venue'],surface=run['surface'],race_name=run['class_raw']))
         if not comparison_blockers(current_context,ctx) and class_change(current_context,ctx)=='同級':same.append(run)
+    from .class_grade_attention import evaluate as grade_attention
+    past_class_rows = []
+    for run in runs:
+        past_context = conservative_class(dict(
+            venue=run["venue"], surface=run["surface"], race_name=run["class_raw"]))
+        past_class_rows.append(dict(label=run["label"], finish=run["finish"],
+                                    surface=run["surface"], class_context=past_context))
+    class_attention = grade_attention(
+        current_context, past_class_rows,
+        current_surface=pick(info or {}, "surface", "芝ダート"))
     from .recent_condition_facts import evaluate
     conditions=evaluate(row,info,runs)
     return dict(condition_facts=conditions,version=VERSION,runs=runs,excluded=excluded,state=state,stability_stars=stars,stability_sd=sd,
         state_reason='同じ保存タイム指数の直近3走を比較。連続3点以上増=上向き、連続3点以上減=注意、それ以外=横ばい。状態全般の保証ではありません。' if valid else '発走日前と確認できる3走の指数が不足',
         rest_days=(current-day(runs[0]['date'])).days if runs else None,
         body_weight=text(pick(row,'馬体重','body_weight')),body_weight_change=text(pick(row,'馬体重増減','body_weight_change')),
-        current_class=text(pick(info or {},'raw_class_text','race_data2','class_name')),class_shift=shift,matchups=[],
+        current_class=text(pick(info or {},'raw_class_text','race_data2','class_name')),class_shift=shift,
+        class_attention=class_attention, matchups=[],
         same_class_n=len(same),same_class_top3=sum(bool(re.fullmatch(r'[123](?:着)?',r['finish'])) for r in same),
         pace=text(pick(row,'netkeiba_pace','_netkeiba_pace','provider_pace_market')),style_rate=text(pick(row,'脚質複勝率','style_place_rate')),style_n=number(pick(row,'脚質出走回数','style_starts')))
 
