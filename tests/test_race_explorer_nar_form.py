@@ -46,8 +46,8 @@ def test_nar_actual_explorer_has_reference_rank_sort_and_horse_evidence():
     assert "nar_hybrid_score" in [spec["key"] for spec in specs]
     assert records(revised)["2"]["nar_hybrid_score"] is None
     doc = BeautifulSoup(lineup_html(revised), "html.parser")
-    assert doc.select_one("th.col-nar_hybrid_score .column-label").text == "今回評価"
-    assert len(doc.select("td.col-nar_hybrid_score")) == 2
+    assert not doc.select("th.col-nar_hybrid_score,td.col-nar_hybrid_score")
+    assert doc.select_one("th.col-class_attention .column-label").text == "クラス・重賞注目"
     assert not doc.select("th.col-nar_form_rank, th.col-frozen_review")
     assert doc.select_one('#lineup-sort option[value="nar_hybrid_score"]') is not None
     assert doc.select_one('#filter-column option[value="nar_hybrid_reason"]') is not None

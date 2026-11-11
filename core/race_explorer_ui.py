@@ -116,9 +116,9 @@ def lineup_html(view):
             tooltip = str((row.get('nar_hybrid_reason') or '今回評価の計算材料が未取得') if key == 'nar_hybrid_score' else (row.get('class_attention_reason') or 'クラスの比較根拠未取得') if key == 'class_attention' else (row.get(key) if row.get(key) is not None else '未取得'))
             content.append('<td class="'+cls+'" data-label="'+plain(spec['label'])+'" title="'+plain(tooltip)+'">'+_cell(horse, row, key)+'</td>')
         rows.append('<tr data-row="'+plain(no)+'" data-horse="'+plain(no)+'">'+''.join(content)+'</tr>')
-    class_help = '<p class="help">「クラス・重賞注目」は過去3走の保存根拠から表示する参考材料であり、加点・能力順位・正式印を変更しません。資料不足は推測で補いません。根拠は列の説明または馬の詳細に表示します。</p>'
-    nar_help = ('<p class="help">NAR今回評価は純能力＋同会場近距離・実4角・騎手コース実績・厳密な過去直接対戦の検証用評価です。'
-                '各馬の列にマウスを合わせると補正根拠を確認できます。未取得は補完せず、印・正式順位・購入判断は変更しません。</p>'
+    class_help = '<p class="help">「クラス・重賞注目」は前走の「前走」の文字だけ省略した表示です。過去3走の根拠は列の説明・馬別詳細で確認できます。加点・純能力順位・正式印は変更しません。</p>'
+    nar_help = ('<p class="help">研究用の「今回評価」は横一覧から非表示にしました。'
+                '馬名の詳細で根拠を確認できます。印・正式順位・純能力は変更しません。</p>'
                 if view and view[0].get("mode") == "nar" else '')
     return ('<section class="lineup-workspace" id="lineup-workspace"><div class="explorer-section-heading"><div><span class="eyebrow">COMPARE ALL RUNNERS</span><h2>全頭予想・比較一覧</h2></div><span class="count">全'+str(len(view))+'頭</span></div>'
             '<p class="help">自分の✓は何頭でも選べます。予測・保存・買い目には反映しません。列見出しで並び替え、馬名から詳細を開けます。</p>'

@@ -50,8 +50,10 @@ def test_hybrid_matches_fixed_research_formula_and_is_display_only():
     assert (records(projected)["1"]["nar_hybrid_score"],
             records(projected)["1"]["nar_hybrid_rank"]) == (a["nar_hybrid_score"], 1)
     html = lineup_html(projected)
-    assert "col-nar_hybrid_score" in html and "col-ability" in html
-    assert html.index('class="col-nar_hybrid_score') < html.index('class="col-ability')
+    # Its research value remains available, but no longer consumes width
+    # in the normal all-runner table.
+    assert "col-nar_hybrid_score" not in html and "col-ability" in html
+    assert 'data-column="class_attention"' in html
 
 
 def test_result_fields_do_not_enter_prediction():

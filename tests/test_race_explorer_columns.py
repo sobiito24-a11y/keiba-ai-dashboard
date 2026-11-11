@@ -203,3 +203,52 @@ def test_nar_hybrid_is_read_only_typed_and_has_reason_audit():
     h["nar_hybrid_rank"] = None
     assert records([h])["7"]["nar_hybrid_score"] is None
     assert records([h])["7"]["nar_hybrid_rank"] is None
+
+
+@pytest.mark.parametrize("mode,hidden", [
+    ("jra", "frozen_review"), ("nar", "nar_hybrid_score")
+])
+def test_research_composite_columns_are_hidden_not_deleted(mode, hidden):
+    h=horse(mode=mode)
+    h["frozen_review_label"] = "調教注意"
+    h["frozen_review_reason"] = "保存研究のチェック"
+    h["nar_hybrid_score"] = 52.5
+    h["nar_hybrid_rank"] = 3
+    h["nar_hybrid_reason"] = "保存研究の根拠"
+    view=[h]
+    specs=columns(view)
+    visible=[item["key"] for item in specs if not item.get("table_hidden")]
+    assert hidden not in visible
+    assert "class_attention" in visible
+    assert visible.index("class_attention") == visible.index("ability")+1
+    if mode=="nar":
+        assert "nar_hybrid_rank" not in visible
+    else:
+        assert "frozen_review_reason" not in visible
+    data=records(view)["7"]
+    if mode=="jra":
+        assert data["frozen_review"] == "調教注意"
+        assert data["frozen_review_reason"] == "保存研究のチェック"
+    else:
+        assert data["nar_hybrid_score"] == 52.5
+        assert data["nar_hybrid_rank"] == 3
+        assert data["nar_hybrid_reason"] == "保存研究の根拠"
+
+
+def test_only_compact_class_cell_removes_redundant_previous_word():
+    h=horse()
+    h["profile"]={"class_attention":{
+        "display":"同級好走 · 前走 C2一 3着",
+        "reason":"前走 C2一 3着｜保存された過去3走のみ（加点なし）",
+        "scoring_effect":0}}
+    before=deepcopy(h)
+    cell=records([h])["7"]
+    assert cell["class_attention"]=="同級好走 · C2一 3着"
+    assert cell["class_attention_reason"].startswith("前走 C2一 3着")
+    assert h==before
+    h["profile"]["class_attention"]["display"]="前走 C23組 5着"
+    assert records([h])["7"]["class_attention"]=="C23組 5着"
+    h["profile"]["class_attention"]["display"]="前走情報未取得"
+    assert records([h])["7"]["class_attention"]=="情報未取得"
+    h["profile"]["class_attention"]["display"]="交流Jpn3 2着 · 交流Jpn2 4着"
+    assert records([h])["7"]["class_attention"]=="交流Jpn3 2着 · 交流Jpn2 4着"

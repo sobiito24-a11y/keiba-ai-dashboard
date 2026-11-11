@@ -50,8 +50,8 @@ def test_nar_prev_corner_is_actual_and_ranks_are_never_replaced():
     assert "nar_hybrid_score" in [c["key"] for c in cols]
     table = BeautifulSoup(lineup_html(reviewed), "html.parser")
     assert not table.select("th.col-frozen_review, th.col-nar_form_rank")
-    assert table.select_one("th.col-nar_hybrid_score")
-    assert "印・正式順位・購入判断は変更しません" in table.text
+    assert not table.select_one("th.col-nar_hybrid_score")
+    assert "印・正式順位・純能力は変更しません" in table.text
     detail = BeautifulSoup(detail_html(reviewed[0]), "html.parser")
     assert not detail.select(".detail-frozen-review, .detail-nar-form")
     assert detail.select_one(".detail-nar-hybrid")
@@ -78,7 +78,8 @@ def test_jra_evidence_rest_training_and_surface_or_distance():
     assert "休養間隔が未確認" in reviewed[2]["frozen_review_reason"]
     assert reviewed[3]["frozen_review_candidate"] is False
     assert next(s for s in columns(reviewed) if s["key"] == "frozen_review")["label"] == "JRA相手比較"
-    assert "相手比較材料" in BeautifulSoup(lineup_html(reviewed), "html.parser").text
+    assert "相手比較材料" not in BeautifulSoup(lineup_html(reviewed), "html.parser").text
+    assert records(reviewed)["3"]["frozen_review"] == "相手比較材料"
 
 
 def test_jra_pair_hypothesis_uses_ability_anchor_and_never_fabricates():
