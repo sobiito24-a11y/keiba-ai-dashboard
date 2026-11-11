@@ -98,7 +98,7 @@ def columns(view):
         result.insert(position + 1, _spec("nar_hybrid_rank", "今回評価順位", "rank", table_hidden=True))
         result.append(_spec("nar_hybrid_reason", "今回評価の根拠", "text", table_hidden=True))
     # New read-only column: no impact on existing saved marks or ranking.
-    at = next(i for i, spec in enumerate(result) if spec["key"] == "ability") + 1
+    at = next(i for i, spec in enumerate(result) if spec["key"] == "ability_rank") + 1
     result.insert(at, _spec("class_attention", "クラス・重賞注目", "text"))
     result.append(_spec("class_attention_reason", "クラス・重賞根拠", "text", table_hidden=True))
     for key, label in (("star", "同場同距離指数"), ("away", "別場同距離指数")):
