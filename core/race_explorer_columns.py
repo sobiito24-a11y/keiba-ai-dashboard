@@ -209,7 +209,7 @@ def records(view):
             jockey=_text(facts.get("current_jockey", horse.get("jockey"))),
             odds=odds, popularity=popularity, score=score, rank=rank,
             ability=ability, ability_rank=ability_rank,
-            class_attention=_text(class_attention.get("label")),
+            class_attention=_text(class_attention.get("display") or class_attention.get("label")),
             class_attention_reason=_text(class_attention.get("reason")),
             nar_hybrid_score=_number(horse.get("nar_hybrid_score")) if horse.get("mode") == "nar" else None,
             nar_hybrid_rank=_integer(horse.get("nar_hybrid_rank")) if horse.get("mode") == "nar" else None,
