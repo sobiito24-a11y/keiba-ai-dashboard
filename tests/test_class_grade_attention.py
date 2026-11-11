@@ -72,3 +72,27 @@ def test_different_surface_is_disclosed():
     old = run("前走", context(level=8, age="3歳限定", label="G1"), finish=2, surface="ダ")
     result = evaluate(today, [old], current_surface="芝")
     assert "馬場違い" in result["reason"]
+
+
+def test_jra_runner_with_nar_exchange_grades_shows_both_even_without_comparable_class():
+    # 京都11R・エコロレーヴに類する実績。JRAとNARのクラス水準は混同しない。
+    today = context(mode="JRA", level=4, age="3歳以上", label="OP")
+    last = run("前走", context(mode="NAR", level=None, age="3歳限定", venue="大井", label="Jpn2"), 4, "ダ")
+    older = run("2走前", context(mode="NAR", level=None, age="3歳限定", venue="門別", label="Jpn3"), 2, "ダ")
+    result = evaluate(today, [last, older], current_surface="ダ")
+    assert result["label"] == "重賞好走歴"
+    assert result["tags"][:2] == ["交流Jpn3 2着", "交流Jpn2 4着"]
+    assert result["display"] == "交流Jpn3 2着 · 交流Jpn2 4着"
+    assert "前走Jpn2 4着" in result["reason"]
+    assert "2走前Jpn3 2着" in result["reason"]
+    assert result["scoring_effect"] == 0
+
+
+def test_class_status_is_visible_beside_grade_facts_without_bonus():
+    today = context(level=2, age="3歳以上", label="2勝")
+    old = run("前走", context(level=1, age="3歳以上", label="1勝"), 1)
+    result = evaluate(today, [old])
+    assert result["display"] == "昇級"
+    same = run("前走", context(level=2, age="3歳以上", label="2勝"), 3)
+    assert evaluate(today, [same])["display"] == "同級好走"
+    assert evaluate(today, [same])["scoring_effect"] == 0
