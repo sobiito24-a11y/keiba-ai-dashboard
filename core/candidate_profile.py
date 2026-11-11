@@ -49,7 +49,9 @@ def facts(row,info):
         past_context = conservative_class(dict(
             venue=run["venue"], surface=run["surface"], race_name=run["class_raw"]))
         past_class_rows.append(dict(label=run["label"], finish=run["finish"],
-                                    surface=run["surface"], class_context=past_context))
+                                    surface=run["surface"], race_name=run.get("race_name"),
+                                    class_raw=run.get("class_raw"),
+                                    class_context=past_context))
     class_attention = grade_attention(
         current_context, past_class_rows,
         current_surface=pick(info or {}, "surface", "芝ダート"))
