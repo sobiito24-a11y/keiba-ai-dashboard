@@ -206,7 +206,7 @@ def _render_event(event: Mapping[str, Any], render_mobile_result: RenderMobileRe
     saved_review = selected.get(postrace_key)
     if saved_review is not None:
         try:
-            result._postrace_review = validate(selected, saved_review)
+            result._postrace_review = validate_postrace(selected, saved_review)
         except (ValueError, TypeError, KeyError) as exc:
             st.warning("保存済みの結果照合データが不正です。予想はそのまま閲覧できます: " + str(exc))
     if st.session_state.get("dashboard_action") == "保存した予想を開く":
