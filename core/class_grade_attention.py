@@ -62,6 +62,7 @@ def evaluate(current, past_runs, *, current_surface=None):
     past_runs = past_runs if isinstance(past_runs, (list, tuple)) else ()
     upper, same, graded_placed, graded_seen, promoted = [], [], [], [], []
     checked = 0
+    comparable_count = 0
     for run in past_runs:
         if not isinstance(run, Mapping):
             continue
@@ -86,6 +87,8 @@ def evaluate(current, past_runs, *, current_surface=None):
             else:
                 graded_seen.append(evidence)
 
+        if _comparable(current, ctx):
+            comparable_count += 1
         if _comparable(current, ctx) and finish is not None:
             if ctx["class_level_v2"] > current["class_level_v2"] and finish <= 3:
                 upper.append(evidence)
@@ -108,11 +111,11 @@ def evaluate(current, past_runs, *, current_surface=None):
     elif graded_seen:
         name, evidence = "重賞出走歴", graded_seen
     else:
-        name, evidence = "比較資料不足", []
+        name, evidence = ("特記事項なし" if comparable_count else "比較資料不足"), []
 
     reason = " / ".join(evidence[:3]) if evidence else (
-        "今回級と過去走のクラス・年齢条件・主催・競馬場を確実に照合できない、"
-        "または該当する注目実績がありません")
+        "比較可能な過去走に指定の好走材料なし" if comparable_count else
+        "今回級と過去走のクラス・年齢条件・主催・競馬場の照合が不足")
     return dict(label=name, reason=reason + "｜過去3走の保存根拠（加点なし）",
                 evidence_count=len(evidence), inspected_runs=checked,
                 scoring_effect=0)
