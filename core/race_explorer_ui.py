@@ -60,6 +60,9 @@ def _cell(horse, cells, key):
         return value(item)+'kg' if item is not None else '<span class="missing-cell">未取得</span>'
     if key == 'weight_delta':
         return value(cells.get('weight_delta_label'))
+    if key == 'class_attention':
+        return ('<span class="comparison-snippet">'+value(item)+'</span>'
+                if item is not None else '<span class="missing-cell">未取得</span>')
     if key == 'materials':
         # Short visual summaries only; records(), source facts, and detail_html()
         # retain the full wording and remain the sortable/searchable data.
@@ -85,12 +88,12 @@ def _options(schema, first=None):
 def lineup_html(view):
     schema, cells = columns(view), records(view)
     shown_schema = [spec for spec in schema if not spec.get('table_hidden')]
-    widths = dict(user=42, frame=36, no=44, name=190, jockey=85, score=120, nar_hybrid_score=108, frozen_review=128, career_course=142,
+    widths = dict(user=42, frame=36, no=44, name=190, jockey=85, score=120, nar_hybrid_score=108, frozen_review=128, class_attention=178, career_course=142,
                   rank=70, popularity=70, style=79, corner=82, training=60,
                   run_old=134, run_middle=134, run_latest=134, jockey_change=160,
                   record_venue=190, record_distance=190, record_venue_distance=190, materials=220)
     mobile_widths = dict(user=34, frame=28, no=34, name=118, jockey=68,
-                         score=100, reference_score=110, nar_hybrid_score=93, frozen_review=104, career_course=112, popularity=56, style=73,
+                         score=100, reference_score=110, nar_hybrid_score=93, frozen_review=104, class_attention=148, career_course=112, popularity=56, style=73,
                          corner=77, training=48, run_old=108, run_middle=108,
                          run_latest=108, jockey_change=128, record_venue=156,
                          record_distance=156, record_venue_distance=156, materials=176)
@@ -110,9 +113,10 @@ def lineup_html(view):
         for spec in shown_schema:
             key = spec['key']
             cls = 'col-'+key+(' col-number' if key == 'no' else '')
-            tooltip = str((row.get('nar_hybrid_reason') or '今回評価の計算材料が未取得') if key == 'nar_hybrid_score' else (row.get(key) if row.get(key) is not None else '未取得'))
+            tooltip = str((row.get('nar_hybrid_reason') or '今回評価の計算材料が未取得') if key == 'nar_hybrid_score' else (row.get('class_attention_reason') or 'クラスの比較根拠未取得') if key == 'class_attention' else (row.get(key) if row.get(key) is not None else '未取得'))
             content.append('<td class="'+cls+'" data-label="'+plain(spec['label'])+'" title="'+plain(tooltip)+'">'+_cell(horse, row, key)+'</td>')
         rows.append('<tr data-row="'+plain(no)+'" data-horse="'+plain(no)+'">'+''.join(content)+'</tr>')
+    class_help = '<p class="help">「クラス・重賞注目」は過去3走の保存根拠から表示する参考材料であり、加点・能力順位・正式印を変更しません。資料不足は推測で補いません。根拠は列の説明または馬の詳細に表示します。</p>'
     nar_help = ('<p class="help">NAR今回評価は純能力＋同会場近距離・実4角・騎手コース実績・厳密な過去直接対戦の検証用評価です。'
                 '各馬の列にマウスを合わせると補正根拠を確認できます。未取得は補完せず、印・正式順位・購入判断は変更しません。</p>'
                 if view and view[0].get("mode") == "nar" else '')
@@ -135,6 +139,7 @@ def lineup_html(view):
             '<div id="active-column-filters" aria-label="適用中の絞り込み"></div>'
             '<p id="lineup-empty" class="no-data" hidden>条件に合う馬がいません。絞り込みを解除するか、全頭表示に切り替えてください。</p>'
             '<div class="table-scroll explorer-table-scroll" tabindex="0" aria-label="全頭比較・縦横スクロール"><table class="explorer-table" style="--comparison-width:'+str(table_width)+'px;--comparison-mobile-width:'+str(mobile_width)+'px"><thead><tr>'+''.join(headers)+'</tr></thead><tbody>'+''.join(rows)+'</tbody></table></div>'
+            +class_help+
             '<p class="help">序盤傾向の上段は保存されたスタート想定順位、下段は過去の脚質。4角想定の下段は保存純能力順位です。新たな先頭争い予測や加点ではありません。ソート・フィルターは従来の列仕様を維持します。</p>'
             '<p class="help">下段は各指数の順位です。上位3位の記号は各指数の順位表示で、総合評価や印ではありません。過去走は3走前 → 2走前 → 前走。★は保存された最高指数との一致です。</p></section>')
 

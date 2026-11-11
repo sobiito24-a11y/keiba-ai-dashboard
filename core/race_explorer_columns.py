@@ -97,6 +97,10 @@ def columns(view):
         result.insert(position, _spec("nar_hybrid_score", "今回評価", "number", rank_key="nar_hybrid_rank"))
         result.insert(position + 1, _spec("nar_hybrid_rank", "今回評価順位", "rank", table_hidden=True))
         result.append(_spec("nar_hybrid_reason", "今回評価の根拠", "text", table_hidden=True))
+    # New read-only column: no impact on existing saved marks or ranking.
+    at = next(i for i, spec in enumerate(result) if spec["key"] == "ability_rank") + 1
+    result.insert(at, _spec("class_attention", "クラス・重賞注目", "text"))
+    result.append(_spec("class_attention_reason", "クラス・重賞根拠", "text", table_hidden=True))
     for key, label in (("star", "同場同距離指数"), ("away", "別場同距離指数")):
         if any(_number(_mapping(_mapping(horse).get(key)).get("value")) is not None for horse in view or ()):
             result.extend((_spec(key, label, "number", rank_key=key + "_rank"),
@@ -197,6 +201,7 @@ def records(view):
         grade = _text(facts.get("training"))
         grade = grade if grade in ("A", "B", "C", "D") and horse.get("mode") == "jra" else None
         current_weight = _number(facts.get("current_weight"))
+        class_attention = _mapping(_mapping(horse.get("profile")).get("class_attention"))
         item = dict(
             user=False, frame=_integer(horse.get("frame"), maximum=8),
             no=_integer(horse.get("no")), name=_text(horse.get("name")),
@@ -204,6 +209,8 @@ def records(view):
             jockey=_text(facts.get("current_jockey", horse.get("jockey"))),
             odds=odds, popularity=popularity, score=score, rank=rank,
             ability=ability, ability_rank=ability_rank,
+            class_attention=_text(class_attention.get("display") or class_attention.get("label")),
+            class_attention_reason=_text(class_attention.get("reason")),
             nar_hybrid_score=_number(horse.get("nar_hybrid_score")) if horse.get("mode") == "nar" else None,
             nar_hybrid_rank=_integer(horse.get("nar_hybrid_rank")) if horse.get("mode") == "nar" else None,
             nar_hybrid_reason=_text(horse.get("nar_hybrid_reason")) if horse.get("mode") == "nar" else None,
