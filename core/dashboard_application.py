@@ -201,6 +201,16 @@ def _render_event(event: Mapping[str, Any], render_mobile_result: RenderMobileRe
         _clear_mobile_selection_widgets()
         st.session_state.dashboard_rendered_race_id = race_id
     result = restore_prediction_result(selected)
+    # Frozen after-race evidence is strictly separate from prediction_result.
+    from .race_result_review import KEY as postrace_key, validate as validate_postrace
+    saved_review = selected.get(postrace_key)
+    if saved_review is not None:
+        try:
+            result._postrace_review = validate(selected, saved_review)
+        except (ValueError, TypeError, KeyError) as exc:
+            st.warning("保存済みの結果照合データが不正です。予想はそのまま閲覧できます: " + str(exc))
+    if st.session_state.get("dashboard_action") == "保存した予想を開く":
+        _render_postrace_import(event, selected, result)
     st.session_state.prediction_result = result
     st.markdown(
         '<div class="ka-snapshot-note">保存済み正式予想を表示中。正式予想は再計算しません。当日の好材料・不安材料が未保存の場合のみ、保存材料から参考判定を補います。</div>',
@@ -228,6 +238,73 @@ def _render_event(event: Mapping[str, Any], render_mobile_result: RenderMobileRe
     selected = next((r for r in updated.get("races", []) if str(r.get("race_id")) == race_id), selected)
     st.session_state.dashboard_event_snapshot = updated
     _render_save_buttons(updated, selected)
+
+
+def _render_postrace_import(event, selected, result) -> None:
+    """Optional CSV import; source predictions and visible pre-race data are frozen."""
+    from .race_result_review import (
+        KEY, validate, export_copy, parse_results_csv, parse_payouts_csv,
+        template_results, template_payouts,
+    )
+    rid = str(selected.get("race_id") or "")
+    if not rid:
+        return
+    with st.expander("結果・払戻の取り込み（元の予想は変更しません）", expanded=False):
+        st.caption("確定結果が記録された.keibaなら、下の振り返りが自動で追加されます。"
+                   "CSVで結果と馬券種別の払戻を追加した場合は、結果付き.keibaコピーを保存できます。"
+                   "発走前オッズには上書きしません。")
+        if selected.get(KEY):
+            st.info("このレースには結果・払戻データが保存されています。")
+        c1, c2 = st.columns(2)
+        c1.download_button(
+            "着順・最終単勝 CSVひな型", template_results(selected),
+            file_name=rid+"_results_template.csv", mime="text/csv",
+            key="postrace_results_template_"+rid,
+        )
+        c2.download_button(
+            "馬券種別の払戻 CSVひな型", template_payouts(),
+            file_name=rid+"_payouts_template.csv", mime="text/csv",
+            key="postrace_payouts_template_"+rid,
+        )
+        result_file = st.file_uploader(
+            "馬別：実着順・最終単勝・実4角（CSV）",
+            type=["csv"], key="postrace_results_csv_"+rid,
+        )
+        payout_file = st.file_uploader(
+            "払戻：式別・的中組合せ・払戻金（CSV／任意）",
+            type=["csv"], key="postrace_payouts_csv_"+rid,
+        )
+        if result_file is None and payout_file is None:
+            return
+        source = st.text_input(
+            "結果・払戻を確認した情報源",
+            placeholder="例：JRA公式、地方競馬情報サイト",
+            key="postrace_result_source_"+rid,
+        )
+        try:
+            runners = parse_results_csv(result_file.getvalue()) if result_file is not None else []
+            payouts = parse_payouts_csv(payout_file.getvalue()) if payout_file is not None else []
+            overlay = validate(selected, dict(
+                schema_version=1, race_id=rid, mode=selected["race_mode"],
+                source=source, runners=runners, payouts=payouts,
+            ))
+        except (ValueError, TypeError, KeyError, UnicodeError) as exc:
+            st.info("まだ反映していません：" + str(exc))
+            return
+        st.success(f"照合済み：馬別 {len(overlay['runners'])}頭、払戻 {len(overlay['payouts'])}件。"
+                   "下の折りたたみ「レース振り返り」で表示できます。")
+        result._postrace_review = overlay
+        try:
+            copied = export_copy(keiba_bytes(event), rid, overlay)
+        except (KeibaSnapshotError, ValueError, TypeError, KeyError) as exc:
+            st.error("結果付きコピーを作成できません: " + str(exc))
+            return
+        st.download_button(
+            "結果・払戻付き.keibaコピーを保存", copied,
+            file_name=rid+"_with_results.keiba", mime="application/zip",
+            key="postrace_export_"+rid,
+            use_container_width=True,
+        )
 
 
 def _render_race_navigation(races: list[Mapping[str, Any]]) -> dict[str, Any] | None:
