@@ -17,7 +17,10 @@ def race(mode="jra"):
     return dict(
         race_id="202611070811", race_mode=mode, date="2026-11-07",
         horses=[dict(horse_no="1", horse_name="サンプルA"),
-                dict(horse_no="2", horse_name="サンプルB")],
+                dict(horse_no="2", horse_name="サンプルB"),
+                dict(horse_no="3", horse_name="サンプルC"),
+                dict(horse_no="4", horse_name="サンプルD"),
+                dict(horse_no="5", horse_name="サンプルE")],
         prediction_result=dict(race_mode=mode, created_at="2026-11-06T12:00:00",
                                overall_table=dict(columns=["馬番", "馬名", "純能力指数"],
                                                   records=[{"馬番": 1, "馬名": "サンプルA", "純能力指数": 68.4},
@@ -107,7 +110,7 @@ def test_csv_templates_and_partial_results_still_valid():
     r = race()
     populated = template_results(r).decode("utf-8-sig")
     assert populated.splitlines()[0].startswith("馬番,馬名,着順")
-    assert len(parse_results_csv(template_results(r))) == 2
+    assert len(parse_results_csv(template_results(r))) == 5
     assert template_payouts().decode("utf-8-sig").startswith("式別,組合せ,払戻金")
     csv_data = ("馬番,馬名,着順,最終単勝,最終人気,実4角\n"
                 "1,サンプルA,1,8.6,3,2\n").encode("utf-8-sig")
