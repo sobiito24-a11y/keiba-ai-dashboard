@@ -52,6 +52,18 @@ def _material(item):
     return " / ".join(result) or None
 
 
+def _compact_class_attention(value):
+    """Only shorten the wide-table label; preserve dated source details.
+
+    In this column the class/finish is obviously from the previous race.
+    E.g. '昇級 · 前走 C1組 2着' -> '昇級 · C1組 2着'.
+    """
+    label = _text(value)
+    if label is None:
+        return None
+    return label.replace("前走情報未取得", "情報未取得").replace("前走 ", "", 1)
+
+
 def _spec(key, label, kind, **extra):
     return dict(key=key, label=label, type=kind, **extra)
 
@@ -80,10 +92,10 @@ def columns(view):
         _spec("course", "コース指数", "number", rank_key="course_rank"),
         _spec("course_rank", "コース順位", "rank", table_hidden=True),
     ]
-    # Keep the JRA opponent-review column, but remove the NAR見直し column.
+    # Keep JRA opponent evidence in the research projection, not the wide table.
     if jra:
         position = next(i for i, spec in enumerate(result) if spec["key"] == "ability_rank") + 1
-        result.insert(position, _spec("frozen_review", "JRA相手比較", "text"))
+        result.insert(position, _spec("frozen_review", "JRA相手比較", "text", table_hidden=True))
         result.append(_spec("frozen_review_reason", "研究チェック根拠", "text", table_hidden=True))
     if jra:
         # All-career course records are only shown when an actual saved
@@ -91,10 +103,10 @@ def columns(view):
         insert_at = next(i for i, spec in enumerate(result) if spec["key"] == "course_rank") + 1
         result.insert(insert_at, _spec("career_course", "同コース全戦績", "text"))
     if not jra:
-        # One research-only score and rank immediately LEFT of pure ability.
+        # Keep the NAR hybrid research score available to filters/details, not in the wide table.
         # It never alters the formal model or the saved pure-ability values.
         position = next(i for i, spec in enumerate(result) if spec["key"] == "ability")
-        result.insert(position, _spec("nar_hybrid_score", "今回評価", "number", rank_key="nar_hybrid_rank"))
+        result.insert(position, _spec("nar_hybrid_score", "今回評価", "number", rank_key="nar_hybrid_rank", table_hidden=True))
         result.insert(position + 1, _spec("nar_hybrid_rank", "今回評価順位", "rank", table_hidden=True))
         result.append(_spec("nar_hybrid_reason", "今回評価の根拠", "text", table_hidden=True))
     # New read-only column: no impact on existing saved marks or ranking.
@@ -209,7 +221,7 @@ def records(view):
             jockey=_text(facts.get("current_jockey", horse.get("jockey"))),
             odds=odds, popularity=popularity, score=score, rank=rank,
             ability=ability, ability_rank=ability_rank,
-            class_attention=_text(class_attention.get("display") or class_attention.get("label")),
+            class_attention=_compact_class_attention(class_attention.get("display") or class_attention.get("label")),
             class_attention_reason=_text(class_attention.get("reason")),
             nar_hybrid_score=_number(horse.get("nar_hybrid_score")) if horse.get("mode") == "nar" else None,
             nar_hybrid_rank=_integer(horse.get("nar_hybrid_rank")) if horse.get("mode") == "nar" else None,
