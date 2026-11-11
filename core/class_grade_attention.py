@@ -61,6 +61,7 @@ def evaluate(current, past_runs, *, current_surface=None):
     current = current if isinstance(current, Mapping) else {}
     past_runs = past_runs if isinstance(past_runs, (list, tuple)) else ()
     upper, same, graded_placed, graded_seen, promoted = [], [], [], [], []
+    grade_tags = []
     checked = 0
     comparable_count = 0
     for run in past_runs:
@@ -79,6 +80,16 @@ def evaluate(current, past_runs, *, current_surface=None):
         # Grade achievement is a historical fact; not a blanket class bonus.
         grade = _GRADE.fullmatch(ctx_label)
         if grade:
+            # Factual grade/finish labels survive JRA-versus-NAR differences.
+            # A Jpn2 4th is not a proven positive adjustment, but it must not
+            # disappear behind a lower numerical time index either.
+            grade_name = "交流" + ctx_label if ctx_label.lower().startswith("jpn") else ctx_label
+            grade_tag = grade_name + (
+                f" {finish}着" if finish is not None and finish <= 5
+                else " 出走")
+            grade_tags.append((0 if finish is not None and finish <= 3
+                               else 1 if finish is not None and finish <= 5
+                               else 2, grade_tag))
             if finish is not None and finish <= 3:
                 same_ground = not (current_surface and run.get("surface") and
                                    str(current_surface).replace("ダート", "ダ") !=
@@ -113,9 +124,30 @@ def evaluate(current, past_runs, *, current_surface=None):
     else:
         name, evidence = ("特記事項なし" if comparable_count else "比較資料不足"), []
 
-    reason = " / ".join(evidence[:3]) if evidence else (
+    # Preserve the legacy headline for compatibility, but show multiple
+    # independently verified facts in the compact dashboard.  No weights.
+    tags = []
+    def add(value):
+        if value not in tags:
+            tags.append(value)
+
+    for _, grade_tag in sorted(grade_tags, key=lambda item: item[0]):
+        add(grade_tag)
+    if upper:
+        add("格上好走")
+    if same:
+        add("同級好走")
+    if promoted:
+        add("昇級")
+    if not tags:
+        add(name)
+
+    all_evidence = list(dict.fromkeys(
+        graded_placed + upper + same + promoted + graded_seen))
+    reason = " / ".join(all_evidence[:5]) if all_evidence else (
         "比較可能な過去走に指定の好走材料なし" if comparable_count else
         "今回級と過去走のクラス・年齢条件・主催・競馬場の照合が不足")
-    return dict(label=name, reason=reason + "｜過去3走の保存根拠（加点なし）",
-                evidence_count=len(evidence), inspected_runs=checked,
+    return dict(label=name, display=" · ".join(tags[:2]), tags=tags,
+                reason=reason + "｜過去3走の保存根拠（加点なし）",
+                evidence_count=len(all_evidence), inspected_runs=checked,
                 scoring_effect=0)
