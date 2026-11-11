@@ -301,13 +301,13 @@ def _legacy_document(view, race_key='', paper_decision=None, portable=None):
             +'<noscript>馬別カードを表示するにはJavaScriptを有効にしてください。</noscript></main><script type="application/json" id="race-data">'+data+'</script><script>'+script+'</script></body></html>')
 
 
-def document(view, race_key='', paper_decision=None, portable=None):
+def document(view, race_key='', paper_decision=None, portable=None, postrace=None):
     # B remains available only through the explicit research route. Ordinary
     # predictions reach this function with their unchanged A projection.
     if view and view[0].get('active_model')=='B':
         return _legacy_document(view,race_key,paper_decision,portable)
     from .race_explorer_ui import document as comparison_document
-    return comparison_document(view,race_key,paper_decision,portable)
+    return comparison_document(view,race_key,paper_decision,portable,postrace=postrace)
 
 
 def theme_css():
@@ -338,7 +338,7 @@ def race_header(result):
     return '<section class="game-race-header"><span class="game-eyebrow">KEIBA AI / RACE BRIEFING</span><h2>'+escape(name)+'</h2><div class="game-race-meta">'+''.join('<span><small>'+escape(k)+'</small> '+escape(text(v) or '—')+'</span>' for k,v in values)+'</div></section>'
 
 
-def render_component(view, race_key, paper_decision=None):
+def render_component(view, race_key, paper_decision=None, postrace=None):
     # Declare from an importable module: Streamlit's __main__ can be transient.
     import streamlit.components.v1 as components
     component = components.declare_component("game_race_lineup", path=str(ASSETS))
@@ -348,7 +348,7 @@ def render_component(view, race_key, paper_decision=None):
         portable=upload(race_key)
     except ImportError:
         pass
-    shown = component(html=document(view, race_key,paper_decision,portable), key='game_lineup_'+race_key, default=None)
+    shown = component(html=document(view, race_key,paper_decision,portable,postrace=postrace), key='game_lineup_'+race_key, default=None)
     if view and view[0].get('mode') == 'jra':
         # Separate research export; never writes to prediction snapshots or .keiba.
         from datetime import datetime, timezone
