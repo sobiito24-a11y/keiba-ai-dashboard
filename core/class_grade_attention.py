@@ -106,6 +106,7 @@ def evaluate(current, past_runs, *, current_surface=None):
     upper, same, graded_placed, graded_seen, promoted = [], [], [], [], []
     grade_tags = []
     prior_note = None
+    prior_note_is_grade = False
     checked = comparable_count = 0
     for run in past_runs:
         if not isinstance(run, Mapping):
@@ -120,6 +121,7 @@ def evaluate(current, past_runs, *, current_surface=None):
         checked += 1
 
         if label == "前走":
+            prior_note_is_grade = bool(_grade(class_text))
             # Named-race fallback is factual but explicitly says that its
             # class could not be identified. Do not infer it from today's C2.
             prior_note = (f"前走 {class_text or '級未取得'} {finish_label}" +
@@ -179,7 +181,7 @@ def evaluate(current, past_runs, *, current_surface=None):
         add("昇級")
     # If only one notable item exists, let the user see the actual previous
     # class as well. When there is no highlight, show the previous class first.
-    if len(tags) < 2:
+    if len(tags) < 2 and not (prior_note_is_grade and grade_tags):
         add(prior_note)
     if not tags:
         add("前走情報未取得")
