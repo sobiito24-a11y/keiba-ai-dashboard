@@ -10,7 +10,7 @@ from html import escape
 
 from .prediction_table_ui import number
 from .race_explorer_columns import columns, records
-from .race_explorer_common import number_badge, value
+from .race_explorer_common import value
 from .race_result_review import LABELS
 from .race_explorer_ui import _cell, comparison_widths
 
@@ -52,16 +52,34 @@ def review_html(view, review):
     by_no = {str(r["horse_no"]): r for r in review.get("runners", [])
              if isinstance(r, dict) and r.get("horse_no") is not None}
     widths, mobile_widths = comparison_widths()
-    extra_widths = (100, 116, 102, 98)
-    width = sum(widths.get(key, 88) for key in cols) + sum(extra_widths)
-    mobile_width = sum(mobile_widths.get(key, 72) for key in cols) + sum(extra_widths)
+    # All original prediction columns retain the exact same width classes
+    # (particularly "col-number" for the third sticky column on mobile).
+    # Only the six factual post-race columns are appended.
+    extra = [
+        ("finish", "実着順", 88, 72),
+        ("final_win_odds", "最終単勝", 112, 95),
+        ("final_popularity", "最終人気", 94, 78),
+        ("corner4", "実4角", 84, 72),
+        ("win_payout", "単勝払戻", 118, 98),
+        ("place_payout", "複勝払戻", 118, 98),
+    ]
+    width = sum(widths.get(key, 88) for key in cols) + sum(item[2] for item in extra)
+    mobile_width = sum(mobile_widths.get(key, 72) for key in cols) + sum(item[3] for item in extra)
     headers = [
-        '<th scope="col" class="col-'+_plain(spec["key"])+'">'+_plain(spec["label"])+"</th>"
+        '<th scope="col" class="col-'+_plain(spec["key"])+
+        (' col-number' if spec["key"] == "no" else '')+'"><span class="column-label">'+
+        _plain(spec["label"])+"</span></th>"
         for spec in schema
     ] + [
-        '<th scope="col" class="review-actual">'+label+"</th>"
-        for label in ("実着順", "最終単勝", "最終人気", "実4角")
+        '<th scope="col" class="review-actual review-'+key+'">'+label+"</th>"
+        for key, label, _, _ in extra
     ]
+    payouts_by_horse = {
+        (str(payment.get("selection")), payment.get("bet_type")): payment.get("payout_yen")
+        for payment in review.get("payouts", [])
+        if payment.get("bet_type") in ("win", "place")
+    }
+    payouts_available = bool(review.get("payouts"))
     rows = []
     for horse in sorted(view, key=lambda h: (number(h.get("no")) is None,
                                              number(h.get("no")) or 0)):
@@ -73,17 +91,27 @@ def review_html(view, review):
                 # Manual ✓ belongs only to the interactive prediction table.
                 contents = '<span class="missing-cell">―</span>'
             elif key == "name":
-                contents = ('<span class="horse-name-age"><strong>'+
+                # Match the original horse-select visual structure without
+                # emitting an interactive button / duplicate event target.
+                contents = ('<div class="horse-select"><span class="horse-name-age"><strong>'+
                             value(info.get("name"))+'</strong><span class="horse-age">'+
-                            value(info.get("age"), "―")+"</span></span>")
+                            value(info.get("age"), "―")+"</span></span></div>")
             else:
                 contents = _cell(horse, info, key)
-            parts.append('<td class="col-'+_plain(key)+'">'+contents+"</td>")
+            cls = 'col-'+_plain(key)+(' col-number' if key == "no" else '')
+            parts.append('<td class="'+cls+'" data-label="'+_plain(
+                next(spec["label"] for spec in schema if spec["key"] == key)
+            )+'">'+contents+"</td>")
         actual = by_no.get(no)
-        for key in ("finish", "final_win_odds", "final_popularity", "corner4"):
-            text = _result_value(actual, key)
+        for key, _, _, _ in extra:
+            if key in ("win_payout", "place_payout"):
+                kind = "win" if key == "win_payout" else "place"
+                yen = payouts_by_horse.get((no, kind))
+                text = f"{yen:,}円" if yen is not None else ("―" if payouts_available else "未取得")
+            else:
+                text = _result_value(actual, key)
             label = ' review-placed' if key == 'finish' and actual and actual.get('finish') in (1, 2, 3) else ''
-            parts.append('<td class="review-actual'+label+'">'+_plain(text)+"</td>")
+            parts.append('<td class="review-actual review-'+key+label+'">'+_plain(text)+"</td>")
         rows.append("<tr>"+''.join(parts)+"</tr>")
     payout_rows = []
     for payment in review.get("payouts", []):
@@ -108,12 +136,16 @@ def review_html(view, review):
         '右端に確定結果を追加しています。結果がない馬は未取得のまま表示します。'
         'ここでの最終単勝は発走前の購入可能オッズではありません。'
         '馬券ごとの払戻は入力された公表値で、購入履歴や回収率ではありません。</p>'
-        '<div class="explorer-table-scroll postrace-review-scroll">'
+        '<h3 class="review-heading">馬券種別の払戻金 <small>（表示額は保存された基準額あたり）</small></h3>'+payouts+
+        '<h3 class="review-heading">予想時の全頭一覧 ＋ 確定結果</h3>'
+        '<p class="help">予想時のすべての列を同じ順番で表示。右へスクロールすると'
+        '実着順・最終単勝・実4角・単勝／複勝払戻があります。</p>'
+        '<div class="explorer-table-scroll postrace-review-scroll" tabindex="0"'
+        ' aria-label="結果照合・縦横スクロール">'
         '<table class="explorer-table" style="--comparison-width:'+str(width)+
         'px;--comparison-mobile-width:'+str(mobile_width)+'px">'
         '<thead><tr>'+''.join(headers)+'</tr></thead><tbody>'+
         ''.join(rows)+'</tbody></table></div>'
-        '<h3>馬券種別の払戻金</h3>'+payouts+
         '<p class="help">参照元：'+_plain(review.get("source") or "未取得")+
         '｜結果・払戻は元の予想とは別保存</p></div></details>'
     )

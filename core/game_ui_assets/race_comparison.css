@@ -168,3 +168,125 @@
  .race-explorer .position-two-line strong{font-size:12px}
  .race-explorer .position-two-line small{font-size:9px}
 }
+
+
+/* Post-race mirror: match the original wide-table grid and sticky columns. */
+#postrace-review .postrace-review-scroll{
+  display:block;width:100%;max-width:100%;overflow:auto;overscroll-behavior-x:contain;
+  -webkit-overflow-scrolling:touch;max-height:68vh;isolation:isolate;
+  border:1px solid #d5e1eb;border-radius:8px;
+}
+#postrace-review .postrace-review-scroll .explorer-table{
+  display:table;width:var(--comparison-width);min-width:var(--comparison-width);
+  max-width:none;table-layout:fixed;border-spacing:0;
+}
+#postrace-review .postrace-review-scroll .explorer-table th,
+#postrace-review .postrace-review-scroll .explorer-table td{
+  box-sizing:border-box;border-radius:0!important;vertical-align:middle;
+  background:#fff!important;box-shadow:none;white-space:normal;
+  overflow-wrap:anywhere;
+}
+#postrace-review .postrace-review-scroll .explorer-table thead th{
+  background:#eaf1f6!important;position:sticky;top:0;z-index:4;
+  font-size:11px;font-weight:650;color:#294960;
+}
+#postrace-review .postrace-review-scroll .explorer-table tbody tr:nth-child(even) td{
+  background:#f7fafc!important;
+}
+#postrace-review .postrace-review-scroll .explorer-table .col-user,
+#postrace-review .postrace-review-scroll .explorer-table .col-frame,
+#postrace-review .postrace-review-scroll .explorer-table .col-number,
+#postrace-review .postrace-review-scroll .explorer-table .col-name{
+  position:sticky;z-index:5;
+}
+#postrace-review .postrace-review-scroll .explorer-table th.col-user,
+#postrace-review .postrace-review-scroll .explorer-table th.col-frame,
+#postrace-review .postrace-review-scroll .explorer-table th.col-number,
+#postrace-review .postrace-review-scroll .explorer-table th.col-name{
+  z-index:7;background:#eaf1f6!important;
+}
+#postrace-review .postrace-review-scroll .explorer-table .col-user{left:0;width:42px;min-width:42px}
+#postrace-review .postrace-review-scroll .explorer-table .col-frame{left:42px;width:36px;min-width:36px}
+#postrace-review .postrace-review-scroll .explorer-table .col-number{left:78px;width:44px;min-width:44px}
+#postrace-review .postrace-review-scroll .explorer-table .col-name{
+  left:122px;width:190px;min-width:190px;text-align:left;
+  box-shadow:4px 0 6px #294c6317;
+}
+#postrace-review .postrace-review-scroll .explorer-table .col-name .horse-select{
+  display:flex;flex-direction:column;align-items:flex-start;justify-content:center;
+  padding:0;min-width:0;min-height:36px;width:100%;border:0;
+  box-shadow:none;border-radius:0;background:transparent;
+}
+#postrace-review .postrace-review-scroll .explorer-table .col-name .horse-name-age{
+  display:flex;align-items:baseline;gap:4px;width:100%;min-width:0;
+}
+#postrace-review .postrace-review-scroll .explorer-table .col-name strong{
+  font-size:12px;line-height:1.4;overflow-wrap:anywhere;
+}
+#postrace-review .postrace-review-scroll .explorer-table .col-name .horse-age{
+  flex:0 0 auto;font-size:10px;color:#6e8495;white-space:nowrap;
+}
+#postrace-review .postrace-review-scroll .explorer-table th.review-actual,
+#postrace-review .postrace-review-scroll .explorer-table td.review-actual{
+  width:105px;min-width:90px;text-align:center;font-variant-numeric:tabular-nums;
+  white-space:nowrap;font-size:12px;
+}
+#postrace-review .postrace-review-scroll .explorer-table td.review-placed{
+  background:#eaf5ef!important;font-weight:750;color:#16644c;
+}
+#postrace-review .postrace-review-scroll .explorer-table td.review-win_payout,
+#postrace-review .postrace-review-scroll .explorer-table td.review-place_payout{
+  font-weight:700;color:#284e72;
+}
+#postrace-review .review-heading{
+  color:#21465f;font-size:15px;line-height:1.4;margin:16px 0 8px;
+}
+#postrace-review .review-heading small{font-size:10px;color:#6c8094;font-weight:400}
+#postrace-review .review-payout-scroll{
+  overflow-x:auto;max-width:100%;-webkit-overflow-scrolling:touch;
+  border:1px solid #dce6ee;border-radius:8px;
+}
+#postrace-review .review-payout-table{
+  width:100%;min-width:320px;max-width:none;border-collapse:collapse;
+  table-layout:auto;font-size:12px;text-align:left;
+}
+#postrace-review .review-payout-table th,
+#postrace-review .review-payout-table td{
+  border-bottom:1px solid #e1e9f1;padding:8px 7px;
+  border-radius:0;white-space:nowrap;line-height:1.35;
+  background:#fff;box-shadow:none;
+}
+#postrace-review .review-payout-table thead th{
+  background:#eaf1f6!important;font-size:11px;color:#395a72;
+}
+#postrace-review .review-payout-table tbody tr:nth-child(even) td{
+  background:#f7fafc;
+}
+#postrace-review .review-payout-table td:nth-child(3){
+  color:#154b70;font-weight:750;text-align:right;font-variant-numeric:tabular-nums;
+}
+@media (max-width:700px){
+  #postrace-review .postrace-review-scroll .explorer-table{
+    width:var(--comparison-mobile-width);min-width:var(--comparison-mobile-width);
+  }
+  #postrace-review .postrace-review-scroll .explorer-table .col-user{left:0;width:34px;min-width:34px}
+  #postrace-review .postrace-review-scroll .explorer-table .col-frame{left:34px;width:28px;min-width:28px}
+  #postrace-review .postrace-review-scroll .explorer-table .col-number{left:62px;width:34px;min-width:34px}
+  #postrace-review .postrace-review-scroll .explorer-table .col-name{
+    left:96px;width:118px;min-width:118px;
+  }
+  #postrace-review .postrace-review-scroll .explorer-table th,
+  #postrace-review .postrace-review-scroll .explorer-table td{
+    font-size:10.5px;padding:4px 3px;
+  }
+  #postrace-review .postrace-review-scroll .explorer-table th.review-actual,
+  #postrace-review .postrace-review-scroll .explorer-table td.review-actual{
+    width:90px;min-width:72px;font-size:10.5px;padding:4px 3px;
+  }
+  #postrace-review .postrace-review-scroll .explorer-table .col-name strong{
+    font-size:11px;line-height:1.25;
+  }
+  #postrace-review .review-payout-table{font-size:11px}
+  #postrace-review .review-payout-table th,
+  #postrace-review .review-payout-table td{padding:7px 5px}
+}

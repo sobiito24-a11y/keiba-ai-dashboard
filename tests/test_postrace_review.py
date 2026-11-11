@@ -145,12 +145,26 @@ def test_folded_review_mirrors_exact_visible_columns_then_appends_results(mode):
     content = review_html(view, clean)
     soup = BeautifulSoup(content, "html.parser")
     main = BeautifulSoup(lineup_html(view), "html.parser")
-    original_headers = [h.text.strip() for h in main.select("th")]
-    mirrored = [h.text.strip() for h in soup.select("th")][:len(original_headers)]
-    assert mirrored == original_headers
-    assert [h.text.strip() for h in soup.select("th")][len(original_headers):len(original_headers)+4] == [
-        "実着順", "最終単勝", "最終人気", "実4角"
+    original_headers = [h.text.strip() for h in main.select("table.explorer-table thead th")]
+    review_headers = [h.text.strip() for h in soup.select(".postrace-review-scroll thead th")]
+    assert review_headers[:len(original_headers)] == original_headers
+    assert review_headers[len(original_headers):] == [
+        "実着順", "最終単勝", "最終人気", "実4角", "単勝払戻", "複勝払戻"
     ]
+    # Mobile sticky table uses the same 3rd-column hook as the live table.
+    assert soup.select_one(".postrace-review-scroll th.col-no.col-number")
+    assert len(soup.select(".postrace-review-scroll td.col-no.col-number")) == 2
+    # Source payouts appear BEFORE the much longer sideways-scrolling horse list.
+    assert content.index("馬券種別の払戻金") < content.index("予想時の全頭一覧")
+    assert content.index("review-payout-table") < content.index("postrace-review-scroll")
+    payout_table = soup.select_one(".review-payout-table")
+    assert payout_table.select("tbody tr")[0].select("td")[2].text == "860円"
+    first_row = soup.select(".postrace-review-scroll tbody tr")[0]
+    assert len(first_row.select("td")) == len(review_headers)
+    assert first_row.select_one(".review-win_payout").text == "860円"
+    assert first_row.select_one(".review-place_payout").text == "―"
+    assert first_row.select_one(".col-name .horse-select .horse-name-age")
+
     assert not soup.select_one("details#postrace-review").has_attr("open")
     assert not soup.select("tr[data-horse],th[data-column],input[data-user-check],[data-horse-open]")
     assert len(soup.select(".postrace-review-scroll tbody tr")) == 2
@@ -172,6 +186,7 @@ def test_review_not_rendered_if_missing_and_missing_actuals_are_marked():
                                    payouts=[]))
     doc = BeautifulSoup(review_html(view, result), "html.parser")
     assert "未取得" in doc.select(".postrace-review-scroll tbody tr")[1].text
+    assert doc.select_one(".postrace-review-scroll td.review-win_payout").text == "未取得"
     assert "払戻金未取得" in doc.text
 
 
@@ -232,3 +247,35 @@ def test_dashboard_open_saved_results_invokes_imported_validator(monkeypatch):
     assert captured[0]["runners"][0]["horse_name"] == "サンプルA"
     assert captured[0]["payouts"][0]["bet_type"] == "win"
     assert fake_state.prediction_result._postrace_review == captured[0]
+
+
+@pytest.mark.parametrize("mode", ["jra", "nar"])
+def test_postrace_all_paid_bet_types_are_visible_on_mobile_and_undisturbed(mode):
+    view = two_runner_view(mode)
+    raw = overlay(mode)
+    raw["payouts"].pop()
+    raw["payouts"].append(dict(bet_type="複勝", selection="1", payout_yen=260, stake_yen=100))
+    raw["payouts"].append(dict(bet_type="馬単", selection="1-2", payout_yen=2360, stake_yen=100))
+    clean = validate(race(mode), raw)
+    before = deepcopy(clean)
+    fragment = BeautifulSoup(review_html(view, clean), "html.parser")
+    actual = fragment.select(".postrace-review-scroll tbody tr")[0]
+    assert actual.select_one(".review-win_payout").text == "860円"
+    assert actual.select_one(".review-place_payout").text == "260円"
+    table = fragment.select_one(".review-payout-table")
+    pairs = [(row.select("td")[0].text, row.select("td")[1].text, row.select("td")[2].text)
+             for row in table.select("tbody tr")]
+    assert ("単勝", "1", "860円") in pairs
+    assert ("複勝", "1", "260円") in pairs
+    assert ("馬連", "1-2", "1,630円") in pairs
+    assert ("ワイド", "1-2", "580円") in pairs
+    assert ("馬単", "1-2", "2,360円") in pairs
+    assert clean == before
+
+
+def test_postrace_mobile_css_sets_matching_sticky_positions():
+    from core.game_race_ui import ASSETS
+    css = (ASSETS / "race_comparison.css").read_text(encoding="utf-8")
+    assert "#postrace-review .postrace-review-scroll .explorer-table .col-number" in css
+    assert "left:62px;width:34px;min-width:34px" in css
+    assert "#postrace-review .review-payout-table" in css
