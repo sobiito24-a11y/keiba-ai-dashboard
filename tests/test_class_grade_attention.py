@@ -92,9 +92,9 @@ def test_class_status_is_visible_beside_grade_facts_without_bonus():
     today = context(level=2, age="3歳以上", label="2勝")
     old = run("前走", context(level=1, age="3歳以上", label="1勝"), 1)
     result = evaluate(today, [old])
-    assert result["display"] == "昇級"
+    assert result["display"] == "昇級 · 前走 1勝 1着"
     same = run("前走", context(level=2, age="3歳以上", label="2勝"), 3)
-    assert evaluate(today, [same])["display"] == "同級好走"
+    assert evaluate(today, [same])["display"] == "同級好走 · 前走 2勝 3着"
     assert evaluate(today, [same])["scoring_effect"] == 0
 
 
