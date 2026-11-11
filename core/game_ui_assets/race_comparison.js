@@ -288,6 +288,39 @@
     refresh,
     dispose: () => {disposed = true; window.removeEventListener('pagehide', saveScroll);},
   };
+  // Post-race table is intentionally independent of prediction-table sorting.
+  // Sort existing DOM rows only: no scores, marks or .keiba data are mutated.
+  const postraceOrder = document.getElementById('postrace-order');
+  const postraceBody = document.querySelector('#postrace-review .postrace-review-scroll tbody');
+  if (postraceOrder && postraceBody) {
+    const postraceRows = Array.from(postraceBody.querySelectorAll('tr[data-review-no]'));
+    const rankOf = row => {
+      const raw = row.dataset.reviewRank;
+      return raw && Number.isFinite(Number(raw)) && Number(raw) > 0
+        ? Number(raw) : null;
+    };
+    const scoreOf = row => {
+      const raw = row.dataset.reviewScore;
+      return raw && Number.isFinite(Number(raw)) ? Number(raw) : null;
+    };
+    postraceOrder.addEventListener('change', () => {
+      const ranked = postraceOrder.value === 'ability';
+      const sorted = postraceRows.slice().sort((a, b) => {
+        const byNumber = Number(a.dataset.reviewNo) - Number(b.dataset.reviewNo);
+        if (!ranked) return byNumber;
+        const ra = rankOf(a), rb = rankOf(b);
+        if (ra !== null && rb !== null && ra !== rb) return ra - rb;
+        if ((ra === null) !== (rb === null)) return ra === null ? 1 : -1;
+        const sa = scoreOf(a), sb = scoreOf(b);
+        if (sa !== null && sb !== null && sa !== sb) return sb - sa;
+        if ((sa === null) !== (sb === null)) return sa === null ? 1 : -1;
+        return byNumber;
+      });
+      const fragment = document.createDocumentFragment();
+      sorted.forEach(row => fragment.appendChild(row));
+      postraceBody.appendChild(fragment);
+    });
+  }
   renderEditor();
   refresh();
   // The existing shared-detail listener is installed by the following script.

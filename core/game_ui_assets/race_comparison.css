@@ -290,3 +290,62 @@
   #postrace-review .review-payout-table th,
   #postrace-review .review-payout-table td{padding:7px 5px}
 }
+
+
+/* Retrospective only: keep 馬番・馬名・純能力 visibly pinned.
+   The original pre-race table remains unchanged. 自分✓ and 枠番
+   still exist in the review but scroll away to save phone width. */
+#postrace-review .postrace-review-scroll .explorer-table tbody td.col-user,
+#postrace-review .postrace-review-scroll .explorer-table tbody td.col-frame{
+  position:static!important;left:auto!important;z-index:auto!important;
+}
+#postrace-review .postrace-review-scroll .explorer-table thead th.col-user,
+#postrace-review .postrace-review-scroll .explorer-table thead th.col-frame{
+  position:sticky!important;top:0;left:auto!important;z-index:4!important;
+}
+#postrace-review .postrace-review-scroll .explorer-table .col-number{
+  position:sticky!important;left:0!important;width:44px!important;min-width:44px!important;
+  z-index:6!important;
+}
+#postrace-review .postrace-review-scroll .explorer-table .col-name{
+  position:sticky!important;left:44px!important;width:190px!important;min-width:190px!important;
+  z-index:6!important;
+}
+#postrace-review .postrace-review-scroll .explorer-table .col-ability{
+  position:sticky!important;left:234px!important;width:104px!important;min-width:104px!important;
+  z-index:6!important;
+  box-shadow:4px 0 7px rgba(35,68,90,.16)!important;
+}
+#postrace-review .postrace-review-scroll .explorer-table thead th.col-ability,
+#postrace-review .postrace-review-scroll .explorer-table thead th.col-number,
+#postrace-review .postrace-review-scroll .explorer-table thead th.col-name{
+  z-index:8!important;top:0;background:#eaf1f6!important;
+}
+#postrace-review .postrace-review-scroll .explorer-table .col-ability .metric-number{
+  font-size:15px;
+}
+#postrace-review .review-order-toolbar{
+  display:flex;align-items:center;flex-wrap:wrap;gap:8px 12px;
+  padding:8px 2px;font-size:12px;color:#38556e;
+}
+#postrace-review .review-order-toolbar label{font-weight:650}
+#postrace-review .review-order-toolbar select{
+  padding:6px 8px;border:1px solid #b7cadb;border-radius:6px;
+  background:#fff;color:#23435c;font-size:13px;min-height:36px;
+}
+#postrace-review .review-order-toolbar span{font-size:11px;color:#5d7286}
+@media(max-width:700px){
+  #postrace-review .postrace-review-scroll .explorer-table .col-number{
+    left:0!important;width:34px!important;min-width:34px!important;
+  }
+  #postrace-review .postrace-review-scroll .explorer-table .col-name{
+    left:34px!important;width:118px!important;min-width:118px!important;
+  }
+  #postrace-review .postrace-review-scroll .explorer-table .col-ability{
+    left:152px!important;width:94px!important;min-width:94px!important;
+  }
+  #postrace-review .postrace-review-scroll .explorer-table .col-ability .metric-number{
+    font-size:13px;
+  }
+  #postrace-review .review-order-toolbar span{flex:1 1 100%;font-size:10px}
+}

@@ -147,7 +147,13 @@ def test_folded_review_mirrors_exact_visible_columns_then_appends_results(mode):
     main = BeautifulSoup(lineup_html(view), "html.parser")
     original_headers = [h.text.strip() for h in main.select("table.explorer-table thead th")]
     review_headers = [h.text.strip() for h in soup.select(".postrace-review-scroll thead th")]
-    assert review_headers[:len(original_headers)] == original_headers
+    # Review keeps every original column but moves pure ability directly
+    # beside the horse name so three columns can be pinned on phones.
+    expected_headers = list(original_headers)
+    ability_label = expected_headers.pop(expected_headers.index("純能力指数"))
+    expected_headers.insert(expected_headers.index("馬名・性齢") + 1, ability_label)
+    assert review_headers[:len(original_headers)] == expected_headers
+    assert len(review_headers[:len(original_headers)]) == len(original_headers)
     assert review_headers[len(original_headers):] == [
         "実着順", "最終単勝", "最終人気", "実4角", "単勝払戻", "複勝払戻"
     ]
@@ -164,6 +170,16 @@ def test_folded_review_mirrors_exact_visible_columns_then_appends_results(mode):
     assert first_row.select_one(".review-win_payout").text == "860円"
     assert first_row.select_one(".review-place_payout").text == "―"
     assert first_row.select_one(".col-name .horse-select .horse-name-age")
+    first_cells = first_row.select("td")
+    assert [cell.get("data-label") for cell in first_cells[2:5]] == [
+        "馬番", "馬名・性齢", "純能力指数"
+    ]
+    assert first_row.get("data-review-no") == "1"
+    assert first_row.get("data-review-rank") == "3"
+    assert first_row.get("data-review-score") == "69.4"
+    assert [item.get("value") for item in soup.select("#postrace-order option")] == [
+        "number", "ability"
+    ]
 
     assert not soup.select_one("details#postrace-review").has_attr("open")
     assert not soup.select("tr[data-horse],th[data-column],input[data-user-check],[data-horse-open]")
@@ -271,6 +287,30 @@ def test_postrace_all_paid_bet_types_are_visible_on_mobile_and_undisturbed(mode)
     assert ("ワイド", "1-2", "580円") in pairs
     assert ("馬単", "1-2", "2,360円") in pairs
     assert clean == before
+
+
+def test_postrace_all_three_important_columns_pin_on_phone_without_stealing_width():
+    from core.game_race_ui import ASSETS
+    css = (ASSETS / "race_comparison.css").read_text(encoding="utf-8")
+    # The special rule applies only to the folded postrace review, not
+    # to the original full prediction table.
+    assert "#postrace-review .postrace-review-scroll .explorer-table .col-number{" in css
+    assert "#postrace-review .postrace-review-scroll .explorer-table .col-name{" in css
+    assert "#postrace-review .postrace-review-scroll .explorer-table .col-ability{" in css
+    assert "left:152px!important;width:94px!important;min-width:94px!important" in css
+    assert "left:34px!important;width:118px!important;min-width:118px!important" in css
+    assert "position:static!important;left:auto!important" in css
+    assert "z-index:8!important;top:0" in css
+
+
+def test_postrace_order_ui_is_scoped_to_review_rows():
+    from core.game_race_ui import ASSETS
+    script = (ASSETS / "race_comparison.js").read_text(encoding="utf-8")
+    assert "document.getElementById('postrace-order')" in script
+    assert "postraceBody.appendChild(fragment)" in script
+    assert "postraceRows.slice().sort" in script
+    assert "Number(a.dataset.reviewNo) - Number(b.dataset.reviewNo)" in script
+    assert "if (ra !== null && rb !== null && ra !== rb) return ra - rb" in script
 
 
 def test_postrace_mobile_css_sets_matching_sticky_positions():

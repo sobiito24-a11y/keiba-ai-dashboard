@@ -47,11 +47,25 @@ def review_html(view, review):
     race_id = str(review.get("race_id") or "")
     if not race_id:
         return ""
-    schema = [spec for spec in columns(view) if not spec.get("table_hidden")]
-    cols, cells = [s["key"] for s in schema], records(view)
+    # Keep ALL original fields; bring pure ability beside horse name in the
+    # review ONLY so the three important columns can remain sticky together.
+    # The live prediction table keeps its original column order and controls.
+    original_schema = [spec for spec in columns(view) if not spec.get("table_hidden")]
+    if any(spec["key"] == "ability" for spec in original_schema):
+        schema = [spec for spec in original_schema if spec["key"] != "ability"]
+        name_at = next(i for i, spec in enumerate(schema) if spec["key"] == "name")
+        ability_spec = next(spec for spec in original_schema if spec["key"] == "ability")
+        schema.insert(name_at + 1, ability_spec)
+    else:
+        schema = original_schema
+    cols, cells = [spec["key"] for spec in schema], records(view)
     by_no = {str(r["horse_no"]): r for r in review.get("runners", [])
              if isinstance(r, dict) and r.get("horse_no") is not None}
     widths, mobile_widths = comparison_widths()
+    # Explicitly reserve room for the pinned ability cell; all other
+    # predictions preserve their original width settings.
+    widths = dict(widths, ability=104)
+    mobile_widths = dict(mobile_widths, ability=94)
     # All original prediction columns retain the exact same width classes
     # (particularly "col-number" for the third sticky column on mobile).
     # Only the six factual post-race columns are appended.
@@ -112,7 +126,25 @@ def review_html(view, review):
                 text = _result_value(actual, key)
             label = ' review-placed' if key == 'finish' and actual and actual.get('finish') in (1, 2, 3) else ''
             parts.append('<td class="review-actual review-'+key+label+'">'+_plain(text)+"</td>")
-        rows.append("<tr>"+''.join(parts)+"</tr>")
+        rank = info.get("ability_rank")
+        try:
+            rank = int(rank) if rank is not None and not isinstance(rank, bool) else None
+            if rank is not None and rank < 1:
+                rank = None
+        except (ValueError, TypeError, OverflowError):
+            rank = None
+        score = info.get("ability")
+        try:
+            score = float(score) if score is not None and not isinstance(score, bool) else None
+            if score is not None and not (-1e8 < score < 1e8):
+                score = None
+        except (ValueError, TypeError, OverflowError):
+            score = None
+        rows.append(
+            '<tr data-review-no="'+_plain(no)+
+            '" data-review-rank="'+_plain(rank if rank is not None else "")+
+            '" data-review-score="'+_plain(score if score is not None else "")+
+            '">'+''.join(parts)+"</tr>")
     payout_rows = []
     for payment in review.get("payouts", []):
         kind = LABELS.get(payment.get("bet_type"), payment.get("bet_type") or "不明")
@@ -138,8 +170,13 @@ def review_html(view, review):
         '馬券ごとの払戻は入力された公表値で、購入履歴や回収率ではありません。</p>'
         '<h3 class="review-heading">馬券種別の払戻金 <small>（表示額は保存された基準額あたり）</small></h3>'+payouts+
         '<h3 class="review-heading">予想時の全頭一覧 ＋ 確定結果</h3>'
-        '<p class="help">予想時のすべての列を同じ順番で表示。右へスクロールすると'
-        '実着順・最終単勝・実4角・単勝／複勝払戻があります。</p>'
+        '<div class="review-order-toolbar"><label for="postrace-order">並び順</label>'
+        '<select id="postrace-order" aria-label="振り返りの並び順">'
+        '<option value="number">馬番順</option><option value="ability">純能力順</option>'
+        '</select><span>馬番・馬名・純能力は左右スクロールしても固定</span></div>'
+        '<p class="help">予想時の列・値は全て保持。振り返りでは純能力を馬名の直後に移動し'
+        '3列を固定表示しています。右へスクロールすると実着順・最終単勝・'
+        '実4角・単勝／複勝払戻を比較できます。</p>'
         '<div class="explorer-table-scroll postrace-review-scroll" tabindex="0"'
         ' aria-label="結果照合・縦横スクロール">'
         '<table class="explorer-table" style="--comparison-width:'+str(width)+
