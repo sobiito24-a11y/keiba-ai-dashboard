@@ -1789,7 +1789,8 @@ def render_game_prediction(result):
     from core.paper_betting_ui import current_decision
     from core.game_race_ui import decision_view
     buying_view = decision_view(view)
-    render_component(view, rid, current_decision(result,buying_view))
+    render_component(view, rid, current_decision(result,buying_view),
+                     postrace=getattr(result, '_postrace_review', None))
     from core.paper_betting_ui import render as render_paper_betting
     with st.expander("馬券判断の記録・結果照合（研究機能）", expanded=False):
         render_paper_betting(result, buying_view)

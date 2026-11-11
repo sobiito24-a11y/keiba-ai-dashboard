@@ -85,9 +85,8 @@ def _options(schema, first=None):
     return ''.join('<option value="'+plain(spec['key'])+'">'+plain(spec['label'])+'</option>' for spec in ordered)
 
 
-def lineup_html(view):
-    schema, cells = columns(view), records(view)
-    shown_schema = [spec for spec in schema if not spec.get('table_hidden')]
+def comparison_widths():
+    """One width map shared by the normal and mirrored post-race table."""
     widths = dict(user=42, frame=36, no=44, name=190, jockey=85, score=120, nar_hybrid_score=108, frozen_review=128, class_attention=178, career_course=142,
                   rank=70, popularity=70, style=79, corner=82, training=60,
                   run_old=134, run_middle=134, run_latest=134, jockey_change=160,
@@ -98,6 +97,13 @@ def lineup_html(view):
                          run_latest=108, jockey_change=128, record_venue=156,
                          record_distance=156, record_venue_distance=156, materials=176)
     widths['reference_score'] = 120
+    return widths, mobile_widths
+
+
+def lineup_html(view):
+    schema, cells = columns(view), records(view)
+    shown_schema = [spec for spec in schema if not spec.get('table_hidden')]
+    widths, mobile_widths = comparison_widths()
     table_width = sum(widths.get(spec['key'], 88) for spec in shown_schema)
     mobile_width = sum(mobile_widths.get(spec['key'], 72) for spec in shown_schema)
     headers = []
@@ -148,7 +154,8 @@ def _accordion(panel_id, title, description, body):
     return '<details class="overview-accordion" id="'+panel_id+'" data-persist-panel><summary><span class="overview-title">'+title+'</span><span class="overview-description">'+description+'</span></summary><div class="overview-body">'+body+'</div></details>'
 
 
-def document(view, race_key='', paper_decision=None, portable=None):
+def document(view, race_key='', paper_decision=None, portable=None, postrace=None):
+    from .postrace_review_ui import review_html
     from .game_race_ui import ASSETS, comparison_data, comparison_html, nar_watch_html, paper_html, odds_status
     context = view[0].get('race_context', {}) if view else {}
     schema, cells = columns(view), records(view)
@@ -168,6 +175,7 @@ def document(view, race_key='', paper_decision=None, portable=None):
             +_accordion('race-development', 'レース展開予想', '保存されたペース・脚質・4角想定を確認できます。', development_html(view, context).replace('レース展開予測', 'レース展開予想'))
             +_accordion('race-ability', '純能力の見える化', '全出走馬の指数を共通の尺度で比較できます。', ability_html(view))
             +odds_status(view)+lineup_html(view)
+            +(review_html(view, postrace) if postrace else '')
             +'<details class="detail-analysis" id="detail-analysis" data-persist-panel><summary>詳細分析・研究機能 <span>独立指標10項目</span></summary>'+comparison_html(view, view[0].get('mode', 'jra') if view else 'jra')+'</details>'
             +'<details class="advanced-research" id="saved-research" data-persist-panel><summary>買い目・保存済み研究情報</summary>'+nar_watch_html(view, portable)+paper_html(view, race_key, paper_decision)+'</details>'
             +'<section id="selected-section" hidden><div id="selected-card"></div></section><p id="selection-status" class="sr-only" role="status" aria-live="polite"></p>'
