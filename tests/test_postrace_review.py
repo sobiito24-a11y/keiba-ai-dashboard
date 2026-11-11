@@ -173,3 +173,62 @@ def test_review_not_rendered_if_missing_and_missing_actuals_are_marked():
     doc = BeautifulSoup(review_html(view, result), "html.parser")
     assert "未取得" in doc.select(".postrace-review-scroll tbody tr")[1].text
     assert "払戻金未取得" in doc.text
+
+
+def test_dashboard_open_saved_results_invokes_imported_validator(monkeypatch):
+    """Regression: opening a result-attached .keiba must not raise NameError.
+
+    Exercise the actual _render_event code path, not just validate().
+    """
+    from types import SimpleNamespace
+    from core import dashboard_application as dashboard
+    from core import prediction_snapshot as snapshot
+
+    selected = race("nar")
+    source = overlay("nar")
+    source["payouts"].pop()  # No repeated runner in a trio.
+    selected[KEY] = validate(selected, source)
+    event_data = dict(format=KEIBA_FORMAT, schema_version=1, races=[selected])
+    captured = []
+    warnings = []
+
+    class FakeState(dict):
+        def __getattr__(self, key):
+            return self[key]
+
+        def __setattr__(self, key, value):
+            self[key] = value
+
+    fake_state = FakeState(
+        dashboard_rendered_race_id=selected["race_id"],
+        dashboard_action="新規一括予想",
+    )
+    monkeypatch.setattr(
+        dashboard, "st", SimpleNamespace(
+            session_state=fake_state,
+            markdown=lambda *args, **kwargs: None,
+            warning=lambda message: warnings.append(message),
+        )
+    )
+    monkeypatch.setattr(
+        dashboard, "_render_race_navigation", lambda races: dict(selected)
+    )
+    monkeypatch.setattr(
+        dashboard, "restore_prediction_result",
+        lambda saved: SimpleNamespace(debug_info={}),
+    )
+    monkeypatch.setattr(
+        snapshot, "update_material_reference", lambda event, rid, result: event
+    )
+    monkeypatch.setattr(dashboard, "_render_save_buttons", lambda *args: None)
+
+    dashboard._render_event(
+        event_data, lambda result: captured.append(result._postrace_review)
+    )
+
+    assert not warnings
+    assert len(captured) == 1
+    assert captured[0]["race_id"] == selected["race_id"]
+    assert captured[0]["runners"][0]["horse_name"] == "サンプルA"
+    assert captured[0]["payouts"][0]["bet_type"] == "win"
+    assert fake_state.prediction_result._postrace_review == captured[0]
