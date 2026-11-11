@@ -96,3 +96,28 @@ def test_class_status_is_visible_beside_grade_facts_without_bonus():
     same = run("前走", context(level=2, age="3歳以上", label="2勝"), 3)
     assert evaluate(today, [same])["display"] == "同級好走"
     assert evaluate(today, [same])["scoring_effect"] == 0
+
+
+def test_actual_saved_run_names_win_over_inconsistent_legacy_grade_labels():
+    # 2026-11-07 京都11Rの保存データでは旧クラス欄が一律Jpn1だが
+    # レース名は JpnII/JpnIII。表示はレース名の明示情報を使う。
+    from core.candidate_profile import facts
+
+    row = dict(_past_class_labels=["Jpn1", "Jpn1", "Jpn1"], _past_runs=[
+        dict(label="前走", race_date="2026-10-08", racecourse="東京",
+             race_name="第60回東京盃競走 JpnII", class_label="G2",
+             surface="ダ", distance=1200, position=4, value=95),
+        dict(label="2走前", race_date="2026-08-13", racecourse="",
+             race_name="第30回北海道スプリントカッ JpnIII", class_label="G3",
+             surface="ダ", distance=1200, position=2, value=77),
+        dict(label="3走前", race_date="2026-05-06", racecourse="",
+             race_name="第27回兵庫チャンピオンシッ JpnII", class_label="G2",
+             surface="ダ", distance=1400, position=4, value=82),
+    ])
+    info = dict(race_date="2026-11-07", racecourse="京都", surface="ダ",
+                race_name="室町S", race_data2="サラ系３歳以上 オープン")
+    outcome = facts(row, info)["class_attention"]
+    assert "交流Jpn3 2着" in outcome["display"]
+    assert "交流Jpn2 4着" in outcome["display"]
+    assert "Jpn1" not in outcome["reason"]
+    assert outcome["scoring_effect"] == 0
