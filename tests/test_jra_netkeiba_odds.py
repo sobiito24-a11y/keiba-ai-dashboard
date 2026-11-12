@@ -127,7 +127,9 @@ def test_private_free_fetch_makes_only_known_limited_gets():
         return Response(data[kw["params"]["type"]])
     q=jra.fetch_once(ID,INFO,get=getter,now=CLOCK)
     assert q["horse_count"]==3
-    assert [x[1]["params"]["type"] for x in calls]==["1","4","5"]
+    assert [x[1]["params"]["type"] for x in calls]==["1"]
+    assert {p["kind"] for p in q["prices"]} == {"win", "place"}
+    assert q["missing_kinds"] == ["quinella", "wide"]
     assert all(x[0]==jra.ENDPOINT for x in calls)
     assert all(x[1]["params"]["action"]=="init" for x in calls)
     assert all(x[1]["allow_redirects"] is False for x in calls)
