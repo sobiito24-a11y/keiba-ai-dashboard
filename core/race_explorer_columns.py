@@ -6,6 +6,7 @@ race-wide odds overlay, and absent values remain JSON null rather than zero.
 """
 from collections.abc import Mapping
 from math import isfinite
+import re
 
 from .final_candidate_selection import formal_score
 from .race_explorer_common import material_text
@@ -84,6 +85,7 @@ def columns(view):
         _spec("frame", "枠番", "number"), _spec("no", "馬番", "number"),
         _spec("name", "馬名・性齢", "text"), _spec("age", "性齢", "text", table_hidden=True),
         _spec("jockey", "騎手", "text"), _spec("odds", "単勝", "number"),
+        _spec("place_odds", "複勝", "number"),
         _spec("popularity", "人気", "rank"),
         _spec("ability", "純能力指数", "number", rank_key="ability_rank"),
         _spec("ability_rank", "純能力順位", "rank", table_hidden=True),
@@ -195,6 +197,18 @@ def _record_text(facts):
             if isinstance(item, Mapping) and isinstance(item.get("key"), str)} if isinstance(raw, (list, tuple)) else {}
 
 
+def _place_range(raw):
+    """Only accept an explicitly supplied place-odds range; never infer it from win odds."""
+    if not isinstance(raw, str):
+        return (None, None)
+    label = raw.strip().replace("～", "〜").replace("−", "〜").replace("-", "〜")
+    match = re.fullmatch(r"(\d+(?:\.\d+)?)\s*〜\s*(\d+(?:\.\d+)?)", label)
+    if not match:
+        return (None, None)
+    lo, hi = (_number(v) for v in match.groups())
+    return (lo, hi) if lo is not None and hi is not None and 1 <= lo <= hi else (None, None)
+
+
 def records(view):
     """Return horse-number keyed JSON scalar cells without changing the view.
 
@@ -213,6 +227,15 @@ def records(view):
         # Partial batches and withdrawals have explicit null overlay cells;
         # never revive an older raw horse price or a guessed popularity rank.
         odds = prices if prices is not None and prices > 0 else None
+        # The overlay always sets explicit sort_values keys, including None
+        # for missing quotes. Never resurrect the saved/older place price.
+        parsed_place_low, parsed_place_high = _place_range(horse.get("place_odds"))
+        place_low = _number(sort["place_odds_low"]) if "place_odds_low" in sort else parsed_place_low
+        place_high = _number(sort["place_odds_high"]) if "place_odds_high" in sort else parsed_place_high
+        if (place_low is None or place_high is None or
+                not 1 <= place_low <= place_high or odds is None and
+                horse.get("odds") == "取消・除外"):
+            place_low = place_high = None
         popularity = _integer(sort.get("popularity") if "popularity" in sort else horse.get("popularity"))
         score, rank = _a_values(horse)
         ability, ability_rank = _metric(horse, metrics, "ability")
@@ -239,7 +262,8 @@ def records(view):
             no=_integer(horse.get("no")), name=_text(horse.get("name")),
             age=_text(horse.get("age")),
             jockey=_text(facts.get("current_jockey", horse.get("jockey"))),
-            odds=odds, popularity=popularity, score=score, rank=rank,
+            odds=odds, place_odds=place_low, place_odds_high=place_high,
+            popularity=popularity, score=score, rank=rank,
             ability=ability, ability_rank=ability_rank,
             class_attention=_compact_class_attention(class_attention.get("display") or class_attention.get("label")),
             class_attention_reason=_text(class_attention.get("reason")),
