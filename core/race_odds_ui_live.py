@@ -47,7 +47,7 @@ def render(result, view):
     st.markdown('#### オッズ')
     is_nar = identity['mode'] == 'nar'
     if is_nar:
-        st.caption('NAR公式ZIPモード：無料の単勝・複勝・馬連・ワイド取得を試せます。')
+        st.caption('NAR公式ZIPモード：無料の単勝・複勝・馬連・ワイド取得を試せます。'
                    '約2分間隔の配布です。ZIP作成時刻は実際のオッズ発表時刻ではありません。'
                    '個人確認用の表示に限定し、転載・再配布しません。')
         st.markdown('[NAR公式データダウンロード](https://www.keiba.go.jp/KeibaWeb/TodayRaceInfo/TodayRaceInfoTop)'
