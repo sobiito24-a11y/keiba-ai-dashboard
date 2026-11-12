@@ -434,3 +434,13 @@
 .race-explorer .explorer-table .research-sabcd-B{background:#f9e3af;border-color:#d0af63;color:#765217}
 .race-explorer .explorer-table .research-sabcd-C{background:#e3eaf0;border-color:#acbac7;color:#485968}
 .race-explorer .explorer-table .research-sabcd-D{background:#f2d4d2;border-color:#d8aaa6;color:#874744}
+
+/* Research-only role alongside the single SABCD cell; not a new column. */
+.race-explorer .research-role-inline,#postrace-review .research-role-inline{
+ display:inline-block;margin-left:4px;font-size:10px;font-weight:600;line-height:1.3;
+ color:#485e70;vertical-align:middle;white-space:nowrap;
+}
+.race-explorer td.col-research_sabcd,#postrace-review td.col-research_sabcd{white-space:nowrap}
+@media(max-width:650px){
+ .race-explorer .research-role-inline,#postrace-review .research-role-inline{font-size:9px;margin-left:3px}
+}
