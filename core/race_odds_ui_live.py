@@ -48,7 +48,7 @@ def render(result, view):
     is_nar = identity['mode'] == 'nar'
     if not is_nar:
         jra_id = identity['race_id']
-        st.caption('取得機能：JRA試験版 11/13（接続設定不要・ログイン不要）')
+        st.caption('取得機能：JRA公式ブラウザ取得試験＋netkeiba単複（ログイン不要）')
         st.caption('JRAオッズ更新（試験）：netkeibaの無料配信から単勝・複勝のみ取得を試みます。'
                    'JRA公式の直接取得ではありません。'
                    '無料版には更新間隔・利用制限があり、最新の購入可能価格とは限りません。')
@@ -62,6 +62,29 @@ def render(result, view):
             st.caption('実際の投票価格は購入直前にJRA公式の販売画面で再確認。'
                        'アクセスが制限された場合はスクショ・HTML取込を使用。'
                        '自動巡回や更新回数の上限制限回避は行いません。')
+    if not is_nar:
+        if st.button('JRA公式から単複取得（試験）', key=key+'_official_fetch'):
+            last_official = st.session_state.get(key+'_official_last_request')
+            now_official = datetime.now(odds.JST)
+            if last_official and (now_official-last_official).total_seconds() < 180:
+                st.session_state[key+'_status'] = 'JRA公式への再取得は180秒以上あけてください。'
+            else:
+                st.session_state[key+'_official_last_request'] = now_official
+                try:
+                    import asyncio
+                    from .jra_official_odds import fetch_once as fetch_jra_official
+                    with st.spinner('JRA公式の単複表を確認中…'):
+                        quote = asyncio.run(fetch_jra_official(identity, result.race_info or {}, now=now_official))
+                        history = odds.merge(state['history'], [quote], identity)
+                    state['history'] = history
+                    activate_observation(quote)
+                    st.session_state[key+'_status'] = (
+                        f"取得：{quote['horse_count']}／{quote['expected_horses']}頭。"
+                        "JRA公式の単複を反映（配信元更新時刻は未確認）。")
+                except ValueError as exc:
+                    st.session_state[key+'_status'] = 'JRAオッズ未取得：' + str(exc)
+                except Exception:
+                    st.session_state[key+'_status'] = 'JRAオッズ取得に失敗。ブラウザ設定または配信元への接続を確認してください。'
     if is_nar:
         st.caption('NAR公式ZIPモード：無料の単勝・複勝・馬連・ワイド取得を試せます。'
                    '約2分間隔の配布です。ZIP作成時刻は実際のオッズ発表時刻ではありません。'
