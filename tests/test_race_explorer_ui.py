@@ -196,3 +196,36 @@ def test_empty_main_table_has_controls_and_safe_header():
     assert not doc.select('tr[data-horse], input[data-user-check]')
     assert doc.select_one('#lineup-filter')
     assert '全0頭' in doc.text
+
+
+@pytest.mark.parametrize("mode", ["jra", "nar"])
+def test_research_sabcd_does_not_change_real_view_formal_marks_and_scores(mode):
+    from core.race_explorer_columns import records as projected_records
+    rows, original, info, view = field(mode, 12)
+    assert len(view)==12
+    assigned=[h.get("research_sabcd",{}) for h in view]
+    assert all("version" in tier for tier in assigned)
+    assert sum(t.get("grade")=="S" for t in assigned)<=1
+    assert sum(t.get("grade")=="A" for t in assigned)<=2
+    assert sum(t.get("grade")=="B" for t in assigned)<=3
+    assert all(t.get("retro") for t in assigned)  # 2026-10-22 was in fit period
+    cells=projected_records(view)
+    headers=[s["key"] for s in columns(view) if not s.get("table_hidden")]
+    assert headers[headers.index("ability")+1:headers.index("ability")+3] == [
+        "class_attention", "research_sabcd",
+    ]
+    assert "research_sabcd_sort" not in headers
+    assert "research_sabcd_reason" not in headers
+    for horse in view:
+        item=cells[str(horse["no"])]
+        assert item["research_sabcd"] in ("S", "A", "B", "C", "D", None)
+        if item["research_sabcd"]:
+            assert "正式印・純能力は不変" in item["research_sabcd_reason"]
+    snapshot=deepcopy((rows,original))
+    html=BeautifulSoup(document(view, info["race_id"]), "html.parser")
+    # The research letter is display-only and not part of the official
+    # prediction table or stored records.
+    assert html.select_one("th.col-research_sabcd .column-label").text=="研究SABCD"
+    assert html.select("#lineup-workspace td.col-research_sabcd")
+    assert html.select_one(".detail-basic") or html.select_one("#detail-analysis")
+    assert (rows,original)==snapshot
