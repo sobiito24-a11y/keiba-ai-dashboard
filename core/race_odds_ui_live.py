@@ -278,6 +278,20 @@ def render(result, view):
             if singles:
                 st.dataframe(singles, hide_index=True, use_container_width=True)
                 st.caption('保存レースの全頭を表示。未取得の価格は「—」で、古い価格を補完しません。')
+                if active.get('acquisition_method') == 'keibalab_historical_html':
+                    source_archive = (st.session_state.get('game_archive_upload')
+                                      or st.session_state.get('dashboard_saved_prediction'))
+                    if source_archive is not None:
+                        try:
+                            copied_archive = odds.export_copy(source_archive.getvalue(), identity, state)
+                            st.download_button('過去単複を反映した.keibaコピーを保存',
+                                               data=copied_archive,
+                                               file_name=identity['race_id']+'_with_historical_odds.keiba',
+                                               key=key+'_historical_copy_quick')
+                        except (ValueError, TypeError, KeyError, AttributeError):
+                            st.caption('元の.keibaが確認できないため、この画面ではコピーを作成できません。')
+                    else:
+                        st.caption('反映内容はセッション内です。必要なら下の履歴JSONを保存してください。')
             else:
                 st.warning('単勝オッズが未取得です。取得できた券種のみ下の詳細で確認してください。')
     elif not is_nar:
