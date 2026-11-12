@@ -46,6 +46,24 @@ def render(result, view):
         connection = provider()
     st.markdown('#### オッズ')
     is_nar = identity['mode'] == 'nar'
+    if not is_nar:
+        # JRA publishes current prices for all major ticket kinds, but does
+        # not expose an NAR-style daily ZIP or a verified public JSON endpoint.
+        # Never imply these links import prices automatically.
+        jra_id = identity['race_id']
+        st.caption('JRA公式では単勝・複勝・馬連・ワイドなどの最新オッズを無料で確認できます。'
+                   '現時点でアプリへの自動取得は未接続です。'
+                   '下の参照リンクを開き、必要な券種を確認してから画像・HTML等で取り込んでください。')
+        st.markdown('[JRA公式オッズを確認](https://www.jra.go.jp/)'
+                    '（公式サイトで「オッズ」→開催・レースを選択）')
+        st.markdown(
+            '[netkeiba・選択中のレースのオッズ](https://race.netkeiba.com/odds/index.html?race_id='
+            + jra_id + '&type=b1)'
+            '（単勝・複勝／同じ画面から馬連・ワイドへ切替）'
+        )
+        st.caption('netkeiba無料版には更新間隔と手動更新回数に制限があります。'
+                   '保存HTMLの時刻が不明なら最新価格として表示しません。'
+                   '公式サイトの閲覧と、データの機械取得・転載の許諾は別問題です。')
     if is_nar:
         st.caption('NAR公式ZIPモード：無料の単勝・複勝・馬連・ワイド取得を試せます。'
                    '約2分間隔の配布です。ZIP作成時刻は実際のオッズ発表時刻ではありません。'
