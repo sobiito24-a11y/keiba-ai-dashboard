@@ -101,10 +101,10 @@ def test_missing_core_rank_never_converts_to_d_or_assumed_s():
 def test_old_archive_is_marked_as_posthoc_and_future_is_not():
     old=evaluate_race([horse(1,date="2026-11-08")])
     assert old["1"]["retro"] is True
-    assert "後付け" in old["1"]["reason"]
+    assert "後日算出" in old["1"]["reason"]
     future=evaluate_race([horse(1,date="2026-11-14")])
     assert future["1"]["retro"] is False
-    assert "後付け" not in future["1"]["reason"]
+    assert "後日算出" not in future["1"]["reason"]
 
 
 def test_course_history_requires_explicit_same_venue_ground_distance():
