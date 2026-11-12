@@ -207,6 +207,8 @@ def detail_html(horse):
         ("想定脚質", _unmarked(cells.get("style"))),
         ("クラス・重賞注目", cells.get("class_attention")),
         ("注目根拠", cells.get("class_attention_reason")),
+        ("研究SABCD（参考）", cells.get("research_sabcd")),
+        ("研究格付け根拠", cells.get("research_sabcd_reason")),
     ]
     if horse.get("mode") == "jra":
         basic.append(("調教評価", facts.get("training")))
