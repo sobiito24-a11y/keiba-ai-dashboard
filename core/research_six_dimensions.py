@@ -12,7 +12,7 @@ import math
 import re
 from collections.abc import Mapping
 
-VERSION = "six-factors-evidence-20261112-audit1"
+VERSION = "six-factors-evidence-20261112-audit2"
 FACTORS = (("distance", "距離"), ("course", "コース"), ("recent", "近走"),
            ("jockey", "騎手"), ("development", "展開"), ("conditions", "相手・条件"))
 JRA_VENUES = frozenset(("札幌", "函館", "福島", "新潟", "東京", "中山", "中京", "京都", "阪神", "小倉"))
@@ -129,7 +129,8 @@ def _sample_grade(matches):
     top = sum(r["finish"] <= 3 for r in finished)
     if n < 2:
         return "—", top, n
-    if n >= 3 and top == n:
+    # An unbroken string of thirds does not alone establish S ability.
+    if n >= 3 and top == n and any(r["finish"] == 1 for r in finished):
         return "S", top, n
     if top >= 2:
         return "A", top, n
@@ -173,12 +174,20 @@ def evaluate(horse):
                  r["distance"] is not None and distance is not None and
                  abs(r["distance"] - distance) <= 200]
     d_grade, d_top, d_n = _sample_grade(dist_runs)
+    # A true distance match is stronger evidence than an adjacent distance,
+    # particularly in short sprints (900m vs 1100m).
+    exact_distance_runs = [r for r in dist_runs if r["distance"] == distance]
+    distance_evidence = ("同距離" + _run_evidence(exact_distance_runs)
+                         if exact_distance_runs else
+                         "近似距離" + _run_evidence(dist_runs)
+                         if dist_runs else "同距離・近似距離の実績未確認")
     distance_item = _label(
         d_grade,
         f"同主催・同馬場・近似距離（±200m）で{d_n}走中3着以内{d_top}回。"
         + ("材料不足のため未判定。" if d_grade == "—" else "複数の着順で仮判定。")
+        + "同距離完全一致と±200mの近似距離を区別して表示。"
         + other_index_note,
-        _run_evidence(dist_runs),
+        distance_evidence,
     )
 
     # Course: same venue AND surface, independent of identical-distance check.
@@ -301,7 +310,7 @@ def evaluate(horse):
     return dict(factors=factors, version=VERSION, transfer_evidence=transfer,
                 recent_source_count=len(runs), local_count=len(local),
                 other_circuit_count=len(visiting),
-                note="6項目は保存情報からの暫定的な根拠評価。履歴は保存で確認できた最大12走のみ。総合研究SABCDの計算には使用しません。")
+                note="6項目は保存情報からの暫定的な根拠評価。距離・コース・近走が同じ過去走を重複して使うことがあります。履歴は保存で確認できた最大12走のみ。総合研究SABCDの計算には使用しません。")
 
 
 def detail_html(horse):
