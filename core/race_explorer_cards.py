@@ -210,6 +210,8 @@ def detail_html(horse):
         ("研究SABCD（斤量・クラス）", cells.get("research_sabcd")),
         ("研究モデル値（未校正）", cells.get("research_sabcd_score")),
         ("研究格付け根拠", cells.get("research_sabcd_reason")),
+        ("軸・押さえ位置づけ（研究）", cells.get("research_positioning_label")),
+        ("軸・押さえ根拠／判定不可の理由", cells.get("research_positioning_reason")),
     ]
     if horse.get("mode") == "jra":
         basic.append(("調教評価", facts.get("training")))
