@@ -90,7 +90,9 @@ def render(result, view):
                             activate_observation(quote)
                             st.session_state[key+'_status'] = (
                                 f"取得：{quote['horse_count']}／{quote['expected_horses']}頭。"
-                                "優馬JAPAN掲載の過去単勝・複勝をAIの表示に反映しました。")
+                                f"優馬JAPAN掲載値（単勝{quote['coverage']['win']['count']}頭／"
+                                f"複勝{quote['coverage']['place']['count']}頭）を表示に反映。"
+                                "最終確定オッズ・更新時刻は未確認です。")
                         except ValueError as exc:
                             st.session_state[key+'_status'] = 'JRA過去オッズ未取得：' + str(exc)
                         except Exception:
