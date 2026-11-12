@@ -70,18 +70,28 @@ def _cell(horse, cells, key):
         return value(item)+'kg' if item is not None else '<span class="missing-cell">未取得</span>'
     if key == 'weight_delta':
         return value(cells.get('weight_delta_label'))
-    if key == 'research_sabcd':
+    if key in ('research_sabcd', 'research_sabcd_weight_class'):
         if item not in ('S', 'A', 'B', 'C', 'D'):
             return '<span class="missing-cell">判定不可</span>'
-        # The label is the *role of the grade*, not one selected positive
-        # feature.  An individual feature (e.g. good jockey) can exist in D.
-        # Keep all feature explanations intact in cell title and horse detail.
+        trial = key == 'research_sabcd_weight_class'
         role = {'S': '軸候補', 'A': '有力相手', 'B': '相手候補',
                 'C': '追加検討', 'D': '優先度低'}[item]
-        info = '<small class="research-sabcd-label">'+value(role)+'</small>'
-        retro = '<small class="research-sabcd-retro" title="保存済みの過去レースを現在の研究モデルで再計算。発走前の当時予想ではありません">後日算出</small>' if cells.get('research_sabcd_retro') else ''
+        reason = cells.get('research_sabcd_weight_class_reason' if trial
+                           else 'research_sabcd_reason') or ''
+        score = cells.get('research_sabcd_weight_class_score' if trial
+                          else 'research_sabcd_score')
+        # A model score is not an empirically calibrated 3着内 probability.
+        score_text = ''
+        if score is not None:
+            score_text = '<small class="research-sabcd-label" title="未校正の研究モデル値（真の馬券内確率ではありません）">モデル値 '+plain(f'{score:.3f}')+'</small>'
+        info = ('<small class="research-sabcd-label">'+value(role)+'</small>'
+                if not trial else '<small class="research-sabcd-label">斤量・クラス試験</small>')
+        retro = ('<small class="research-sabcd-retro" title="保存済みの過去レースを研究モデルで後日再評価">後日算出</small>'
+                 if not trial and cells.get('research_sabcd_retro') else '')
         return ('<span class="research-sabcd research-sabcd-'+plain(item)+'"'
-                ' aria-label="研究用'+plain(item)+'">'+value(item)+'</span>'+info+retro)
+                ' title="'+plain(reason)+'"'
+                ' aria-label="'+('斤量クラス試験' if trial else '研究用')+plain(item)+'">'+
+                value(item)+'</span>'+info+score_text+retro)
     if key == 'class_attention':
         return ('<span class="comparison-snippet">'+value(item)+'</span>'
                 if item is not None else '<span class="missing-cell">未取得</span>')
@@ -148,7 +158,7 @@ def lineup_html(view):
             content.append('<td class="'+cls+'" data-label="'+plain(spec['label'])+'" title="'+plain(tooltip)+'">'+_cell(horse, row, key)+'</td>')
         rows.append('<tr data-row="'+plain(no)+'" data-horse="'+plain(no)+'">'+''.join(content)+'</tr>')
     class_help = '<p class="help">「クラス・重賞注目」は前走の「前走」の文字だけ省略した表示です。過去3走の根拠は列の説明・馬別詳細で確認できます。加点・純能力順位・正式印は変更しません。</p>'
-    sabcd_help = '<p class="help">研究SABCDは保存データの時系列検証による優先順位（S最大1・A最大2・B最大3・C/D制限なし）。S=70%の保証でもD=絶対消しでもありません。純能力・印・購入判断には影響しません。過去の保存開催では「後日算出」と表示します。</p>'
+    sabcd_help = '<p class="help">研究SABCDは全頭を個別評価し、S・A・Bも頭数制限なしです。隣の「試験SABCD」は斤量とクラスを追加した別の研究モデルです。モデル値は校正済み馬券内確率ではなく、どちらも純能力・正式印・購入判断に影響しません。過去開催は後日算出で、当時の発走前予想ではありません。</p>'
     nar_help = ('<p class="help">研究用の「今回評価」は横一覧から非表示にしました。'
                 '馬名の詳細で根拠を確認できます。印・正式順位・純能力は変更しません。</p>'
                 if view and view[0].get("mode") == "nar" else '')
