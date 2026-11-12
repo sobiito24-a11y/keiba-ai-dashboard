@@ -1732,7 +1732,7 @@ def render_nar_star_result_trace(result: PredictionResult) -> None:
         st.dataframe(pd.DataFrame(rows), use_container_width=True, hide_index=True)
 
 
-def render_game_prediction(result):
+def render_game_prediction(result, *, show_header=False):
     """Read-only all-horse table and client-side selected horse card."""
     from core.game_race_ui import build_view, render_component, frame_number
     from core.game_ui_frames import newspaper_frames
@@ -1780,6 +1780,11 @@ def render_game_prediction(result):
         source = dict(by.get(horse['no'], {}))
         source.update({k:v for k,v in display_by.get(horse['no'], {}).items() if clean_text(v)})
         horse['past'] = rich_recent_races_detail_text(source) + '\n\n' + recent3_detail_text(source)
+    if show_header:
+        # Use the same pre-race all-horse projection as the table: no
+        # independently recomputed rankings, outcomes, or market odds.
+        from core.game_race_ui import race_header
+        st.markdown(race_header(result, view), unsafe_allow_html=True)
     from core.race_odds_ui import render as render_prices
     with st.expander("買い目検討用・手動オッズ取込", expanded=False):
         view = render_prices(result, view)
@@ -1810,10 +1815,9 @@ def render_game_commentary(result):
 def render_colab_style_result(result: PredictionResult) -> Any:
     from core.material_reconsideration import ensure_current_material_reference
     ensure_current_material_reference(result)
-    from core.game_race_ui import theme_css, race_header
+    from core.game_race_ui import theme_css
     st.markdown(theme_css(), unsafe_allow_html=True)
-    st.markdown(race_header(result), unsafe_allow_html=True)
-    render_game_prediction(result)
+    render_game_prediction(result, show_header=True)
     with st.expander("展開・レース考察の詳細", expanded=False):
         render_game_commentary(result)
     with st.expander("研究・監査情報", expanded=False):
