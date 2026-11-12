@@ -212,24 +212,28 @@ def test_research_sabcd_does_not_change_real_view_formal_marks_and_scores(mode):
     assert all(t.get("retro") for t in assigned)  # 2026-10-22 was in fit period
     cells=projected_records(view)
     headers=[s["key"] for s in columns(view) if not s.get("table_hidden")]
-    assert headers[headers.index("ability")+1:headers.index("ability")+4] == [
-        "class_attention", "research_sabcd", "research_sabcd_weight_class",
+    assert headers[headers.index("ability")+1:headers.index("ability")+3] == [
+        "class_attention", "research_sabcd",
     ]
+    assert "research_sabcd_weight_class" not in headers
+    assert "research_sabcd_old" not in headers
     assert "research_sabcd_sort" not in headers
     assert "research_sabcd_reason" not in headers
     for horse in view:
         item=cells[str(horse["no"])]
         assert item["research_sabcd"] in ("S", "A", "B", "C", "D", None)
         assert item["research_sabcd_weight_class"] in ("S", "A", "B", "C", "D", None)
+        assert item["research_sabcd"] == item["research_sabcd_weight_class"]
+        assert item["research_sabcd_old"] == horse["research_sabcd"].get("grade")
         if item["research_sabcd"]:
-            assert "正式印・純能力は不変" in item["research_sabcd_reason"]
+            assert "購入判断には不使用" in item["research_sabcd_reason"]
     snapshot=deepcopy((rows,original))
     html=BeautifulSoup(document(view, info["race_id"]), "html.parser")
     # The research letter is display-only and not part of the official
     # prediction table or stored records.
     assert html.select_one("th.col-research_sabcd .column-label").text=="研究SABCD"
     assert html.select("#lineup-workspace td.col-research_sabcd")
-    assert html.select("#lineup-workspace td.col-research_sabcd_weight_class")
+    assert not html.select("#lineup-workspace td.col-research_sabcd_weight_class")
     assert html.select_one(".detail-basic") or html.select_one("#detail-analysis")
     assert (rows,original)==snapshot
 
@@ -242,9 +246,9 @@ def test_research_grade_tints_only_its_cell_in_normal_and_postrace_tables(mode):
     tiers = ("S", "A", "B", "C", "D", None)
     for horse, tier in zip(view, tiers):
         # Test the *visual layer*, not the model allocation or official marks.
-        horse["research_sabcd"] = {
-            "grade": tier, "reason": "研究表示のみ", "notes": ("中位×4角前",),
-            "retro": False,
+        horse["research_sabcd_weight_class"] = {
+            "grade": tier, "reason": "研究表示のみ", "retro": False,
+            "score": .45,
         }
     normal = BeautifulSoup(lineup_html(view), "html.parser")
     review = BeautifulSoup(
@@ -255,8 +259,6 @@ def test_research_grade_tints_only_its_cell_in_normal_and_postrace_tables(mode):
                              (review, "#postrace-review")):
         trs = document.select(parent + " .explorer-table tbody tr")
         trs = [tr for tr in trs if tr.select_one("td.col-research_sabcd")]
-        expected_roles = {"S": "軸候補", "A": "有力相手", "B": "相手候補",
-                          "C": "追加検討", "D": "優先度低"}
         for index, tier in enumerate(tiers):
             cell = trs[index].select_one("td.col-research_sabcd")
             assert cell is not None
@@ -264,7 +266,7 @@ def test_research_grade_tints_only_its_cell_in_normal_and_postrace_tables(mode):
             if tier:
                 assert "research-tier-" + tier in cell.get("class", [])
                 assert cell.select_one(".research-sabcd-" + tier).text == tier
-                assert cell.select_one(".research-sabcd-label").text == expected_roles[tier]
+                assert cell.select_one(".research-sabcd-label") is None
                 # Do not mistake a single positive factor for a grade-level
                 # explanation: D can have jockey fitness but remains D.
                 assert "騎手適性" not in cell.text and "中位×4角前" not in cell.text
@@ -298,9 +300,9 @@ def test_research_grade_palette_covers_both_tables_without_changing_marks():
 def test_retrospective_grade_label_is_explicit_and_explained(mode):
     rows, saved, info, view = field(mode, 9)
     for horse in view:
-        horse["research_sabcd"] = {
-            "grade": "A", "reason": "前走3着以内・保存時点の情報で評価。過去開催で再計算",
-            "notes": ("前走好走",), "retro": True,
+        horse["research_sabcd_weight_class"] = {
+            "grade": "A", "reason": "斤量・クラスで評価。過去開催で再計算",
+            "score": .55, "retro": True,
         }
     html = BeautifulSoup(lineup_html(view), "html.parser")
     retro = html.select_one("#lineup-workspace td.col-research_sabcd .research-sabcd-retro")

@@ -207,13 +207,9 @@ def detail_html(horse):
         ("想定脚質", _unmarked(cells.get("style"))),
         ("クラス・重賞注目", cells.get("class_attention")),
         ("注目根拠", cells.get("class_attention_reason")),
-        ("研究SABCD（人数制限なし）", cells.get("research_sabcd")),
-        ("旧8項目モデル値（未校正）", cells.get("research_sabcd_score")),
-        ("旧研究格付け根拠", cells.get("research_sabcd_reason")),
-        ("試験SABCD（斤量・クラス）", cells.get("research_sabcd_weight_class")),
-        ("試験モデル値（未校正）", cells.get("research_sabcd_weight_class_score")),
-        ("レース内合計調整値（参考）", cells.get("research_sabcd_weight_class_normalized")),
-        ("試験格付け根拠", cells.get("research_sabcd_weight_class_reason")),
+        ("研究SABCD（斤量・クラス）", cells.get("research_sabcd")),
+        ("研究モデル値（未校正）", cells.get("research_sabcd_score")),
+        ("研究格付け根拠", cells.get("research_sabcd_reason")),
     ]
     if horse.get("mode") == "jra":
         basic.append(("調教評価", facts.get("training")))
