@@ -13,6 +13,35 @@ def day(value):
     try:return date.fromisoformat(str(value).split('T')[0].replace('/','-'))
     except (ValueError,TypeError):return None
 
+def _saved_extended_history(row, current):
+    """Extra dated past starts, when the original horse snapshot has them.
+
+    Display-only.  Source may have 3, 5, or more recorded starts.  We never
+    supplement unknown earlier starts from present-day websites or results.
+    """
+    if current is None:
+        return []
+    from .recent_races import _nested_runs, _normalize_nested_run
+    candidates = []
+    seen = set()
+    for raw in _nested_runs(row):
+        if not isinstance(raw, dict):
+            continue
+        item = _normalize_nested_run(raw)
+        when = day(item.get("date"))
+        if when is None or when >= current:
+            continue
+        key = (when, str(item.get("venue")), str(item.get("distance")))
+        if key in seen:
+            continue
+        seen.add(key)
+        item["class_raw"] = text(raw.get("race_data2") or raw.get("class_raw_text")
+                                 or raw.get("race_name") or item.get("race_name"))
+        candidates.append(item)
+    candidates.sort(key=lambda item: day(item.get("date")), reverse=True)
+    return candidates[:12]
+
+
 def facts(row,info):
     current=day(pick(info or {},'race_date','date','開催日'));runs=[];excluded=0
     raw=row.get('_past_runs') or row.get('past_runs')
@@ -57,7 +86,8 @@ def facts(row,info):
         current_surface=pick(info or {}, "surface", "芝ダート"))
     from .recent_condition_facts import evaluate
     conditions=evaluate(row,info,runs)
-    return dict(condition_facts=conditions,version=VERSION,runs=runs,excluded=excluded,state=state,stability_stars=stars,stability_sd=sd,
+    return dict(condition_facts=conditions,version=VERSION,runs=runs,
+        extended_history=_saved_extended_history(row, current),excluded=excluded,state=state,stability_stars=stars,stability_sd=sd,
         state_reason='同じ保存タイム指数の直近3走を比較。連続3点以上増=上向き、連続3点以上減=注意、それ以外=横ばい。状態全般の保証ではありません。' if valid else '発走日前と確認できる3走の指数が不足',
         rest_days=(current-day(runs[0]['date'])).days if runs else None,
         body_weight=text(pick(row,'馬体重','body_weight')),body_weight_change=text(pick(row,'馬体重増減','body_weight_change')),
