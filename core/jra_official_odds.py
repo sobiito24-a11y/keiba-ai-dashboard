@@ -17,9 +17,7 @@ def parse_table(html, identity, race_info, *, now=None):
     now = now or datetime.now(JST)
     if identity.get("mode") != "jra" or not re.fullmatch(r"20\d{10}", str(identity.get("race_id", ""))):
         raise ValueError("JRAレースIDが不正です")
-    bounds = _source_date_bounds(race_info)
-    if bounds is None or not (bounds[0] <= now < bounds[1]):
-        raise ValueError("開催日前後以外のオッズは公式ページから取得しません")
+    check_race_date(race_info, now)
     saved = {int(h["horse_no"]): str(h["name"]) for h in identity["horses"]}
     soup = BeautifulSoup(html, "html.parser")
     if soup.find(string=re.compile("予想オッズ|発売開始前")):
@@ -83,8 +81,21 @@ def parse_table(html, identity, race_info, *, now=None):
     ), identity)
 
 
+def check_race_date(race_info, now=None):
+    now = now or datetime.now(JST)
+    bounds = _source_date_bounds(race_info)
+    if bounds is None:
+        raise ValueError("開催日が不明のため取得を中止しました")
+    if now >= bounds[1]:
+        raise ValueError("過去レースです。JRA公式の当日オッズ取得対象外です")
+    if now < bounds[0]:
+        raise ValueError("開催前日より前です。JRA公式のオッズ掲載前です")
+    return True
+
+
 async def fetch_once(identity, race_info, *, now=None):
     from playwright.async_api import async_playwright
+    check_race_date(race_info, now)
     rid = str(identity.get("race_id", ""))
     if identity.get("mode") != "jra" or not re.fullmatch(r"20\d{10}", rid):
         raise ValueError("JRAの12桁レースIDが必要です")
