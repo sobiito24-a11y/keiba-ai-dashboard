@@ -125,6 +125,8 @@ def columns(view):
     result.append(_spec("research_sabcd_sort", "研究SABCD順", "number", table_hidden=True))
     result.append(_spec("research_positioning_label", "研究・馬券候補", "text", table_hidden=True))
     result.append(_spec("research_positioning_reason", "候補の根拠と注意", "text", table_hidden=True))
+    result.append(_spec("research_suitability_label", "6項目の適性注目", "text", table_hidden=True))
+    result.append(_spec("research_suitability_reason", "適性注目の根拠", "text", table_hidden=True))
     for key, label in (("star", "同場同距離指数"), ("away", "別場同距離指数")):
         if any(_number(_mapping(_mapping(horse).get(key)).get("value")) is not None for horse in view or ()):
             result.extend((_spec(key, label, "number", rank_key=key + "_rank"),
@@ -229,6 +231,7 @@ def records(view):
         sabcd = _mapping(horse.get("research_sabcd"))
         sabcd_trial = _mapping(horse.get("research_sabcd_weight_class"))
         positioning = _mapping(horse.get("research_positioning"))
+        suitability = _mapping(horse.get("research_suitability_attention"))
         trial_tier = sabcd_trial.get("grade") if sabcd_trial.get("grade") in ("S", "A", "B", "C", "D") else None
         tier = sabcd.get("grade") if sabcd.get("grade") in ("S", "A", "B", "C", "D") else None
         item = dict(
@@ -243,6 +246,8 @@ def records(view):
             research_sabcd=trial_tier,
             research_positioning_label=_text(positioning.get("label")),
             research_positioning_reason=_text(positioning.get("reason")),
+            research_suitability_label=_text(suitability.get("label")),
+            research_suitability_reason=_text(suitability.get("reason")),
             research_sabcd_score=_number(sabcd_trial.get("score")),
             research_sabcd_reason=_text(sabcd_trial.get("reason")),
             # Historical 8-feature model stays available for auditing only.
