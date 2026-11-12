@@ -178,7 +178,7 @@ def evaluate(horse):
 
     # Recent form: compare only recent finishes WITHIN the current circuit.
     # A former JRA horse with no local runs is not automatically graded D.
-    local_finished = [r for r in local[:3] if r["finish"] is not None]
+    local_finished = [r for r in runs[:5] if r["mode"] == mode and r["finish"] is not None][:3]
     r_grade, r_top, r_n = _sample_grade(local_finished)
     if r_n >= 2:
         if r_top >= 2 and local_finished[0]["finish"] == 1:
