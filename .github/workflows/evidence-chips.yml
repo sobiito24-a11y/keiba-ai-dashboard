@@ -20,6 +20,8 @@ on:
       - 'core/race_odds.py'
       - 'core/race_odds_ui.py'
       - 'core/race_odds_ui_live.py'
+      - 'core/jra_netkeiba_odds.py'
+      - 'tests/test_jra_netkeiba_odds.py'
       - 'tests/test_nar_odds_live_panel.py'
       - 'tests/test_nar_official_odds.py'
       - 'core/game_ui_assets/app.css'
@@ -49,5 +51,5 @@ jobs:
           python-version: '3.11'
           cache: pip
       - run: pip install -r requirements-test.txt
-      - run: python -m compileall -q core/race_explorer_signal_rules.py core/race_explorer_compact_materials.py core/race_explorer_cards.py core/research_positioning.py core/research_suitability_attention.py tests/test_research_suitability_attention.py core/research_sabcd_weight_class.py tests/test_research_positioning.py core/research_six_dimensions.py tests/test_research_six_dimensions.py core/race_explorer_columns.py core/race_explorer_ui.py core/race_tendency.py core/game_race_ui.py core/nar_official_odds.py core/race_odds.py core/race_odds_ui.py core/race_odds_ui_live.py tests/test_nar_official_odds.py tests/test_nar_odds_live_panel.py app.py tests/test_race_tendency.py tests/test_jra_class_evidence_chips.py tests/test_race_explorer_compact_materials.py tests/test_race_explorer_selected_evidence.py
-      - run: pytest -q tests/test_race_explorer_selected_evidence.py tests/test_race_explorer_compact_materials.py tests/test_jra_class_evidence_chips.py tests/test_race_explorer_cards.py tests/test_race_explorer_ui.py tests/test_race_explorer_columns.py tests/test_nar_official_odds.py tests/test_nar_odds_live_panel.py tests/test_research_positioning.py tests/test_research_suitability_attention.py tests/test_research_six_dimensions.py tests/test_race_tendency.py
+      - run: python -m compileall -q core/race_explorer_signal_rules.py core/race_explorer_compact_materials.py core/race_explorer_cards.py core/research_positioning.py core/research_suitability_attention.py tests/test_research_suitability_attention.py core/research_sabcd_weight_class.py tests/test_research_positioning.py core/research_six_dimensions.py tests/test_research_six_dimensions.py core/race_explorer_columns.py core/race_explorer_ui.py core/race_tendency.py core/game_race_ui.py core/nar_official_odds.py core/race_odds.py core/race_odds_ui.py core/race_odds_ui_live.py core/jra_netkeiba_odds.py tests/test_jra_netkeiba_odds.py tests/test_nar_official_odds.py tests/test_nar_odds_live_panel.py app.py tests/test_race_tendency.py tests/test_jra_class_evidence_chips.py tests/test_race_explorer_compact_materials.py tests/test_race_explorer_selected_evidence.py
+      - run: pytest -q tests/test_race_explorer_selected_evidence.py tests/test_race_explorer_compact_materials.py tests/test_jra_class_evidence_chips.py tests/test_race_explorer_cards.py tests/test_race_explorer_ui.py tests/test_race_explorer_columns.py tests/test_nar_official_odds.py tests/test_nar_odds_live_panel.py tests/test_jra_netkeiba_odds.py tests/test_research_positioning.py tests/test_research_suitability_attention.py tests/test_research_six_dimensions.py tests/test_race_tendency.py
