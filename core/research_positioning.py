@@ -11,7 +11,7 @@ import math
 from collections.abc import Mapping
 from .research_sabcd import _finish
 
-VERSION = "positioning-study-20261112"
+VERSION = "positioning-study-20261112-independent-SA"
 
 
 def _number(raw):
@@ -69,12 +69,26 @@ def assess(horse):
     reason = ""
     label = None
     kind = None
-    if grade == "A":
+    if grade in ("S", "A"):
+        # The letter and the betting role are separate:
+        # the model never forces any S, and A may be the axis while S is not.
+        # This gate is exploratory and does not prove axis value.
         if score is not None and score >= .60 and strong_jockey:
             label, kind = "軸候補", "axis"
-            reason = (f"研究モデル値{score:.3f}、同条件騎手複勝率{rate:g}%／"
-                      f"{int(starts)}走。11/11の探索条件であり、開催場別の"
-                      "未使用レースでは有効性未確認。")
+            reason = (f"総合{grade}／研究モデル値{score:.3f}、"
+                      f"同条件騎手複勝率{rate:g}%／{int(starts)}走。"
+                      "S・Aとも同じ暫定条件で独立に表示。"
+                      "11/9〜12の検証ではS内でこの条件の優位は確認できず、"
+                      "買い目の自動決定や確率保証には使いません。")
+        elif grade == "S":
+            label, kind = "軸比較", "neutral"
+            reason = (
+                "研究Sでも無条件の軸指定はしません。"
+                + (f"同条件騎手複勝率{rate:g}%／{int(starts)}走。" if qualified
+                   else "同条件の騎手実績は母数不足・未取得。")
+                + "軸候補のAがいてもSを降格しないための比較表示です。"
+                "Sの好走率は高く、軸比較は消し判定ではありません。"
+            )
         elif score is not None and score < .60 and not strong_jockey:
             label, kind = "軸慎重", "caution"
             reason = (f"研究モデル値{score:.3f}、騎手条件は"
@@ -114,6 +128,8 @@ def assess(horse):
 
 
 def assign_to_view(view):
+    from .research_suitability_attention import assess as suitability
     for horse in view:
         horse["research_positioning"] = assess(horse)
+        horse["research_suitability_attention"] = suitability(horse)
     return view
