@@ -48,7 +48,7 @@ def render(result, view):
     is_nar = identity['mode'] == 'nar'
     if not is_nar:
         jra_id = identity['race_id']
-        st.caption('取得機能：JRA公式ブラウザ取得試験＋netkeiba単複（ログイン不要）')
+        st.caption('JRAのオッズ：過去＝優馬JAPAN単複、当日＝JRA公式・netkeiba試験')
         st.caption('JRAオッズ更新（試験）：netkeibaの無料配信から単勝・複勝のみ取得を試みます。'
                    'JRA公式の直接取得ではありません。'
                    '無料版には更新間隔・利用制限があり、最新の購入可能価格とは限りません。')
@@ -58,10 +58,11 @@ def render(result, view):
         historical_links = archived_odds_urls(identity, result.race_info or {})
         if historical_links:
             with st.expander('過去の単勝・複勝をAIへ反映', expanded=True):
-                st.caption('競馬ラボの保存レース単複表を1回読み込み、全頭の馬番・馬名を照合します。'
+                st.caption('優馬JAPANの単勝・複勝表を取得し、全頭の馬番・馬名を照合します。'
                            '過去の掲載値であり、最終確定オッズとの一致は保証できません。'
                            '純能力・S/A/B/Cランク・正式印は変更しません。')
-                from .jra_historical_odds import fetch_once as fetch_historical, parse_keibalab_html
+                from .jra_yuma_odds import fetch_once as fetch_historical
+                from .jra_historical_odds import parse_keibalab_html
                 now_historical = datetime.now(odds.JST)
                 try:
                     from datetime import date as _date
@@ -70,7 +71,7 @@ def render(result, view):
                     is_past = _date.fromisoformat(race_date) < now_historical.date()
                 except ValueError:
                     is_past = False
-                if st.button('過去の単複オッズを取得・AIへ反映',
+                if st.button('過去単複をAIへ反映（優馬JAPAN）',
                              key=key+'_historical_fetch', disabled=not is_past):
                     previous = st.session_state.get(key+'_historical_last_request')
                     across = st.session_state.get('_jra_historical_global_last_request')
@@ -89,16 +90,42 @@ def render(result, view):
                             activate_observation(quote)
                             st.session_state[key+'_status'] = (
                                 f"取得：{quote['horse_count']}／{quote['expected_horses']}頭。"
-                                "競馬ラボ掲載の過去単勝・複勝をAIの表示に反映しました。")
+                                "優馬JAPAN掲載の過去単勝・複勝をAIの表示に反映しました。")
                         except ValueError as exc:
                             st.session_state[key+'_status'] = 'JRA過去オッズ未取得：' + str(exc)
                         except Exception:
                             st.session_state[key+'_status'] = 'JRA過去オッズ未取得：サイトへの接続・解析に失敗しました。'
                 if not is_past:
                     st.caption('過去の開催日が確定したレースで利用できます。')
-                with st.expander('自動取得できないとき：保存HTMLから反映', expanded=False):
-                    st.caption('競馬ラボの単複ページをブラウザでHTML保存してアップロード。'
-                               '同じ馬番・馬名・開催回の厳密照合後に反映します。')
+                with st.expander('取得できないとき：HTMLの保存・取込', expanded=False):
+                    st.caption('優馬JAPANの単勝・複勝HTMLをそれぞれ保存して読み込めます。'
+                               '競馬ラボの単複HTMLも別方式で取込できます。')
+                    yuma_win = st.file_uploader(
+                        '優馬JAPANの単勝ページHTML', type=['html', 'htm'],
+                        key=key+'_yuma_win_file')
+                    yuma_place = st.file_uploader(
+                        '優馬JAPANの複勝ページHTML', type=['html', 'htm'],
+                        key=key+'_yuma_place_file')
+                    if st.button('保存した優馬JAPANの単複をAIに取込',
+                                 key=key+'_yuma_import', disabled=not (yuma_win or yuma_place)):
+                        try:
+                            from .jra_yuma_odds import parse_yuma_pages
+                            payload = {}
+                            for flag, item in (('tan', yuma_win), ('fuk', yuma_place)):
+                                if item is not None:
+                                    raw = item.getvalue()
+                                    if len(raw) > 3_000_000:
+                                        raise ValueError('HTMLは3MB以下にしてください')
+                                    payload[flag] = raw
+                            quote = parse_yuma_pages(payload, identity, result.race_info or {})
+                            history = odds.merge(state['history'], [quote], identity)
+                            state['history'] = history
+                            activate_observation(quote)
+                            st.session_state[key+'_status'] = (
+                                f"取得：{quote['horse_count']}／{quote['expected_horses']}頭。"
+                                "優馬JAPANの保存HTMLからAIへ反映しました。")
+                        except (ValueError, TypeError) as exc:
+                            st.session_state[key+'_status'] = 'JRA過去オッズ未取得：' + str(exc)
                     archived_file = st.file_uploader(
                         '競馬ラボの過去単複ページ（HTML）', type=['html', 'htm'],
                         key=key+'_historical_file')
@@ -278,7 +305,7 @@ def render(result, view):
             if singles:
                 st.dataframe(singles, hide_index=True, use_container_width=True)
                 st.caption('保存レースの全頭を表示。未取得の価格は「—」で、古い価格を補完しません。')
-                if active.get('acquisition_method') == 'keibalab_historical_html':
+                if active.get('acquisition_method') in ('keibalab_historical_html', 'yuma_historical_html'):
                     source_archive = (st.session_state.get('game_archive_upload')
                                       or st.session_state.get('dashboard_saved_prediction'))
                     if source_archive is not None:
@@ -390,9 +417,10 @@ def render(result, view):
     caption(f"{label}｜{odds.received_label(quote)}：{odds.format_time(quote.get('received_at'))}｜提供元更新：{odds.format_time(quote.get('observed_at'))}｜情報源：{quote['source']}")
     if quote.get('acquisition_method') == 'manual_html':
         caption('HTML取込日時はサイトから価格を取得した日時ではありません。価格の鮮度はHTML内の提供元更新時刻で確認します。')
-    if quote.get('acquisition_method') == 'keibalab_historical_html':
-        caption('競馬ラボの過去掲載オッズです。掲載時刻を表示しますが確定最終オッズと'
-                '同一とは限りません。AIの順位・スコアは変更せず、価格だけ上書き表示します。')
+    if quote.get('acquisition_method') in ('keibalab_historical_html', 'yuma_historical_html'):
+        caption('過去掲載オッズです。配信元の価格発表時刻は未確認の場合があります。'
+                '確定最終オッズと一致する保証はありません。'
+                'AIの順位・スコアは変更せず、価格だけ上書き表示します。')
     if quote.get('acquisition_method') == 'netkeiba_free_json':
         caption('配信元表示時刻を使用。JRA公式との直接接続ではなく、'
                 '無料版の更新制限・遅延があります。取得できた券種だけ表示し、'
