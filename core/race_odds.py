@@ -265,6 +265,8 @@ def freshness(q, start_at=None, now=None, max_age_seconds=300):
     if not observed: return '提供元更新時刻不明・鮮度未確認'
     if observed > now or (received and observed > received): return '提供元時刻が未来・確認が必要'
     if (now-observed).total_seconds() > max_age_seconds: return '古い観測・現在価格ではありません'
+    if q.get('acquisition_method') == 'nar_official_zip':
+        return 'ZIP作成時刻基準の参考価格（個別オッズ発表時刻は不明・変動します）'
     return '発走前の観測価格（変動します）'
 
 
@@ -274,6 +276,7 @@ def format_time(value):
 
 
 def received_label(q):
+    if q.get('acquisition_method') == 'nar_official_zip': return '公式ZIPの取得・受信日時'
     if q.get('acquisition_method') == 'manual_screenshot': return '画像取込日時（価格更新時刻ではありません）'
     return 'HTML取込日時' if q.get('acquisition_method') == 'manual_html' else '取得・受信記録日時'
 
