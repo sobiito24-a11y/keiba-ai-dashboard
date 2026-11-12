@@ -74,11 +74,21 @@ def _cell(horse, cells, key):
         # Research-only role in the SAME cell: never one more wide column.
         role = cells.get('research_positioning_label') or ''
         role_reason = cells.get('research_positioning_reason') or ''
-        role_short = {'押さえ候補': '押さえ', '押さえ参考': '押さえ参考'}.get(role, role)
+        suitability = cells.get('research_suitability_label') or ''
+        suitability_reason = cells.get('research_suitability_reason') or ''
+        role_short = {'押さえ候補': '押さえ', '押さえ参考': '押さえ参考',
+                      '相手本線': '相手本線'}.get(role, role)
+        if suitability == '適性注目':
+            # One short annotation only, even when a front-position cover flag
+            # also applies. C/D remains C/D; this is not a ticket instruction.
+            role_short = ('押さえ＋適性' if role == '押さえ候補'
+                          else '適性注目')
+            role_reason = (role_reason + ' ／ ' + suitability_reason).strip(' ／ ')
         role_html = ('<small class="research-role-inline" title="'
                      + plain(role_reason) + '">' + plain(role_short) + '</small>'
-                     if role in ('軸候補', '軸慎重', '相手本線', '押さえ候補', '押さえ参考')
-                     else '')
+                     if (role in ('軸候補', '軸慎重', '軸比較', '相手本線',
+                                  '押さえ候補', '押さえ参考')
+                         or suitability == '適性注目') else '')
         if item not in ('S', 'A', 'B', 'C', 'D'):
             return ('<span class="missing-cell" title="'
                     + plain(cells.get('research_sabcd_reason') or role_reason)
@@ -160,7 +170,7 @@ def lineup_html(view):
             content.append('<td class="'+cls+'" data-label="'+plain(spec['label'])+'" title="'+plain(tooltip)+'">'+_cell(horse, row, key)+'</td>')
         rows.append('<tr data-row="'+plain(no)+'" data-horse="'+plain(no)+'">'+''.join(content)+'</tr>')
     class_help = '<p class="help">「クラス・重賞注目」は前走の「前走」の文字だけ省略した表示です。過去3走の根拠は列の説明・馬別詳細で確認できます。加点・純能力順位・正式印は変更しません。</p>'
-    sabcd_help = '<p class="help">研究SABCDは斤量・クラスを含む研究モデルで全頭を個別評価（人数制限なし）。同じセル内の「軸候補／軸慎重／押さえ」は過去データからの仮説ラベルで、総合ランクや買い目には影響しません。モデル値は未校正で実際の馬券内確率ではありません。旧8項目モデルは内部検証用に保持。純能力・正式印・購入判断は変更しません。過去の保存開催では「後日算出」と表示します（当時の発走前予想ではありません）。</p>'
+    sabcd_help = '<p class="help">研究SABCDは斤量・クラスを含む研究モデルで全頭を個別評価（人数制限なし）。同じセル内の「軸候補／軸比較／軸慎重／押さえ」は過去データからの仮説ラベルです。「適性注目」はC/Dに残る複数の過去好走歴を示すだけで、買い推奨ではありません。Sは人数制限なし・必ずしも軸ではなく、Aも独立して軸候補になります。総合ランクや買い目には影響しません。モデル値は未校正で実際の馬券内確率ではありません。旧8項目モデルは内部検証用に保持。純能力・正式印・購入判断は変更しません。過去の保存開催では「後日算出」と表示します（当時の発走前予想ではありません）。</p>'
     nar_help = ('<p class="help">研究用の「今回評価」は横一覧から非表示にしました。'
                 '馬名の詳細で根拠を確認できます。印・正式順位・純能力は変更しません。</p>'
                 if view and view[0].get("mode") == "nar" else '')
