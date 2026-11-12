@@ -289,6 +289,8 @@ def detail_html(horse):
                if entries else '<p class="no-data">全戦績は未取得（過去の保存データには新聞原文がありません）。</p>')
             + '</section>'
         )
+    from .research_six_dimensions import detail_html as six_factor_detail_html
+    factor_html = six_factor_detail_html(horse)
     return (
         '<section class="explorer-detail"><header class="detail-header">' + number_badge(horse) +
         '<div><h3>' + value(horse.get("name")) + '</h3><p>馬別詳細</p></div></header>' +
@@ -296,6 +298,7 @@ def detail_html(horse):
          '<h4>プラス・注意材料</h4><div class="detail-quick-evidence-chips">' +
          quick_materials + '</div><p>比較用の材料です。買い推奨ではありません。全文は下の詳細欄で確認できます。</p></section>'
          if quick_materials else '') +
+        factor_html +
         _definition_list(basic, "detail-basic") +
         form_html +
         ('<section class="detail-frozen-review"><h4>検証用チェック（2026/11/08条件固定）</h4>'
