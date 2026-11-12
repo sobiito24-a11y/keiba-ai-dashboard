@@ -36,3 +36,23 @@ def test_screenshot_explicit_popularity_preserved():
  draft=dict(imported_at='2026-10-18T14:35:00+09:00',version='fixture',sources=[],rows=r)
  q=s.confirmed_quote(r,sid(),draft,confirmed=True)
  assert q['popularity']=={str(r[0]['馬番']):2}
+
+
+def test_place_overlay_clears_previous_batch_and_does_not_infer_from_win():
+ from core.race_explorer_columns import records
+ ident=identity(n=3)
+ first=quote(n=3)
+ first["prices"].append(dict(kind="place",horses=[1],low=1.2,high=1.7))
+ first=o.validate(first, ident)
+ view=[dict(no=str(i),score="80",rank=str(i),mark="◎",sort_values={}) for i in range(1,4)]
+ full=o.overlay(view,first,"過去単複")
+ assert records(full)["1"]["place_odds"]==1.2
+ assert records(full)["1"]["place_odds_high"]==1.7
+ win_only=quote(n=3)
+ win_only["prices"]=[p for p in win_only["prices"] if p["kind"]=="win"]
+ win_only=o.validate(win_only,ident)
+ partial=o.overlay(full,win_only,"単勝のみ")
+ assert partial[0]["place_odds"]=="—"
+ assert records(partial)["1"]["place_odds"] is None
+ assert partial[0]["sort_values"]["place_odds_low"] is None
+ assert all(a["score"]==b["score"] and a["mark"]==b["mark"] for a,b in zip(view,partial))
