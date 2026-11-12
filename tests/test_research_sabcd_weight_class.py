@@ -6,7 +6,18 @@ from core.research_sabcd_weight_class import (
     VERSION, FEATURES, PARAMS, _normalise_to_podium_slots,
     _weight_kg, assign_to_view, evaluate_race, feature_values, predict,
 )
-from tests.test_research_sabcd import horse
+def horse(rank, *, mode="nar", date="2026-11-14"):
+    return dict(
+        no=str(rank), name="検証馬"+str(rank), mode=mode, mark="◎" if rank == 1 else "—",
+        score=900-rank, ability_rank=rank, corner=rank, start_rank=rank,
+        research_inputs=dict(jockey_n=320, jockey_rate=40),
+        race_context=dict(race_date=date, venue="高知", surface="ダ", distance=1400),
+        profile=dict(runs=[
+            dict(label="前走", date="2026-10-30", venue="高知", surface="ダ", distance=1400, finish="2着"),
+            dict(label="2走前", date="2026-10-10", venue="高知", surface="ダ", distance=1400, finish="4着"),
+        ]),
+    )
+
 
 
 def _field():
