@@ -12,7 +12,7 @@ import math
 import re
 from collections.abc import Mapping
 
-VERSION = "six-factors-evidence-20261112-audit2"
+VERSION = "six-factors-evidence-20261112-audit3"
 FACTORS = (("distance", "距離"), ("course", "コース"), ("recent", "近走"),
            ("jockey", "騎手"), ("development", "展開"), ("conditions", "相手・条件"))
 JRA_VENUES = frozenset(("札幌", "函館", "福島", "新潟", "東京", "中山", "中京", "京都", "阪神", "小倉"))
@@ -219,7 +219,7 @@ def evaluate(horse):
            if transfer and r_n < 2 else
            "過去の別主催の着順を現在の着順順位に直接換算しません。" if visiting else "")
         + (other_index_note if visiting else "")
-        + "近走の勢いは同主催直近最大3走で評価。古い保存履歴は別枠で参照。",
+        + "近走の勢いは同主催直近最大3走で評価。相手の格・着差・不利は未補正。古い保存履歴は別枠で参照。",
         (_run_evidence(local_finished) if local_finished else
          "別主催の実績のみ" if visiting else "実績未確認"),
     )
@@ -261,9 +261,18 @@ def evaluate(horse):
         if mismatch:
             dev_grade = "—"
             dev_reason = "逃げ・先行脚質と序盤後方予測が矛盾。位置?として再確認（自動減点しない）。"
-        elif start <= 3 and corner <= 3 and pace in ("S", "M"):
+        elif start <= 3 and corner <= 3:
+            # 131R holdout: both pre-race front predictions were associated
+            # with placement even under H. NAR pace was nearly always H;
+            # the old S/M-only gate concealed most of those front profiles.
             dev_grade = "A"
-            dev_reason = "序盤・4角とも1〜3番手想定。ペースの前方有利は未検証。"
+            dev_reason = (
+                "序盤・4角とも1〜3番手想定。"
+                + ("Hペースなら先行争いの消耗に注意。" if pace == "H"
+                   else "S/Mペース想定。" if pace in ("S", "M")
+                   else "ペース情報なし（前方位置だけを参考）。")
+                + "傾向との相関を示す暫定研究評価で的中保証ではありません。"
+            )
         elif corner <= 3:
             dev_grade = "B"
             dev_reason = "4角前方想定。序盤・ペースとの整合は要確認。"
@@ -288,21 +297,22 @@ def evaluate(horse):
         co_grade = "—"
         co_reason = "クラス体系・対戦相手の比較不能（転入・年齢条件等の可能性）。"
     else:
-        up = "昇級" in shift
-        down = "降級" in shift
-        co_grade = ("C" if up and delta is not None and delta >= 2 else
-                    "B" if up else
-                    "A" if down and delta is not None and delta <= 0 else
-                    "B")
-        co_reason = f"比較可能な前走クラス：{shift}。"
+        # Held-out results did not support strong grade direction from class
+        # up/down plus weight change alone. Keep B as a neutral provisional
+        # label and preserve concrete class/weight facts for inspection.
+        co_grade = "B"
+        co_reason = (f"比較可能な前走クラス：{shift}。"
+                     "昇降級と斤量差だけではA/Cに決めず、中立B（暫定）。")
     co_reason += (
         f" 前走斤量差{delta:+g}kg。" if delta is not None else " 前走斤量差未取得。"
     ) + (
         f"今回の出走馬平均から{relative:+.1f}kg（性齢による設定差に注意）。"
         if relative is not None else "今回の相対斤量未取得。"
     ) + " 強い相手との実績は開催体系の照合なしに換算しません。"
-    conditions_item = _label(co_grade, co_reason,
-                             shift if co_grade != "—" else "クラス比較不可")
+    conditions_item = _label(
+        co_grade, co_reason,
+        (shift if co_grade != "—" else "クラス比較不可")
+        + (f"／斤量{delta:+g}kg" if delta is not None else ""))
 
     factors = dict(distance=distance_item, course=course_item,
                    recent=recent_item, jockey=jockey_item,
