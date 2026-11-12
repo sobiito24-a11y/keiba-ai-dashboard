@@ -161,3 +161,62 @@ def test_venue_spelling_variant_does_not_hide_compatible_local_history():
     from core.research_six_dimensions import _jurisdiction
     assert _jurisdiction("川﨑") == "nar"
     assert _jurisdiction("川崎競馬場") == "nar"
+
+
+def test_nar_high_pace_both_front_positions_are_visible_as_provisional_A():
+    # H was the dominant saved NAR pace label in the historical 131R audit.
+    # Previously the S/M-only gate made almost all such horses grade B.
+    h = sample_horse()
+    h["race_context"]["netkeiba_pace"] = "H"
+    result = evaluate(h)
+    dev = result["factors"]["development"]
+    assert dev["grade"] == "A"
+    assert "序盤・4角とも1〜3番手" in dev["reason"]
+    assert "消耗に注意" in dev["reason"]
+    assert result["factors"]["jockey"]["grade"] == "A"
+    assert h["research_sabcd_weight_class"]["grade"] == "A"
+
+
+def test_jra_h_pace_both_front_also_has_position_evidence():
+    h = sample_horse()
+    h["mode"] = "jra"
+    h["race_context"]["netkeiba_pace"] = "H"
+    assert evaluate(h)["factors"]["development"]["grade"] == "A"
+
+
+def test_unsupported_class_and_weight_direction_does_not_force_A_or_C():
+    h = sample_horse()
+    h["profile"]["class_shift"] = "昇級"
+    h["research_sabcd_weight_class"]["materials"]["weight_delta"] = 3
+    before = deepcopy(h)
+    conditions = evaluate(h)["factors"]["conditions"]
+    assert conditions["grade"] == "B"
+    assert "昇級" in conditions["evidence"]
+    assert "斤量+3kg" in conditions["evidence"]
+    assert "中立B" in conditions["reason"]
+    assert h == before
+
+    h["profile"]["class_shift"] = "降級"
+    h["research_sabcd_weight_class"]["materials"]["weight_delta"] = -2
+    conditions = evaluate(h)["factors"]["conditions"]
+    assert conditions["grade"] == "B"
+    assert "降級" in conditions["evidence"]
+    assert "斤量-2kg" in conditions["evidence"]
+
+
+def test_missing_comparable_class_is_not_assigned_D_despite_weight_information():
+    h = sample_horse()
+    h["profile"]["class_shift"] = "比較不能"
+    data = evaluate(h)["factors"]["conditions"]
+    assert data["grade"] == "—"
+    assert "比較不可" in data["evidence"]
+    assert "斤量-2kg" in data["evidence"]
+
+
+def test_same_placed_start_counts_once_for_distance_course_recent():
+    h = sample_horse()
+    h["profile"]["runs"][0]["finish"] = "1着"
+    page = BeautifulSoup(detail_html(h), "html.parser")
+    assert "独立した加点とはみなしません" in page.text
+    evidence = page.select(".six-factor-evidence")
+    assert sum("1戦1勝" in x.text for x in evidence) == 3
