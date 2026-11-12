@@ -25,3 +25,16 @@ def test_disabled_logic_for_nar_and_legacy_provider():
     assert (not (True or False)) is False
     assert (not (False or False)) is True
     assert (not (False or True)) is False
+
+
+def test_jra_free_odds_source_links_not_false_live_quotes():
+    panel = (ROOT / "core" / "race_odds_ui_live.py").read_text(encoding="utf-8")
+    assert "if not is_nar:" in panel
+    assert "https://www.jra.go.jp/" in panel
+    assert "https://race.netkeiba.com/odds/index.html?race_id=" in panel
+    assert "jra_id = identity['race_id']" in panel
+    assert "アプリへの自動取得は未接続" in panel
+    assert "無料版には更新間隔" in panel
+    # JRA's connector-only update button must remain disabled without
+    # an authorized endpoint: references are links, not imported live prices.
+    assert "disabled=not (is_nar or connection.available)" in panel
