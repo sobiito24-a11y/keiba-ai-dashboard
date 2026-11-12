@@ -52,6 +52,17 @@ def render(result, view):
         st.caption('JRAオッズ更新（試験）：netkeibaの無料配信から単勝・複勝のみ取得を試みます。'
                    'JRA公式の直接取得ではありません。'
                    '無料版には更新間隔・利用制限があり、最新の購入可能価格とは限りません。')
+        # Historical observations remain on third-party race archives even when
+        # the JRA current-meeting selector no longer lists that race.
+        from .jra_historical_odds_links import archived_odds_urls
+        historical_links = archived_odds_urls(identity, result.race_info or {})
+        if historical_links:
+            with st.expander('過去の単勝・複勝オッズを見る（外部サイト）', expanded=False):
+                st.caption('保存レースに対応する過去オッズページを開きます。'
+                           'リンクは自動取込ではありません。実際の掲載有無・最終更新時刻を確認してください。')
+                st.markdown('[競馬ラボ：単勝・複勝一覧](' + historical_links['keibalab'] + ')')
+                st.markdown('[優馬JAPAN：単勝一覧](' + historical_links['yuma_win'] + ')')
+                st.markdown('[優馬JAPAN：複勝一覧](' + historical_links['yuma_place'] + ')')
         with st.expander('JRA公式／netkeibaの元画面を確認', expanded=False):
             st.markdown('[JRA公式オッズ](https://www.jra.go.jp/)'
                         '（公式サイトの「オッズ」から選択）')
