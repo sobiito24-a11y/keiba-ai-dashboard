@@ -113,8 +113,13 @@ def columns(view):
     at = next(i for i, spec in enumerate(result) if spec["key"] == "ability_rank") + 1
     result.insert(at, _spec("class_attention", "クラス・重賞注目", "text"))
     result.insert(at + 1, _spec("research_sabcd", "研究SABCD", "text"))
+    result.insert(at + 2, _spec("research_sabcd_weight_class", "試験SABCD", "text"))
     result.append(_spec("class_attention_reason", "クラス・重賞根拠", "text", table_hidden=True))
     result.append(_spec("research_sabcd_reason", "研究SABCDの根拠", "text", table_hidden=True))
+    result.append(_spec("research_sabcd_score", "旧8項目モデル値", "number", table_hidden=True))
+    result.append(_spec("research_sabcd_weight_class_score", "斤量クラスモデル値", "number", table_hidden=True))
+    result.append(_spec("research_sabcd_weight_class_normalized", "全頭合計調整参考値", "number", table_hidden=True))
+    result.append(_spec("research_sabcd_weight_class_reason", "斤量クラス研究版の根拠", "text", table_hidden=True))
     result.append(_spec("research_sabcd_sort", "研究SABCD順", "number", table_hidden=True))
     for key, label in (("star", "同場同距離指数"), ("away", "別場同距離指数")):
         if any(_number(_mapping(_mapping(horse).get(key)).get("value")) is not None for horse in view or ()):
@@ -218,6 +223,8 @@ def records(view):
         current_weight = _number(facts.get("current_weight"))
         class_attention = _mapping(_mapping(horse.get("profile")).get("class_attention"))
         sabcd = _mapping(horse.get("research_sabcd"))
+        sabcd_trial = _mapping(horse.get("research_sabcd_weight_class"))
+        trial_tier = sabcd_trial.get("grade") if sabcd_trial.get("grade") in ("S", "A", "B", "C", "D") else None
         tier = sabcd.get("grade") if sabcd.get("grade") in ("S", "A", "B", "C", "D") else None
         item = dict(
             user=False, frame=_integer(horse.get("frame"), maximum=8),
@@ -229,7 +236,12 @@ def records(view):
             class_attention=_compact_class_attention(class_attention.get("display") or class_attention.get("label")),
             class_attention_reason=_text(class_attention.get("reason")),
             research_sabcd=tier,
+            research_sabcd_score=_number(sabcd.get("score")),
             research_sabcd_reason=_text(sabcd.get("reason")),
+            research_sabcd_weight_class=trial_tier,
+            research_sabcd_weight_class_score=_number(sabcd_trial.get("score")),
+            research_sabcd_weight_class_normalized=_number(sabcd_trial.get("normalized_score")),
+            research_sabcd_weight_class_reason=_text(sabcd_trial.get("reason")),
             research_sabcd_notes=_text("・".join(sabcd.get("notes") or ())),
             research_sabcd_retro=sabcd.get("retro") is True,
             research_sabcd_sort={"S": 1, "A": 2, "B": 3, "C": 4, "D": 5}.get(tier),

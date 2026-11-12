@@ -5,7 +5,7 @@ with verifiable podium outcomes. Walk-forward tests evaluated 612 later
 races; no race outcome/odds/official mark is used as a prediction feature.
 
 The 0.70/0.50/0.30/0.15 thresholds are *model scores*, not guaranteed
-true 3着内率. S(1), A(2), B(3) are capped per race, C/D unlimited.
+true 3着内率. All horses are graded independently; S/A/B/C/D have no per-race count cap.
 Intended only for the projection/UI; NEVER override official ranks or marks.
 """
 from __future__ import annotations
@@ -15,9 +15,9 @@ import re
 from datetime import date
 from collections.abc import Mapping
 
-VERSION = "archive-20261112"
-CUTOFFS = (("S", .70, 1), ("A", .50, 2),
-           ("B", .30, 3), ("C", .15, 9999), ("D", 0., 9999))
+VERSION = "archive-20261112-uncapped"
+CUTOFFS = (("S", .70, None), ("A", .50, None),
+           ("B", .30, None), ("C", .15, None), ("D", 0., None))
 MODEL = {
  "jra": {
   "median": (.5,15.,.5,.5,.2,.4,1.,0.),
@@ -157,11 +157,12 @@ def grade_from_probability(p):
 
 
 def evaluate_race(view):
-    """Assign independent research grades to a complete pre-race field.
+    """Assign *independent* research grades from pre-race information.
 
-    All horses are considered simultaneously; moving S to A when capped is
-    an allocation constraint, not evidence that its probability worsened.
-    Unknown ability/4角 remains unknown (never guessed D).
+    There is intentionally no S/A/B quota.  A horse's grade is a function of
+    its own model score, not the grades or scores of the other runners.
+    The 0.70/0.50/0.30/0.15 thresholds have NOT been prospectively calibrated
+    as exact podium probabilities, and never change formal marks or rank.
     """
     horses = [h for h in view or () if isinstance(h, Mapping)]
     if not horses:
@@ -173,45 +174,39 @@ def evaluate_race(view):
     race_context = horses[0].get("race_context") or {}
     current = str(race_context.get("race_date") or race_context.get("date") or "")[:10]
     posthoc = bool(current and current <= MODEL[mode]["trained_through"])
-    computed, missing = [], []
+    result = {}
     for h in horses:
         no = str(h.get("no", ""))
         vector, notes = feature_vector(h, head_count)
-        if not no or h.get("mode") != mode or vector is None:
-            missing.append((no, dict(grade=None, reason="純能力順位・予測4角・主催が確認できないため判定不可",
-                                    score=None, raw_grade=None, demoted=False,
-                                    notes=(), retro=posthoc, version=VERSION)))
+        if not no:
+            continue
+        if h.get("mode") != mode or vector is None:
+            result[no] = dict(
+                grade=None, reason="純能力順位・予測4角・主催が確認できないため判定不可",
+                score=None, raw_grade=None, demoted=False, notes=(),
+                retro=posthoc, version=VERSION,
+            )
             continue
         p = model_probability(mode, vector)
-        computed.append(dict(no=no, p=p, raw=grade_from_probability(p), notes=notes,
-                             ability_rank=_rank(h.get("ability_rank")) or 999))
-    computed.sort(key=lambda r: (-r["p"], r["ability_rank"],
-                                 int(r["no"]) if r["no"].isdigit() else 9999))
-    usage = {t: 0 for t, _, _ in CUTOFFS}
-    cap = {t: limit for t, _, limit in CUTOFFS}
-    order = [t for t, _, _ in CUTOFFS]
-    result = {}
-    for row in computed:
-        position = order.index(row["raw"])
-        while usage[order[position]] >= cap[order[position]]:
-            position += 1
-        tier = order[position];usage[tier] += 1
-        demoted = tier != row["raw"]
-        why = ("・".join(row["notes"]) or "能力順位・予測位置・騎手・近走")
+        tier = grade_from_probability(p)
+        why = "・".join(notes) or "能力順位・予測位置・騎手・近走"
         explanation = (
-            f"研究{tier}／材料：{why}。"
-            + (f"本来{row['raw']}相当→1レース人数上限による繰下げ。" if demoted else "")
-            + "モデルの推定値は馬券内率を保証しません。正式印・純能力は不変。"
-            + ("過去開催を現在の研究モデルで後日算出（学習期間と重複）。当時の発走前予想ではありません。" if posthoc else "")
+            f"研究{tier}／材料：{why}。ランク人数制限なし（推定値で個別判定）。"
+            + "モデル推定値は実測で校正済みの馬券内率ではありません。正式印・純能力は不変。"
+            + ("過去開催を現在の研究モデルで後日算出（学習期間と重複）。"
+               "当時の発走前予想ではありません。" if posthoc else "")
         )
-        result[row["no"]] = dict(
-            grade=tier, score=round(row["p"], 4), raw_grade=row["raw"],
-            demoted=demoted, notes=row["notes"], reason=explanation,
+        result[no] = dict(
+            grade=tier, score=round(p, 4), raw_grade=tier,
+            demoted=False, notes=notes, reason=explanation,
             retro=posthoc, version=VERSION,
         )
-    result.update(missing)
+    # This is a diagnostic only; a sum near three does not prove calibration.
+    total = round(sum(row["score"] for row in result.values()
+                      if row.get("score") is not None), 4)
+    for row in result.values():
+        row["race_score_sum"] = total
     return result
-
 
 def assign_to_view(view):
     """Mutate only the transient *display projection*, not saved race rows."""

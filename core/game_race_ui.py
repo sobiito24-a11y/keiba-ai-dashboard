@@ -159,7 +159,8 @@ def build_view(rows, records, source_rows=(), mode='jra', race_info=None, materi
     # Research-grade only: computed on the transient display projection.
     # No formal score, Top5, marks, saved predictions or betting decisions change.
     from .research_sabcd import assign_to_view
-    return focus_annotate(assign_to_view(out))
+    from .research_sabcd_weight_class import assign_to_view as assign_shadow_grade
+    return focus_annotate(assign_shadow_grade(assign_to_view(out)))
 
 
 def mark_html(mark):
