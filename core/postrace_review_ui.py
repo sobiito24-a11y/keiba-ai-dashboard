@@ -113,6 +113,8 @@ def review_html(view, review):
             else:
                 contents = _cell(horse, info, key)
             cls = 'col-'+_plain(key)+(' col-number' if key == "no" else '')
+            if key == "research_sabcd" and info.get(key) in ("S", "A", "B", "C", "D"):
+                cls += " research-tier-" + info[key]
             parts.append('<td class="'+cls+'" data-label="'+_plain(
                 next(spec["label"] for spec in schema if spec["key"] == key)
             )+'">'+contents+"</td>")
