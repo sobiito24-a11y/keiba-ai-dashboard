@@ -49,8 +49,8 @@ def render(result, view):
     if not is_nar:
         jra_id = identity['race_id']
         st.caption('取得機能：JRA試験版 11/13（接続設定不要・ログイン不要）')
-        st.caption('JRAオッズ更新（試験）：netkeibaの無料配信から単勝・複勝・'
-                   '馬連・ワイドの取得を試みます。JRA公式の直接取得ではありません。'
+        st.caption('JRAオッズ更新（試験）：netkeibaの無料配信から単勝・複勝のみ取得を試みます。'
+                   'JRA公式の直接取得ではありません。'
                    '無料版には更新間隔・利用制限があり、最新の購入可能価格とは限りません。')
         with st.expander('JRA公式／netkeibaの元画面を確認', expanded=False):
             st.markdown('[JRA公式オッズ](https://www.jra.go.jp/)'
@@ -58,7 +58,7 @@ def render(result, view):
             st.markdown(
                 '[netkeiba・このレースのオッズ](https://race.netkeiba.com/odds/index.html?race_id='
                 + jra_id + '&type=b1)'
-                '（単勝・複勝／馬連・ワイドへ切替）')
+                '（単勝・複勝を確認）')
             st.caption('実際の投票価格は購入直前にJRA公式の販売画面で再確認。'
                        'アクセスが制限された場合はスクショ・HTML取込を使用。'
                        '自動巡回や更新回数の上限制限回避は行いません。')
@@ -108,7 +108,7 @@ def render(result, view):
         else:
             # Licensed JSON bridge, when configured, takes priority.
             # Otherwise only one explicit user-triggered read of the FREE
-            # netkeiba action=init feed (three ticket-kind requests).
+            # netkeiba action=init feed (one win/place request).
             last = st.session_state.get(key+'_last_request')
             min_delay = 30 if connection.available else 180
             global_last = st.session_state.get('_jra_free_odds_global_request')
