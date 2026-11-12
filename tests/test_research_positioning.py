@@ -24,7 +24,7 @@ def test_a_with_both_factors_axis_hypothesis_and_no_bet_change():
     old = deepcopy(h)
     x = assess(h)
     assert x["label"] == "軸候補"
-    assert "11/11の探索条件" in x["reason"]
+    assert "S・Aとも同じ暫定条件で独立に表示" in x["reason"]
     assert h == old
     projected = assign_to_view([h])
     assert projected[0]["research_positioning"]["label"] == "軸候補"
