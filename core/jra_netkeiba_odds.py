@@ -199,7 +199,7 @@ def parse_responses(payloads, identity, race_info, *, now=None):
 
 
 def fetch_once(identity, race_info, *, get=None, now=None):
-    """Explicit button only: THREE cached-free action=init reads, no polling."""
+    """Explicit button only: ONE free action=init read for win/place; no polling."""
     rid = str(identity.get("race_id") or "")
     if identity.get("mode") != "jra" or not re.fullmatch(r"20\d{10}", rid):
         raise ValueError("JRAの12桁レースIDを確認できません")
@@ -207,7 +207,7 @@ def fetch_once(identity, race_info, *, get=None, now=None):
         import requests
         get = requests.get
     raw = {}
-    for kind in TYPES:
+    for kind in ("1",):
         try:
             response = get(ENDPOINT, params=dict(race_id=rid, type=kind, action="init"),
                            timeout=10, allow_redirects=False,
