@@ -53,7 +53,7 @@ def test_all_four_kinds_from_known_page_schema_pre_race():
     assert "netkeiba無料配信の参考価格" in race_odds.freshness(
         q, "2026-11-08T15:40:00+09:00", now=CLOCK)
     assert "古い観測" in race_odds.freshness(
-        q, "2026-11-08T15:40:00+09:00", now=CLOCK + timedelta(minutes=8))
+        q, "2026-11-08T17:00:00+09:00", now=CLOCK + timedelta(minutes=8))
     assert "発走後" in race_odds.freshness(
         q, "2026-11-08T15:40:00+09:00", now=CLOCK + timedelta(minutes=3))
     assert "netkeiba無料配信" in race_odds.received_label(q)
