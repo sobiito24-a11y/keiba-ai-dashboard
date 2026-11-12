@@ -108,7 +108,7 @@ def test_older_central_history_beyond_last_three_is_kept_separate():
     assert data["other_circuit_count"] == 1
     assert data["local_count"] == 3
     assert "中央指数 107" in data["factors"]["recent"]["reason"]
-    assert data["factors"]["recent"]["grade"] == "S"
+    assert data["factors"]["recent"]["grade"] == "A"  # All three placed, but latest was 2nd
 
 
 def test_saved_source_older_runs_are_filtered_before_the_current_race():
