@@ -9,10 +9,10 @@ import re
 
 def archived_odds_urls(identity, race_info):
     rid = str(identity.get("race_id") or "")
-    if identity.get("mode") != "jra" or not re.fullmatch(r"20\\d{10}", rid):
+    if identity.get("mode") != "jra" or not re.fullmatch(r"20\d{10}", rid):
         return {}
     day = str((race_info or {}).get("race_date") or (race_info or {}).get("date") or "").replace("/", "-")
-    if not re.fullmatch(r"20\\d{2}-\\d{2}-\\d{2}", day):
+    if not re.fullmatch(r"20\d{2}-\d{2}-\d{2}", day):
         return {}
     try:
         parsed = date.fromisoformat(day)
