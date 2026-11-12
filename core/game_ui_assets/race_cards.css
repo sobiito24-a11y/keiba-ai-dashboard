@@ -124,3 +124,8 @@
 .six-factor-more>small{display:block;padding-top:5px;white-space:normal;overflow-wrap:anywhere}
 .six-factor-transfer{font-size:12px;margin:9px 0;color:#4f5e6d}
 @media(max-width:660px){.six-factor-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.six-factor-item{padding:7px}}
+
+
+/* Visible sample facts stay readable even when the rank is ungraded. */
+.six-factor-hint{flex-basis:100%;color:#42586b;font-size:11px;font-weight:600;line-height:1.35;overflow-wrap:anywhere}
+.six-factor-item:has(.six-factor-hint) .six-factor-more{margin-top:0}
