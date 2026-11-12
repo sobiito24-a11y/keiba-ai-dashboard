@@ -133,7 +133,7 @@ def parse_yuma_pages(htmls, identity, race_info, *, now=None):
         identities={str(h["horse_no"]): h["name"] for h in identity["horses"]},
         prices=prices, popularity={},
         observed_at=None, received_at=now.isoformat(),
-        source=SOURCE, source_url=urls["yuma_win"],
+        source=SOURCE, source_url=(urls["yuma_win"] if "tan" in htmls else urls["yuma_place"]),
         price_status="published_odds", availability="closed",
         acquisition_method="yuma_historical_html",
         missing_kinds=["quinella", "wide", *missing],
