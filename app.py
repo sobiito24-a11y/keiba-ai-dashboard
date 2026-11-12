@@ -1785,7 +1785,10 @@ def render_game_prediction(result, *, show_header=False):
         # independently recomputed rankings, outcomes, or market odds.
         from core.game_race_ui import race_header
         st.markdown(race_header(result, view), unsafe_allow_html=True)
-    from core.race_odds_ui import render as render_prices
+    # New import path: running Streamlit sessions sometimes retain the
+    # legacy core.race_odds_ui module and its disabled connector-only button.
+    # A fresh module identity forces the NAR button implementation to load.
+    from core.race_odds_ui_live import render as render_prices
     nar_odds = result_race_mode(result) == "nar"
     with st.expander("📡 NAR公式オッズ更新（無料）" if nar_odds
                      else "買い目検討用・オッズ取込", expanded=nar_odds):
