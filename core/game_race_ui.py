@@ -214,9 +214,12 @@ def odds_html(h, compact=False):
 
 def odds_status(view):
     count=sum(number(h.get('odds')) is not None and number(h.get('odds'))>=1 for h in view)
+    place_count=sum(bool(re.fullmatch(r'\d+(?:\.\d+)?〜\d+(?:\.\d+)?', str(h.get('place_odds') or ''))) for h in view)
     times={h.get('odds_time','時刻不明') for h in view}
     time=next(iter(times)) if len(times)==1 else '複数の取得時刻'
-    return '<p class="odds-status">単勝オッズ '+str(count)+'/'+str(len(view))+'頭取込済 · '+escape(time)+'（観測値・確定配当ではありません）</p>'
+    return ('<p class="odds-status">単勝 '+str(count)+'/'+str(len(view))
+            +'頭 · 複勝 '+str(place_count)+'/'+str(len(view))
+            +'頭取得 · '+escape(time)+'（掲載値・確定配当ではありません）</p>')
 
 
 def card_html(h):
@@ -283,13 +286,13 @@ def _legacy_document(view, race_key='', paper_decision=None, portable=None):
     css = (ASSETS/'race.css').read_text(encoding='utf-8')
     script = (ASSETS/'race.js').read_text(encoding='utf-8')
     mode = view[0]['mode'] if view else 'jra'
-    cols = ['枠','馬番・馬名','単勝・人気','最終印','JRAスコア' if mode=='jra' else 'NAR評価スコア','純能力','4角想定']
+    cols = ['枠','馬番・馬名','単勝・人気','複勝','最終印','JRAスコア' if mode=='jra' else 'NAR評価スコア','純能力','4角想定']
     if mode == 'jra': cols += ['展開有利','調教']
     cols += ['休養','距離','コース','★','☆','今回プラス','今回注意']
     rows = []
     for i,h in enumerate(view):
         score_kind='参考スコア · ' if h.get('reference_score',{}).get('kind')=='reference' else ''
-        cells = [frame_html(h['frame']), f'<button class="horse-select" data-select="{escape(h["no"])}" aria-pressed="false"><b>{escape(h["no"])}</b><span>{name_html(h)}</span></button>', odds_html(h,True), candidate_badge(h),
+        cells = [frame_html(h['frame']), f'<button class="horse-select" data-select="{escape(h["no"])}" aria-pressed="false"><b>{escape(h["no"])}</b><span>{name_html(h)}</span></button>', odds_html(h,True), escape(h.get('place_odds', '—')), candidate_badge(h),
                  f'<span class="score">{escape(h["score"])}</span><small>{score_kind}{escape(h["rank"])}位</small>' if h['rank']!='—' else f'<span class="score">{escape(h["score"])}</span><small>{score_kind}順位 —</small>',
                  f'<b>{escape(h["ability"])}</b><small>{escape(h["ability_rank"])}位</small>' if h['ability_rank']!='—' else escape(h['ability']),
                  str(h['corner'])+'番手' if h['corner'] is not None else '—']
