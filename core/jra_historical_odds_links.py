@@ -25,7 +25,7 @@ def archived_odds_urls(identity, race_info):
         return {}
     key = parsed.strftime("%Y%m%d") + venue + race
     return {
-        "keibalab": f"https://keibalab.jp/db/race/{key}/odds.html",
+        "keibalab": f"https://www.keibalab.jp/db/race/{key}/odds.html",
         "yuma_win": f"https://www.keiba.jp/db/race/{key}/odds.html?kind=tan",
         "yuma_place": f"https://www.keiba.jp/db/race/{key}/odds.html?kind=fuk",
     }
