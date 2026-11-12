@@ -12,7 +12,7 @@ import math
 import re
 from collections.abc import Mapping
 
-VERSION = "six-factors-evidence-20261112"
+VERSION = "six-factors-evidence-20261112-audit1"
 FACTORS = (("distance", "距離"), ("course", "コース"), ("recent", "近走"),
            ("jockey", "騎手"), ("development", "展開"), ("conditions", "相手・条件"))
 JRA_VENUES = frozenset(("札幌", "函館", "福島", "新潟", "東京", "中山", "中京", "京都", "阪神", "小倉"))
@@ -38,7 +38,7 @@ def _date(value):
 
 
 def _venue(value):
-    return re.sub(r"(競馬場|\s)+", "", str(value or "")).strip()
+    return re.sub(r"(競馬場|\s)+", "", str(value or "")).strip().replace("﨑", "崎")
 
 
 def _jurisdiction(venue):
@@ -104,9 +104,22 @@ def _run_history(horse):
     return unique[:12]
 
 
-def _label(grade, reason):
+def _label(grade, reason, evidence=""):
     return dict(grade=grade if grade in ("S", "A", "B", "C", "D") else "—",
-                reason=str(reason))
+                reason=str(reason), evidence=str(evidence))
+
+
+def _run_evidence(matches):
+    """A single verified win deserves a visible fact, not an untested A/S."""
+    verified = [r for r in matches if r.get("finish") is not None]
+    n = len(verified)
+    if not n:
+        return "実績未確認"
+    wins = sum(r["finish"] == 1 for r in verified)
+    places = sum(1 <= r["finish"] <= 3 for r in verified)
+    if n == 1:
+        return "1戦1勝" if wins else "1戦3着内" if places else "1戦・3着外"
+    return f"{n}戦{wins}勝／3着内{places}回"
 
 
 def _sample_grade(matches):
@@ -165,6 +178,7 @@ def evaluate(horse):
         f"同主催・同馬場・近似距離（±200m）で{d_n}走中3着以内{d_top}回。"
         + ("材料不足のため未判定。" if d_grade == "—" else "複数の着順で仮判定。")
         + other_index_note,
+        _run_evidence(dist_runs),
     )
 
     # Course: same venue AND surface, independent of identical-distance check.
@@ -174,7 +188,9 @@ def evaluate(horse):
     course_item = _label(c_grade,
          f"同主催・同競馬場・同馬場{c_n}走中3着以内{c_top}回。"
          + ("着順の母数不足（不得意の証拠ではありません）。" if c_grade == "—"
-            else "コース実績の仮判定。"))
+            else "コース実績の仮判定。")
+         + "距離とコースは同じ過去走が両方の根拠になる場合があります。",
+         _run_evidence(course_runs))
 
     # Recent form: compare only recent finishes WITHIN the current circuit.
     # A former JRA horse with no local runs is not automatically graded D.
@@ -195,6 +211,8 @@ def evaluate(horse):
            "過去の別主催の着順を現在の着順順位に直接換算しません。" if visiting else "")
         + (other_index_note if visiting else "")
         + "近走の勢いは同主催直近最大3走で評価。古い保存履歴は別枠で参照。",
+        (_run_evidence(local_finished) if local_finished else
+         "別主催の実績のみ" if visiting else "実績未確認"),
     )
 
     # Jockey place rate: require sample size rather than trust a percentage.
@@ -217,7 +235,9 @@ def evaluate(horse):
         else:
             j_grade = "D" if n >= 50 else "C"
         j_reason = f"保存された騎手複勝率{rate:g}%／{int(n)}走。コース等の集計条件に限定した参考判定。"
-    jockey_item = _label(j_grade, j_reason)
+    jockey_item = _label(j_grade, j_reason,
+                         f"複勝{rate:g}%／{int(n)}走" if rate is not None and n is not None else
+                         "騎手実績の母数不足")
 
     # Development: require both predicted start and corner4, never historical
     # finished positions disguised as future predictions.
@@ -244,7 +264,10 @@ def evaluate(horse):
         else:
             dev_grade = "B"
             dev_reason = "位置予測が中位、または位置変化あり。"
-    development_item = _label(dev_grade, dev_reason)
+    development_item = _label(dev_grade, dev_reason,
+                              "位置?" if start is not None and any(x in style for x in ("逃", "先")) and start >= 8 else
+                              f"序盤{start:g}→4角{corner:g}" if start is not None and corner is not None else
+                              "予測位置不足")
 
     # Opposition/conditions: only comparable class systems; no automatic
     # penalty/bonus for NAR vs JRA because their class numbers differ.
@@ -269,7 +292,8 @@ def evaluate(horse):
         f"今回の出走馬平均から{relative:+.1f}kg（性齢による設定差に注意）。"
         if relative is not None else "今回の相対斤量未取得。"
     ) + " 強い相手との実績は開催体系の照合なしに換算しません。"
-    conditions_item = _label(co_grade, co_reason)
+    conditions_item = _label(co_grade, co_reason,
+                             shift if co_grade != "—" else "クラス比較不可")
 
     factors = dict(distance=distance_item, course=course_item,
                    recent=recent_item, jockey=jockey_item,
@@ -291,7 +315,9 @@ def detail_html(horse):
             '<div class="six-factor-item"><span class="six-factor-title">'
             + escape(title) + '</span><strong class="six-factor-rank six-factor-'
             + (rank if rank != "—" else "unknown") + '">'
-            + escape(rank) + '</strong><details class="six-factor-more"><summary>根拠</summary>'
+            + escape(rank) + '</strong><small class="six-factor-evidence">'
+            + escape(item.get("evidence") or "根拠未取得")
+            + '</small><details class="six-factor-more"><summary>根拠</summary>'
             + '<small>' + escape(item["reason"]) + '</small></details></div>'
         )
     transfer = ('<p class="six-factor-transfer">別主催の過去走あり：'
