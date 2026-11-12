@@ -9,8 +9,11 @@ def test_live_odds_panel_is_new_import_and_syntax_is_valid():
     page = (ROOT / "app.py").read_text(encoding="utf-8")
     live = (ROOT / "core" / "race_odds_ui_live.py").read_text(encoding="utf-8")
     ast.parse(live)
-    assert "from core.race_odds_ui_live import render as render_prices" in page
+    assert "from core import race_odds_ui_live as odds_ui_module" in page
+    assert "importlib.reload(odds_ui_module).render" in page
+    assert "from core.race_odds_ui_live import render as render_prices" not in page
     assert "from core.race_odds_ui import render as render_prices" not in page
+    assert "取得機能：JRA試験版 11/13" in live
     assert "is_nar = identity['mode'] == 'nar'" in live
     assert "disabled=False" in live
     assert "from .jra_netkeiba_odds import fetch_once" in live

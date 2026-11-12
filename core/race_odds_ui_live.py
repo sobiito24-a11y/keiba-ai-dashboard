@@ -48,6 +48,7 @@ def render(result, view):
     is_nar = identity['mode'] == 'nar'
     if not is_nar:
         jra_id = identity['race_id']
+        st.caption('取得機能：JRA試験版 11/13（接続設定不要・ログイン不要）')
         st.caption('JRAオッズ更新（試験）：netkeibaの無料配信から単勝・複勝・'
                    '馬連・ワイドの取得を試みます。JRA公式の直接取得ではありません。'
                    '無料版には更新間隔・利用制限があり、最新の購入可能価格とは限りません。')
