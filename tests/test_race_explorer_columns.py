@@ -42,12 +42,12 @@ def test_schema_covers_every_comparison_cell_and_has_no_ai_mark_or_membership(mo
     specs=columns(view)
     keys=[item["key"] for item in specs]
     assert len(keys)==len(set(keys))
-    assert keys[:8]==["user", "frame", "no", "name", "age", "jockey", "odds", "popularity"]
+    assert keys[:9]==["user", "frame", "no", "name", "age", "jockey", "odds", "place_odds", "popularity"]
     if mode == "nar":
-        assert keys[8:12] == ["nar_hybrid_score", "nar_hybrid_rank", "ability", "ability_rank"]
+        assert keys[9:13] == ["nar_hybrid_score", "nar_hybrid_rank", "ability", "ability_rank"]
         assert "nar_form_rank" not in keys and "frozen_review" not in keys
     else:
-        assert keys[8:10] == ["ability", "ability_rank"]
+        assert keys[9:11] == ["ability", "ability_rank"]
         assert "nar_hybrid_score" not in keys
     assert keys[keys.index("run_old"):keys.index("run_old")+5]==[
         "run_old", "run_middle", "run_latest", "average", "maximum"]
@@ -100,7 +100,7 @@ def test_unknown_or_invalid_numeric_cells_are_json_null_never_zero(bad):
     for run in facts["runs"]:
         run["time_index"]=bad
     item=records([h])["7"]
-    for key in ("score","rank","frame","corner","popularity","odds","weight","weight_delta","rest_days",
+    for key in ("score","rank","frame","corner","popularity","odds","place_odds","place_odds_high","weight","weight_delta","rest_days",
                 "average","maximum","ability","ability_rank","run_old","run_middle","run_latest"):
         assert item[key] is None,key
     assert not item["run_middle_is_maximum"]
@@ -252,3 +252,31 @@ def test_only_compact_class_cell_removes_redundant_previous_word():
     assert records([h])["7"]["class_attention"]=="情報未取得"
     h["profile"]["class_attention"]["display"]="交流Jpn3 2着 · 交流Jpn2 4着"
     assert records([h])["7"]["class_attention"]=="交流Jpn3 2着 · 交流Jpn2 4着"
+
+
+def test_place_observation_bounds_are_preserved_as_numeric_sort_values():
+    h=horse()
+    h["place_odds"]="1.2〜1.6"
+    h["sort_values"]["place_odds_low"]=1.2
+    h["sort_values"]["place_odds_high"]=1.6
+    before=deepcopy(h)
+    rec=records([h])["7"]
+    assert (rec["odds"],rec["place_odds"],rec["place_odds_high"])==(13.6,1.2,1.6)
+    assert h==before
+    h["sort_values"]["place_odds_low"]=None
+    h["sort_values"]["place_odds_high"]=None
+    assert records([h])["7"]["place_odds"] is None
+    assert records([h])["7"]["place_odds_high"] is None
+
+
+def test_place_range_never_uses_win_as_fallback():
+    h=horse()
+    h["place_odds"]="未取得"
+    assert records([h])["7"]["place_odds"] is None
+    h["place_odds"]="2.0〜5.2"
+    h["sort_values"].pop("place_odds_low",None)
+    h["sort_values"].pop("place_odds_high",None)
+    assert records([h])["7"]["place_odds"] == 2.0
+    h["place_odds"]="取消・除外"
+    h["odds"]="取消・除外"
+    assert records([h])["7"]["place_odds"] is None
