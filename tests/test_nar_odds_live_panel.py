@@ -17,6 +17,7 @@ def test_live_odds_panel_is_new_import_and_syntax_is_valid():
     assert "is_nar = identity['mode'] == 'nar'" in live
     assert "disabled=False" in live
     assert "from .jra_netkeiba_odds import fetch_once" in live
+    assert "単勝・複勝のみ取得" in live
     assert "180" in live  # per-race free odds cooldown
     assert "NAR公式ZIPモード" in live
     assert "fetch_daily, parse_daily_zip, locator" in live
