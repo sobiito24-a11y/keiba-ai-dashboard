@@ -213,10 +213,19 @@ def fetch_once(identity, race_info, *, get=None, now=None):
                            timeout=10, allow_redirects=False,
                            headers={"Accept": "application/json"})
             if response.status_code != 200:
-                raise ValueError("無料オッズ配信のアクセス制限または通信エラーです")
+                # Only safe HTTP codes; do not echo URLs, cookies or raw HTML.
+                status = response.status_code
+                if status in (401, 403):
+                    raise ValueError(f"配信元からHTTP {status}（外部アプリのアクセスが制限されています）")
+                if status == 429:
+                    raise ValueError("配信元からHTTP 429（アクセス回数制限）。再取得を繰り返さないでください")
+                raise ValueError(f"配信元からHTTP {status}。接続元が利用できません")
             if len(response.content) > MAX_RESPONSE_BYTES:
                 raise ValueError("配信データが大きすぎます")
-            result = response.json()
+            try:
+                result = response.json()
+            except ValueError as exc:
+                raise ValueError("配信元がJSON以外の応答を返しました（アクセス制限や仕様変更の可能性）") from exc
             if not isinstance(result, dict):
                 raise ValueError("配信データのJSON形式が不正です")
             raw[kind] = result
