@@ -155,7 +155,11 @@
     const rows = [...body.querySelectorAll('tr[data-horse]')];
     rows.sort((a, b) => {
       const ah = horses.get(a.dataset.horse), bh = horses.get(b.dataset.horse);
-      return compareValues(fieldValue(ah, state.sort), fieldValue(bh, state.sort), spec.type, state.direction)
+      // Research S/A/B/C/D sorts by its explicit tier order, never alphabetically.
+      const researchGrade = state.sort === 'research_sabcd';
+      const sortKey = researchGrade ? 'research_sabcd_sort' : state.sort;
+      return compareValues(fieldValue(ah, sortKey), fieldValue(bh, sortKey),
+                           researchGrade ? 'number' : spec.type, state.direction)
         || compareValues(fieldValue(ah, 'no'), fieldValue(bh, 'no'), 'number', 'asc');
     });
     let visible = 0;
