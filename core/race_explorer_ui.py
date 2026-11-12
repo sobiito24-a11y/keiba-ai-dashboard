@@ -73,8 +73,13 @@ def _cell(horse, cells, key):
     if key == 'research_sabcd':
         if item not in ('S', 'A', 'B', 'C', 'D'):
             return '<span class="missing-cell">判定不可</span>'
-        info = '<small class="research-sabcd-label">'+value(cells.get('research_sabcd_notes'))+'</small>' if cells.get('research_sabcd_notes') else ''
-        retro = '<small class="research-sabcd-retro">後付け</small>' if cells.get('research_sabcd_retro') else ''
+        # The label is the *role of the grade*, not one selected positive
+        # feature.  An individual feature (e.g. good jockey) can exist in D.
+        # Keep all feature explanations intact in cell title and horse detail.
+        role = {'S': '軸候補', 'A': '有力相手', 'B': '相手候補',
+                'C': '追加検討', 'D': '優先度低'}[item]
+        info = '<small class="research-sabcd-label">'+value(role)+'</small>'
+        retro = '<small class="research-sabcd-retro" title="保存済みの過去レースを現在の研究モデルで再計算。発走前の当時予想ではありません">後日算出</small>' if cells.get('research_sabcd_retro') else ''
         return ('<span class="research-sabcd research-sabcd-'+plain(item)+'"'
                 ' aria-label="研究用'+plain(item)+'">'+value(item)+'</span>'+info+retro)
     if key == 'class_attention':
