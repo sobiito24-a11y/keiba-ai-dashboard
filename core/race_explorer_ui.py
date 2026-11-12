@@ -86,7 +86,7 @@ def _cell(horse, cells, key):
             score_text = '<small class="research-sabcd-label" title="未校正の研究モデル値（真の馬券内確率ではありません）">モデル値 '+plain(f'{score:.3f}')+'</small>'
         info = ('<small class="research-sabcd-label">'+value(role)+'</small>'
                 if not trial else '<small class="research-sabcd-label">斤量・クラス試験</small>')
-        retro = ('<small class="research-sabcd-retro" title="保存済みの過去レースを研究モデルで後日再評価">後日算出</small>'
+        retro = ('<small class="research-sabcd-retro" title="保存済みの過去レースを研究モデルで後日再評価。発走前の当時予想ではありません">後日算出</small>'
                  if not trial and cells.get('research_sabcd_retro') else '')
         return ('<span class="research-sabcd research-sabcd-'+plain(item)+'"'
                 ' title="'+plain(reason)+'"'
