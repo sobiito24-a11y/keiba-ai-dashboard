@@ -200,3 +200,54 @@ def test_exact_900m_winning_evidence_not_hidden_by_nearby_1000m():
     html = BeautifulSoup(detail_html(h), "html.parser")
     assert "同距離1戦1勝" in html.text
     assert "同じ過去走を重複" in html.text
+
+
+def test_high_pace_both_front_3_has_distinct_position_evidence_in_nar_and_jra():
+    for mode in ("nar", "jra"):
+        h = sample_horse()
+        h["mode"] = mode
+        h["race_context"]["netkeiba_pace"] = "H"
+        before = deepcopy(h)
+        x = evaluate(h)["factors"]["development"]
+        assert x["grade"] == "A"
+        assert "序盤・4角とも1〜3番手" in x["reason"]
+        assert "消耗に注意" in x["reason"]
+        assert x["evidence"] == "序盤2→4角3"
+        assert h == before
+
+
+def test_class_up_and_down_do_not_get_unvalidated_auto_C_or_auto_A():
+    h = sample_horse()
+    h["profile"]["class_shift"] = "昇級"
+    h["research_sabcd_weight_class"]["materials"]["weight_delta"] = 3
+    before = deepcopy(h)
+    x = evaluate(h)["factors"]["conditions"]
+    assert x["grade"] == "B" and "昇級" in x["evidence"]
+    assert "斤量+3kg" in x["evidence"]
+    assert "中立B" in x["reason"]
+    assert h == before
+    h["profile"]["class_shift"] = "降級"
+    h["research_sabcd_weight_class"]["materials"]["weight_delta"] = -2
+    x = evaluate(h)["factors"]["conditions"]
+    assert x["grade"] == "B" and "降級" in x["evidence"]
+    assert "斤量-2kg" in x["evidence"]
+
+
+def test_class_unverifiable_is_missing_not_d_even_if_weight_known():
+    h = sample_horse()
+    h["profile"]["class_shift"] = "判定不可"
+    x = evaluate(h)["factors"]["conditions"]
+    assert x["grade"] == "—"
+    assert "比較不可" in x["evidence"]
+    assert "斤量-2kg" in x["evidence"]
+
+
+def test_exact_win_visible_without_promoting_sabcde_or_final_score():
+    h = sample_horse()
+    h["profile"]["runs"][0]["finish"] = "1着"
+    old = deepcopy(h)
+    x = evaluate(h)
+    assert x["factors"]["distance"]["grade"] == "—"
+    assert "同距離1戦1勝" in x["factors"]["distance"]["evidence"]
+    assert x["factors"]["recent"]["grade"] == "—"
+    assert h == old and h["research_sabcd_weight_class"]["grade"] == "A"
