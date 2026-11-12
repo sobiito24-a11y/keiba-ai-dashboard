@@ -162,3 +162,27 @@ def test_comma_thousands_are_accepted_no_synthetic_numbers():
     p["4"]["data"]["odds"]["4"]["0102"]=["1,234.5","0.0","5"]
     q=jra.parse_responses(p,ID,INFO,now=CLOCK)
     assert next(x["low"] for x in q["prices"] if x["kind"]=="quinella" and x["horses"]==[1,2])==1234.5
+
+
+@pytest.mark.parametrize("http,phrase", [
+    (403, "HTTP 403"),
+    (429, "HTTP 429"),
+    (503, "HTTP 503"),
+])
+def test_free_source_http_failures_have_safe_useful_diagnostics(http, phrase):
+    class Response:
+        status_code=http
+        content=b"<html>not authenticated</html>"
+        def json(self):
+            raise AssertionError("Non-200 response must not be parsed as odds")
+    with pytest.raises(ValueError,match=phrase):
+        jra.fetch_once(ID,INFO,get=lambda *_a,**_kw:Response(),now=CLOCK)
+
+
+def test_html_from_free_source_is_reported_not_imported():
+    class Response:
+        status_code=200
+        content=b"<html>please wait</html>"
+        def json(self): raise ValueError("Expected JSON")
+    with pytest.raises(ValueError,match="JSON以外"):
+        jra.fetch_once(ID,INFO,get=lambda *_a,**_kw:Response(),now=CLOCK)
