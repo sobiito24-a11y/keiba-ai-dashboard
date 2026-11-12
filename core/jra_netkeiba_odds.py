@@ -114,7 +114,9 @@ def parse_responses(payloads, identity, race_info, *, now=None):
         if updated > now + timedelta(minutes=5):
             raise ValueError("配信元の時刻が未来のため取込を中止しました")
         bounds = _source_date_bounds(race_info)
-        if bounds and not (bounds[0] <= updated < bounds[1]):
+        if bounds is None:
+            raise ValueError("保存レースの開催日が未取得のため安全に照合できません")
+        if not (bounds[0] <= updated < bounds[1]):
             raise ValueError("保存レースの開催日とオッズ更新日が一致しません")
         groups = data.get("odds")
         if not isinstance(groups, dict) or kind not in groups or not isinstance(groups[kind], dict):
