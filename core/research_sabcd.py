@@ -202,7 +202,7 @@ def evaluate_race(view):
             f"研究{tier}／材料：{why}。"
             + (f"本来{row['raw']}相当→1レース人数上限による繰下げ。" if demoted else "")
             + "モデルの推定値は馬券内率を保証しません。正式印・純能力は不変。"
-            + ("過去開催は後付け再計算（学習期間と重複）で、当時の予想ではありません。" if posthoc else "")
+            + ("過去開催を現在の研究モデルで後日算出（学習期間と重複）。当時の発走前予想ではありません。" if posthoc else "")
         )
         result[row["no"]] = dict(
             grade=tier, score=round(row["p"], 4), raw_grade=row["raw"],

@@ -398,3 +398,39 @@
  .race-explorer .explorer-table td .research-sabcd-label,
  .race-explorer .explorer-table td .research-sabcd-retro{font-size:8px}
 }
+
+
+/* SABCD research cells: pastel full-cell differentiation, without painting
+   the horse or the whole row. The letter remains legible without color.
+   Scope includes both the interactive all-runner table and folded review,
+   whose zebra-striping uses !important backgrounds. */
+.race-explorer .explorer-table tbody tr td.col-research_sabcd.research-tier-S,
+#postrace-review .postrace-review-scroll .explorer-table tbody tr td.col-research_sabcd.research-tier-S{
+  background:#e6f4ec!important;
+  box-shadow:inset 3px 0 #388165!important;
+}
+.race-explorer .explorer-table tbody tr td.col-research_sabcd.research-tier-A,
+#postrace-review .postrace-review-scroll .explorer-table tbody tr td.col-research_sabcd.research-tier-A{
+  background:#e8f2fc!important;
+  box-shadow:inset 3px 0 #4b81b5!important;
+}
+.race-explorer .explorer-table tbody tr td.col-research_sabcd.research-tier-B,
+#postrace-review .postrace-review-scroll .explorer-table tbody tr td.col-research_sabcd.research-tier-B{
+  background:#fff3dd!important;
+  box-shadow:inset 3px 0 #b48b3e!important;
+}
+.race-explorer .explorer-table tbody tr td.col-research_sabcd.research-tier-C,
+#postrace-review .postrace-review-scroll .explorer-table tbody tr td.col-research_sabcd.research-tier-C{
+  background:#f0f3f6!important;
+  box-shadow:inset 3px 0 #8798a8!important;
+}
+.race-explorer .explorer-table tbody tr td.col-research_sabcd.research-tier-D,
+#postrace-review .postrace-review-scroll .explorer-table tbody tr td.col-research_sabcd.research-tier-D{
+  background:#f9eaea!important;
+  box-shadow:inset 3px 0 #c28784!important;
+}
+.race-explorer .explorer-table .research-sabcd-S{background:#cae8d8;border-color:#72af91;color:#245f48}
+.race-explorer .explorer-table .research-sabcd-A{background:#d3e6f9;border-color:#86b3da;color:#245a83}
+.race-explorer .explorer-table .research-sabcd-B{background:#f9e3af;border-color:#d0af63;color:#765217}
+.race-explorer .explorer-table .research-sabcd-C{background:#e3eaf0;border-color:#acbac7;color:#485968}
+.race-explorer .explorer-table .research-sabcd-D{background:#f2d4d2;border-color:#d8aaa6;color:#874744}
