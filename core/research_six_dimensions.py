@@ -71,7 +71,7 @@ def _run_history(horse):
     context = horse.get("race_context") or {}
     current = _date(context.get("race_date") or context.get("date"))
     history = []
-    for run in profile.get("runs", ()) or ():
+    for run in [*(profile.get("runs", ()) or ()), *(profile.get("extended_history", ()) or ())]:
         if not isinstance(run, Mapping):
             continue
         day = _date(run.get("date"))
@@ -87,9 +87,21 @@ def _run_history(horse):
             index=_num(run.get("time_index")),
             class_raw=str(run.get("class_raw") or "").strip(),
         ))
-    history.sort(key=lambda x: x["day"], reverse=True)
-    # This source only preserves the most recent three runs; be transparent.
-    return history[:3]
+    # The normalized recent-three and the saved original archive often
+    # overlap.  Keep one record per real past start, preferring whichever
+    # copy has verified index/finish values.
+    merged = {}
+    for run in history:
+        key = (run["day"], run["venue"], run["surface"], run["distance"])
+        old = merged.get(key)
+        if old is None:
+            merged[key] = run
+        else:
+            for field in ("finish", "index", "class_raw"):
+                if (old.get(field) is None or old.get(field) == "") and run.get(field) is not None:
+                    old[field] = run[field]
+    unique = sorted(merged.values(), key=lambda x: x["day"], reverse=True)
+    return unique[:12]
 
 
 def _label(grade, reason):
@@ -166,7 +178,7 @@ def evaluate(horse):
 
     # Recent form: compare only recent finishes WITHIN the current circuit.
     # A former JRA horse with no local runs is not automatically graded D.
-    local_finished = [r for r in local if r["finish"] is not None]
+    local_finished = [r for r in local[:3] if r["finish"] is not None]
     r_grade, r_top, r_n = _sample_grade(local_finished)
     if r_n >= 2:
         if r_top >= 2 and local_finished[0]["finish"] == 1:
@@ -182,7 +194,7 @@ def evaluate(horse):
            if transfer and r_n < 2 else
            "過去の別主催の着順を現在の着順順位に直接換算しません。" if visiting else "")
         + (other_index_note if visiting else "")
-        + "直近3走を超える全履歴は本評価では未確認。",
+        + "近走の勢いは同主催直近最大3走で評価。古い保存履歴は別枠で参照。",
     )
 
     # Jockey place rate: require sample size rather than trust a percentage.
@@ -265,7 +277,7 @@ def evaluate(horse):
     return dict(factors=factors, version=VERSION, transfer_evidence=transfer,
                 recent_source_count=len(runs), local_count=len(local),
                 other_circuit_count=len(visiting),
-                note="6項目は保存情報からの暫定的な根拠評価。総合研究SABCDの計算には使用しません。")
+                note="6項目は保存情報からの暫定的な根拠評価。履歴は保存で確認できた最大12走のみ。総合研究SABCDの計算には使用しません。")
 
 
 def detail_html(horse):
