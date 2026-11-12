@@ -304,5 +304,10 @@ def overlay(view, quote, label):
         if ns[0] in (quote or {}).get('withdrawn', []):
             h['odds'] = h['place_odds'] = '取消・除外'
             h['popularity'] = None
-        h.setdefault('sort_values',{}).update(odds=prices.get(('win',ns),{}).get('low') if ns[0] not in (quote or {}).get('withdrawn',[]) else None,popularity=h['popularity'])
+        place_price = prices.get(('place', ns))
+        h.setdefault('sort_values',{}).update(
+            odds=prices.get(('win',ns),{}).get('low') if ns[0] not in (quote or {}).get('withdrawn',[]) else None,
+            place_odds_low=place_price['low'] if place_price else None,
+            place_odds_high=place_price['high'] if place_price else None,
+            popularity=h['popularity'])
     return out
