@@ -124,3 +124,6 @@
 .six-factor-more>small{display:block;padding-top:5px;white-space:normal;overflow-wrap:anywhere}
 .six-factor-transfer{font-size:12px;margin:9px 0;color:#4f5e6d}
 @media(max-width:660px){.six-factor-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.six-factor-item{padding:7px}}
+
+/* Show verified single-start facts even when the provisional grade is —. */
+.six-factor-evidence{flex-basis:100%;font-size:11px;line-height:1.35;color:#40586b;font-weight:600;overflow-wrap:anywhere}
