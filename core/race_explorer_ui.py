@@ -53,6 +53,12 @@ def _cell(horse, cells, key):
                 '<small>'+value(cells.get(key+'_date'))+'</small>'+note_html)
     if key == 'odds':
         return '<b class="metric-number">'+value(item)+'倍</b>' if item is not None else '<span class="missing-cell">'+('取消・除外' if cells.get('withdrawn') is True else '未取得')+'</span>'
+    if key == 'place_odds':
+        if item is None or cells.get('place_odds_high') is None:
+            return '<span class="missing-cell">'+('取消・除外' if cells.get('withdrawn') is True else '未取得')+'</span>'
+        upper = cells['place_odds_high']
+        interval = value(item)+('〜'+value(upper) if upper != item else '')+'倍'
+        return '<span class="place-odds-range">'+interval+'</span>'
     if key == 'popularity':
         return value(item)+'番人気' if item is not None else '<span class="missing-cell">未取得</span>'
     if key == 'rest_days':
@@ -131,11 +137,11 @@ def _options(schema, first=None):
 
 def comparison_widths():
     """One width map shared by the normal and mirrored post-race table."""
-    widths = dict(user=42, frame=36, no=44, name=190, jockey=85, score=120, nar_hybrid_score=108, frozen_review=128, class_attention=178, career_course=142,
+    widths = dict(user=42, frame=36, no=44, name=190, jockey=85, place_odds=98, score=120, nar_hybrid_score=108, frozen_review=128, class_attention=178, career_course=142,
                   research_sabcd=70, rank=70, popularity=70, style=79, corner=82, training=60,
                   run_old=134, run_middle=134, run_latest=134, jockey_change=160,
                   record_venue=190, record_distance=190, record_venue_distance=190, materials=220)
-    mobile_widths = dict(user=34, frame=28, no=34, name=118, research_sabcd=62, jockey=68,
+    mobile_widths = dict(user=34, frame=28, no=34, name=118, research_sabcd=62, jockey=68, place_odds=83,
                          score=100, reference_score=110, nar_hybrid_score=93, frozen_review=104, class_attention=148, career_course=112, popularity=56, style=73,
                          corner=77, training=48, run_old=108, run_middle=108,
                          run_latest=108, jockey_change=128, record_venue=156,
