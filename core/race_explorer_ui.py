@@ -158,7 +158,7 @@ def lineup_html(view):
             content.append('<td class="'+cls+'" data-label="'+plain(spec['label'])+'" title="'+plain(tooltip)+'">'+_cell(horse, row, key)+'</td>')
         rows.append('<tr data-row="'+plain(no)+'" data-horse="'+plain(no)+'">'+''.join(content)+'</tr>')
     class_help = '<p class="help">「クラス・重賞注目」は前走の「前走」の文字だけ省略した表示です。過去3走の根拠は列の説明・馬別詳細で確認できます。加点・純能力順位・正式印は変更しません。</p>'
-    sabcd_help = '<p class="help">研究SABCDは全頭を個別評価し、S・A・Bも頭数制限なしです。隣の「試験SABCD」は斤量とクラスを追加した別の研究モデルです。モデル値は校正済み馬券内確率ではなく、どちらも純能力・正式印・購入判断に影響しません。過去開催は後日算出で、当時の発走前予想ではありません。</p>'
+    sabcd_help = '<p class="help">研究SABCDは全頭を個別評価し、S・A・Bも頭数制限なしです。隣の「試験SABCD」は斤量とクラスを追加した別の研究モデルです。モデル値は校正済み馬券内確率ではなく、どちらも純能力・正式印・購入判断に影響しません。過去の保存開催では「後日算出」と表示します。これは当時の発走前予想ではありません。</p>'
     nar_help = ('<p class="help">研究用の「今回評価」は横一覧から非表示にしました。'
                 '馬名の詳細で根拠を確認できます。印・正式順位・純能力は変更しません。</p>'
                 if view and view[0].get("mode") == "nar" else '')
