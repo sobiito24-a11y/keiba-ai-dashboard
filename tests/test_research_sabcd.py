@@ -50,27 +50,38 @@ def test_frozen_model_matches_offline_sklearn_training_predictions():
 
 
 @pytest.mark.parametrize("mode",["jra","nar"])
-def test_one_s_two_a_three_b_cap_and_no_scores_marks_modified(mode,monkeypatch):
+def test_uncapped_grade_and_no_scores_or_marks_modified(mode, monkeypatch):
     import core.research_sabcd as mod
-    view=[horse(i,mode=mode) for i in range(1,11)]
-    before=deepcopy(view)
-    # Deliberately create >1 raw-S candidate and enough A/B overflow.
-    monkeypatch.setattr(mod,"model_probability",lambda _mode, vec: .90 - .03*(vec[0]*9))
-    outcomes=evaluate_race(view)
-    assert outcomes["1"]["grade"]=="S"
-    assert outcomes["2"]["raw_grade"]=="S" and outcomes["2"]["grade"]=="A"
-    assert outcomes["3"]["grade"]=="A"
-    assert outcomes["4"]["grade"]=="B"
-    assert outcomes["5"]["grade"]=="B"
-    assert outcomes["6"]["grade"]=="B"
-    counts={g:sum(r["grade"]==g for r in outcomes.values()) for g in "SABCD"}
-    assert counts["S"]<=1 and counts["A"]<=2 and counts["B"]<=3
-    assert sum(counts.values())==10
-    assert view==before
-    projected=assign_to_view(view)
+    view = [horse(i, mode=mode) for i in range(1, 11)]
+    before = deepcopy(view)
+    # Same raw model values as before; no one can be demoted for a quota.
+    monkeypatch.setattr(mod, "model_probability",
+                        lambda _mode, vec: .90 - .03*(vec[0]*9))
+    outcomes = evaluate_race(view)
+    assert all(outcomes[str(i)]["grade"] == "S" for i in range(1, 8))
+    assert all(outcomes[str(i)]["grade"] == "A" for i in range(8, 11))
+    assert all(row["grade"] == row["raw_grade"] and not row["demoted"]
+               for row in outcomes.values())
+    assert sum(x["grade"] == "S" for x in outcomes.values()) == 7
+    assert view == before
+    projected = assign_to_view(view)
     assert projected is view
-    assert all(h["score"]==before[i]["score"] and h["mark"]==before[i]["mark"] for i,h in enumerate(view))
-    assert all(h["research_sabcd"]["version"]==VERSION for h in view)
+    assert all(h["score"] == before[i]["score"]
+               and h["mark"] == before[i]["mark"]
+               for i, h in enumerate(view))
+    assert all(h["research_sabcd"]["version"] == VERSION for h in view)
+
+
+def test_a_and_b_are_also_unlimited(monkeypatch):
+    import core.research_sabcd as mod
+    view = [horse(i) for i in range(1, 13)]
+    monkeypatch.setattr(mod, "model_probability", lambda mode, x: .62)
+    result = evaluate_race(view)
+    assert len(result) == 12
+    assert all(x["grade"] == "A" and not x["demoted"]
+               for x in result.values())
+    monkeypatch.setattr(mod, "model_probability", lambda mode, x: .40)
+    assert all(x["grade"] == "B" for x in evaluate_race(view).values())
 
 
 def test_jra_nar_same_features_have_different_model():
