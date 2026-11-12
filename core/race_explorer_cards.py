@@ -212,6 +212,8 @@ def detail_html(horse):
         ("研究格付け根拠", cells.get("research_sabcd_reason")),
         ("軸・押さえ位置づけ（研究）", cells.get("research_positioning_label")),
         ("軸・押さえ根拠／判定不可の理由", cells.get("research_positioning_reason")),
+        ("距離・近走の適性注目（研究）", cells.get("research_suitability_label")),
+        ("適性注目の根拠・注意", cells.get("research_suitability_reason")),
     ]
     if horse.get("mode") == "jra":
         basic.append(("調教評価", facts.get("training")))
