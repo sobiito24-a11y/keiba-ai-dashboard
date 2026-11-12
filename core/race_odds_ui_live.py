@@ -153,6 +153,44 @@ def render(result, view):
                         'JRAオッズ取得に失敗。無料配信の利用制限・応答変更・通信状態を確認してください。'
                         '保存時の予想と旧オッズ履歴は保持しています。')
 
+    # Show the outcome immediately below the button, not below several long
+    # import / screenshot widgets.  Otherwise a valid click appears inert
+    # on narrow mobile screens.
+    notice = st.session_state.get(key+'_status')
+    if notice:
+        if notice.startswith(('JRAオッズ未取得', 'JRAオッズ取得に失敗',
+                               'NAR公式オッズ未取得', '公式オッズの取得・照合に失敗')):
+            st.error('オッズ更新結果：' + notice)
+        elif ('再取得' in notice or '抑制' in notice or '連続' in notice):
+            st.warning('オッズ更新結果：' + notice)
+        else:
+            st.success('オッズ更新結果：' + notice)
+        # A successful fetch gets a compact, verifiable source quote sample.
+        # Do not show stale saved quote examples as if a new fetch succeeded.
+        current_id = runtime.get('active_observation')
+        active = next((x for x in reversed(state['history'])
+                       if x.get('observation_id') == current_id), None)
+        if (active is not None and ('取得：' in notice or '照合。' in notice
+                                   or notice.startswith('NAR公式ZIPから'))):
+            st.caption('取得元：' + str(active.get('source') or '不明') +
+                       '｜配信元更新：' + odds.format_time(active.get('observed_at')) +
+                       '｜' + odds.freshness(active, odds.start_from_result(result)))
+            names = {int(h['horse_no']): h['name'] for h in identity['horses']}
+            singles = sorted(
+                [dict(馬番=p['horses'][0],
+                      馬名=names.get(p['horses'][0], ''),
+                      単勝=f"{p['low']:.1f}倍")
+                 for p in active['prices'] if p['kind'] == 'win'],
+                key=lambda item: item['馬番'])
+            if singles:
+                st.dataframe(singles[:8], hide_index=True, use_container_width=True)
+                st.caption('単勝の先頭最大8頭を表示。全頭のオッズは下の一覧へ反映します。')
+            else:
+                st.warning('単勝オッズが未取得です。取得できた券種のみ下の詳細で確認してください。')
+    elif not is_nar:
+        st.caption('更新ボタンを押すと、ここに成功／失敗と取得元更新時刻を表示します。'
+                   '終了レースの場合は過去の参考オッズになります。')
+
     with st.expander("直前オッズを数行で手入力（外部サイトを見ながら）", expanded=False):
         st.caption("例：『単勝 3 5.2』『馬連 3-7 14.8』『ワイド 3-7 4.5-5.8』。"
                    "複勝・ワイドは範囲を指定可能。同じレースの馬番と馬名、表示倍率を確認してください。")
@@ -223,8 +261,6 @@ def render(result, view):
                 caption('現在の読込元と一致する.keibaが確認できないため、コピー出力を保留しています。')
         st.download_button('オッズ履歴JSONを保存', json.dumps(dict(odds_history=state['history']), ensure_ascii=False, indent=2),
                            file_name=identity['race_id']+'_odds.json', key=key+'_json')
-    if st.session_state.get(key+'_status'):
-        st.info(st.session_state[key+'_status'])
     choices = [('未取得：新しいHTMLを取り込んでください', None)]
     choices += [('保存時オッズ', q) for q in state['saved']] + [('更新オッズ', q) for q in state['history']]
     # A saved prediction's price is not the current pre-race observation.

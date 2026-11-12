@@ -45,3 +45,19 @@ def test_jra_free_odds_source_links_not_false_live_quotes():
     # Free type=init observations are not official JRA realtime prices.
     assert "JRA公式の直接取得ではありません" in panel
     assert "予想オッズを代用しません" in panel
+
+
+def test_update_status_and_prices_are_directly_below_the_button():
+    panel = (ROOT / "core" / "race_odds_ui_live.py").read_text(encoding="utf-8")
+    button = panel.index("if st.button('オッズ更新")
+    outcome = panel.index("notice = st.session_state.get(key+'_status')")
+    manual = panel.index('with st.expander("直前オッズを数行')
+    assert button < outcome < manual
+    assert "st.error('オッズ更新結果：" in panel
+    assert "st.warning('オッズ更新結果：" in panel
+    assert "st.success('オッズ更新結果：" in panel
+    assert "st.dataframe(singles[:8]" in panel
+    assert "配信元更新：" in panel
+    assert "提供元" not in panel[button:manual] or "source" in panel[button:manual]
+    # The same message should not appear again below many mobile expanders.
+    assert panel.count("notice = st.session_state.get(key+'_status')") == 1
