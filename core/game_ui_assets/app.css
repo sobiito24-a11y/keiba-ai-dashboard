@@ -32,3 +32,12 @@ h1,h2,h3,h4,h5,h6,[data-testid="stMarkdownContainer"]{color:var(--game-text)}
 .game-race-header h2{color:#17283d!important}.game-eyebrow{color:#126174}.game-race-meta>span{background:#edf2f7;border-color:#d4dce7}.game-race-meta small{color:#53647a}
 .ka-chip,.development-horse{background:#edf2f7!important;color:#17283d!important;border-color:#d4dce7!important}
 @media(max-width:700px){.block-container{padding-left:.35rem!important;padding-right:.35rem!important}}
+
+
+/* Compact, intentionally neutral race-level research label (no betting signal). */
+.game-race-tendency{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 12px;margin:-3px 0 14px}
+.game-race-tendency-key{font-size:12px;color:#6b7b8d}
+.game-race-tendency-label{font-size:15px;font-weight:700;color:#233c57}
+.game-race-tendency-detail{font-size:12px;color:#4c5e73}
+.game-race-tendency-caveat{flex:0 0 100%;font-size:11px;color:#68798b;line-height:1.5}
+@media(max-width:700px){.game-race-tendency{gap:4px 8px}.game-race-tendency-detail{flex-basis:100%}.game-race-tendency-caveat{font-size:10px}}

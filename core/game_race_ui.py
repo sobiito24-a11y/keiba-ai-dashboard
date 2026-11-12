@@ -318,7 +318,7 @@ def theme_css():
     return '<style>'+(ASSETS/'app.css').read_text(encoding='utf-8')+'</style>'
 
 
-def race_header(result):
+def race_header(result, view=None):
     info = result.race_info or {}
     name = text(result.race_name or pick(info,'race_name','レース名')) or 'レース情報'
     values = [('区分',result.race_mode.upper()),('開催日',pick(info,'race_date','date','開催日')),
@@ -339,7 +339,11 @@ def race_header(result):
         p={text(pick(h,'netkeiba_pace','_netkeiba_pace','provider_pace_market')) for h in rows}
         p.discard('')
         if len(p)==1 and next(iter(p)) in ('H','M','S'):values[-1]=('ペース',next(iter(p)))
-    return '<section class="game-race-header"><span class="game-eyebrow">KEIBA AI / RACE BRIEFING</span><h2>'+escape(name)+'</h2><div class="game-race-meta">'+''.join('<span><small>'+escape(k)+'</small> '+escape(text(v) or '—')+'</span>' for k,v in values)+'</div></section>'
+    # The assessment is based only on the complete display projection; a
+    # missing view never produces a confident label.
+    from .race_tendency import as_html
+    assessment = as_html(view) if view is not None else ''
+    return '<section class="game-race-header"><span class="game-eyebrow">KEIBA AI / RACE BRIEFING</span><h2>'+escape(name)+'</h2>'+assessment+'<div class="game-race-meta">'+''.join('<span><small>'+escape(k)+'</small> '+escape(text(v) or '—')+'</span>' for k,v in values)+'</div></section>'
 
 
 def render_component(view, race_key, paper_decision=None, postrace=None):
