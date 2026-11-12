@@ -126,3 +126,38 @@ def test_saved_source_older_runs_are_filtered_before_the_current_race():
     assert saved[-1]["venue"] == "東京"
     assert saved[-1]["time_index"] == "107"
     assert all(str(row["date"]) < "2026-11-14" for row in saved)
+
+
+def test_one_same_course_distance_win_shows_evidence_without_overconfident_rank():
+    h = sample_horse()
+    # Exactly one local turf/dirt match, won; the prior JRA races are not
+    # equivalent samples for ranking NAR distance or course.
+    h["profile"]["runs"][0]["finish"] = "1着"
+    ev = evaluate(h)["factors"]
+    assert ev["distance"]["grade"] == "—"
+    assert ev["course"]["grade"] == "—"
+    assert ev["recent"]["grade"] == "—"
+    assert ev["distance"]["evidence"] == "1戦1勝"
+    assert ev["course"]["evidence"] == "1戦1勝"
+    assert ev["recent"]["evidence"] == "1戦1勝"
+    html = BeautifulSoup(detail_html(h), "html.parser")
+    assert len(html.select(".six-factor-evidence")) == 6
+    assert sum("1戦1勝" in tag.text for tag in html.select(".six-factor-evidence")) == 3
+
+
+def test_all_six_ratings_explain_uncertainty_and_do_not_shift_overall_grade():
+    h = sample_horse()
+    old = deepcopy(h)
+    d = evaluate(h)
+    for key in ["distance", "course", "recent", "jockey", "development", "conditions"]:
+        assert d["factors"][key]["evidence"]
+        assert d["factors"][key]["grade"] in ("S", "A", "B", "C", "D", "—")
+    assert h == old
+    assert h["research_sabcd_weight_class"]["grade"] == "A"
+    assert h["mark"] == "◎"
+
+
+def test_venue_spelling_variant_does_not_hide_compatible_local_history():
+    from core.research_six_dimensions import _jurisdiction
+    assert _jurisdiction("川﨑") == "nar"
+    assert _jurisdiction("川崎競馬場") == "nar"
