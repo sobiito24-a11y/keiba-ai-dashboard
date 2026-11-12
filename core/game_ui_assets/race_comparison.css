@@ -372,3 +372,29 @@
     line-height:1.3;
   }
 }
+
+
+/* Research-only S/A/B/C/D: compact relative candidate grouping.
+   Colors carry no probabilistic promise and do not alter saved predictions. */
+.race-explorer .explorer-table .research-sabcd{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:31px;min-height:27px;border:1px solid #a6bbca;
+  border-radius:7px;background:#f2f6f9;color:#31546c;
+  font-size:17px;font-weight:760;line-height:1;
+}
+.race-explorer .explorer-table .research-sabcd-S{background:#e8f2f1;border-color:#a2c4be;color:#276051}
+.race-explorer .explorer-table .research-sabcd-A{background:#ebf2f9;border-color:#b5cde1;color:#305b7a}
+.race-explorer .explorer-table .research-sabcd-B{background:#f1f4f8;color:#526f86}
+.race-explorer .explorer-table .research-sabcd-C{background:#f7f7f7;color:#647582}
+.race-explorer .explorer-table .research-sabcd-D{background:#f7f7f7;color:#7a838d}
+.race-explorer .explorer-table td .research-sabcd-label,
+.race-explorer .explorer-table td .research-sabcd-retro{
+  display:block;margin:3px auto 0;font-size:9px;line-height:1.25;
+  font-weight:500;color:#5b7182;overflow-wrap:anywhere;
+}
+.race-explorer .explorer-table td .research-sabcd-retro{color:#99753d}
+@media (max-width:700px){
+ .race-explorer .explorer-table .research-sabcd{width:27px;min-height:25px;font-size:15px}
+ .race-explorer .explorer-table td .research-sabcd-label,
+ .race-explorer .explorer-table td .research-sabcd-retro{font-size:8px}
+}
