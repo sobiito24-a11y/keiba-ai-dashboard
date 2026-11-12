@@ -137,7 +137,7 @@ def test_one_same_course_distance_win_shows_evidence_without_overconfident_rank(
     assert ev["distance"]["grade"] == "—"
     assert ev["course"]["grade"] == "—"
     assert ev["recent"]["grade"] == "—"
-    assert ev["distance"]["evidence"] == "1戦1勝"
+    assert ev["distance"]["evidence"] == "同距離1戦1勝"
     assert ev["course"]["evidence"] == "1戦1勝"
     assert ev["recent"]["evidence"] == "1戦1勝"
     html = BeautifulSoup(detail_html(h), "html.parser")
@@ -161,3 +161,42 @@ def test_venue_spelling_variant_does_not_hide_compatible_local_history():
     from core.research_six_dimensions import _jurisdiction
     assert _jurisdiction("川﨑") == "nar"
     assert _jurisdiction("川崎競馬場") == "nar"
+
+
+def test_podium_finishes_without_wins_do_not_get_s():
+    h = sample_horse()
+    h["profile"]["runs"] = [
+        dict(date="2026-11-10", venue="名古屋", surface="ダ", distance="1400m", finish="2着"),
+        dict(date="2026-11-04", venue="名古屋", surface="ダ", distance="1400m", finish="3着"),
+        dict(date="2026-10-12", venue="名古屋", surface="ダ", distance="1400m", finish="2着"),
+    ]
+    rows = evaluate(h)["factors"]
+    assert rows["distance"]["grade"] == "A"
+    assert rows["course"]["grade"] == "A"
+    assert rows["recent"]["grade"] == "A"
+    h["profile"]["runs"][0]["finish"] = "1着"
+    rows = evaluate(h)["factors"]
+    assert rows["distance"]["grade"] == "S"
+    assert rows["course"]["grade"] == "S"
+    assert rows["recent"]["grade"] == "S"
+
+
+def test_exact_900m_winning_evidence_not_hidden_by_nearby_1000m():
+    h = sample_horse()
+    h["race_context"].update(venue="川﨑", distance="900m")
+    h["profile"]["runs"] = [
+        dict(date="2026-11-10", venue="川崎", surface="ダ", distance="900m", finish="1着"),
+        dict(date="2026-09-08", venue="東京", surface="ダ", distance="1000m", finish="9着"),
+        dict(date="2026-08-15", venue="新潟", surface="芝", distance="1000m", finish="11着"),
+    ]
+    snapshot = deepcopy(h)
+    result = evaluate(h)
+    assert result["factors"]["distance"]["grade"] == "—"
+    assert result["factors"]["distance"]["evidence"] == "同距離1戦1勝"
+    assert result["factors"]["course"]["grade"] == "—"
+    assert result["factors"]["recent"]["grade"] == "—"
+    assert result["transfer_evidence"]
+    assert h == snapshot
+    html = BeautifulSoup(detail_html(h), "html.parser")
+    assert "同距離1戦1勝" in html.text
+    assert "同じ過去走を重複" in html.text
