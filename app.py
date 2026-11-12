@@ -1786,7 +1786,9 @@ def render_game_prediction(result, *, show_header=False):
         from core.game_race_ui import race_header
         st.markdown(race_header(result, view), unsafe_allow_html=True)
     from core.race_odds_ui import render as render_prices
-    with st.expander("買い目検討用・手動オッズ取込", expanded=False):
+    nar_odds = result_race_mode(result) == "nar"
+    with st.expander("📡 NAR公式オッズ更新（無料）" if nar_odds
+                     else "買い目検討用・オッズ取込", expanded=nar_odds):
         view = render_prices(result, view)
     with st.expander("勝率・3着内率 × 直前オッズ（研究／購入価値は未検証）", expanded=False):
         from core.race_value_research_ui import render as render_value_research
