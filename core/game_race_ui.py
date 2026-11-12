@@ -156,7 +156,10 @@ def build_view(rows, records, source_rows=(), mode='jra', race_info=None, materi
         h['final_metrics']=candidate_metrics(h,evidence_sources[h['no']])
         h['explorer_facts']=explorer_facts(h,sources.get(h['no'],{}),race_info or {})
         h['race_context']=dict(race_info or {})
-    return focus_annotate(out)
+    # Research-grade only: computed on the transient display projection.
+    # No formal score, Top5, marks, saved predictions or betting decisions change.
+    from .research_sabcd import assign_to_view
+    return focus_annotate(assign_to_view(out))
 
 
 def mark_html(mark):
