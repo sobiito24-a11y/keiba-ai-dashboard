@@ -5,3 +5,4 @@ lxml>=5.2
 requests>=2.32
 pillow>=10.4
 numpy>=1.26
+playwright>=1.50,<2
