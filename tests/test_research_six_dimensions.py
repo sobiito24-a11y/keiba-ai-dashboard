@@ -89,3 +89,40 @@ def test_incomplete_context_never_yields_wrong_D():
     h["race_context"].pop("race_date")
     grades = evaluate(h)["factors"]
     assert all(grades[key]["grade"] == "—" for key in ("distance", "course", "recent"))
+
+
+def test_older_central_history_beyond_last_three_is_kept_separate():
+    h = sample_horse()
+    # Last 3 starts are local, but the saved original horse record also
+    # contains an earlier JRA run.  A 3-run-only view would lose this fact.
+    h["profile"]["runs"] = [
+        dict(date="2026-11-10", venue="名古屋", surface="ダ", distance="1400m", finish="2着", time_index=51),
+        dict(date="2026-11-02", venue="名古屋", surface="ダ", distance="1400m", finish="1着", time_index=42),
+        dict(date="2026-10-12", venue="名古屋", surface="ダ", distance="1400m", finish="3着", time_index=48),
+    ]
+    h["profile"]["extended_history"] = [
+        dict(date="2026-08-12", venue="東京", surface="ダ", distance="1400m", finish="8着", time_index=107),
+    ]
+    data = evaluate(h)
+    assert data["transfer_evidence"] is True
+    assert data["other_circuit_count"] == 1
+    assert data["local_count"] == 3
+    assert "中央指数 107" in data["factors"]["recent"]["reason"]
+    assert data["factors"]["recent"]["grade"] == "S"
+
+
+def test_saved_source_older_runs_are_filtered_before_the_current_race():
+    from datetime import date
+    from core.candidate_profile import _saved_extended_history
+    raw = dict(_past_runs=[
+        dict(race_date="2026-11-10", racecourse="名古屋", surface="ダ", distance=1400, position=2, value=45),
+        dict(race_date="2026-10-22", racecourse="名古屋", surface="ダ", distance=1400, position=1, value=44),
+        dict(race_date="2026-09-18", racecourse="名古屋", surface="ダ", distance=1400, position=3, value=40),
+        dict(race_date="2026-08-12", racecourse="東京", surface="ダ", distance=1400, position=9, value=107),
+        dict(race_date="2026-11-15", racecourse="東京", surface="ダ", distance=1400, position=1, value=120),
+    ])
+    saved = _saved_extended_history(raw, date(2026, 11, 14))
+    assert len(saved) == 4
+    assert saved[-1]["venue"] == "東京"
+    assert saved[-1]["time_index"] == "107"
+    assert all(str(row["date"]) < "2026-11-14" for row in saved)
