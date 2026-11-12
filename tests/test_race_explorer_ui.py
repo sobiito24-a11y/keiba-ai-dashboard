@@ -252,6 +252,8 @@ def test_research_grade_tints_only_its_cell_in_normal_and_postrace_tables(mode):
                              (review, "#postrace-review")):
         trs = document.select(parent + " .explorer-table tbody tr")
         trs = [tr for tr in trs if tr.select_one("td.col-research_sabcd")]
+        expected_roles = {"S": "軸候補", "A": "有力相手", "B": "相手候補",
+                          "C": "追加検討", "D": "優先度低"}
         for index, tier in enumerate(tiers):
             cell = trs[index].select_one("td.col-research_sabcd")
             assert cell is not None
@@ -259,6 +261,10 @@ def test_research_grade_tints_only_its_cell_in_normal_and_postrace_tables(mode):
             if tier:
                 assert "research-tier-" + tier in cell.get("class", [])
                 assert cell.select_one(".research-sabcd-" + tier).text == tier
+                assert cell.select_one(".research-sabcd-label").text == expected_roles[tier]
+                # Do not mistake a single positive factor for a grade-level
+                # explanation: D can have jockey fitness but remains D.
+                assert "騎手適性" not in cell.text and "中位×4角前" not in cell.text
             else:
                 assert not any("research-tier-" in cls for cls in cell.get("class", []))
                 assert "判定不可" in cell.text
@@ -283,3 +289,19 @@ def test_research_grade_palette_covers_both_tables_without_changing_marks():
     assert "background:#fff3dd!important" in css  # B: subtle amber
     assert "background:#f0f3f6!important" in css  # C: grey
     assert "background:#f9eaea!important" in css  # D: light coral
+
+
+@pytest.mark.parametrize("mode", ["jra", "nar"])
+def test_retrospective_grade_label_is_explicit_and_explained(mode):
+    rows, saved, info, view = field(mode, 9)
+    for horse in view:
+        horse["research_sabcd"] = {
+            "grade": "A", "reason": "前走3着以内・保存時点の情報で評価。過去開催で再計算",
+            "notes": ("前走好走",), "retro": True,
+        }
+    html = BeautifulSoup(lineup_html(view), "html.parser")
+    retro = html.select_one("#lineup-workspace td.col-research_sabcd .research-sabcd-retro")
+    assert retro.text == "後日算出"
+    assert "発走前の当時予想ではありません" in retro.get("title")
+    assert "後付け" not in html.select_one("#lineup-workspace td.col-research_sabcd").text
+    assert "過去の保存開催では「後日算出」と表示します" in html.text
