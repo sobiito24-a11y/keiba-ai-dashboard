@@ -47,23 +47,20 @@ def render(result, view):
     st.markdown('#### オッズ')
     is_nar = identity['mode'] == 'nar'
     if not is_nar:
-        # JRA publishes current prices for all major ticket kinds, but does
-        # not expose an NAR-style daily ZIP or a verified public JSON endpoint.
-        # Never imply these links import prices automatically.
         jra_id = identity['race_id']
-        st.caption('JRA公式では単勝・複勝・馬連・ワイドなどの最新オッズを無料で確認できます。'
-                   '現時点でアプリへの自動取得は未接続です。'
-                   '下の参照リンクを開き、必要な券種を確認してから画像・HTML等で取り込んでください。')
-        st.markdown('[JRA公式オッズを確認](https://www.jra.go.jp/)'
-                    '（公式サイトで「オッズ」→開催・レースを選択）')
-        st.markdown(
-            '[netkeiba・選択中のレースのオッズ](https://race.netkeiba.com/odds/index.html?race_id='
-            + jra_id + '&type=b1)'
-            '（単勝・複勝／同じ画面から馬連・ワイドへ切替）'
-        )
-        st.caption('netkeiba無料版には更新間隔と手動更新回数に制限があります。'
-                   '保存HTMLの時刻が不明なら最新価格として表示しません。'
-                   '公式サイトの閲覧と、データの機械取得・転載の許諾は別問題です。')
+        st.caption('JRAオッズ更新（試験）：netkeibaの無料配信から単勝・複勝・'
+                   '馬連・ワイドの取得を試みます。JRA公式の直接取得ではありません。'
+                   '無料版には更新間隔・利用制限があり、最新の購入可能価格とは限りません。')
+        with st.expander('JRA公式／netkeibaの元画面を確認', expanded=False):
+            st.markdown('[JRA公式オッズ](https://www.jra.go.jp/)'
+                        '（公式サイトの「オッズ」から選択）')
+            st.markdown(
+                '[netkeiba・このレースのオッズ](https://race.netkeiba.com/odds/index.html?race_id='
+                + jra_id + '&type=b1)'
+                '（単勝・複勝／馬連・ワイドへ切替）')
+            st.caption('実際の投票価格は購入直前にJRA公式の販売画面で再確認。'
+                       'アクセスが制限された場合はスクショ・HTML取込を使用。'
+                       '自動巡回や更新回数の上限制限回避は行いません。')
     if is_nar:
         st.caption('NAR公式ZIPモード：無料の単勝・複勝・馬連・ワイド取得を試せます。'
                    '約2分間隔の配布です。ZIP作成時刻は実際のオッズ発表時刻ではありません。'
@@ -71,7 +68,8 @@ def render(result, view):
         st.markdown('[NAR公式データダウンロード](https://www.keiba.go.jp/KeibaWeb/TodayRaceInfo/TodayRaceInfoTop)'
                     '（取得できない場合は公式ZIPを手動で保存して下から取込）')
     if getattr(result, '_race_odds_error', None): st.warning(result._race_odds_error)
-    if st.button('オッズ更新', key=key+'_fetch', disabled=not (is_nar or connection.available)):
+    if st.button('オッズ更新（無料・試験）' if not is_nar and not connection.available
+                 else 'オッズ更新', key=key+'_fetch', disabled=False):
         now = datetime.now(odds.JST)
         if is_nar:
             from .nar_official_odds import fetch_daily, parse_daily_zip, locator
@@ -107,27 +105,53 @@ def render(result, view):
             except Exception:
                 st.session_state[key+'_status'] = '公式オッズの取得・照合に失敗。保存時の予想を維持します。'
         else:
+            # Licensed JSON bridge, when configured, takes priority.
+            # Otherwise only one explicit user-triggered read of the FREE
+            # netkeiba action=init feed (three ticket-kind requests).
             last = st.session_state.get(key+'_last_request')
-            if last and (now-last).total_seconds() < 30:
-                st.session_state[key+'_status'] = '連続更新を抑止しました。30秒後に再試行できます。'
+            min_delay = 30 if connection.available else 180
+            global_last = st.session_state.get('_jra_free_odds_global_request')
+            if last and (now-last).total_seconds() < min_delay:
+                st.session_state[key+'_status'] = (
+                    f'同じレースの再取得は{min_delay}秒以上あけてください。'
+                    '保存済みの最新観測は下から選べます。')
+            elif (not connection.available and global_last and
+                  (now-global_last).total_seconds() < 30):
+                st.session_state[key+'_status'] = (
+                    '無料配信への連続アクセスを抑制しています。'
+                    '他レースは30秒以上あけて更新してください。')
             else:
                 st.session_state[key+'_last_request'] = now
+                if not connection.available:
+                    st.session_state['_jra_free_odds_global_request'] = now
                 try:
-                    with st.spinner('全頭のオッズを照合中…'):
-                        quote = odds.validate(connection.fetch(identity['race_id']), identity)
-                        quote['acquisition_method'] = 'authorized_json'
+                    with st.spinner('JRAオッズを取得し、保存した馬番と照合中…'):
+                        if connection.available:
+                            quote = odds.validate(connection.fetch(identity['race_id']), identity)
+                            quote['acquisition_method'] = 'authorized_json'
+                        else:
+                            from .jra_netkeiba_odds import fetch_once
+                            quote = fetch_once(identity, result.race_info or {}, now=now)
                         history = odds.merge(state['history'], [quote], identity)
-                    count = len(history)-len(state['history'])
+                    added = len(history)-len(state['history'])
                     state['history'] = history
                     activate_observation(quote)
                     st.session_state[key+'_status'] = (
                         f"取得：{quote['horse_count']}／{quote['expected_horses']}頭。"
-                        + ('有効価格未取得。' if not quote['prices'] else '全頭対象の照合完了。')
-                        + ('同一観測のため履歴追加なし。' if not count else ''))
+                        + ('有効価格未取得。' if not quote['prices'] else
+                           ('netkeiba無料配信の観測値を表示。' if not connection.available
+                            else '接続元のオッズを表示。'))
+                        + ('同じ配信時刻のため追加更新なし。' if not added else '')
+                    )
+                except ValueError as exc:
+                    st.session_state[key+'_status'] = (
+                        'JRAオッズ未取得：' + str(exc) +
+                        '。取得できない時は予想オッズを代用しません。')
                 except Exception:
-                    st.session_state[key+'_status'] = '更新失敗：現在オッズ取得不可。以前の履歴と保存時オッズは保持しています。'
-    if not is_nar and not connection.available:
-        caption('オンライン更新は未設定です。取得・転送・表示が許諾された提供元の接続設定が必要です。HTML・JSONを一括取込できます。')
+                    st.session_state[key+'_status'] = (
+                        'JRAオッズ取得に失敗。無料配信の利用制限・応答変更・通信状態を確認してください。'
+                        '保存時の予想と旧オッズ履歴は保持しています。')
+
     with st.expander("直前オッズを数行で手入力（外部サイトを見ながら）", expanded=False):
         st.caption("例：『単勝 3 5.2』『馬連 3-7 14.8』『ワイド 3-7 4.5-5.8』。"
                    "複勝・ワイドは範囲を指定可能。同じレースの馬番と馬名、表示倍率を確認してください。")
@@ -222,6 +246,10 @@ def render(result, view):
     caption(f"{label}｜{odds.received_label(quote)}：{odds.format_time(quote.get('received_at'))}｜提供元更新：{odds.format_time(quote.get('observed_at'))}｜情報源：{quote['source']}")
     if quote.get('acquisition_method') == 'manual_html':
         caption('HTML取込日時はサイトから価格を取得した日時ではありません。価格の鮮度はHTML内の提供元更新時刻で確認します。')
+    if quote.get('acquisition_method') == 'netkeiba_free_json':
+        caption('配信元表示時刻を使用。JRA公式との直接接続ではなく、'
+                '無料版の更新制限・遅延があります。取得できた券種だけ表示し、'
+                '他の時刻の価格で補完しません。購入直前は公式で確認してください。')
     if quote.get('acquisition_method') == 'nar_official_zip':
         caption('公式CSVには馬名・個別オッズ更新日時がありません。保存出走馬の馬番とZIP作成時刻で照合。'
                 '発売開始前・欠損・締切後の価格を最新として扱わないでください。')
