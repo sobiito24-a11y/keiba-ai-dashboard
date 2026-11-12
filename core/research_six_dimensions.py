@@ -210,8 +210,6 @@ def evaluate(horse):
     # Development: require both predicted start and corner4, never historical
     # finished positions disguised as future predictions.
     start, corner = _num(horse.get("start_rank")), _num(horse.get("corner"))
-    head = _num((horse.get("research_sabcd_weight_class") or {}).get("race_head_count"))
-    head = int(head) if head is not None and head >= 3 else None
     style = str(horse.get("style") or "")
     pace = str(context.get("netkeiba_pace") or context.get("pace_prediction") or "")
     if start is None or corner is None or start < 1 or corner < 1:
@@ -281,7 +279,8 @@ def detail_html(horse):
             '<div class="six-factor-item"><span class="six-factor-title">'
             + escape(title) + '</span><strong class="six-factor-rank six-factor-'
             + (rank if rank != "—" else "unknown") + '">'
-            + escape(rank) + '</strong><small>' + escape(item["reason"]) + '</small></div>'
+            + escape(rank) + '</strong><details class="six-factor-more"><summary>根拠</summary>'
+            + '<small>' + escape(item["reason"]) + '</small></details></div>'
         )
     transfer = ('<p class="six-factor-transfer">別主催の過去走あり：'
                 '中央・地方の指数やクラスは未換算で別々に参照します。</p>'
