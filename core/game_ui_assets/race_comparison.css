@@ -444,3 +444,11 @@
 @media(max-width:650px){
  .race-explorer .research-role-inline,#postrace-review .research-role-inline{font-size:9px;margin-left:3px}
 }
+
+/* Selected quote: show actual place range next to win in the main runner table. */
+.race-explorer .explorer-table .col-place_odds {width:98px}
+.race-explorer .explorer-table .place-odds-range {white-space:nowrap;font-variant-numeric:tabular-nums;font-weight:650;font-size:12px}
+@media (max-width:700px){
+ .race-explorer .explorer-table .col-place_odds {width:83px}
+ .race-explorer .explorer-table .place-odds-range {font-size:11px}
+}
