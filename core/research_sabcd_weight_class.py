@@ -131,8 +131,14 @@ def evaluate_race(view):
         vec, materials = feature_values(horse, len(horses), mean_weight)
         prob = predict(mode, vec) if horse.get("mode") == mode else None
         if prob is None:
+            from .research_positioning import _missing_core
+            missing = _missing_core(horse)
+            reason = ("・".join(missing) + "が未取得のため総合ランク判定不可。"
+                      if missing else "研究スコアの算出条件が揃わず総合ランク判定不可。")
+            reason += ("別の能力相当値・脚質・序盤予測を順位の代わりに"
+                       "推測して使うことはしません。")
             result[no] = dict(grade=None, score=None, normalized_score=None,
-                              reason="基本8項目の順位・予測4角がないため判定不可",
+                              reason=reason, missing_core=tuple(missing),
                               materials=materials, version=VERSION, retro=retro)
             continue
         scored.append((no, prob))
