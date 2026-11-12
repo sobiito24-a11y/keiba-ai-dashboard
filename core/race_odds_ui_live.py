@@ -57,9 +57,66 @@ def render(result, view):
         from .jra_historical_odds_links import archived_odds_urls
         historical_links = archived_odds_urls(identity, result.race_info or {})
         if historical_links:
-            with st.expander('過去の単勝・複勝オッズを見る（外部サイト）', expanded=False):
-                st.caption('保存レースに対応する過去オッズページを開きます。'
-                           'リンクは自動取込ではありません。実際の掲載有無・最終更新時刻を確認してください。')
+            with st.expander('過去の単勝・複勝をAIへ反映', expanded=True):
+                st.caption('競馬ラボの保存レース単複表を1回読み込み、全頭の馬番・馬名を照合します。'
+                           '過去の掲載値であり、最終確定オッズとの一致は保証できません。'
+                           '純能力・S/A/B/Cランク・正式印は変更しません。')
+                from .jra_historical_odds import fetch_once as fetch_historical, parse_keibalab_html
+                now_historical = datetime.now(odds.JST)
+                try:
+                    from datetime import date as _date
+                    race_date = str((result.race_info or {}).get('race_date')
+                                    or (result.race_info or {}).get('date') or '').replace('/', '-')
+                    is_past = _date.fromisoformat(race_date) < now_historical.date()
+                except ValueError:
+                    is_past = False
+                if st.button('過去の単複オッズを取得・AIへ反映',
+                             key=key+'_historical_fetch', disabled=not is_past):
+                    previous = st.session_state.get(key+'_historical_last_request')
+                    across = st.session_state.get('_jra_historical_global_last_request')
+                    if previous and (now_historical-previous).total_seconds() < 180:
+                        st.session_state[key+'_status'] = '同じ過去レースの再取得は180秒以上あけてください。'
+                    elif across and (now_historical-across).total_seconds() < 15:
+                        st.session_state[key+'_status'] = '過去オッズへの連続アクセスを抑制しています。15秒以上あけてください。'
+                    else:
+                        st.session_state[key+'_historical_last_request'] = now_historical
+                        st.session_state['_jra_historical_global_last_request'] = now_historical
+                        try:
+                            with st.spinner('過去の単勝・複勝を取得・全出走馬と照合中…'):
+                                quote = fetch_historical(identity, result.race_info or {}, now=now_historical)
+                                history = odds.merge(state['history'], [quote], identity)
+                            state['history'] = history
+                            activate_observation(quote)
+                            st.session_state[key+'_status'] = (
+                                f"取得：{quote['horse_count']}／{quote['expected_horses']}頭。"
+                                "競馬ラボ掲載の過去単勝・複勝をAIの表示に反映しました。")
+                        except ValueError as exc:
+                            st.session_state[key+'_status'] = 'JRA過去オッズ未取得：' + str(exc)
+                        except Exception:
+                            st.session_state[key+'_status'] = 'JRA過去オッズ未取得：サイトへの接続・解析に失敗しました。'
+                if not is_past:
+                    st.caption('過去の開催日が確定したレースで利用できます。')
+                with st.expander('自動取得できないとき：保存HTMLから反映', expanded=False):
+                    st.caption('競馬ラボの単複ページをブラウザでHTML保存してアップロード。'
+                               '同じ馬番・馬名・開催回の厳密照合後に反映します。')
+                    archived_file = st.file_uploader(
+                        '競馬ラボの過去単複ページ（HTML）', type=['html', 'htm'],
+                        key=key+'_historical_file')
+                    if st.button('保存HTMLの単複をAIへ反映',
+                                 key=key+'_historical_import', disabled=archived_file is None):
+                        try:
+                            data = archived_file.getvalue()
+                            if len(data) > 3_000_000:
+                                raise ValueError('HTMLが3MBを超えています')
+                            quote = parse_keibalab_html(data, identity, result.race_info or {})
+                            history = odds.merge(state['history'], [quote], identity)
+                            state['history'] = history
+                            activate_observation(quote)
+                            st.session_state[key+'_status'] = (
+                                f"取得：{quote['horse_count']}／{quote['expected_horses']}頭。"
+                                "保存HTMLの過去単複をAIの表示に反映しました。")
+                        except (ValueError, TypeError) as exc:
+                            st.session_state[key+'_status'] = 'JRA過去オッズ未取得：' + str(exc)
                 st.markdown('[競馬ラボ：単勝・複勝一覧](' + historical_links['keibalab'] + ')')
                 st.markdown('[優馬JAPAN：単勝一覧](' + historical_links['yuma_win'] + ')')
                 st.markdown('[優馬JAPAN：複勝一覧](' + historical_links['yuma_place'] + ')')
@@ -192,7 +249,7 @@ def render(result, view):
     # on narrow mobile screens.
     notice = st.session_state.get(key+'_status')
     if notice:
-        if notice.startswith(('JRAオッズ未取得', 'JRAオッズ取得に失敗',
+        if notice.startswith(('JRAオッズ未取得', 'JRAオッズ取得に失敗', 'JRA過去オッズ未取得',
                                'NAR公式オッズ未取得', '公式オッズの取得・照合に失敗')):
             st.error('オッズ更新結果：' + notice)
         elif ('再取得' in notice or '抑制' in notice or '連続' in notice):
@@ -210,15 +267,17 @@ def render(result, view):
                        '｜配信元更新：' + odds.format_time(active.get('observed_at')) +
                        '｜' + odds.freshness(active, odds.start_from_result(result)))
             names = {int(h['horse_no']): h['name'] for h in identity['horses']}
-            singles = sorted(
-                [dict(馬番=p['horses'][0],
-                      馬名=names.get(p['horses'][0], ''),
-                      単勝=f"{p['low']:.1f}倍")
-                 for p in active['prices'] if p['kind'] == 'win'],
-                key=lambda item: item['馬番'])
+            win_prices = {p['horses'][0]: odds.price_text(p) for p in active['prices']
+                          if p['kind'] == 'win'}
+            place_prices = {p['horses'][0]: odds.price_text(p) for p in active['prices']
+                            if p['kind'] == 'place'}
+            singles = [dict(馬番=no, 馬名=name,
+                            単勝=(win_prices.get(no, '—') + '倍' if no in win_prices else '—'),
+                            複勝=(place_prices.get(no, '—') + '倍' if no in place_prices else '—'))
+                       for no, name in sorted(names.items())]
             if singles:
-                st.dataframe(singles[:8], hide_index=True, use_container_width=True)
-                st.caption('単勝の先頭最大8頭を表示。全頭のオッズは下の一覧へ反映します。')
+                st.dataframe(singles, hide_index=True, use_container_width=True)
+                st.caption('保存レースの全頭を表示。未取得の価格は「—」で、古い価格を補完しません。')
             else:
                 st.warning('単勝オッズが未取得です。取得できた券種のみ下の詳細で確認してください。')
     elif not is_nar:
@@ -317,6 +376,9 @@ def render(result, view):
     caption(f"{label}｜{odds.received_label(quote)}：{odds.format_time(quote.get('received_at'))}｜提供元更新：{odds.format_time(quote.get('observed_at'))}｜情報源：{quote['source']}")
     if quote.get('acquisition_method') == 'manual_html':
         caption('HTML取込日時はサイトから価格を取得した日時ではありません。価格の鮮度はHTML内の提供元更新時刻で確認します。')
+    if quote.get('acquisition_method') == 'keibalab_historical_html':
+        caption('競馬ラボの過去掲載オッズです。掲載時刻を表示しますが確定最終オッズと'
+                '同一とは限りません。AIの順位・スコアは変更せず、価格だけ上書き表示します。')
     if quote.get('acquisition_method') == 'netkeiba_free_json':
         caption('配信元表示時刻を使用。JRA公式との直接接続ではなく、'
                 '無料版の更新制限・遅延があります。取得できた券種だけ表示し、'
