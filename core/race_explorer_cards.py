@@ -64,11 +64,15 @@ def _prices_html(horse):
                 not isinstance(horse.get("popularity"), bool) and
                 popularity is not None and popularity >= 1 and popularity.is_integer()
                 else '人気 未取得')
+    place = str(horse.get("place_odds") or "—").strip()
+    place_text = ('取消・除外' if withdrawn else
+                  place + '倍' if place not in ('—', '-', '未取得', '時刻不明') else '未取得')
     observed = horse.get("odds_time")
     if observed is None or str(observed).strip() in ('', '—', '―', '-', '時刻不明', '未取得'):
         observed = None
     return ('<span class="pickup-prices" title="単勝は観測値であり確定配当ではありません">'
             '<span class="pickup-win">' + odds_text + '</span>'
+            '<span class="pickup-place">複勝 ' + value(place_text) + '</span>'
             '<span class="pickup-popularity">' + pop_text + '</span>'
             '<small class="pickup-price-time">提供元更新 ' + value(observed) + '</small></span>')
 
@@ -205,6 +209,11 @@ def detail_html(horse):
         ("前走比", facts.get("weight_delta_label")),
         ("前走間隔", facts.get("rest_label")),
         ("想定脚質", _unmarked(cells.get("style"))),
+        ("単勝オッズ（観測）", (str(cells["odds"]) + "倍") if cells.get("odds") is not None else "未取得"),
+        ("複勝オッズ（観測）", (
+            str(cells["place_odds"]) +
+            ("〜" + str(cells["place_odds_high"]) if cells["place_odds"] != cells["place_odds_high"] else "") +
+            "倍") if cells.get("place_odds") is not None and cells.get("place_odds_high") is not None else "未取得"),
         ("クラス・重賞注目", cells.get("class_attention")),
         ("注目根拠", cells.get("class_attention_reason")),
         ("研究SABCD（斤量・クラス）", cells.get("research_sabcd")),
