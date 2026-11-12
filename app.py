@@ -1785,10 +1785,14 @@ def render_game_prediction(result, *, show_header=False):
         # independently recomputed rankings, outcomes, or market odds.
         from core.game_race_ui import race_header
         st.markdown(race_header(result, view), unsafe_allow_html=True)
-    # New import path: running Streamlit sessions sometimes retain the
-    # legacy core.race_odds_ui module and its disabled connector-only button.
-    # A fresh module identity forces the NAR button implementation to load.
-    from core.race_odds_ui_live import render as render_prices
+    # Streamlit reruns app.py but keeps imported core modules in sys.modules.
+    # In a warm cloud worker the outer expander can update while the inner
+    # odds UI still renders the old connector-only disabled button.
+    # Reload the lightweight UI module on every rerun to make the button
+    # implementation match the deployed app.py code (not the cached version).
+    import importlib
+    from core import race_odds_ui_live as odds_ui_module
+    render_prices = importlib.reload(odds_ui_module).render
     nar_odds = result_race_mode(result) == "nar"
     with st.expander("📡 NAR公式オッズ更新（無料）" if nar_odds
                      else "📡 JRAオッズ更新（無料・試験）", expanded=True):
