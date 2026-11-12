@@ -229,3 +229,57 @@ def test_research_sabcd_does_not_change_real_view_formal_marks_and_scores(mode):
     assert html.select("#lineup-workspace td.col-research_sabcd")
     assert html.select_one(".detail-basic") or html.select_one("#detail-analysis")
     assert (rows,original)==snapshot
+
+
+@pytest.mark.parametrize("mode", ["jra", "nar"])
+def test_research_grade_tints_only_its_cell_in_normal_and_postrace_tables(mode):
+    from core.postrace_review_ui import review_html
+    rows, saved, info, view = field(mode, 12)
+    original = deepcopy((rows, saved))
+    tiers = ("S", "A", "B", "C", "D", None)
+    for horse, tier in zip(view, tiers):
+        # Test the *visual layer*, not the model allocation or official marks.
+        horse["research_sabcd"] = {
+            "grade": tier, "reason": "研究表示のみ", "notes": ("中位×4角前",),
+            "retro": False,
+        }
+    normal = BeautifulSoup(lineup_html(view), "html.parser")
+    review = BeautifulSoup(
+        review_html(view, {"race_id": info["race_id"], "runners": [],
+                           "payouts": [], "source": "検証用"}), "html.parser"
+    )
+    for document, parent in ((normal, "#lineup-workspace"),
+                             (review, "#postrace-review")):
+        trs = document.select(parent + " .explorer-table tbody tr")
+        trs = [tr for tr in trs if tr.select_one("td.col-research_sabcd")]
+        for index, tier in enumerate(tiers):
+            cell = trs[index].select_one("td.col-research_sabcd")
+            assert cell is not None
+            assert not any("research-tier-" in cls for cls in trs[index].get("class", []))
+            if tier:
+                assert "research-tier-" + tier in cell.get("class", [])
+                assert cell.select_one(".research-sabcd-" + tier).text == tier
+            else:
+                assert not any("research-tier-" in cls for cls in cell.get("class", []))
+                assert "判定不可" in cell.text
+            assert all(
+                not any(cls.startswith("research-tier-") for cls in other.get("class", []))
+                for other in trs[index].select("td:not(.col-research_sabcd)")
+            )
+    assert (rows, saved) == original
+
+
+def test_research_grade_palette_covers_both_tables_without_changing_marks():
+    from core.game_race_ui import ASSETS
+    css = (ASSETS / "race_comparison.css").read_text(encoding="utf-8")
+    for tier in "SABCD":
+        normal = ".race-explorer .explorer-table tbody tr td.col-research_sabcd.research-tier-" + tier
+        review = "#postrace-review .postrace-review-scroll .explorer-table tbody tr td.col-research_sabcd.research-tier-" + tier
+        assert normal in css
+        assert review in css
+        assert ".research-sabcd-" + tier in css
+    assert "background:#e6f4ec!important" in css  # S: subtle green
+    assert "background:#e8f2fc!important" in css  # A: subtle blue
+    assert "background:#fff3dd!important" in css  # B: subtle amber
+    assert "background:#f0f3f6!important" in css  # C: grey
+    assert "background:#f9eaea!important" in css  # D: light coral
