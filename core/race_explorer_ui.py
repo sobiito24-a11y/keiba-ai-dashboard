@@ -136,6 +136,9 @@ def lineup_html(view):
         for spec in shown_schema:
             key = spec['key']
             cls = 'col-'+key+(' col-number' if key == 'no' else '')
+            # Color the entire read-only grade cell, not the horse/ability row.
+            if key == 'research_sabcd' and row.get(key) in ('S', 'A', 'B', 'C', 'D'):
+                cls += ' research-tier-'+row[key]
             tooltip = str((row.get('nar_hybrid_reason') or '今回評価の計算材料が未取得') if key == 'nar_hybrid_score' else (row.get('class_attention_reason') or 'クラスの比較根拠未取得') if key == 'class_attention' else (row.get('research_sabcd_reason') or '研究格付けは未判定') if key == 'research_sabcd' else (row.get(key) if row.get(key) is not None else '未取得'))
             content.append('<td class="'+cls+'" data-label="'+plain(spec['label'])+'" title="'+plain(tooltip)+'">'+_cell(horse, row, key)+'</td>')
         rows.append('<tr data-row="'+plain(no)+'" data-horse="'+plain(no)+'">'+''.join(content)+'</tr>')
