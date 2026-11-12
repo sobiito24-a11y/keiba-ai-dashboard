@@ -126,3 +126,65 @@ def test_saved_source_older_runs_are_filtered_before_the_current_race():
     assert saved[-1]["venue"] == "東京"
     assert saved[-1]["time_index"] == "107"
     assert all(str(row["date"]) < "2026-11-14" for row in saved)
+
+
+def test_kawasaki_900m_one_win_is_visible_even_with_ungraded_letters():
+    # Similar pattern to Kawasaki 9R: recent one local 900m win and two
+    # past JRA starts.  Independent evidence should not vanish behind "—".
+    h = sample_horse()
+    h["name"] = "ララアヴリル"
+    h["race_context"].update(venue="川崎", distance="900m")
+    h["profile"]["runs"] = [
+        dict(date="2026-11-10", venue="川崎", surface="ダ", distance="900m",
+             finish="1着", time_index=67),
+        dict(date="2026-09-09", venue="札幌", surface="ダ", distance="1000m",
+             finish="9着", time_index=54),
+        dict(date="2026-08-15", venue="新潟", surface="芝", distance="1000m",
+             finish="11着", time_index=34),
+    ]
+    h["research_inputs"] = dict(jockey_n=125, jockey_rate=61)
+    before = deepcopy(h)
+    result = evaluate(h)
+    for key in ("distance", "course", "recent"):
+        assert result["factors"][key]["grade"] == "—"
+    assert "同距離1戦1勝" in result["factors"]["distance"]["hint"]
+    assert "同競馬場1戦1勝" in result["factors"]["course"]["hint"]
+    assert "同主催近走1戦1勝" in result["factors"]["recent"]["hint"]
+    assert result["factors"]["jockey"]["grade"] == "S"
+    html = BeautifulSoup(detail_html(h), "html.parser")
+    assert len(html.select(".six-factor-hint")) == 6
+    assert "同距離1戦1勝" in html.text
+    assert h == before
+
+
+def test_three_place_finishes_without_win_do_not_imply_s():
+    h = sample_horse()
+    h["profile"]["runs"] = [
+        dict(date="2026-11-10", venue="名古屋", surface="ダ",
+             distance="1400m", finish="2着", time_index=51),
+        dict(date="2026-11-04", venue="名古屋", surface="ダ",
+             distance="1400m", finish="3着", time_index=53),
+        dict(date="2026-10-12", venue="名古屋", surface="ダ",
+             distance="1400m", finish="2着", time_index=48),
+    ]
+    result = evaluate(h)
+    assert result["factors"]["distance"]["grade"] == "A"
+    assert result["factors"]["course"]["grade"] == "A"
+    assert result["factors"]["recent"]["grade"] == "A"
+    h["profile"]["runs"][0]["finish"] = "1着"
+    result2 = evaluate(h)
+    assert result2["factors"]["distance"]["grade"] == "S"
+    assert result2["factors"]["course"]["grade"] == "S"
+    assert result2["factors"]["recent"]["grade"] == "S"
+
+
+def test_six_evidence_does_not_recalculate_the_main_rank():
+    h = sample_horse()
+    h["research_sabcd_weight_class"]["grade"] = "C"
+    h["research_sabcd_weight_class"] = dict(grade="C", score=.17)
+    old = deepcopy(h)
+    tags = evaluate(h)
+    assert len(tags["factors"]) == 6
+    assert h == old
+    assert h["research_sabcd_weight_class"]["grade"] == "C"
+    assert "同じ過去走を重複" in tags["note"]
