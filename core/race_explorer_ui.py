@@ -70,6 +70,13 @@ def _cell(horse, cells, key):
         return value(item)+'kg' if item is not None else '<span class="missing-cell">未取得</span>'
     if key == 'weight_delta':
         return value(cells.get('weight_delta_label'))
+    if key == 'research_sabcd':
+        if item not in ('S', 'A', 'B', 'C', 'D'):
+            return '<span class="missing-cell">判定不可</span>'
+        info = '<small class="research-sabcd-label">'+value(cells.get('research_sabcd_notes'))+'</small>' if cells.get('research_sabcd_notes') else ''
+        retro = '<small class="research-sabcd-retro">後付け</small>' if cells.get('research_sabcd_retro') else ''
+        return ('<span class="research-sabcd research-sabcd-'+plain(item)+'"'
+                ' aria-label="研究用'+plain(item)+'">'+value(item)+'</span>'+info+retro)
     if key == 'class_attention':
         return ('<span class="comparison-snippet">'+value(item)+'</span>'
                 if item is not None else '<span class="missing-cell">未取得</span>')
@@ -98,10 +105,10 @@ def _options(schema, first=None):
 def comparison_widths():
     """One width map shared by the normal and mirrored post-race table."""
     widths = dict(user=42, frame=36, no=44, name=190, jockey=85, score=120, nar_hybrid_score=108, frozen_review=128, class_attention=178, career_course=142,
-                  rank=70, popularity=70, style=79, corner=82, training=60,
+                  research_sabcd=100, rank=70, popularity=70, style=79, corner=82, training=60,
                   run_old=134, run_middle=134, run_latest=134, jockey_change=160,
                   record_venue=190, record_distance=190, record_venue_distance=190, materials=220)
-    mobile_widths = dict(user=34, frame=28, no=34, name=118, jockey=68,
+    mobile_widths = dict(user=34, frame=28, no=34, name=118, research_sabcd=82, jockey=68,
                          score=100, reference_score=110, nar_hybrid_score=93, frozen_review=104, class_attention=148, career_course=112, popularity=56, style=73,
                          corner=77, training=48, run_old=108, run_middle=108,
                          run_latest=108, jockey_change=128, record_venue=156,
@@ -129,16 +136,17 @@ def lineup_html(view):
         for spec in shown_schema:
             key = spec['key']
             cls = 'col-'+key+(' col-number' if key == 'no' else '')
-            tooltip = str((row.get('nar_hybrid_reason') or '今回評価の計算材料が未取得') if key == 'nar_hybrid_score' else (row.get('class_attention_reason') or 'クラスの比較根拠未取得') if key == 'class_attention' else (row.get(key) if row.get(key) is not None else '未取得'))
+            tooltip = str((row.get('nar_hybrid_reason') or '今回評価の計算材料が未取得') if key == 'nar_hybrid_score' else (row.get('class_attention_reason') or 'クラスの比較根拠未取得') if key == 'class_attention' else (row.get('research_sabcd_reason') or '研究格付けは未判定') if key == 'research_sabcd' else (row.get(key) if row.get(key) is not None else '未取得'))
             content.append('<td class="'+cls+'" data-label="'+plain(spec['label'])+'" title="'+plain(tooltip)+'">'+_cell(horse, row, key)+'</td>')
         rows.append('<tr data-row="'+plain(no)+'" data-horse="'+plain(no)+'">'+''.join(content)+'</tr>')
     class_help = '<p class="help">「クラス・重賞注目」は前走の「前走」の文字だけ省略した表示です。過去3走の根拠は列の説明・馬別詳細で確認できます。加点・純能力順位・正式印は変更しません。</p>'
+    sabcd_help = '<p class="help">研究SABCDは保存データの時系列検証による優先順位（S最大1・A最大2・B最大3・C/D制限なし）。S=70%の保証でもD=絶対消しでもありません。純能力・印・購入判断には影響しません。過去の保存開催では「後付け」と表示します。</p>'
     nar_help = ('<p class="help">研究用の「今回評価」は横一覧から非表示にしました。'
                 '馬名の詳細で根拠を確認できます。印・正式順位・純能力は変更しません。</p>'
                 if view and view[0].get("mode") == "nar" else '')
     return ('<section class="lineup-workspace" id="lineup-workspace"><div class="explorer-section-heading"><div><span class="eyebrow">COMPARE ALL RUNNERS</span><h2>全頭予想・比較一覧</h2></div><span class="count">全'+str(len(view))+'頭</span></div>'
             '<p class="help">自分の✓は何頭でも選べます。予測・保存・買い目には反映しません。列見出しで並び替え、馬名から詳細を開けます。</p>'
-            +nar_help+
+            +nar_help+sabcd_help+
             '<p class="help">プラス・注意材料は馬名を選択すると表示される馬別詳細で確認できます。レースピックアップにも表示しています。</p>'
             '<div class="lineup-toolbar"><label>表示 <select id="lineup-filter"><option value="all">全頭表示</option><option value="selected">自分の✓だけ表示</option></select></label>'
             '<label>並び順 <select id="lineup-sort">'+_options(schema, 'no')+'</select></label>'
