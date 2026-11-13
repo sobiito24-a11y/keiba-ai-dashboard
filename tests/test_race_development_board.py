@@ -115,7 +115,8 @@ def test_real_table_has_board_immediately_underneath_and_before_details(mode):
         assert all(x.select_one(".ka-pace-number") for x in runners)
         assert all(x.select_one(".ka-pace-horse-name") for x in runners)
         assert all("番手" in x["aria-label"] for x in runners)
-    assert "3角は両者の補間" in board.text
+    assert "3角は保存済みの3角予測順位を優先" in board.text
+    assert "3角の表示元：保存予測 0頭／補間 18頭" in board.text
     assert "AIランク・印・純能力には一切加点しません" in board.text
     assert "race_development.css" not in document_html  # inlined asset
     assert "ka-pace-turf" in document_html
@@ -162,3 +163,82 @@ def test_horse_faces_left_without_mirroring_numbers_or_forecast_positions():
     assert positions["start"]["runners"][0]["no"]==1
     assert positions["fourth"]["runners"][0]["no"]==12
     assert view==before
+
+
+
+@pytest.mark.parametrize("mode", ["jra", "nar"])
+def test_saved_third_corner_forecast_overrides_interpolation_at_all_stages(mode):
+    horses = _horses(12, mode)
+    before = deepcopy(horses)
+    # The 3-corner forecast can differ significantly from the midpoint.
+    horses[0]["third_rank"] = 12
+    horses[1]["third_rank"] = 1
+    horses[2]["third_rank"] = 5
+    untouched = deepcopy(horses)
+    formation = layout(horses)
+    third = {h["no"]: h for h in formation["third"]["runners"]}
+    assert third[1]["third"] == 12
+    assert third[2]["third"] == 1
+    assert third[3]["third"] == 5
+    assert [third[n]["rank_display"] for n in (1, 2, 3)] == [12, 1, 5]
+    assert all(third[n]["third_source"] == "saved" for n in (1, 2, 3))
+    assert formation["third"]["saved_count"] == 3
+    assert formation["third"]["interpolated_count"] == 9
+    assert formation["third"]["interpolation"] is True
+    dom = BeautifulSoup(board_html(horses), "html.parser")
+    panel = dom.select_one("#ka-pace-scene-third")
+    assert "保存予測 3頭／補間 9頭" in panel.text
+    for num in (1, 2, 3):
+        runner = panel.select_one(f'[data-pace-runner="{num}"]')
+        assert runner["data-pace-third-source"] == "saved"
+        assert "保存3角予測" in runner["aria-label"]
+    assert "補間による参考位置" in panel.select_one(
+        '[data-pace-runner="4"]')["aria-label"]
+    assert horses == untouched
+    assert all("third_rank" not in h for h in before)
+
+
+@pytest.mark.parametrize("mode", ["jra", "nar"])
+def test_all_saved_third_corners_never_interpolated(mode):
+    horses = _horses(8, mode)
+    for i, h in enumerate(horses, 1):
+        h["third_rank"] = 9 - i
+    initial = deepcopy(horses)
+    positions = layout(horses)
+    third = positions["third"]
+    assert third["interpolation"] is False
+    assert third["saved_count"] == 8
+    assert third["interpolated_count"] == 0
+    assert third["runners"][0]["no"] == 8
+    assert all(h["third_source"] == "saved" for h in third["runners"])
+    doc = BeautifulSoup(board_html(horses), "html.parser")
+    assert "保存予測 8頭／補間 0頭" in doc.text
+    assert "全頭、保存された3角予測の順位を使っています" in doc.text
+    assert horses == initial
+
+
+@pytest.mark.parametrize("invalid", [None, 0, -1, True, 1.5, "未取得", float("nan"), 99])
+def test_invalid_saved_third_uses_only_valid_start_and_fourth_fallback(invalid):
+    view = _horses(12, "nar")
+    view[0]["third_rank"] = invalid
+    expected = 0.45 * 1 + 0.55 * 12
+    third = {h["no"]: h for h in layout(view)["third"]["runners"]}
+    assert abs(third[1]["third"] - expected) < 1e-8
+    assert third[1]["third_source"] == "interpolated"
+    view[0]["start_rank"] = None
+    third = {h["no"]: h for h in layout(view)["third"]["runners"]}
+    assert 1 not in third
+    assert 1 in [h["no"] for h in layout(view)["third"]["missing"]]
+
+
+def test_saved_third_rank_can_display_when_start_or_fourth_are_missing():
+    view = _horses(12)
+    view[0]["start_rank"] = None
+    view[0]["corner"] = None
+    view[0]["third_rank"] = 2
+    third = {h["no"]: h for h in layout(view)["third"]["runners"]}
+    assert third[1]["third"] == 2
+    assert third[1]["third_source"] == "saved"
+    assert 1 not in [h["no"] for h in layout(view)["third"]["missing"]]
+    assert "序盤：未取得" in BeautifulSoup(board_html(view), "html.parser").select_one(
+        '#ka-pace-scene-third [data-pace-runner="1"]')["aria-label"]
