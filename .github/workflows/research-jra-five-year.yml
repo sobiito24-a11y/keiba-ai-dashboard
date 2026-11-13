@@ -1,0 +1,24 @@
+name: JRA five-year graded results research
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'tools/research_jra_graded_history.py'
+      - '.github/workflows/research-jra-five-year.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  summarize-2021-2025:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Aggregate all 2021-2025 JRA graded results, without changing predictions
+        run: python tools/research_jra_graded_history.py --output -
