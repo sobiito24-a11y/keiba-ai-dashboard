@@ -80,8 +80,11 @@ def parse_sportsnavi_html(raw_html, identity, race_info, *, now=None):
         raise ValueError("スポーツナビの開催日・会場・回次・Rが保存レースと一致しません")
     if "確定オッズ" not in text:
         raise ValueError("確定オッズ表示を確認できないため反映しません")
-    if "予想オッズ" in text[:1000]:
-        raise ValueError("予想オッズは実際の過去オッズとして反映しません")
+    # This race page can contain the words "予想オッズ" in a navigation or
+    # related-items area even when the current race's table is explicitly
+    # labelled "確定オッズ". The complete race identity and table contents
+    # below are still independently validated; do not reject based on
+    # unrelated surrounding text.
     saved = {int(h["horse_no"]): _clean(h["name"]) for h in identity["horses"]}
     if not saved:
         raise ValueError("保存済み出走馬がありません")
