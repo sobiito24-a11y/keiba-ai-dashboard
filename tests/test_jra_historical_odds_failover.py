@@ -54,7 +54,7 @@ def test_primary_full_success_never_calls_fallback():
                    keibalab_fetch=lab)
     assert not count
     assert q["source"].startswith("優馬JAPAN")
-    assert q["fallback_used"] is False if "fallback_used" in q else True
+    assert q["fallback_used"] is False
     assert q["coverage"]["win"]["count"] == 2
     assert q["coverage"]["place"]["count"] == 2
 
