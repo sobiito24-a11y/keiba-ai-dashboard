@@ -44,12 +44,18 @@ def _horizontal(count, index, horse_number, band):
     return min(93.0, max(7.0, x + small_shift))
 
 
-def layout(view):
+def layout(view, *, course_turn="right"):
     """Return three stage lists of deterministic marker coordinates.
 
     Missing/out-of-range estimates are never invented. For third corner both
     saved estimates MUST exist; continuous interpolation is sorted and only
     then given a tentative displayed ordinal.
+
+    Within each pack, the best estimated position is placed in the facing
+    direction: rightmost for a left-turn course (horses face right),
+    leftmost for a right-turn course (horses face left). Vertical band and
+    saved ranking are NOT inverted. Unknown course direction retains the
+    historical layout rather than making up a course turn.
     """
     horses = [h for h in (view or ()) if isinstance(h, Mapping)]
     count = len(horses)
@@ -74,7 +80,14 @@ def layout(view):
         for band, size in enumerate(sizes):
             for within in range(size):
                 runner = available[index]
-                runner["x"] = round(_horizontal(size, within, runner["no"], band), 2)
+                x = _horizontal(size, within, runner["no"], band)
+                # With right-facing horse silhouettes (left-turn and straight
+                # courses), the leading horse of a horizontal pack belongs
+                # on the RIGHT. Clockwise courses retain their left-first row.
+                # Only presentation x changes; no saved ranking is reversed.
+                if course_turn in ("left", "straight"):
+                    x = 100.0 - x
+                runner["x"] = round(x, 2)
                 runner["y"] = round(_BAND_Y[band] + ((runner["no"] * 3 + band) % 3 - 1) * .45, 2)
                 runner["rank_display"] = (
                     index + 1 if stage == "third" else int(runner[stage]))
