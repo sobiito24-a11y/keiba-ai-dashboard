@@ -146,6 +146,7 @@ def test_position_coordinates_are_converted_by_relative_horizontal_order() -> No
     assert parsed.position_categories["start"] == {1: "逃げ", 2: "先団", 3: "中団"}
     assert parsed.position_categories["corner4"] == {1: "逃げ", 2: "先団", 3: "中団"}
     assert parsed.position_ranks["start"] == {1: 1, 2: 2, 3: 3}
+    assert parsed.position_ranks["corner3"] == {1: 1, 2: 2, 3: 3}
     assert parsed.position_ranks["corner4"] == {1: 1, 2: 2, 3: 3}
 
 
@@ -288,6 +289,8 @@ def test_optional_jockey_html_attaches_stats_without_touching_ability() -> None:
     assert result.overall_table.loc[1, "_jockey_course_place_rate"] == 45.0
     assert result.overall_table.loc[0, "_estimated_position_path"] == "逃げ → 逃げ → 逃げ"
     assert result.overall_table.loc[0, "netkeiba_position_path"] == "逃げ → 逃げ → 逃げ"
+    assert result.overall_table.loc[0, "netkeiba_corner3_rank"] == 1
+    assert result.overall_table.loc[1, "netkeiba_corner3_rank"] == 2
     assert result.overall_table.loc[0, "netkeiba_corner4_rank"] == 1
     assert result.overall_table.loc[1, "netkeiba_corner4_rank"] == 2
 
