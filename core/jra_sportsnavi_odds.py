@@ -20,7 +20,7 @@ SOURCE = "スポーツナビ・過去の確定単勝複勝（公開掲載値）"
 MAX_BYTES = 3_000_000
 NUM = re.compile(r"^\d+(?:\.\d{1,2})?$")
 RANGE = re.compile(r"^(\d+(?:\.\d{1,2})?)-(\d+(?:\.\d{1,2})?)$")
-UPDATED = re.compile(r"(20\d{2})[/-](\d{1,2})[/-](\d{1,2})(\d{1,2}):(\d{2})更新")
+UPDATED = re.compile(r"(20\d{2})[/-](\d{1,2})[/-](\d{1,2})\s+(\d{1,2}):(\d{2})\s*更新")
 
 
 def _clean(value):
@@ -126,7 +126,7 @@ def parse_sportsnavi_html(raw_html, identity, race_info, *, now=None):
     if not prices:
         raise ValueError("有効な単勝・複勝オッズがありません")
     observed_at = None
-    match = UPDATED.search(text)
+    match = UPDATED.search(main.get_text(' ', strip=True))
     if match:
         try:
             published = datetime(*map(int, match.groups()), tzinfo=JST)
