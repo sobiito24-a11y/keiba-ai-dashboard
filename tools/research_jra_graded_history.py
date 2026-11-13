@@ -69,6 +69,10 @@ def summarize(reader):
     required = ("date","course","surface","distance","race","raceName","raceClass","finish","horseNumber","winPayout")
     missing = [x for x in required if x not in headers]
     if missing:
+        print("RESEARCH_ACTUAL_CSV_HEADERS:" + ",".join(headers))
+        sample = next(iter(reader), None)
+        if sample:
+            print("RESEARCH_SAMPLE_ROW:" + json.dumps(sample, ensure_ascii=False)[:2000])
         raise ValueError("Missing required research columns: "+",".join(missing))
     keys = ["finalOdds","winOdds","odds","popularity","corner4","fourthCorner","raceNumber"]
     present = [k for k in keys if k in headers]
