@@ -72,7 +72,9 @@ def test_normal_layout_full_field_manual_checks_and_source_nonmutation(mode, cou
         assert row.select_one('.col-name button[data-horse-open]')['data-horse-open'] == row['data-horse']
     headers = [header.select_one('.column-label').text for header in lineup.select('th')]
     assert headers[headers.index('3走前'):headers.index('3走前')+5] == ['3走前', '2走前', '前走', '3走平均', '★最高指数']
-    assert '調教' not in headers  # kept in JRA research/detail, not the compact table
+    assert ('調教' in headers) == (mode == 'jra')
+    if mode == 'jra':
+        assert headers.index('調教') == headers.index('脚質・位置') + 1
     assert '同場同距離指数' not in headers
     assert 'オッズ単複' in headers and '脚質・位置' in headers
     assert '4角想定' not in headers and '序盤傾向' not in headers
@@ -217,6 +219,9 @@ def test_research_sabcd_does_not_change_real_view_formal_marks_and_scores(mode):
     headers=[s["key"] for s in columns(view) if not s.get("table_hidden")]
     assert headers[headers.index("research_sabcd")+1] == "ability"
     assert headers[headers.index("ability")+1] == "style"
+    assert ("training" in headers) == (mode == "jra")
+    if mode == "jra":
+        assert headers.index("training") == headers.index("style") + 1
     assert headers[-1] == "class_attention"
     assert "research_sabcd_weight_class" not in headers
     assert "research_sabcd_old" not in headers
