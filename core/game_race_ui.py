@@ -347,7 +347,18 @@ def race_header(result, view=None):
     # missing view never produces a confident label.
     from .race_tendency import as_html
     assessment = as_html(view) if view is not None else ''
-    return '<section class="game-race-header"><span class="game-eyebrow">KEIBA AI / RACE BRIEFING</span><h2>'+escape(name)+'</h2>'+assessment+'<div class="game-race-meta">'+''.join('<span><small>'+escape(k)+'</small> '+escape(text(v) or '—')+'</span>' for k,v in values)+'</div></section>'
+    # Read-only historic graded winner odds: race title and conditions must
+    # match. Strictly earlier calendar years; never rewrites pre-race scores.
+    grade_note = ''
+    if result.race_mode == 'jra':
+        from .jra_graded_tendency_ui import render as render_graded_history
+        grade_note = render_graded_history(
+            name, mode='jra',
+            race_date=pick(info,'race_date','date','開催日'),
+            venue=pick(info,'racecourse','venue','競馬場'),
+            distance=pick(info,'distance_label','distance','距離'),
+            surface=pick(info,'surface','芝ダート'))
+    return '<section class="game-race-header"><span class="game-eyebrow">KEIBA AI / RACE BRIEFING</span><h2>'+escape(name)+'</h2>'+assessment+grade_note+'<div class="game-race-meta">'+''.join('<span><small>'+escape(k)+'</small> '+escape(text(v) or '—')+'</span>' for k,v in values)+'</div></section>'
 
 
 def render_component(view, race_key, paper_decision=None, postrace=None):
