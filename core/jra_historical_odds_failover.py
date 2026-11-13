@@ -1,4 +1,4 @@
-"""One-click JRA historical win/place odds with two independent public providers.
+"""One-click JRA historical win/place odds with three public providers.
 
 Prefer validated, race-specific 優馬JAPAN observations, then try 競馬ラボ,
 and finally スポーツナビ when prior sources fail or supply incomplete prices.
@@ -6,7 +6,7 @@ Do not combine providers'
 prices: their published snapshots can represent different times.
 
 Explicit user action only. No polling, login, proxy, CAPTCHA workarounds or
-retry loops. On two failures, return no observation rather than saved odds.
+retry loops. On three failures, return no observation rather than saved odds.
 """
 from datetime import datetime
 
@@ -36,13 +36,14 @@ def _explain(exc):
 
 
 def fetch_once(identity, race_info, *, now=None, yuma_fetch=None,
-               keibalab_fetch=None, sportsnavi_fetch=None):
-    """Try each public site at most once as needed; return one validated snapshot.
+               keibalab_fetch=None, sportsnavi_fetch=None,
+               prefer_sportsnavi=False):
+    """Try each source at most once. A valid FULL quote wins at first success.
 
-    Supports dependency injection for offline tests. Both sources independently
-    validate date, venue, race, all saved numbers and names before acceptance.
-    A verified partial quote remains usable if the other sites also fail;
-    complete quotes win, and tie-breaks respect provider priority.
+    The normal UI prioritizes the verified fast Sports Navi route to avoid
+    spending tens of seconds on two regularly timing-out servers. The legacy
+    order remains available for regression comparison and older callers.
+    Each provider independently checks race identity before supplying a quote.
     """
     from .jra_yuma_odds import fetch_once as fetch_yuma
     from .jra_historical_odds import fetch_once as fetch_keibalab
@@ -52,54 +53,51 @@ def fetch_once(identity, race_info, *, now=None, yuma_fetch=None,
     yuma_fetch = yuma_fetch or fetch_yuma
     keibalab_fetch = keibalab_fetch or fetch_keibalab
     sportsnavi_fetch = sportsnavi_fetch or fetch_sportsnavi
-
-    results = []
+    providers = (
+        [("スポーツナビ", sportsnavi_fetch),
+         ("優馬JAPAN", yuma_fetch),
+         ("競馬ラボ", keibalab_fetch)]
+        if prefer_sportsnavi else
+        [("優馬JAPAN", yuma_fetch),
+         ("競馬ラボ", keibalab_fetch),
+         ("スポーツナビ", sportsnavi_fetch)]
+    )
+    best = None
+    first_label = providers[0][0]
     failures = []
-
-    def attempt(label, fetch):
+    for label, fetch in providers:
         try:
             quote = odds.validate(fetch(identity, race_info, now=now), identity)
             if _quality(quote) <= 0:
                 raise ValueError("有効な単勝・複勝の掲載値がありません")
-            results.append((label, quote))
-            return quote
         except Exception as exc:
             failures.append((label, _explain(exc)))
-            return None
+            continue
+        if best is None or _quality(quote) > _quality(best[1]):
+            best = (label, quote)
+        if _complete(quote):
+            best = (label, quote)
+            break
 
-    primary = attempt("優馬JAPAN", yuma_fetch)
-    if primary is not None and _complete(primary):
-        validated = dict(primary)
-        validated["fallback_used"] = False
-        return validated
-
-    alternative = attempt("競馬ラボ", keibalab_fetch)
-    if alternative is None or not _complete(alternative):
-        attempt("スポーツナビ", sportsnavi_fetch)
-    if not results:
+    if best is None:
         errors = " ／ ".join(f"{label}：{error}" for label, error in failures)
         raise ValueError(
             "3サイトとも過去の単勝・複勝を取得できませんでした。"
             + errors + "。保存済み価格は代用していません"
         )
-
-    label, chosen = max(results, key=lambda item: _quality(item[1]))
-    # Copy only display metadata; do not rewrite the provenance or odds.
-    chosen = dict(chosen)
+    label, selected = best
+    chosen = dict(selected)
     chosen["warnings"] = list(chosen.get("warnings") or [])
-    if label != "優馬JAPAN":
+    chosen["fallback_used"] = label != first_label
+    if chosen["fallback_used"]:
         chosen["warnings"].append(
-            "優馬JAPANの単複が未取得・不完全のため" + label +
+            first_label + "の単複が未取得・不完全のため" + label +
             "の照合済み掲載値に自動切替しました"
         )
-        chosen["fallback_used"] = True
-    elif not _complete(chosen):
+    if not _complete(chosen):
         chosen["warnings"].append(
             "取得できた券種のみ表示しています。別サイトのオッズとは混合しません"
         )
-        chosen["fallback_used"] = False
-    else:
-        chosen["fallback_used"] = False
     if failures:
         chosen["warnings"].append(
             "取得できなかったサイト：" + "／".join(
