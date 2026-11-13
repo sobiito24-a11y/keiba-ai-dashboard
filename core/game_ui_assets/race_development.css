@@ -29,6 +29,7 @@
 .race-explorer .ka-pace-course-turn{display:inline-block;margin-left:9px;padding:1px 8px;border-radius:16px;background:#e5f1eb;color:#326147;font-weight:700;white-space:nowrap}
 .race-explorer .ka-pace-board[data-course-turn="unknown"] .ka-pace-course-turn{background:#fff0d5;color:#775b2e}
 .race-explorer .ka-pace-board[data-course-turn="straight"] .ka-pace-course-turn{background:#f0edfa;color:#69528c}
+.race-explorer .ka-pace-forward-hint{display:inline-block;margin-left:8px;font-size:11px;color:#597385;font-weight:700;white-space:nowrap}
 .race-explorer .ka-pace-number{position:absolute;left:2px;top:10px;width:19px;height:19px;line-height:17px;display:grid;place-items:center;border:1px solid #7c897a;border-radius:50%;color:#20242a;background:#e1e4e8;font-size:11px;font-weight:900;font-variant-numeric:tabular-nums;box-shadow:0 1px 1px #25360c4d}
 .race-explorer .ka-pace-frame-1{background:#fff;color:#1e2934}
 .race-explorer .ka-pace-frame-2{background:#242424;color:#fff}
