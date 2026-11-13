@@ -17,6 +17,8 @@ def test_jra_odds_has_two_primary_actions_and_collapsed_backups():
     assert "disabled=not is_past" in code
     assert "disabled=not is_today" in code
     assert "from .jra_historical_odds_failover import fetch_once as fetch_historical" in code
+    assert "historical_links['sportsnavi']" in code
+    assert "quote.get('fallback_used')" in code
     assert "quote.get('fallback_used')" in code
     assert "{quote['source']}" in code
     assert "from .jra_netkeiba_odds import fetch_once as fetch_free" in code
