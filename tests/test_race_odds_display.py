@@ -42,6 +42,10 @@ def test_place_overlay_clears_previous_batch_and_does_not_infer_from_win():
  from core.race_explorer_columns import records
  ident=identity(n=3)
  first=quote(n=3)
+ # This fixture already contains a place quote for horse 1; replace it,
+ # never add a conflicting duplicate combination.
+ first["prices"]=[p for p in first["prices"]
+                 if not (p["kind"]=="place" and p["horses"]==[1])]
  first["prices"].append(dict(kind="place",horses=[1],low=1.2,high=1.7))
  first=o.validate(first, ident)
  view=[dict(no=str(i),score="80",rank=str(i),mark="◎",sort_values={}) for i in range(1,4)]
