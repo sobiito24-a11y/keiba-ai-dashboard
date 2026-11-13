@@ -27,15 +27,27 @@ def _cell(horse, cells, key):
     if key in ('average', 'maximum', 'reference_score'):
         return comparison_index_html(item, ranked=False)
     if key == 'style':
-        start = cells.get('start_rank')
-        main = value(start)+'番手' if start is not None else '<span class="missing-cell">未取得</span>'
-        # Saved historical running style, not a newly inferred start position.
-        label = {'逃': '逃げ', '先': '先行', '差': '差し', '追': '追込',
-                 '逃げ': '逃げ', '先行': '先行', '差し': '差し',
-                 '追込': '追込', '追い込み': '追込'}.get(item, item)
-        detail = value(label) if label is not None else '脚質未取得'
-        return ('<span class="position-two-line"><strong>'+main+'</strong>'
-                '<small>'+detail+'</small></span>')
+        # Four squares show saved running style, not a computed race grade.
+        saved = str(item or '').strip()
+        style_key = next((prefix for prefix in ('逃', '先', '差', '追')
+                          if saved.startswith(prefix)), None)
+        descriptions = {'逃': '逃げ', '先': '先行', '差': '差し', '追': '追込'}
+        squares = ''.join(
+            '<span class="running-style-square'+(
+                ' running-style-square-active' if prefix == style_key else ''
+            )+'" title="'+plain(descriptions[prefix])+'">'+prefix+'</span>'
+            for prefix in ('逃', '先', '差', '追')
+        )
+        start, corner = cells.get('start_rank'), cells.get('corner')
+        positions = ('序盤'+(value(start) if start is not None else '—')
+                     +' / 4角'+(value(corner) if corner is not None else '—'))
+        title = ('保存脚質：'+(saved if style_key else '未取得')
+                 +'｜序盤予測：'+(str(start) if start is not None else '未取得')
+                 +'｜4角予測：'+(str(corner) if corner is not None else '未取得'))
+        return ('<span class="running-style-cell" title="'+plain(title)+'">'
+                '<span class="running-style-squares" aria-label="保存脚質 '+plain(
+                    descriptions.get(style_key, '未取得'))+'">'+squares+'</span>'
+                '<small class="running-style-position">'+positions+'</small></span>')
     if key == 'corner':
         main = value(item)+'番手' if item is not None else '<span class="missing-cell">未取得</span>'
         saved_rank = cells.get('ability_rank')
@@ -52,7 +64,17 @@ def _cell(horse, cells, key):
                 '<small class="run-condition">'+value(cells.get(key+'_condition'))+'</small>'
                 '<small>'+value(cells.get(key+'_date'))+'</small>'+note_html)
     if key == 'odds':
-        return '<b class="metric-number">'+value(item)+'倍</b>' if item is not None else '<span class="missing-cell">'+('取消・除外' if cells.get('withdrawn') is True else '未取得')+'</span>'
+        # Visible win/place is combined; the hidden place field remains sortable.
+        withdrawn = cells.get('withdrawn') is True
+        win = (value(item)+'倍' if item is not None else
+               ('取消・除外' if withdrawn else '未取得'))
+        low, high = cells.get('place_odds'), cells.get('place_odds_high')
+        place = (value(low) + ('〜'+value(high) if high != low else '') + '倍'
+                 if low is not None and high is not None else
+                 ('取消・除外' if withdrawn else '未取得'))
+        return ('<span class="odds-both-cell" title="単勝 '+plain(win)+'／複勝 '+plain(place)+'">'
+                '<b class="metric-number">単 '+win+'</b>'
+                '<small class="place-odds-range">複 '+place+'</small></span>')
     if key == 'place_odds':
         if item is None or cells.get('place_odds_high') is None:
             return '<span class="missing-cell">'+('取消・除外' if cells.get('withdrawn') is True else '未取得')+'</span>'
@@ -137,12 +159,12 @@ def _options(schema, first=None):
 
 def comparison_widths():
     """One width map shared by the normal and mirrored post-race table."""
-    widths = dict(user=42, frame=36, no=44, name=190, jockey=85, place_odds=98, score=120, nar_hybrid_score=108, frozen_review=128, class_attention=178, career_course=142,
-                  research_sabcd=70, rank=70, popularity=70, style=79, corner=82, training=60,
+    widths = dict(user=42, frame=36, no=44, name=190, jockey=85, odds=104, place_odds=98, score=120, nar_hybrid_score=108, frozen_review=128, class_attention=178, career_course=142,
+                  research_sabcd=70, rank=70, popularity=70, style=102, corner=82, training=60,
                   run_old=134, run_middle=134, run_latest=134, jockey_change=160,
                   record_venue=190, record_distance=190, record_venue_distance=190, materials=220)
-    mobile_widths = dict(user=34, frame=28, no=34, name=118, research_sabcd=62, jockey=68, place_odds=83,
-                         score=100, reference_score=110, nar_hybrid_score=93, frozen_review=104, class_attention=148, career_course=112, popularity=56, style=73,
+    mobile_widths = dict(user=34, frame=28, no=34, name=118, research_sabcd=62, jockey=68, odds=94, place_odds=83,
+                         score=100, reference_score=110, nar_hybrid_score=93, frozen_review=104, class_attention=148, career_course=112, popularity=56, style=94,
                          corner=77, training=48, run_old=108, run_middle=108,
                          run_latest=108, jockey_change=128, record_venue=156,
                          record_distance=156, record_venue_distance=156, materials=176)
@@ -200,7 +222,7 @@ def lineup_html(view):
             '<p id="lineup-empty" class="no-data" hidden>条件に合う馬がいません。絞り込みを解除するか、全頭表示に切り替えてください。</p>'
             '<div class="table-scroll explorer-table-scroll" tabindex="0" aria-label="全頭比較・縦横スクロール"><table class="explorer-table" style="--comparison-width:'+str(table_width)+'px;--comparison-mobile-width:'+str(mobile_width)+'px"><thead><tr>'+''.join(headers)+'</tr></thead><tbody>'+''.join(rows)+'</tbody></table></div>'
             +class_help+
-            '<p class="help">序盤傾向の上段は保存されたスタート想定順位、下段は過去の脚質。4角想定の下段は保存純能力順位です。新たな先頭争い予測や加点ではありません。ソート・フィルターは従来の列仕様を維持します。</p>'
+            '<p class="help">脚質の4マスは保存済みの逃・先・差・追。下段の「序盤 / 4角」はそれぞれ発走前の想定位置で、脚質からの推測や実際の通過順位ではありません。単勝・複勝は同じ欄に上下表示します。同場同距離指数は一覧から外しましたが、詳細・研究タブには保持しています。</p>'
             '<p class="help">下段は各指数の順位です。上位3位の記号は各指数の順位表示で、総合評価や印ではありません。過去走は3走前 → 2走前 → 前走。★は保存された最高指数との一致です。</p></section>')
 
 
