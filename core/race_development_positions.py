@@ -8,7 +8,7 @@ from math import floor, isfinite
 
 STAGES = ("start", "third", "fourth")
 _WEIGHTS = (.34, .23, .17, .12, .09, .05)
-_BAND_Y = (9.0, 27.0, 44.0, 61.0, 78.0, 91.0)
+_BAND_Y = (5.0, 22.0, 39.0, 56.0, 70.0, 83.0)
 
 
 def _positive_integer(value, *, maximum):
