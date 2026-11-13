@@ -1,0 +1,49 @@
+{
+  "source": "JRA公式・各年アルゼンチン共和国杯レース結果（2021–2025）",
+  "note": "個別結果を検証した競走のみ。ほかのJRA重賞には自動で転用しない。",
+  "races": {
+    "アルゼンチン共和国杯": {
+      "grade": "G2",
+      "surface": "芝",
+      "distance": 2500,
+      "venue": "東京",
+      "annual": [
+        {
+          "year": 2021,
+          "win_payout_yen": 300,
+          "winner_popularity": 1,
+          "winner_corner4": 3,
+          "source": "https://www.jra.go.jp/datafile/seiseki/replay/2021/099.html"
+        },
+        {
+          "year": 2022,
+          "win_payout_yen": 1770,
+          "winner_popularity": 6,
+          "winner_corner4": 3,
+          "source": "https://www.jra.go.jp/datafile/seiseki/replay/2022/099.html"
+        },
+        {
+          "year": 2023,
+          "win_payout_yen": 240,
+          "winner_popularity": 1,
+          "winner_corner4": 15,
+          "source": "https://www.jra.go.jp/datafile/seiseki/replay/2023/099.html"
+        },
+        {
+          "year": 2024,
+          "win_payout_yen": 3530,
+          "winner_popularity": 10,
+          "winner_corner4": 15,
+          "source": "https://www.jra.go.jp/datafile/seiseki/replay/2024/099.html"
+        },
+        {
+          "year": 2025,
+          "win_payout_yen": 2770,
+          "winner_popularity": 9,
+          "winner_corner4": 1,
+          "source": "https://www.jra.go.jp/datafile/seiseki/replay/2025/101.html"
+        }
+      ]
+    }
+  }
+}
