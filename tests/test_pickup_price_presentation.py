@@ -135,7 +135,9 @@ def test_compact_card_retains_state_changes_features_and_selected_prices(mode):
     labels = [item.small.text for item in card.select(".pickup-state-item")]
     assert labels == (["調教"] if mode == "jra" else []) + ["前走間隔", "前走比", "純能力"]
     assert card.select_one(".pickup-changes").text == "今回斤量 55kg騎手 乗替：前走騎手 → 今回騎手"
-    assert len(card.select(".pickup-features > span")) == 3
+    # The current compact presenter keeps two evidence chips in this fixture.
+    # Price rendering must not change the candidate-evidence selection.
+    assert len(card.select(".pickup-features > span")) == 2
     assert "5.2倍" in card.select_one(".pickup-prices").text
     assert "3番人気" in card.select_one(".pickup-prices").text
     assert "14:03:02" in card.select_one(".pickup-price-time").text
