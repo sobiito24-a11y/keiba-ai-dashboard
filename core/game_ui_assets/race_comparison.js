@@ -20,6 +20,21 @@
     return (direction === 'desc' ? -1 : 1) * order;
   }
 
+  // Sort the research tier first (S→A→B→C→D), then use the existing
+  // SAVED pure-ability rank (1 = strongest) within the same tier.
+  // Never use race outcome, betting odds or the grade's model score as
+  // a hidden tie-breaker. Missing ability stays behind known ability.
+  function compareHorses(a, b, key, type = 'text', direction = 'asc') {
+    const av = a.values || {}, bv = b.values || {};
+    if (key === 'research_sabcd') {
+      return compareValues(av.research_sabcd_sort, bv.research_sabcd_sort, 'number', direction)
+        || compareValues(av.ability_rank, bv.ability_rank, 'rank', 'asc')
+        || compareValues(a.no, b.no, 'number', 'asc');
+    }
+    return compareValues(av[key], bv[key], type, direction)
+      || compareValues(a.no, b.no, 'number', 'asc');
+  }
+
   function cleanFilter(raw, spec) {
     if (!raw || typeof raw !== 'object' || !spec) return null;
     const result = {presence: ['known', 'missing'].includes(raw.presence) ? raw.presence : 'all'};
@@ -61,7 +76,7 @@
 
   // The pure comparison/filter rules can also be checked without a browser.
   if (typeof module !== 'undefined' && module.exports)
-    module.exports = {compareValues, cleanFilter, matchesFilter, missing};
+    module.exports = {compareValues, compareHorses, cleanFilter, matchesFilter, missing};
   if (typeof document === 'undefined') return;
   const data = JSON.parse(document.getElementById('race-data').textContent);
   if (data.experience !== 'race-comparison' || !Array.isArray(data.columns)) return;
@@ -155,11 +170,12 @@
     const rows = [...body.querySelectorAll('tr[data-horse]')];
     rows.sort((a, b) => {
       const ah = horses.get(a.dataset.horse), bh = horses.get(b.dataset.horse);
-      // Research S/A/B/C/D sorts by its explicit tier order, never alphabetically.
-      const researchGrade = state.sort === 'research_sabcd';
-      const sortKey = researchGrade ? 'research_sabcd_sort' : state.sort;
-      return compareValues(fieldValue(ah, sortKey), fieldValue(bh, sortKey),
-                           researchGrade ? 'number' : spec.type, state.direction)
+      // All normal columns retain their previous behavior. Only research
+      // SABCD gets the saved pure-ability rank as its secondary sort key.
+      if (state.sort === 'research_sabcd')
+        return compareHorses(ah, bh, state.sort, spec.type, state.direction);
+      return compareValues(fieldValue(ah, state.sort), fieldValue(bh, state.sort),
+                           spec.type, state.direction)
         || compareValues(fieldValue(ah, 'no'), fieldValue(bh, 'no'), 'number', 'asc');
     });
     let visible = 0;
