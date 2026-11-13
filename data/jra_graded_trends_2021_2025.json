@@ -1,0 +1,5448 @@
+{
+  "all_graded_calendar_events": 695,
+  "ambiguous_events": [
+    {
+      "date": "2023-05-20",
+      "reason": "芝ダート・距離不一致",
+      "title": "平安S",
+      "venue": "京都"
+    },
+    {
+      "date": "2023-06-18",
+      "reason": "芝ダート・距離不一致",
+      "title": "ユニコーンS",
+      "venue": "東京"
+    },
+    {
+      "date": "2023-06-24",
+      "reason": "芝ダート・距離不一致",
+      "title": "東京ジャンプS",
+      "venue": "東京"
+    },
+    {
+      "date": "2023-07-09",
+      "reason": "芝ダート・距離不一致",
+      "title": "プロキオンS",
+      "venue": "中京"
+    },
+    {
+      "date": "2023-07-29",
+      "reason": "芝ダート・距離不一致",
+      "title": "新潟ジャンプS",
+      "venue": "新潟"
+    },
+    {
+      "date": "2023-08-06",
+      "reason": "芝ダート・距離不一致",
+      "title": "レパードS",
+      "venue": "新潟"
+    },
+    {
+      "date": "2023-08-06",
+      "reason": "芝ダート・距離不一致",
+      "title": "エルムS",
+      "venue": "札幌"
+    },
+    {
+      "date": "2023-08-26",
+      "reason": "芝ダート・距離不一致",
+      "title": "小倉サマージャンプ",
+      "venue": "小倉"
+    },
+    {
+      "date": "2023-09-16",
+      "reason": "芝ダート・距離不一致",
+      "title": "阪神ジャンプS",
+      "venue": "阪神"
+    },
+    {
+      "date": "2023-09-30",
+      "reason": "芝ダート・距離不一致",
+      "title": "シリウスS",
+      "venue": "阪神"
+    },
+    {
+      "date": "2023-10-15",
+      "reason": "芝ダート・距離不一致",
+      "title": "東京ハイジャンプ",
+      "venue": "東京"
+    },
+    {
+      "date": "2023-11-05",
+      "reason": "芝ダート・距離不一致",
+      "title": "みやこS",
+      "venue": "京都"
+    },
+    {
+      "date": "2023-11-11",
+      "reason": "芝ダート・距離不一致",
+      "title": "武蔵野S",
+      "venue": "東京"
+    },
+    {
+      "date": "2023-11-11",
+      "reason": "芝ダート・距離不一致",
+      "title": "京都ジャンプS",
+      "venue": "京都"
+    },
+    {
+      "date": "2023-12-03",
+      "reason": "芝ダート・距離不一致",
+      "title": "チャンピオンズC",
+      "venue": "中京"
+    },
+    {
+      "date": "2023-12-10",
+      "reason": "芝ダート・距離不一致",
+      "title": "カペラS",
+      "venue": "中山"
+    },
+    {
+      "date": "2023-12-23",
+      "reason": "芝ダート・距離不一致",
+      "title": "中山大障害",
+      "venue": "中山"
+    },
+    {
+      "date": "2024-01-21",
+      "reason": "芝ダート・距離不一致",
+      "title": "東海S",
+      "venue": "京都"
+    },
+    {
+      "date": "2024-01-28",
+      "reason": "芝ダート・距離不一致",
+      "title": "根岸S",
+      "venue": "東京"
+    },
+    {
+      "date": "2024-02-18",
+      "reason": "芝ダート・距離不一致",
+      "title": "フェブラリーS",
+      "venue": "東京"
+    },
+    {
+      "date": "2024-03-09",
+      "reason": "芝ダート・距離不一致",
+      "title": "阪神スプリングジャンプ",
+      "venue": "阪神"
+    },
+    {
+      "date": "2024-03-24",
+      "reason": "芝ダート・距離不一致",
+      "title": "マーチS",
+      "venue": "中山"
+    },
+    {
+      "date": "2024-04-13",
+      "reason": "芝ダート・距離不一致",
+      "title": "中山グランドジャンプ",
+      "venue": "中山"
+    },
+    {
+      "date": "2024-04-14",
+      "reason": "芝ダート・距離不一致",
+      "title": "アンタレスS",
+      "venue": "阪神"
+    },
+    {
+      "date": "2024-04-27",
+      "reason": "芝ダート・距離不一致",
+      "title": "ユニコーンS",
+      "venue": "京都"
+    },
+    {
+      "date": "2024-05-11",
+      "reason": "芝ダート・距離不一致",
+      "title": "京都ハイジャンプ",
+      "venue": "京都"
+    },
+    {
+      "date": "2024-05-18",
+      "reason": "芝ダート・距離不一致",
+      "title": "平安S",
+      "venue": "京都"
+    },
+    {
+      "date": "2024-06-22",
+      "reason": "芝ダート・距離不一致",
+      "title": "東京ジャンプS",
+      "venue": "東京"
+    },
+    {
+      "date": "2024-07-07",
+      "reason": "芝ダート・距離不一致",
+      "title": "プロキオンS",
+      "venue": "小倉"
+    },
+    {
+      "date": "2024-07-27",
+      "reason": "芝ダート・距離不一致",
+      "title": "新潟ジャンプS",
+      "venue": "新潟"
+    }
+  ],
+  "brier_2025_winner10": {
+    "baseline": 0.218987,
+    "global_prior": 0.2191,
+    "n": 115,
+    "title_shrunk": 0.217782
+  },
+  "calendar_url": "https://www.jra.go.jp/datafile/seiseki/replay/",
+  "coverage_pct": 42.16,
+  "flat_graded_overall": {
+    "median_winner_payout_yen": 550,
+    "n": 293,
+    "winner_10x": 74,
+    "winner_20x": 32,
+    "winner_50x": 6,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "has_corner_positions": false,
+  "has_horse_popularity": false,
+  "has_quinella_payouts": false,
+  "matched_flat_events": 293,
+  "matched_graded_events": 293,
+  "missing_events": [
+    {
+      "date": "2021-01-05",
+      "title": "中山金杯",
+      "venue": "中山",
+      "winners": [
+        "ヒシイグアス"
+      ]
+    },
+    {
+      "date": "2021-01-05",
+      "title": "京都金杯",
+      "venue": "中京",
+      "winners": [
+        "ケイデンスコール"
+      ]
+    },
+    {
+      "date": "2021-01-10",
+      "title": "シンザン記念",
+      "venue": "中京",
+      "winners": [
+        "ピクシーナイト"
+      ]
+    },
+    {
+      "date": "2021-01-11",
+      "title": "フェアリーS",
+      "venue": "中山",
+      "winners": [
+        "ファインルージュ"
+      ]
+    },
+    {
+      "date": "2021-01-16",
+      "title": "愛知杯",
+      "venue": "中京",
+      "winners": [
+        "マジックキャッスル"
+      ]
+    },
+    {
+      "date": "2021-01-17",
+      "title": "京成杯",
+      "venue": "中山",
+      "winners": [
+        "グラティアス"
+      ]
+    },
+    {
+      "date": "2021-01-17",
+      "title": "日経新春杯",
+      "venue": "中京",
+      "winners": [
+        "ショウリュウイクゾ"
+      ]
+    },
+    {
+      "date": "2021-01-24",
+      "title": "アメリカJCC",
+      "venue": "中山",
+      "winners": [
+        "アリストテレス"
+      ]
+    },
+    {
+      "date": "2021-01-24",
+      "title": "東海S",
+      "venue": "中京",
+      "winners": [
+        "オーヴェルニュ"
+      ]
+    },
+    {
+      "date": "2021-01-31",
+      "title": "根岸S",
+      "venue": "東京",
+      "winners": [
+        "レッドルゼル"
+      ]
+    },
+    {
+      "date": "2021-01-31",
+      "title": "シルクロードS",
+      "venue": "中京",
+      "winners": [
+        "シヴァージ"
+      ]
+    },
+    {
+      "date": "2021-02-07",
+      "title": "東京新聞杯",
+      "venue": "東京",
+      "winners": [
+        "カラテ"
+      ]
+    },
+    {
+      "date": "2021-02-07",
+      "title": "きさらぎ賞",
+      "venue": "中京",
+      "winners": [
+        "ラーゴム"
+      ]
+    },
+    {
+      "date": "2021-02-13",
+      "title": "クイーンC",
+      "venue": "東京",
+      "winners": [
+        "アカイトリノムスメ"
+      ]
+    },
+    {
+      "date": "2021-02-14",
+      "title": "共同通信杯",
+      "venue": "東京",
+      "winners": [
+        "エフフォーリア"
+      ]
+    },
+    {
+      "date": "2021-02-14",
+      "title": "京都記念",
+      "venue": "阪神",
+      "winners": [
+        "ラヴズオンリーユー"
+      ]
+    },
+    {
+      "date": "2021-02-20",
+      "title": "ダイヤモンドS",
+      "venue": "東京",
+      "winners": [
+        "グロンディオーズ"
+      ]
+    },
+    {
+      "date": "2021-02-20",
+      "title": "京都牝馬S",
+      "venue": "阪神",
+      "winners": [
+        "イベリス"
+      ]
+    },
+    {
+      "date": "2021-02-21",
+      "title": "フェブラリーS",
+      "venue": "東京",
+      "winners": [
+        "カフェファラオ"
+      ]
+    },
+    {
+      "date": "2021-02-21",
+      "title": "小倉大賞典",
+      "venue": "小倉",
+      "winners": [
+        "テリトーリアル"
+      ]
+    },
+    {
+      "date": "2021-02-28",
+      "title": "中山記念",
+      "venue": "中山",
+      "winners": [
+        "ヒシイグアス"
+      ]
+    },
+    {
+      "date": "2021-02-28",
+      "title": "阪急杯",
+      "venue": "阪神",
+      "winners": [
+        "レシステンシア"
+      ]
+    },
+    {
+      "date": "2021-03-06",
+      "title": "オーシャンS",
+      "venue": "中山",
+      "winners": [
+        "コントラチェック"
+      ]
+    },
+    {
+      "date": "2021-03-06",
+      "title": "チューリップ賞",
+      "venue": "阪神",
+      "winners": [
+        "メイケイエール",
+        "エリザベスタワー"
+      ]
+    },
+    {
+      "date": "2021-03-07",
+      "title": "弥生賞",
+      "venue": "中山",
+      "winners": [
+        "タイトルホルダー"
+      ]
+    },
+    {
+      "date": "2021-03-13",
+      "title": "中山牝馬S",
+      "venue": "中山",
+      "winners": [
+        "ランブリングアレー"
+      ]
+    },
+    {
+      "date": "2021-03-13",
+      "title": "阪神スプリングジャンプ",
+      "venue": "阪神",
+      "winners": [
+        "メイショウダッサイ"
+      ]
+    },
+    {
+      "date": "2021-03-14",
+      "title": "フィリーズレビュー",
+      "venue": "阪神",
+      "winners": [
+        "シゲルピンクルビー"
+      ]
+    },
+    {
+      "date": "2021-03-14",
+      "title": "金鯱賞",
+      "venue": "中京",
+      "winners": [
+        "ギベオン"
+      ]
+    },
+    {
+      "date": "2021-03-20",
+      "title": "フラワーC",
+      "venue": "中山",
+      "winners": [
+        "ホウオウイクセル"
+      ]
+    }
+  ],
+  "outcomes_url": "https://raw.githubusercontent.com/whitedogk/jra-condition-app/main/jra-results-actual.csv",
+  "period": "2021-2025",
+  "pooled_conditions": [
+    {
+      "distance": 1600,
+      "grade": "G3",
+      "median_winner_payout_yen": 530,
+      "n": 10,
+      "surface": "芝",
+      "venue": "中山",
+      "winner_10x": 3,
+      "winner_20x": 1,
+      "winner_50x": 1,
+      "years": [
+        2023,
+        2024,
+        2025
+      ]
+    },
+    {
+      "distance": 2200,
+      "grade": "G2",
+      "median_winner_payout_yen": 310,
+      "n": 8,
+      "surface": "芝",
+      "venue": "中山",
+      "winner_10x": 0,
+      "winner_20x": 0,
+      "winner_50x": 0,
+      "years": [
+        2023,
+        2024,
+        2025
+      ]
+    },
+    {
+      "distance": 1200,
+      "grade": "G3",
+      "median_winner_payout_yen": 870,
+      "n": 8,
+      "surface": "芝",
+      "venue": "京都",
+      "winner_10x": 4,
+      "winner_20x": 3,
+      "winner_50x": 1,
+      "years": [
+        2023,
+        2024,
+        2025
+      ]
+    },
+    {
+      "distance": 1600,
+      "grade": "G3",
+      "median_winner_payout_yen": 390,
+      "n": 10,
+      "surface": "芝",
+      "venue": "東京",
+      "winner_10x": 1,
+      "winner_20x": 1,
+      "winner_50x": 0,
+      "years": [
+        2023,
+        2024,
+        2025
+      ]
+    },
+    {
+      "distance": 1800,
+      "grade": "G2",
+      "median_winner_payout_yen": 580,
+      "n": 9,
+      "surface": "芝",
+      "venue": "東京",
+      "winner_10x": 1,
+      "winner_20x": 0,
+      "winner_50x": 0,
+      "years": [
+        2023,
+        2024,
+        2025
+      ]
+    },
+    {
+      "distance": 2400,
+      "grade": "G1",
+      "median_winner_payout_yen": 460,
+      "n": 9,
+      "surface": "芝",
+      "venue": "東京",
+      "winner_10x": 2,
+      "winner_20x": 1,
+      "winner_50x": 0,
+      "years": [
+        2023,
+        2024,
+        2025
+      ]
+    }
+  ],
+  "race_tendencies": [
+    {
+      "annual": [
+        {
+          "distance": 1200,
+          "surface": "芝",
+          "upset10": true,
+          "upset20": true,
+          "venue": "中京",
+          "win_payout_yen": 2820,
+          "year": 2023
+        },
+        {
+          "distance": 1200,
+          "surface": "芝",
+          "upset10": true,
+          "upset20": false,
+          "venue": "中京",
+          "win_payout_yen": 1080,
+          "year": 2024
+        },
+        {
+          "distance": 1200,
+          "surface": "芝",
+          "upset10": true,
+          "upset20": false,
+          "venue": "中京",
+          "win_payout_yen": 1390,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "中京/芝1200"
+      ],
+      "grade": "G3",
+      "median_winner_payout_yen": 1390,
+      "n": 3,
+      "name": "CBC賞",
+      "winner_10x": 3,
+      "winner_20x": 1,
+      "winner_50x": 0,
+      "years": [
+        2023,
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 1600,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "東京",
+          "win_payout_yen": 290,
+          "year": 2024
+        },
+        {
+          "distance": 1600,
+          "surface": "芝",
+          "upset10": true,
+          "upset20": true,
+          "venue": "東京",
+          "win_payout_yen": 2610,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "東京/芝1600"
+      ],
+      "grade": "G1",
+      "median_winner_payout_yen": 290,
+      "n": 2,
+      "name": "NHKマイルC",
+      "winner_10x": 1,
+      "winner_20x": 1,
+      "winner_50x": 0,
+      "years": [
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 1800,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "京都",
+          "win_payout_yen": 230,
+          "year": 2024
+        },
+        {
+          "distance": 1800,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "京都",
+          "win_payout_yen": 270,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "京都/芝1800"
+      ],
+      "grade": "G3",
+      "median_winner_payout_yen": 230,
+      "n": 2,
+      "name": "きさらぎ賞",
+      "winner_10x": 0,
+      "winner_20x": 0,
+      "winner_50x": 0,
+      "years": [
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 1600,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "阪神",
+          "win_payout_yen": 800,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "阪神/芝1600"
+      ],
+      "grade": "G3",
+      "median_winner_payout_yen": 800,
+      "n": 1,
+      "name": "しらさぎS",
+      "winner_10x": 0,
+      "winner_20x": 0,
+      "winner_50x": 0,
+      "years": [
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 1000,
+          "surface": "芝",
+          "upset10": true,
+          "upset20": true,
+          "venue": "新潟",
+          "win_payout_yen": 3920,
+          "year": 2023
+        },
+        {
+          "distance": 1000,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "新潟",
+          "win_payout_yen": 760,
+          "year": 2024
+        },
+        {
+          "distance": 1000,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "新潟",
+          "win_payout_yen": 460,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "新潟/芝1000"
+      ],
+      "grade": "G3",
+      "median_winner_payout_yen": 760,
+      "n": 3,
+      "name": "アイビスサマーダッシュ",
+      "winner_10x": 1,
+      "winner_20x": 1,
+      "winner_50x": 0,
+      "years": [
+        2023,
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 1800,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "東京",
+          "win_payout_yen": 700,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "東京/芝1800"
+      ],
+      "grade": "G2",
+      "median_winner_payout_yen": 700,
+      "n": 1,
+      "name": "アイルランドT",
+      "winner_10x": 0,
+      "winner_20x": 0,
+      "winner_50x": 0,
+      "years": [
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 2200,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "中山",
+          "win_payout_yen": 650,
+          "year": 2024
+        },
+        {
+          "distance": 2200,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "中山",
+          "win_payout_yen": 260,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "中山/芝2200"
+      ],
+      "grade": "G2",
+      "median_winner_payout_yen": 260,
+      "n": 2,
+      "name": "アメリカJCC",
+      "winner_10x": 0,
+      "winner_20x": 0,
+      "winner_50x": 0,
+      "years": [
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 2500,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "東京",
+          "win_payout_yen": 240,
+          "year": 2023
+        },
+        {
+          "distance": 2500,
+          "surface": "芝",
+          "upset10": true,
+          "upset20": true,
+          "venue": "東京",
+          "win_payout_yen": 3530,
+          "year": 2024
+        },
+        {
+          "distance": 2500,
+          "surface": "芝",
+          "upset10": true,
+          "upset20": true,
+          "venue": "東京",
+          "win_payout_yen": 2770,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "東京/芝2500"
+      ],
+      "grade": "G2",
+      "median_winner_payout_yen": 2770,
+      "n": 3,
+      "name": "アルゼンチン共和国杯",
+      "winner_10x": 2,
+      "winner_20x": 2,
+      "winner_50x": 0,
+      "years": [
+        2023,
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 1600,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "東京",
+          "win_payout_yen": 150,
+          "year": 2023
+        },
+        {
+          "distance": 1600,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "東京",
+          "win_payout_yen": 470,
+          "year": 2024
+        },
+        {
+          "distance": 1600,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "東京",
+          "win_payout_yen": 390,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "東京/芝1600"
+      ],
+      "grade": "G3",
+      "median_winner_payout_yen": 390,
+      "n": 3,
+      "name": "アルテミスS",
+      "winner_10x": 0,
+      "winner_20x": 0,
+      "winner_50x": 0,
+      "years": [
+        2023,
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 1600,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "阪神",
+          "win_payout_yen": 320,
+          "year": 2024
+        }
+      ],
+      "conditions": [
+        "阪神/芝1600"
+      ],
+      "grade": "G3",
+      "median_winner_payout_yen": 320,
+      "n": 1,
+      "name": "アーリントンC",
+      "winner_10x": 0,
+      "winner_20x": 0,
+      "winner_50x": 0,
+      "years": [
+        2024
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 1800,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "東京",
+          "win_payout_yen": 320,
+          "year": 2023
+        },
+        {
+          "distance": 1800,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "東京",
+          "win_payout_yen": 360,
+          "year": 2024
+        },
+        {
+          "distance": 1800,
+          "surface": "芝",
+          "upset10": true,
+          "upset20": false,
+          "venue": "東京",
+          "win_payout_yen": 1320,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "東京/芝1800"
+      ],
+      "grade": "G3",
+      "median_winner_payout_yen": 360,
+      "n": 3,
+      "name": "エプソムC",
+      "winner_10x": 1,
+      "winner_20x": 0,
+      "winner_50x": 0,
+      "years": [
+        2023,
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 2200,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "京都",
+          "win_payout_yen": 240,
+          "year": 2023
+        },
+        {
+          "distance": 2200,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "京都",
+          "win_payout_yen": 950,
+          "year": 2024
+        },
+        {
+          "distance": 2200,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "京都",
+          "win_payout_yen": 230,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "京都/芝2200"
+      ],
+      "grade": "G1",
+      "median_winner_payout_yen": 240,
+      "n": 3,
+      "name": "エリザベス女王杯",
+      "winner_10x": 0,
+      "winner_20x": 0,
+      "winner_50x": 0,
+      "years": [
+        2023,
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 2400,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "東京",
+          "win_payout_yen": 140,
+          "year": 2023
+        },
+        {
+          "distance": 2400,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "東京",
+          "win_payout_yen": 460,
+          "year": 2024
+        },
+        {
+          "distance": 2400,
+          "surface": "芝",
+          "upset10": true,
+          "upset20": false,
+          "venue": "東京",
+          "win_payout_yen": 1430,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "東京/芝2400"
+      ],
+      "grade": "G1",
+      "median_winner_payout_yen": 460,
+      "n": 3,
+      "name": "オークス",
+      "winner_10x": 1,
+      "winner_20x": 0,
+      "winner_50x": 0,
+      "years": [
+        2023,
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 1200,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "中山",
+          "win_payout_yen": 330,
+          "year": 2024
+        },
+        {
+          "distance": 1200,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "中山",
+          "win_payout_yen": 270,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "中山/芝1200"
+      ],
+      "grade": "G3",
+      "median_winner_payout_yen": 270,
+      "n": 2,
+      "name": "オーシャンS",
+      "winner_10x": 0,
+      "winner_20x": 0,
+      "winner_50x": 0,
+      "years": [
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 2200,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "中山",
+          "win_payout_yen": 560,
+          "year": 2023
+        },
+        {
+          "distance": 2200,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "中山",
+          "win_payout_yen": 150,
+          "year": 2024
+        },
+        {
+          "distance": 2200,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "中山",
+          "win_payout_yen": 330,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "中山/芝2200"
+      ],
+      "grade": "G2",
+      "median_winner_payout_yen": 330,
+      "n": 3,
+      "name": "オールカマー",
+      "winner_10x": 0,
+      "winner_20x": 0,
+      "winner_50x": 0,
+      "years": [
+        2023,
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 1200,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "札幌",
+          "win_payout_yen": 240,
+          "year": 2023
+        },
+        {
+          "distance": 1200,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "札幌",
+          "win_payout_yen": 430,
+          "year": 2024
+        },
+        {
+          "distance": 1200,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "札幌",
+          "win_payout_yen": 550,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "札幌/芝1200"
+      ],
+      "grade": "G3",
+      "median_winner_payout_yen": 430,
+      "n": 3,
+      "name": "キーンランドC",
+      "winner_10x": 0,
+      "winner_20x": 0,
+      "winner_50x": 0,
+      "years": [
+        2023,
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 1600,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "東京",
+          "win_payout_yen": 310,
+          "year": 2024
+        },
+        {
+          "distance": 1600,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "東京",
+          "win_payout_yen": 490,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "東京/芝1600"
+      ],
+      "grade": "G3",
+      "median_winner_payout_yen": 310,
+      "n": 2,
+      "name": "クイーンC",
+      "winner_10x": 0,
+      "winner_20x": 0,
+      "winner_50x": 0,
+      "years": [
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 1800,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "札幌",
+          "win_payout_yen": 450,
+          "year": 2023
+        },
+        {
+          "distance": 1800,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "札幌",
+          "win_payout_yen": 960,
+          "year": 2024
+        },
+        {
+          "distance": 1800,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "札幌",
+          "win_payout_yen": 290,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "札幌/芝1800"
+      ],
+      "grade": "G3",
+      "median_winner_payout_yen": 450,
+      "n": 3,
+      "name": "クイーンS",
+      "winner_10x": 0,
+      "winner_20x": 0,
+      "winner_50x": 0,
+      "years": [
+        2023,
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 1600,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "東京",
+          "win_payout_yen": 960,
+          "year": 2023
+        },
+        {
+          "distance": 1600,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "東京",
+          "win_payout_yen": 350,
+          "year": 2024
+        },
+        {
+          "distance": 1600,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "東京",
+          "win_payout_yen": 360,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "東京/芝1600"
+      ],
+      "grade": "G3",
+      "median_winner_payout_yen": 360,
+      "n": 3,
+      "name": "サウジアラビアロイヤルC",
+      "winner_10x": 0,
+      "winner_20x": 0,
+      "winner_50x": 0,
+      "years": [
+        2023,
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 1200,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "京都",
+          "win_payout_yen": 330,
+          "year": 2024
+        },
+        {
+          "distance": 1200,
+          "surface": "芝",
+          "upset10": true,
+          "upset20": true,
+          "venue": "京都",
+          "win_payout_yen": 2740,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "京都/芝1200"
+      ],
+      "grade": "G3",
+      "median_winner_payout_yen": 330,
+      "n": 2,
+      "name": "シルクロードS",
+      "winner_10x": 1,
+      "winner_20x": 1,
+      "winner_50x": 0,
+      "years": [
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 1600,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "京都",
+          "win_payout_yen": 490,
+          "year": 2024
+        },
+        {
+          "distance": 1600,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "中京",
+          "win_payout_yen": 470,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "中京/芝1600",
+        "京都/芝1600"
+      ],
+      "grade": "G3",
+      "median_winner_payout_yen": 470,
+      "n": 2,
+      "name": "シンザン記念",
+      "winner_10x": 0,
+      "winner_20x": 0,
+      "winner_50x": 0,
+      "years": [
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 2400,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "東京",
+          "win_payout_yen": 130,
+          "year": 2023
+        },
+        {
+          "distance": 2400,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "東京",
+          "win_payout_yen": 230,
+          "year": 2024
+        },
+        {
+          "distance": 2400,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "東京",
+          "win_payout_yen": 620,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "東京/芝2400"
+      ],
+      "grade": "G1",
+      "median_winner_payout_yen": 230,
+      "n": 3,
+      "name": "ジャパンC",
+      "winner_10x": 0,
+      "winner_20x": 0,
+      "winner_50x": 0,
+      "years": [
+        2023,
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 3600,
+          "surface": "芝",
+          "upset10": true,
+          "upset20": false,
+          "venue": "中山",
+          "win_payout_yen": 1920,
+          "year": 2023
+        },
+        {
+          "distance": 3600,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "中山",
+          "win_payout_yen": 360,
+          "year": 2024
+        },
+        {
+          "distance": 3600,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "中山",
+          "win_payout_yen": 440,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "中山/芝3600"
+      ],
+      "grade": "G2",
+      "median_winner_payout_yen": 440,
+      "n": 3,
+      "name": "ステイヤーズS",
+      "winner_10x": 1,
+      "winner_20x": 0,
+      "winner_50x": 0,
+      "years": [
+        2023,
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 1800,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "中山",
+          "win_payout_yen": 290,
+          "year": 2024
+        },
+        {
+          "distance": 1800,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "中山",
+          "win_payout_yen": 410,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "中山/芝1800"
+      ],
+      "grade": "G2",
+      "median_winner_payout_yen": 290,
+      "n": 2,
+      "name": "スプリングS",
+      "winner_10x": 0,
+      "winner_20x": 0,
+      "winner_50x": 0,
+      "years": [
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 1200,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "中山",
+          "win_payout_yen": 490,
+          "year": 2023
+        },
+        {
+          "distance": 1200,
+          "surface": "芝",
+          "upset10": true,
+          "upset20": true,
+          "venue": "中山",
+          "win_payout_yen": 2850,
+          "year": 2024
+        },
+        {
+          "distance": 1200,
+          "surface": "芝",
+          "upset10": true,
+          "upset20": true,
+          "venue": "中山",
+          "win_payout_yen": 5000,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "中山/芝1200"
+      ],
+      "grade": "G1",
+      "median_winner_payout_yen": 2850,
+      "n": 3,
+      "name": "スプリンターズS",
+      "winner_10x": 2,
+      "winner_20x": 2,
+      "winner_50x": 1,
+      "years": [
+        2023,
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 1400,
+          "surface": "芝",
+          "upset10": true,
+          "upset20": true,
+          "venue": "京都",
+          "win_payout_yen": 2160,
+          "year": 2023
+        },
+        {
+          "distance": 1400,
+          "surface": "芝",
+          "upset10": true,
+          "upset20": false,
+          "venue": "京都",
+          "win_payout_yen": 1090,
+          "year": 2024
+        },
+        {
+          "distance": 1400,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "京都",
+          "win_payout_yen": 750,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "京都/芝1400"
+      ],
+      "grade": "G2",
+      "median_winner_payout_yen": 1090,
+      "n": 3,
+      "name": "スワンS",
+      "winner_10x": 2,
+      "winner_20x": 1,
+      "winner_50x": 0,
+      "years": [
+        2023,
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 1200,
+          "surface": "芝",
+          "upset10": true,
+          "upset20": true,
+          "venue": "阪神",
+          "win_payout_yen": 11260,
+          "year": 2023
+        },
+        {
+          "distance": 1200,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "中京",
+          "win_payout_yen": 640,
+          "year": 2024
+        },
+        {
+          "distance": 1200,
+          "surface": "芝",
+          "upset10": true,
+          "upset20": false,
+          "venue": "阪神",
+          "win_payout_yen": 1940,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "中京/芝1200",
+        "阪神/芝1200"
+      ],
+      "grade": "G2",
+      "median_winner_payout_yen": 1940,
+      "n": 3,
+      "name": "セントウルS",
+      "winner_10x": 2,
+      "winner_20x": 1,
+      "winner_50x": 1,
+      "years": [
+        2023,
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 2200,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "中山",
+          "win_payout_yen": 380,
+          "year": 2023
+        },
+        {
+          "distance": 2200,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "中山",
+          "win_payout_yen": 310,
+          "year": 2024
+        },
+        {
+          "distance": 2200,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "中山",
+          "win_payout_yen": 260,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "中山/芝2200"
+      ],
+      "grade": "G2",
+      "median_winner_payout_yen": 310,
+      "n": 3,
+      "name": "セントライト記念",
+      "winner_10x": 0,
+      "winner_20x": 0,
+      "winner_50x": 0,
+      "years": [
+        2023,
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 1600,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "中山",
+          "win_payout_yen": 520,
+          "year": 2023
+        },
+        {
+          "distance": 1600,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "中山",
+          "win_payout_yen": 530,
+          "year": 2024
+        },
+        {
+          "distance": 1600,
+          "surface": "芝",
+          "upset10": true,
+          "upset20": false,
+          "venue": "中山",
+          "win_payout_yen": 1050,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "中山/芝1600"
+      ],
+      "grade": "G3",
+      "median_winner_payout_yen": 530,
+      "n": 3,
+      "name": "ターコイズS",
+      "winner_10x": 1,
+      "winner_20x": 0,
+      "winner_50x": 0,
+      "years": [
+        2023,
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 3400,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "東京",
+          "win_payout_yen": 310,
+          "year": 2024
+        },
+        {
+          "distance": 3400,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "東京",
+          "win_payout_yen": 190,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "東京/芝3400"
+      ],
+      "grade": "G3",
+      "median_winner_payout_yen": 190,
+      "n": 2,
+      "name": "ダイヤモンドS",
+      "winner_10x": 0,
+      "winner_20x": 0,
+      "winner_50x": 0,
+      "years": [
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 1600,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "中山",
+          "win_payout_yen": 610,
+          "year": 2024
+        },
+        {
+          "distance": 1600,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "中山",
+          "win_payout_yen": 170,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "中山/芝1600"
+      ],
+      "grade": "G3",
+      "median_winner_payout_yen": 170,
+      "n": 2,
+      "name": "ダービー卿チャレンジT",
+      "winner_10x": 0,
+      "winner_20x": 0,
+      "winner_50x": 0,
+      "years": [
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 2000,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "阪神",
+          "win_payout_yen": 550,
+          "year": 2023
+        },
+        {
+          "distance": 2000,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "京都",
+          "win_payout_yen": 650,
+          "year": 2024
+        },
+        {
+          "distance": 2000,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "阪神",
+          "win_payout_yen": 470,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "京都/芝2000",
+        "阪神/芝2000"
+      ],
+      "grade": "G3",
+      "median_winner_payout_yen": 550,
+      "n": 3,
+      "name": "チャレンジC",
+      "winner_10x": 0,
+      "winner_20x": 0,
+      "winner_50x": 0,
+      "years": [
+        2023,
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 1600,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "阪神",
+          "win_payout_yen": 300,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "阪神/芝1600"
+      ],
+      "grade": "G3",
+      "median_winner_payout_yen": 300,
+      "n": 1,
+      "name": "チャーチルダウンズC",
+      "winner_10x": 0,
+      "winner_20x": 0,
+      "winner_50x": 0,
+      "years": [
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 1600,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "阪神",
+          "win_payout_yen": 970,
+          "year": 2024
+        },
+        {
+          "distance": 1600,
+          "surface": "芝",
+          "upset10": true,
+          "upset20": true,
+          "venue": "阪神",
+          "win_payout_yen": 3930,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "阪神/芝1600"
+      ],
+      "grade": "G2",
+      "median_winner_payout_yen": 970,
+      "n": 2,
+      "name": "チューリップ賞",
+      "winner_10x": 1,
+      "winner_20x": 1,
+      "winner_50x": 0,
+      "years": [
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 1600,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "京都",
+          "win_payout_yen": 390,
+          "year": 2023
+        },
+        {
+          "distance": 1600,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "京都",
+          "win_payout_yen": 260,
+          "year": 2024
+        },
+        {
+          "distance": 1600,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "京都",
+          "win_payout_yen": 260,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "京都/芝1600"
+      ],
+      "grade": "G2",
+      "median_winner_payout_yen": 260,
+      "n": 3,
+      "name": "デイリー杯2歳S",
+      "winner_10x": 0,
+      "winner_20x": 0,
+      "winner_50x": 0,
+      "years": [
+        2023,
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 1600,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "中山",
+          "win_payout_yen": 470,
+          "year": 2024
+        },
+        {
+          "distance": 1600,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "中山",
+          "win_payout_yen": 550,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "中山/芝1600"
+      ],
+      "grade": "G2",
+      "median_winner_payout_yen": 470,
+      "n": 2,
+      "name": "ニュージーランドT",
+      "winner_10x": 0,
+      "winner_20x": 0,
+      "winner_50x": 0,
+      "years": [
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 1400,
+          "surface": "芝",
+          "upset10": true,
+          "upset20": false,
+          "venue": "中京",
+          "win_payout_yen": 1360,
+          "year": 2024
+        },
+        {
+          "distance": 1400,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "中京",
+          "win_payout_yen": 630,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "中京/芝1400"
+      ],
+      "grade": "G3",
+      "median_winner_payout_yen": 630,
+      "n": 2,
+      "name": "ファルコンS",
+      "winner_10x": 1,
+      "winner_20x": 0,
+      "winner_50x": 0,
+      "years": [
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 1400,
+          "surface": "芝",
+          "upset10": true,
+          "upset20": true,
+          "venue": "京都",
+          "win_payout_yen": 7080,
+          "year": 2023
+        },
+        {
+          "distance": 1400,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "京都",
+          "win_payout_yen": 950,
+          "year": 2024
+        },
+        {
+          "distance": 1400,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "京都",
+          "win_payout_yen": 280,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "京都/芝1400"
+      ],
+      "grade": "G3",
+      "median_winner_payout_yen": 950,
+      "n": 3,
+      "name": "ファンタジーS",
+      "winner_10x": 1,
+      "winner_20x": 1,
+      "winner_50x": 1,
+      "years": [
+        2023,
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 1400,
+          "surface": "芝",
+          "upset10": true,
+          "upset20": true,
+          "venue": "阪神",
+          "win_payout_yen": 3520,
+          "year": 2024
+        },
+        {
+          "distance": 1400,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "阪神",
+          "win_payout_yen": 670,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "阪神/芝1400"
+      ],
+      "grade": "G2",
+      "median_winner_payout_yen": 670,
+      "n": 2,
+      "name": "フィリーズレビュー",
+      "winner_10x": 1,
+      "winner_20x": 1,
+      "winner_50x": 0,
+      "years": [
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 1600,
+          "surface": "芝",
+          "upset10": true,
+          "upset20": false,
+          "venue": "中山",
+          "win_payout_yen": 1260,
+          "year": 2024
+        },
+        {
+          "distance": 1600,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "中山",
+          "win_payout_yen": 590,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "中山/芝1600"
+      ],
+      "grade": "G3",
+      "median_winner_payout_yen": 590,
+      "n": 2,
+      "name": "フェアリーS",
+      "winner_10x": 1,
+      "winner_20x": 0,
+      "winner_50x": 0,
+      "years": [
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 1800,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "中山",
+          "win_payout_yen": 370,
+          "year": 2024
+        },
+        {
+          "distance": 1800,
+          "surface": "芝",
+          "upset10": true,
+          "upset20": false,
+          "venue": "中山",
+          "win_payout_yen": 1440,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "中山/芝1800"
+      ],
+      "grade": "G3",
+      "median_winner_payout_yen": 370,
+      "n": 2,
+      "name": "フラワーC",
+      "winner_10x": 1,
+      "winner_20x": 0,
+      "winner_50x": 0,
+      "years": [
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 2000,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "東京",
+          "win_payout_yen": 400,
+          "year": 2024
+        },
+        {
+          "distance": 2000,
+          "surface": "芝",
+          "upset10": true,
+          "upset20": false,
+          "venue": "東京",
+          "win_payout_yen": 1470,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "東京/芝2000"
+      ],
+      "grade": "G2",
+      "median_winner_payout_yen": 400,
+      "n": 2,
+      "name": "フローラS",
+      "winner_10x": 1,
+      "winner_20x": 0,
+      "winner_50x": 0,
+      "years": [
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 2000,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "中山",
+          "win_payout_yen": 310,
+          "year": 2023
+        },
+        {
+          "distance": 2000,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "中山",
+          "win_payout_yen": 180,
+          "year": 2024
+        },
+        {
+          "distance": 2000,
+          "surface": "芝",
+          "upset10": true,
+          "upset20": false,
+          "venue": "中山",
+          "win_payout_yen": 1980,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "中山/芝2000"
+      ],
+      "grade": "G1",
+      "median_winner_payout_yen": 310,
+      "n": 3,
+      "name": "ホープフルS",
+      "winner_10x": 1,
+      "winner_20x": 0,
+      "winner_50x": 0,
+      "years": [
+        2023,
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 1600,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "京都",
+          "win_payout_yen": 240,
+          "year": 2024
+        },
+        {
+          "distance": 1600,
+          "surface": "芝",
+          "upset10": true,
+          "upset20": false,
+          "venue": "京都",
+          "win_payout_yen": 1020,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "京都/芝1600"
+      ],
+      "grade": "G2",
+      "median_winner_payout_yen": 240,
+      "n": 2,
+      "name": "マイラーズC",
+      "winner_10x": 1,
+      "winner_20x": 0,
+      "winner_50x": 0,
+      "years": [
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 1600,
+          "surface": "芝",
+          "upset10": true,
+          "upset20": false,
+          "venue": "京都",
+          "win_payout_yen": 1730,
+          "year": 2023
+        },
+        {
+          "distance": 1600,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "京都",
+          "win_payout_yen": 530,
+          "year": 2024
+        },
+        {
+          "distance": 1600,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "京都",
+          "win_payout_yen": 180,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "京都/芝1600"
+      ],
+      "grade": "G1",
+      "median_winner_payout_yen": 530,
+      "n": 3,
+      "name": "マイルチャンピオンシップ",
+      "winner_10x": 1,
+      "winner_20x": 0,
+      "winner_50x": 0,
+      "years": [
+        2023,
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 2000,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "阪神",
+          "win_payout_yen": 370,
+          "year": 2023
+        },
+        {
+          "distance": 2000,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "京都",
+          "win_payout_yen": 910,
+          "year": 2024
+        }
+      ],
+      "conditions": [
+        "京都/芝2000",
+        "阪神/芝2000"
+      ],
+      "grade": "G3",
+      "median_winner_payout_yen": 370,
+      "n": 2,
+      "name": "マーメイドS",
+      "winner_10x": 0,
+      "winner_20x": 0,
+      "winner_50x": 0,
+      "years": [
+        2023,
+        2024
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 1800,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "福島",
+          "win_payout_yen": 830,
+          "year": 2023
+        },
+        {
+          "distance": 1800,
+          "surface": "芝",
+          "upset10": true,
+          "upset20": false,
+          "venue": "福島",
+          "win_payout_yen": 1120,
+          "year": 2024
+        },
+        {
+          "distance": 1800,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "福島",
+          "win_payout_yen": 760,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "福島/芝1800"
+      ],
+      "grade": "G3",
+      "median_winner_payout_yen": 830,
+      "n": 3,
+      "name": "ラジオNIKKEI賞",
+      "winner_10x": 1,
+      "winner_20x": 0,
+      "winner_50x": 0,
+      "years": [
+        2023,
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 1800,
+          "surface": "芝",
+          "upset10": true,
+          "upset20": true,
+          "venue": "阪神",
+          "win_payout_yen": 2320,
+          "year": 2023
+        },
+        {
+          "distance": 2000,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "中京",
+          "win_payout_yen": 490,
+          "year": 2024
+        },
+        {
+          "distance": 1800,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "阪神",
+          "win_payout_yen": 290,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "中京/芝2000",
+        "阪神/芝1800"
+      ],
+      "grade": "G2",
+      "median_winner_payout_yen": 490,
+      "n": 3,
+      "name": "ローズS",
+      "winner_10x": 1,
+      "winner_20x": 1,
+      "winner_50x": 0,
+      "years": [
+        2023,
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 1600,
+          "surface": "芝",
+          "upset10": true,
+          "upset20": true,
+          "venue": "東京",
+          "win_payout_yen": 20860,
+          "year": 2024
+        },
+        {
+          "distance": 1600,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "東京",
+          "win_payout_yen": 250,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "東京/芝1600"
+      ],
+      "grade": "G1",
+      "median_winner_payout_yen": 250,
+      "n": 2,
+      "name": "ヴィクトリアマイル",
+      "winner_10x": 1,
+      "winner_20x": 1,
+      "winner_50x": 1,
+      "years": [
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 2000,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "福島",
+          "win_payout_yen": 520,
+          "year": 2023
+        },
+        {
+          "distance": 2000,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "福島",
+          "win_payout_yen": 430,
+          "year": 2024
+        },
+        {
+          "distance": 2000,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "福島",
+          "win_payout_yen": 420,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "福島/芝2000"
+      ],
+      "grade": "G3",
+      "median_winner_payout_yen": 430,
+      "n": 3,
+      "name": "七夕賞",
+      "winner_10x": 0,
+      "winner_20x": 0,
+      "winner_50x": 0,
+      "years": [
+        2023,
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 1400,
+          "surface": "芝",
+          "upset10": true,
+          "upset20": false,
+          "venue": "中京",
+          "win_payout_yen": 1320,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "中京/芝1400"
+      ],
+      "grade": "G3",
+      "median_winner_payout_yen": 1320,
+      "n": 1,
+      "name": "中京2歳S",
+      "winner_10x": 1,
+      "winner_20x": 0,
+      "winner_50x": 0,
+      "years": [
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 1600,
+          "surface": "芝",
+          "upset10": true,
+          "upset20": false,
+          "venue": "中京",
+          "win_payout_yen": 1660,
+          "year": 2023
+        },
+        {
+          "distance": 1800,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "小倉",
+          "win_payout_yen": 820,
+          "year": 2024
+        },
+        {
+          "distance": 1600,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "中京",
+          "win_payout_yen": 870,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "中京/芝1600",
+        "小倉/芝1800"
+      ],
+      "grade": "G3",
+      "median_winner_payout_yen": 870,
+      "n": 3,
+      "name": "中京記念",
+      "winner_10x": 1,
+      "winner_20x": 0,
+      "winner_50x": 0,
+      "years": [
+        2023,
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 1800,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "中山",
+          "win_payout_yen": 880,
+          "year": 2024
+        },
+        {
+          "distance": 1800,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "中山",
+          "win_payout_yen": 580,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "中山/芝1800"
+      ],
+      "grade": "G3",
+      "median_winner_payout_yen": 580,
+      "n": 2,
+      "name": "中山牝馬S",
+      "winner_10x": 0,
+      "winner_20x": 0,
+      "winner_50x": 0,
+      "years": [
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 1800,
+          "surface": "芝",
+          "upset10": true,
+          "upset20": false,
+          "venue": "中山",
+          "win_payout_yen": 1610,
+          "year": 2024
+        },
+        {
+          "distance": 1800,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "中山",
+          "win_payout_yen": 310,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "中山/芝1800"
+      ],
+      "grade": "G2",
+      "median_winner_payout_yen": 310,
+      "n": 2,
+      "name": "中山記念",
+      "winner_10x": 1,
+      "winner_20x": 0,
+      "winner_50x": 0,
+      "years": [
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 2000,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "中山",
+          "win_payout_yen": 780,
+          "year": 2024
+        },
+        {
+          "distance": 2000,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "中山",
+          "win_payout_yen": 840,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "中山/芝2000"
+      ],
+      "grade": "G3",
+      "median_winner_payout_yen": 780,
+      "n": 2,
+      "name": "中山金杯",
+      "winner_10x": 0,
+      "winner_20x": 0,
+      "winner_50x": 0,
+      "years": [
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 2000,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "中京",
+          "win_payout_yen": 490,
+          "year": 2023
+        },
+        {
+          "distance": 2000,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "中京",
+          "win_payout_yen": 520,
+          "year": 2024
+        },
+        {
+          "distance": 2000,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "中京",
+          "win_payout_yen": 540,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "中京/芝2000"
+      ],
+      "grade": "G3",
+      "median_winner_payout_yen": 520,
+      "n": 3,
+      "name": "中日新聞杯",
+      "winner_10x": 0,
+      "winner_20x": 0,
+      "winner_50x": 0,
+      "years": [
+        2023,
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 2000,
+          "surface": "芝",
+          "upset10": true,
+          "upset20": false,
+          "venue": "中山",
+          "win_payout_yen": 1150,
+          "year": 2024
+        },
+        {
+          "distance": 2000,
+          "surface": "芝",
+          "upset10": true,
+          "upset20": true,
+          "venue": "中山",
+          "win_payout_yen": 4940,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "中山/芝2000"
+      ],
+      "grade": "G3",
+      "median_winner_payout_yen": 1150,
+      "n": 2,
+      "name": "京成杯",
+      "winner_10x": 2,
+      "winner_20x": 1,
+      "winner_50x": 0,
+      "years": [
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 1600,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "中山",
+          "win_payout_yen": 370,
+          "year": 2023
+        },
+        {
+          "distance": 1600,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "中山",
+          "win_payout_yen": 150,
+          "year": 2024
+        },
+        {
+          "distance": 1600,
+          "surface": "芝",
+          "upset10": true,
+          "upset20": true,
+          "venue": "中山",
+          "win_payout_yen": 8950,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "中山/芝1600"
+      ],
+      "grade": "G3",
+      "median_winner_payout_yen": 370,
+      "n": 3,
+      "name": "京成杯オータムH",
+      "winner_10x": 1,
+      "winner_20x": 1,
+      "winner_50x": 1,
+      "years": [
+        2023,
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 1400,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "東京",
+          "win_payout_yen": 320,
+          "year": 2023
+        },
+        {
+          "distance": 1400,
+          "surface": "芝",
+          "upset10": true,
+          "upset20": true,
+          "venue": "東京",
+          "win_payout_yen": 2100,
+          "year": 2024
+        },
+        {
+          "distance": 1400,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "東京",
+          "win_payout_yen": 180,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "東京/芝1400"
+      ],
+      "grade": "G2",
+      "median_winner_payout_yen": 320,
+      "n": 3,
+      "name": "京王杯2歳S",
+      "winner_10x": 1,
+      "winner_20x": 1,
+      "winner_50x": 0,
+      "years": [
+        2023,
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 1400,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "東京",
+          "win_payout_yen": 370,
+          "year": 2024
+        },
+        {
+          "distance": 1400,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "東京",
+          "win_payout_yen": 410,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "東京/芝1400"
+      ],
+      "grade": "G2",
+      "median_winner_payout_yen": 370,
+      "n": 2,
+      "name": "京王杯スプリングC",
+      "winner_10x": 0,
+      "winner_20x": 0,
+      "winner_50x": 0,
+      "years": [
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 2000,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "京都",
+          "win_payout_yen": 370,
+          "year": 2023
+        },
+        {
+          "distance": 2000,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "京都",
+          "win_payout_yen": 190,
+          "year": 2024
+        },
+        {
+          "distance": 2000,
+          "surface": "芝",
+          "upset10": true,
+          "upset20": true,
+          "venue": "京都",
+          "win_payout_yen": 2500,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "京都/芝2000"
+      ],
+      "grade": "G3",
+      "median_winner_payout_yen": 370,
+      "n": 3,
+      "name": "京都2歳S",
+      "winner_10x": 1,
+      "winner_20x": 1,
+      "winner_50x": 0,
+      "years": [
+        2023,
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 2400,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "京都",
+          "win_payout_yen": 760,
+          "year": 2023
+        },
+        {
+          "distance": 2400,
+          "surface": "芝",
+          "upset10": true,
+          "upset20": true,
+          "venue": "京都",
+          "win_payout_yen": 2250,
+          "year": 2024
+        },
+        {
+          "distance": 2400,
+          "surface": "芝",
+          "upset10": true,
+          "upset20": false,
+          "venue": "京都",
+          "win_payout_yen": 1130,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "京都/芝2400"
+      ],
+      "grade": "G2",
+      "median_winner_payout_yen": 1130,
+      "n": 3,
+      "name": "京都大賞典",
+      "winner_10x": 2,
+      "winner_20x": 1,
+      "winner_50x": 0,
+      "years": [
+        2023,
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 2200,
+          "surface": "芝",
+          "upset10": true,
+          "upset20": false,
+          "venue": "京都",
+          "win_payout_yen": 1770,
+          "year": 2024
+        },
+        {
+          "distance": 2200,
+          "surface": "芝",
+          "upset10": true,
+          "upset20": false,
+          "venue": "京都",
+          "win_payout_yen": 1070,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "京都/芝2200"
+      ],
+      "grade": "G2",
+      "median_winner_payout_yen": 1070,
+      "n": 2,
+      "name": "京都新聞杯",
+      "winner_10x": 2,
+      "winner_20x": 0,
+      "winner_50x": 0,
+      "years": [
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 1400,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "京都",
+          "win_payout_yen": 380,
+          "year": 2024
+        }
+      ],
+      "conditions": [
+        "京都/芝1400"
+      ],
+      "grade": "G3",
+      "median_winner_payout_yen": 380,
+      "n": 1,
+      "name": "京都牝馬S",
+      "winner_10x": 0,
+      "winner_20x": 0,
+      "winner_50x": 0,
+      "years": [
+        2024
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 2200,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "京都",
+          "win_payout_yen": 400,
+          "year": 2024
+        },
+        {
+          "distance": 2200,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "京都",
+          "win_payout_yen": 950,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "京都/芝2200"
+      ],
+      "grade": "G2",
+      "median_winner_payout_yen": 400,
+      "n": 2,
+      "name": "京都記念",
+      "winner_10x": 0,
+      "winner_20x": 0,
+      "winner_50x": 0,
+      "years": [
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 1600,
+          "surface": "芝",
+          "upset10": true,
+          "upset20": false,
+          "venue": "京都",
+          "win_payout_yen": 1650,
+          "year": 2024
+        },
+        {
+          "distance": 1600,
+          "surface": "芝",
+          "upset10": true,
+          "upset20": false,
+          "venue": "中京",
+          "win_payout_yen": 1200,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "中京/芝1600",
+        "京都/芝1600"
+      ],
+      "grade": "G3",
+      "median_winner_payout_yen": 1200,
+      "n": 2,
+      "name": "京都金杯",
+      "winner_10x": 2,
+      "winner_20x": 0,
+      "winner_50x": 0,
+      "years": [
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 1200,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "京都",
+          "win_payout_yen": 720,
+          "year": 2023
+        },
+        {
+          "distance": 1200,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "京都",
+          "win_payout_yen": 470,
+          "year": 2024
+        },
+        {
+          "distance": 1200,
+          "surface": "芝",
+          "upset10": true,
+          "upset20": false,
+          "venue": "京都",
+          "win_payout_yen": 1170,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "京都/芝1200"
+      ],
+      "grade": "G3",
+      "median_winner_payout_yen": 720,
+      "n": 3,
+      "name": "京阪杯",
+      "winner_10x": 1,
+      "winner_20x": 0,
+      "winner_50x": 0,
+      "years": [
+        2023,
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 1800,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "東京",
+          "win_payout_yen": 660,
+          "year": 2024
+        },
+        {
+          "distance": 1800,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "東京",
+          "win_payout_yen": 380,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "東京/芝1800"
+      ],
+      "grade": "G3",
+      "median_winner_payout_yen": 380,
+      "n": 2,
+      "name": "共同通信杯",
+      "winner_10x": 0,
+      "winner_20x": 0,
+      "winner_50x": 0,
+      "years": [
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 1200,
+          "surface": "芝",
+          "upset10": true,
+          "upset20": true,
+          "venue": "函館",
+          "win_payout_yen": 2980,
+          "year": 2023
+        },
+        {
+          "distance": 1200,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "函館",
+          "win_payout_yen": 340,
+          "year": 2024
+        },
+        {
+          "distance": 1200,
+          "surface": "芝",
+          "upset10": true,
+          "upset20": true,
+          "venue": "函館",
+          "win_payout_yen": 4870,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "函館/芝1200"
+      ],
+      "grade": "G3",
+      "median_winner_payout_yen": 2980,
+      "n": 3,
+      "name": "函館2歳S",
+      "winner_10x": 2,
+      "winner_20x": 2,
+      "winner_50x": 0,
+      "years": [
+        2023,
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 1200,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "函館",
+          "win_payout_yen": 610,
+          "year": 2023
+        },
+        {
+          "distance": 1200,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "函館",
+          "win_payout_yen": 360,
+          "year": 2024
+        },
+        {
+          "distance": 1200,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "函館",
+          "win_payout_yen": 620,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "函館/芝1200"
+      ],
+      "grade": "G3",
+      "median_winner_payout_yen": 610,
+      "n": 3,
+      "name": "函館スプリントS",
+      "winner_10x": 0,
+      "winner_20x": 0,
+      "winner_50x": 0,
+      "years": [
+        2023,
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 2000,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "函館",
+          "win_payout_yen": 410,
+          "year": 2023
+        },
+        {
+          "distance": 2000,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "函館",
+          "win_payout_yen": 720,
+          "year": 2024
+        },
+        {
+          "distance": 2000,
+          "surface": "芝",
+          "upset10": true,
+          "upset20": false,
+          "venue": "函館",
+          "win_payout_yen": 1300,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "函館/芝2000"
+      ],
+      "grade": "G3",
+      "median_winner_payout_yen": 720,
+      "n": 3,
+      "name": "函館記念",
+      "winner_10x": 1,
+      "winner_20x": 0,
+      "winner_50x": 0,
+      "years": [
+        2023,
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 1200,
+          "surface": "芝",
+          "upset10": true,
+          "upset20": false,
+          "venue": "小倉",
+          "win_payout_yen": 1310,
+          "year": 2023
+        },
+        {
+          "distance": 1200,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "小倉",
+          "win_payout_yen": 730,
+          "year": 2024
+        },
+        {
+          "distance": 1200,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "小倉",
+          "win_payout_yen": 570,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "小倉/芝1200"
+      ],
+      "grade": "G3",
+      "median_winner_payout_yen": 730,
+      "n": 3,
+      "name": "北九州記念",
+      "winner_10x": 1,
+      "winner_20x": 0,
+      "winner_50x": 0,
+      "years": [
+        2023,
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 2000,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "阪神",
+          "win_payout_yen": 550,
+          "year": 2024
+        },
+        {
+          "distance": 2000,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "阪神",
+          "win_payout_yen": 510,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "阪神/芝2000"
+      ],
+      "grade": "G1",
+      "median_winner_payout_yen": 510,
+      "n": 2,
+      "name": "大阪杯",
+      "winner_10x": 0,
+      "winner_20x": 0,
+      "winner_50x": 0,
+      "years": [
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 3200,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "京都",
+          "win_payout_yen": 280,
+          "year": 2024
+        },
+        {
+          "distance": 3200,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "京都",
+          "win_payout_yen": 310,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "京都/芝3200"
+      ],
+      "grade": "G1",
+      "median_winner_payout_yen": 280,
+      "n": 2,
+      "name": "天皇賞（春）",
+      "winner_10x": 0,
+      "winner_20x": 0,
+      "winner_50x": 0,
+      "years": [
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 2000,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "東京",
+          "win_payout_yen": 130,
+          "year": 2023
+        },
+        {
+          "distance": 2000,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "東京",
+          "win_payout_yen": 380,
+          "year": 2024
+        },
+        {
+          "distance": 2000,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "東京",
+          "win_payout_yen": 270,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "東京/芝2000"
+      ],
+      "grade": "G1",
+      "median_winner_payout_yen": 270,
+      "n": 3,
+      "name": "天皇賞（秋）",
+      "winner_10x": 0,
+      "winner_20x": 0,
+      "winner_50x": 0,
+      "years": [
+        2023,
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 1600,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "東京",
+          "win_payout_yen": 740,
+          "year": 2023
+        },
+        {
+          "distance": 1600,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "東京",
+          "win_payout_yen": 430,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "東京/芝1600"
+      ],
+      "grade": "G1",
+      "median_winner_payout_yen": 430,
+      "n": 2,
+      "name": "安田記念",
+      "winner_10x": 0,
+      "winner_20x": 0,
+      "winner_50x": 0,
+      "years": [
+        2023,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 2200,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "阪神",
+          "win_payout_yen": 130,
+          "year": 2023
+        },
+        {
+          "distance": 2200,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "京都",
+          "win_payout_yen": 750,
+          "year": 2024
+        },
+        {
+          "distance": 2200,
+          "surface": "芝",
+          "upset10": true,
+          "upset20": false,
+          "venue": "阪神",
+          "win_payout_yen": 1140,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "京都/芝2200",
+        "阪神/芝2200"
+      ],
+      "grade": "G1",
+      "median_winner_payout_yen": 750,
+      "n": 3,
+      "name": "宝塚記念",
+      "winner_10x": 1,
+      "winner_20x": 0,
+      "winner_50x": 0,
+      "years": [
+        2023,
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 1600,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "東京",
+          "win_payout_yen": 380,
+          "year": 2023
+        },
+        {
+          "distance": 1600,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "東京",
+          "win_payout_yen": 720,
+          "year": 2024
+        },
+        {
+          "distance": 1600,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "東京",
+          "win_payout_yen": 710,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "東京/芝1600"
+      ],
+      "grade": "G2",
+      "median_winner_payout_yen": 710,
+      "n": 3,
+      "name": "富士S",
+      "winner_10x": 0,
+      "winner_20x": 0,
+      "winner_50x": 0,
+      "years": [
+        2023,
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 1200,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "小倉",
+          "win_payout_yen": 710,
+          "year": 2023
+        },
+        {
+          "distance": 1200,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "中京",
+          "win_payout_yen": 410,
+          "year": 2024
+        }
+      ],
+      "conditions": [
+        "中京/芝1200",
+        "小倉/芝1200"
+      ],
+      "grade": "G3",
+      "median_winner_payout_yen": 410,
+      "n": 2,
+      "name": "小倉2歳S",
+      "winner_10x": 0,
+      "winner_20x": 0,
+      "winner_50x": 0,
+      "years": [
+        2023,
+        2024
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 1800,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "小倉",
+          "win_payout_yen": 580,
+          "year": 2024
+        },
+        {
+          "distance": 1800,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "小倉",
+          "win_payout_yen": 660,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "小倉/芝1800"
+      ],
+      "grade": "G3",
+      "median_winner_payout_yen": 580,
+      "n": 2,
+      "name": "小倉大賞典",
+      "winner_10x": 0,
+      "winner_20x": 0,
+      "winner_50x": 0,
+      "years": [
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 2000,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "小倉",
+          "win_payout_yen": 680,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "小倉/芝2000"
+      ],
+      "grade": "G3",
+      "median_winner_payout_yen": 680,
+      "n": 1,
+      "name": "小倉牝馬S",
+      "winner_10x": 0,
+      "winner_20x": 0,
+      "winner_50x": 0,
+      "years": [
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 2000,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "小倉",
+          "win_payout_yen": 680,
+          "year": 2023
+        },
+        {
+          "distance": 2000,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "中京",
+          "win_payout_yen": 420,
+          "year": 2024
+        },
+        {
+          "distance": 2000,
+          "surface": "芝",
+          "upset10": true,
+          "upset20": false,
+          "venue": "小倉",
+          "win_payout_yen": 1630,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "中京/芝2000",
+        "小倉/芝2000"
+      ],
+      "grade": "G3",
+      "median_winner_payout_yen": 680,
+      "n": 3,
+      "name": "小倉記念",
+      "winner_10x": 1,
+      "winner_20x": 0,
+      "winner_50x": 0,
+      "years": [
+        2023,
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 1800,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "東京",
+          "win_payout_yen": 470,
+          "year": 2023
+        },
+        {
+          "distance": 1800,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "東京",
+          "win_payout_yen": 360,
+          "year": 2024
+        },
+        {
+          "distance": 1800,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "東京",
+          "win_payout_yen": 710,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "東京/芝1800"
+      ],
+      "grade": "G3",
+      "median_winner_payout_yen": 470,
+      "n": 3,
+      "name": "府中牝馬S",
+      "winner_10x": 0,
+      "winner_20x": 0,
+      "winner_50x": 0,
+      "years": [
+        2023,
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 2000,
+          "surface": "芝",
+          "upset10": true,
+          "upset20": true,
+          "venue": "中山",
+          "win_payout_yen": 3490,
+          "year": 2024
+        },
+        {
+          "distance": 2000,
+          "surface": "芝",
+          "upset10": true,
+          "upset20": false,
+          "venue": "中山",
+          "win_payout_yen": 1690,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "中山/芝2000"
+      ],
+      "grade": "G2",
+      "median_winner_payout_yen": 1690,
+      "n": 2,
+      "name": "弥生賞",
+      "winner_10x": 2,
+      "winner_20x": 1,
+      "winner_50x": 0,
+      "years": [
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 2000,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "小倉",
+          "win_payout_yen": 200,
+          "year": 2024
+        },
+        {
+          "distance": 1400,
+          "surface": "芝",
+          "upset10": true,
+          "upset20": true,
+          "venue": "中京",
+          "win_payout_yen": 2550,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "中京/芝1400",
+        "小倉/芝2000"
+      ],
+      "grade": "G3",
+      "median_winner_payout_yen": 200,
+      "n": 2,
+      "name": "愛知杯",
+      "winner_10x": 1,
+      "winner_20x": 1,
+      "winner_50x": 0,
+      "years": [
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 1600,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "新潟",
+          "win_payout_yen": 370,
+          "year": 2023
+        },
+        {
+          "distance": 1600,
+          "surface": "芝",
+          "upset10": true,
+          "upset20": false,
+          "venue": "新潟",
+          "win_payout_yen": 1170,
+          "year": 2024
+        },
+        {
+          "distance": 1600,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "新潟",
+          "win_payout_yen": 230,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "新潟/芝1600"
+      ],
+      "grade": "G3",
+      "median_winner_payout_yen": 370,
+      "n": 3,
+      "name": "新潟2歳S",
+      "winner_10x": 1,
+      "winner_20x": 0,
+      "winner_50x": 0,
+      "years": [
+        2023,
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 2000,
+          "surface": "芝",
+          "upset10": true,
+          "upset20": false,
+          "venue": "新潟",
+          "win_payout_yen": 1590,
+          "year": 2024
+        },
+        {
+          "distance": 2000,
+          "surface": "芝",
+          "upset10": true,
+          "upset20": false,
+          "venue": "新潟",
+          "win_payout_yen": 1960,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "新潟/芝2000"
+      ],
+      "grade": "G3",
+      "median_winner_payout_yen": 1590,
+      "n": 2,
+      "name": "新潟大賞典",
+      "winner_10x": 2,
+      "winner_20x": 0,
+      "winner_50x": 0,
+      "years": [
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 2000,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "新潟",
+          "win_payout_yen": 500,
+          "year": 2023
+        },
+        {
+          "distance": 2000,
+          "surface": "芝",
+          "upset10": true,
+          "upset20": true,
+          "venue": "新潟",
+          "win_payout_yen": 2600,
+          "year": 2024
+        },
+        {
+          "distance": 2000,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "新潟",
+          "win_payout_yen": 340,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "新潟/芝2000"
+      ],
+      "grade": "G3",
+      "median_winner_payout_yen": 500,
+      "n": 3,
+      "name": "新潟記念",
+      "winner_10x": 1,
+      "winner_20x": 1,
+      "winner_50x": 0,
+      "years": [
+        2023,
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 2400,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "東京",
+          "win_payout_yen": 830,
+          "year": 2023
+        },
+        {
+          "distance": 2400,
+          "surface": "芝",
+          "upset10": true,
+          "upset20": true,
+          "venue": "東京",
+          "win_payout_yen": 4660,
+          "year": 2024
+        },
+        {
+          "distance": 2400,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "東京",
+          "win_payout_yen": 210,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "東京/芝2400"
+      ],
+      "grade": "G1",
+      "median_winner_payout_yen": 830,
+      "n": 3,
+      "name": "日本ダービー",
+      "winner_10x": 1,
+      "winner_20x": 1,
+      "winner_50x": 0,
+      "years": [
+        2023,
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 2400,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "京都",
+          "win_payout_yen": 410,
+          "year": 2024
+        },
+        {
+          "distance": 2200,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "中京",
+          "win_payout_yen": 720,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "中京/芝2200",
+        "京都/芝2400"
+      ],
+      "grade": "G2",
+      "median_winner_payout_yen": 410,
+      "n": 2,
+      "name": "日経新春杯",
+      "winner_10x": 0,
+      "winner_20x": 0,
+      "winner_50x": 0,
+      "years": [
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 2500,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "中山",
+          "win_payout_yen": 630,
+          "year": 2024
+        },
+        {
+          "distance": 2500,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "中山",
+          "win_payout_yen": 740,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "中山/芝2500"
+      ],
+      "grade": "G2",
+      "median_winner_payout_yen": 630,
+      "n": 2,
+      "name": "日経賞",
+      "winner_10x": 0,
+      "winner_20x": 0,
+      "winner_50x": 0,
+      "years": [
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 2500,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "中山",
+          "win_payout_yen": 520,
+          "year": 2023
+        },
+        {
+          "distance": 2500,
+          "surface": "芝",
+          "upset10": true,
+          "upset20": false,
+          "venue": "中山",
+          "win_payout_yen": 1090,
+          "year": 2024
+        },
+        {
+          "distance": 2500,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "中山",
+          "win_payout_yen": 380,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "中山/芝2500"
+      ],
+      "grade": "G1",
+      "median_winner_payout_yen": 520,
+      "n": 3,
+      "name": "有馬記念",
+      "winner_10x": 1,
+      "winner_20x": 0,
+      "winner_50x": 0,
+      "years": [
+        2023,
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 1600,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "阪神",
+          "win_payout_yen": 270,
+          "year": 2023
+        },
+        {
+          "distance": 1600,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "京都",
+          "win_payout_yen": 910,
+          "year": 2024
+        },
+        {
+          "distance": 1600,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "阪神",
+          "win_payout_yen": 360,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "京都/芝1600",
+        "阪神/芝1600"
+      ],
+      "grade": "G1",
+      "median_winner_payout_yen": 360,
+      "n": 3,
+      "name": "朝日杯フューチュリティS",
+      "winner_10x": 0,
+      "winner_20x": 0,
+      "winner_50x": 0,
+      "years": [
+        2023,
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 1800,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "札幌",
+          "win_payout_yen": 680,
+          "year": 2023
+        },
+        {
+          "distance": 1800,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "札幌",
+          "win_payout_yen": 430,
+          "year": 2024
+        },
+        {
+          "distance": 1800,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "札幌",
+          "win_payout_yen": 340,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "札幌/芝1800"
+      ],
+      "grade": "G3",
+      "median_winner_payout_yen": 430,
+      "n": 3,
+      "name": "札幌2歳S",
+      "winner_10x": 0,
+      "winner_20x": 0,
+      "winner_50x": 0,
+      "years": [
+        2023,
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 2000,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "札幌",
+          "win_payout_yen": 510,
+          "year": 2023
+        },
+        {
+          "distance": 2000,
+          "surface": "芝",
+          "upset10": true,
+          "upset20": false,
+          "venue": "札幌",
+          "win_payout_yen": 1450,
+          "year": 2024
+        },
+        {
+          "distance": 2000,
+          "surface": "芝",
+          "upset10": true,
+          "upset20": true,
+          "venue": "札幌",
+          "win_payout_yen": 2560,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "札幌/芝2000"
+      ],
+      "grade": "G2",
+      "median_winner_payout_yen": 1450,
+      "n": 3,
+      "name": "札幌記念",
+      "winner_10x": 2,
+      "winner_20x": 1,
+      "winner_50x": 0,
+      "years": [
+        2023,
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 1800,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "東京",
+          "win_payout_yen": 580,
+          "year": 2023
+        },
+        {
+          "distance": 1800,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "東京",
+          "win_payout_yen": 220,
+          "year": 2024
+        },
+        {
+          "distance": 1800,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "東京",
+          "win_payout_yen": 730,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "東京/芝1800"
+      ],
+      "grade": "G2",
+      "median_winner_payout_yen": 580,
+      "n": 3,
+      "name": "東スポ杯2歳S",
+      "winner_10x": 0,
+      "winner_20x": 0,
+      "winner_50x": 0,
+      "years": [
+        2023,
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 1600,
+          "surface": "芝",
+          "upset10": true,
+          "upset20": true,
+          "venue": "東京",
+          "win_payout_yen": 3380,
+          "year": 2024
+        },
+        {
+          "distance": 1600,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "東京",
+          "win_payout_yen": 740,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "東京/芝1600"
+      ],
+      "grade": "G3",
+      "median_winner_payout_yen": 740,
+      "n": 2,
+      "name": "東京新聞杯",
+      "winner_10x": 1,
+      "winner_20x": 1,
+      "winner_50x": 0,
+      "years": [
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 1600,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "阪神",
+          "win_payout_yen": 430,
+          "year": 2024
+        },
+        {
+          "distance": 1600,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "阪神",
+          "win_payout_yen": 500,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "阪神/芝1600"
+      ],
+      "grade": "G1",
+      "median_winner_payout_yen": 430,
+      "n": 2,
+      "name": "桜花賞",
+      "winner_10x": 0,
+      "winner_20x": 0,
+      "winner_50x": 0,
+      "years": [
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 1800,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "阪神",
+          "win_payout_yen": 940,
+          "year": 2024
+        },
+        {
+          "distance": 1800,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "阪神",
+          "win_payout_yen": 450,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "阪神/芝1800"
+      ],
+      "grade": "G3",
+      "median_winner_payout_yen": 450,
+      "n": 2,
+      "name": "毎日杯",
+      "winner_10x": 0,
+      "winner_20x": 0,
+      "winner_50x": 0,
+      "years": [
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 1800,
+          "surface": "芝",
+          "upset10": true,
+          "upset20": false,
+          "venue": "東京",
+          "win_payout_yen": 1750,
+          "year": 2023
+        },
+        {
+          "distance": 1800,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "東京",
+          "win_payout_yen": 350,
+          "year": 2024
+        },
+        {
+          "distance": 1800,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "東京",
+          "win_payout_yen": 770,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "東京/芝1800"
+      ],
+      "grade": "G2",
+      "median_winner_payout_yen": 770,
+      "n": 3,
+      "name": "毎日王冠",
+      "winner_10x": 1,
+      "winner_20x": 0,
+      "winner_50x": 0,
+      "years": [
+        2023,
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 2000,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "中山",
+          "win_payout_yen": 480,
+          "year": 2024
+        },
+        {
+          "distance": 2000,
+          "surface": "芝",
+          "upset10": true,
+          "upset20": false,
+          "venue": "中山",
+          "win_payout_yen": 1060,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "中山/芝2000"
+      ],
+      "grade": "G1",
+      "median_winner_payout_yen": 480,
+      "n": 2,
+      "name": "皐月賞",
+      "winner_10x": 1,
+      "winner_20x": 0,
+      "winner_50x": 0,
+      "years": [
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 2500,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "東京",
+          "win_payout_yen": 780,
+          "year": 2023
+        },
+        {
+          "distance": 2500,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "東京",
+          "win_payout_yen": 350,
+          "year": 2024
+        },
+        {
+          "distance": 2500,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "東京",
+          "win_payout_yen": 330,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "東京/芝2500"
+      ],
+      "grade": "G2",
+      "median_winner_payout_yen": 350,
+      "n": 3,
+      "name": "目黒記念",
+      "winner_10x": 0,
+      "winner_20x": 0,
+      "winner_50x": 0,
+      "years": [
+        2023,
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 2400,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "阪神",
+          "win_payout_yen": 500,
+          "year": 2023
+        },
+        {
+          "distance": 2200,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "中京",
+          "win_payout_yen": 540,
+          "year": 2024
+        },
+        {
+          "distance": 2400,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "阪神",
+          "win_payout_yen": 270,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "中京/芝2200",
+        "阪神/芝2400"
+      ],
+      "grade": "G2",
+      "median_winner_payout_yen": 500,
+      "n": 3,
+      "name": "神戸新聞杯",
+      "winner_10x": 0,
+      "winner_20x": 0,
+      "winner_50x": 0,
+      "years": [
+        2023,
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 1800,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "福島",
+          "win_payout_yen": 440,
+          "year": 2024
+        },
+        {
+          "distance": 1800,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "福島",
+          "win_payout_yen": 380,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "福島/芝1800"
+      ],
+      "grade": "G3",
+      "median_winner_payout_yen": 380,
+      "n": 2,
+      "name": "福島牝馬S",
+      "winner_10x": 0,
+      "winner_20x": 0,
+      "winner_50x": 0,
+      "years": [
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 2000,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "福島",
+          "win_payout_yen": 550,
+          "year": 2023
+        },
+        {
+          "distance": 2000,
+          "surface": "芝",
+          "upset10": true,
+          "upset20": false,
+          "venue": "福島",
+          "win_payout_yen": 1260,
+          "year": 2024
+        },
+        {
+          "distance": 2000,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "福島",
+          "win_payout_yen": 390,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "福島/芝2000"
+      ],
+      "grade": "G3",
+      "median_winner_payout_yen": 550,
+      "n": 3,
+      "name": "福島記念",
+      "winner_10x": 1,
+      "winner_20x": 0,
+      "winner_50x": 0,
+      "years": [
+        2023,
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 2000,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "京都",
+          "win_payout_yen": 110,
+          "year": 2023
+        },
+        {
+          "distance": 2000,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "京都",
+          "win_payout_yen": 230,
+          "year": 2024
+        },
+        {
+          "distance": 2000,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "京都",
+          "win_payout_yen": 550,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "京都/芝2000"
+      ],
+      "grade": "G1",
+      "median_winner_payout_yen": 230,
+      "n": 3,
+      "name": "秋華賞",
+      "winner_10x": 0,
+      "winner_20x": 0,
+      "winner_50x": 0,
+      "years": [
+        2023,
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 2000,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "中山",
+          "win_payout_yen": 660,
+          "year": 2023
+        },
+        {
+          "distance": 2000,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "中山",
+          "win_payout_yen": 660,
+          "year": 2024
+        },
+        {
+          "distance": 2000,
+          "surface": "芝",
+          "upset10": true,
+          "upset20": true,
+          "venue": "中山",
+          "win_payout_yen": 2490,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "中山/芝2000"
+      ],
+      "grade": "G2",
+      "median_winner_payout_yen": 660,
+      "n": 3,
+      "name": "紫苑S",
+      "winner_10x": 1,
+      "winner_20x": 1,
+      "winner_50x": 0,
+      "years": [
+        2023,
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 3000,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "京都",
+          "win_payout_yen": 730,
+          "year": 2023
+        },
+        {
+          "distance": 3000,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "京都",
+          "win_payout_yen": 370,
+          "year": 2024
+        },
+        {
+          "distance": 3000,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "京都",
+          "win_payout_yen": 380,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "京都/芝3000"
+      ],
+      "grade": "G1",
+      "median_winner_payout_yen": 380,
+      "n": 3,
+      "name": "菊花賞",
+      "winner_10x": 0,
+      "winner_20x": 0,
+      "winner_50x": 0,
+      "years": [
+        2023,
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 1200,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "京都",
+          "win_payout_yen": 870,
+          "year": 2023
+        },
+        {
+          "distance": 1200,
+          "surface": "芝",
+          "upset10": true,
+          "upset20": true,
+          "venue": "京都",
+          "win_payout_yen": 2410,
+          "year": 2024
+        },
+        {
+          "distance": 1200,
+          "surface": "芝",
+          "upset10": true,
+          "upset20": true,
+          "venue": "京都",
+          "win_payout_yen": 6050,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "京都/芝1200"
+      ],
+      "grade": "G3",
+      "median_winner_payout_yen": 2410,
+      "n": 3,
+      "name": "葵S",
+      "winner_10x": 2,
+      "winner_20x": 2,
+      "winner_50x": 1,
+      "years": [
+        2023,
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 2000,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "中京",
+          "win_payout_yen": 270,
+          "year": 2024
+        },
+        {
+          "distance": 2000,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "中京",
+          "win_payout_yen": 820,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "中京/芝2000"
+      ],
+      "grade": "G2",
+      "median_winner_payout_yen": 270,
+      "n": 2,
+      "name": "金鯱賞",
+      "winner_10x": 0,
+      "winner_20x": 0,
+      "winner_50x": 0,
+      "years": [
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 1600,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "新潟",
+          "win_payout_yen": 680,
+          "year": 2023
+        },
+        {
+          "distance": 1600,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "新潟",
+          "win_payout_yen": 660,
+          "year": 2024
+        },
+        {
+          "distance": 1600,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "新潟",
+          "win_payout_yen": 440,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "新潟/芝1600"
+      ],
+      "grade": "G3",
+      "median_winner_payout_yen": 660,
+      "n": 3,
+      "name": "関屋記念",
+      "winner_10x": 0,
+      "winner_20x": 0,
+      "winner_50x": 0,
+      "years": [
+        2023,
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 1400,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "阪神",
+          "win_payout_yen": 340,
+          "year": 2024
+        },
+        {
+          "distance": 1400,
+          "surface": "芝",
+          "upset10": true,
+          "upset20": false,
+          "venue": "京都",
+          "win_payout_yen": 1860,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "京都/芝1400",
+        "阪神/芝1400"
+      ],
+      "grade": "G3",
+      "median_winner_payout_yen": 340,
+      "n": 2,
+      "name": "阪急杯",
+      "winner_10x": 1,
+      "winner_20x": 0,
+      "winner_50x": 0,
+      "years": [
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 1400,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "阪神",
+          "win_payout_yen": 960,
+          "year": 2023
+        },
+        {
+          "distance": 1400,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "京都",
+          "win_payout_yen": 370,
+          "year": 2024
+        },
+        {
+          "distance": 1400,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "阪神",
+          "win_payout_yen": 710,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "京都/芝1400",
+        "阪神/芝1400"
+      ],
+      "grade": "G2",
+      "median_winner_payout_yen": 710,
+      "n": 3,
+      "name": "阪神C",
+      "winner_10x": 0,
+      "winner_20x": 0,
+      "winner_50x": 0,
+      "years": [
+        2023,
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 1600,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "阪神",
+          "win_payout_yen": 590,
+          "year": 2023
+        },
+        {
+          "distance": 1600,
+          "surface": "芝",
+          "upset10": true,
+          "upset20": false,
+          "venue": "京都",
+          "win_payout_yen": 1050,
+          "year": 2024
+        },
+        {
+          "distance": 1600,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "阪神",
+          "win_payout_yen": 500,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "京都/芝1600",
+        "阪神/芝1600"
+      ],
+      "grade": "G1",
+      "median_winner_payout_yen": 590,
+      "n": 3,
+      "name": "阪神ジュベナイルF",
+      "winner_10x": 1,
+      "winner_20x": 0,
+      "winner_50x": 0,
+      "years": [
+        2023,
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 3000,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "阪神",
+          "win_payout_yen": 330,
+          "year": 2024
+        },
+        {
+          "distance": 3000,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "阪神",
+          "win_payout_yen": 570,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "阪神/芝3000"
+      ],
+      "grade": "G2",
+      "median_winner_payout_yen": 330,
+      "n": 2,
+      "name": "阪神大賞典",
+      "winner_10x": 0,
+      "winner_20x": 0,
+      "winner_50x": 0,
+      "years": [
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 1600,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "阪神",
+          "win_payout_yen": 170,
+          "year": 2024
+        },
+        {
+          "distance": 1600,
+          "surface": "芝",
+          "upset10": true,
+          "upset20": true,
+          "venue": "阪神",
+          "win_payout_yen": 2970,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "阪神/芝1600"
+      ],
+      "grade": "G2",
+      "median_winner_payout_yen": 170,
+      "n": 2,
+      "name": "阪神牝馬S",
+      "winner_10x": 1,
+      "winner_20x": 1,
+      "winner_50x": 0,
+      "years": [
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 2400,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "東京",
+          "win_payout_yen": 450,
+          "year": 2024
+        },
+        {
+          "distance": 2400,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "東京",
+          "win_payout_yen": 260,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "東京/芝2400"
+      ],
+      "grade": "G2",
+      "median_winner_payout_yen": 260,
+      "n": 2,
+      "name": "青葉賞",
+      "winner_10x": 0,
+      "winner_20x": 0,
+      "winner_50x": 0,
+      "years": [
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 1200,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "中京",
+          "win_payout_yen": 960,
+          "year": 2024
+        },
+        {
+          "distance": 1200,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "中京",
+          "win_payout_yen": 380,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "中京/芝1200"
+      ],
+      "grade": "G1",
+      "median_winner_payout_yen": 380,
+      "n": 2,
+      "name": "高松宮記念",
+      "winner_10x": 0,
+      "winner_20x": 0,
+      "winner_50x": 0,
+      "years": [
+        2024,
+        2025
+      ]
+    },
+    {
+      "annual": [
+        {
+          "distance": 2000,
+          "surface": "芝",
+          "upset10": true,
+          "upset20": false,
+          "venue": "阪神",
+          "win_payout_yen": 1120,
+          "year": 2023
+        },
+        {
+          "distance": 2000,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "京都",
+          "win_payout_yen": 250,
+          "year": 2024
+        },
+        {
+          "distance": 1800,
+          "surface": "芝",
+          "upset10": false,
+          "upset20": false,
+          "venue": "阪神",
+          "win_payout_yen": 430,
+          "year": 2025
+        }
+      ],
+      "conditions": [
+        "京都/芝2000",
+        "阪神/芝1800",
+        "阪神/芝2000"
+      ],
+      "grade": "G3",
+      "median_winner_payout_yen": 430,
+      "n": 3,
+      "name": "鳴尾記念",
+      "winner_10x": 1,
+      "winner_20x": 0,
+      "winner_50x": 0,
+      "years": [
+        2023,
+        2024,
+        2025
+      ]
+    }
+  ],
+  "research_limitations": [
+    "4角位置、ラップ・ペースは公開CSVにないため、展開や前残りは未検証",
+    "人気順位・馬連/ワイド配当は元CSVにないため、人気別的中や馬連荒れは未検証",
+    "単勝1000円以上の勝ち馬がいるレースを「10倍以上勝利」と数える",
+    "単勝払戻だけでは3着内の穴馬率・荒れ確率の確率校正はできない",
+    "同名レースでも開催場・距離が変わる年は表示で分離する",
+    "2025年ホールドアウト評価が有利でも馬別評価への加点根拠にはならない"
+  ],
+  "schema_version": 1,
+  "source": "JRA公式重賞一覧 × JRA公式レース結果由来の公開CSV",
+  "source_csv_fields": [
+    "date",
+    "course",
+    "surface",
+    "distance",
+    "race",
+    "meeting",
+    "day",
+    "finish",
+    "horseNumber",
+    "horse",
+    "jockey",
+    "trainer",
+    "winPayout",
+    "source"
+  ],
+  "year_calendar_counts": {
+    "2021": 138,
+    "2022": 139,
+    "2023": 139,
+    "2024": 139,
+    "2025": 140
+  },
+  "year_matched_counts": {
+    "2021": 0,
+    "2022": 0,
+    "2023": 65,
+    "2024": 113,
+    "2025": 115
+  }
+}
