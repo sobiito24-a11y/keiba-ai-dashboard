@@ -45,7 +45,9 @@ def test_schema_covers_every_comparison_cell_and_has_no_ai_mark_or_membership(mo
     visible = [spec["key"] for spec in specs if not spec.get("table_hidden")]
     assert visible == [
         "user", "frame", "no", "name", "jockey", "odds", "popularity",
-        "research_sabcd", "ability", "style", "distance", "course",
+        "research_sabcd", "ability", "style",
+        *(['training'] if mode == 'jra' else []),
+        "distance", "course",
         "run_old", "run_middle", "run_latest", "average", "maximum",
         "rest_days", "weight", "weight_delta", "jockey_change",
         "record_venue", "record_distance", "record_venue_distance",
@@ -63,7 +65,10 @@ def test_schema_covers_every_comparison_cell_and_has_no_ai_mark_or_membership(mo
     assert all(item["type"] in ("number", "rank", "text", "grade", "boolean") for item in specs)
     assert not set(keys).intersection(("score", "rank", "reference_score", "mark", "formal_member", "candidate", "pickup", "focus_label"))
     assert {"record_venue", "record_distance", "record_venue_distance", "materials"}.issubset(keys)
-    assert all(key not in visible for key in ("star", "away", "corner", "training", "career_course", "place_odds"))
+    assert all(key not in visible for key in ("star", "away", "corner", "career_course", "place_odds"))
+    assert ("training" in visible) == (mode == "jra")
+    if mode == "jra":
+        assert visible.index("training") == visible.index("style") + 1
     assert any(spec["key"]=="odds" and spec["label"]=="オッズ単複" for spec in specs)
     record=records(view)["7"]
     assert all(key in record for key in keys)
