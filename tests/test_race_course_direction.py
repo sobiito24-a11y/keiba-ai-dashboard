@@ -197,3 +197,72 @@ def test_venue_css_mirrors_only_svg_not_horse_number_or_name():
     assert '.ka-pace-board[data-course-turn="unknown"] .ka-pace-horse-svg{opacity:.72}' in css
     assert "transform:scaleX(-1)" in css
     assert ".ka-pace-number" in css
+
+
+def test_saved_kawasaki_lead_12_faces_right_and_appears_rightmost():
+    """Regression from the user's screenshot: start ranks 12,7,3,9 in that order.
+
+    The prior drawing erroneously put #12 at left despite right-facing
+    horses at Kawasaki. Keep the same predicted ranks/bands.
+    """
+    import re
+    horses = saved_view("nar", dict(venue="川崎", distance=1400, surface="ダ"))
+    top_numbers = (12, 7, 3, 9)
+    for i, no in enumerate(top_numbers, 1):
+        next(h for h in horses if h["no"] == no)["start_rank"] = i
+    for i, no in enumerate((1, 2, 4, 5, 6, 8, 10, 11), 5):
+        next(h for h in horses if h["no"] == no)["start_rank"] = i
+    before = deepcopy(horses)
+    document = BeautifulSoup(board_html(horses), "html.parser")
+    board = document.select_one("#ka-pace-board")
+    assert board["data-course-turn"] == "left"
+    assert "隊列の先頭側 →" in board.select_one(".ka-pace-forward-hint").text
+    lead_pack = sorted(layout(horses, course_turn="left")["start"]["runners"],
+                       key=lambda h: h["start"])[:4]
+    assert [h["no"] for h in lead_pack] == [12, 7, 3, 9]
+    assert all(lead_pack[i]["x"] > lead_pack[i + 1]["x"] for i in range(3))
+    # Verify the actual rendered coordinates, not merely the projection.
+    page = board.select_one("#ka-pace-scene-start")
+    rendered = {}
+    for h in page.select(".ka-pace-runner"):
+        rendered[int(h["data-pace-runner"])] = float(
+            re.search(r"--px:([0-9.]+)%", h["style"]).group(1))
+    assert [rendered[no] for no in top_numbers] == [h["x"] for h in lead_pack]
+    assert rendered[12] > rendered[7] > rendered[3] > rendered[9]
+    assert horses == before
+
+
+@pytest.mark.parametrize("mode,venue,distance,surface,side", [
+    ("jra", "東京", 1600, "芝", "right"),
+    ("jra", "京都", 1600, "芝", "left"),
+    ("jra", "新潟", 1000, "芝", "right"),
+    ("nar", "川崎", 1400, "ダ", "right"),
+    ("nar", "船橋", 1600, "ダ", "right"),
+    ("nar", "名古屋", 1500, "ダ", "left"),
+    ("nar", "大井", 1650, "ダ", "right"),
+    ("nar", "大井", 1800, "ダ", "left"),
+])
+def test_all_three_stage_front_horse_horizontal_side_matches_facing(
+        mode, venue, distance, surface, side):
+    info = dict(venue=venue, distance=distance, surface=surface)
+    horses = saved_view(mode, info)
+    prior = deepcopy(horses)
+    turn = course_direction(horses)["turn"]
+    formations = layout(horses, course_turn=turn)
+    for stage in ("start", "third", "fourth"):
+        if turn == "straight" and stage != "start":
+            continue
+        group = formations[stage]["runners"]
+        front = [h for h in group if h["band"] == 0]
+        if len(front) < 2:
+            continue
+        # A lower predicted rank must sit ahead in the direction the
+        # silhouettes are facing. This is a visual convention, not a
+        # measured lateral lane or a claim about exact horse lengths.
+        front.sort(key=lambda h: h[stage])
+        coordinates = [h["x"] for h in front]
+        if side == "right":
+            assert coordinates == sorted(coordinates, reverse=True)
+        else:
+            assert coordinates == sorted(coordinates)
+    assert horses == prior
