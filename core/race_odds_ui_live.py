@@ -151,16 +151,6 @@ def render(result, view):
                             st.session_state[key+'_status'] = 'JRA過去オッズ未取得：' + str(exc)
                 # The matching source pages are available only inside the
                 # collapsed backup panel above; the main UI has two actions.
-        with st.expander('当日の掲載元・利用上の注意', expanded=False):
-            st.markdown('[JRA公式オッズ](https://www.jra.go.jp/)'
-                        '（公式サイトの「オッズ」から選択）')
-            st.markdown(
-                '[netkeiba・このレースのオッズ](https://race.netkeiba.com/odds/index.html?race_id='
-                + jra_id + '&type=b1)'
-                '（単勝・複勝を確認）')
-            st.caption('実際の投票価格は購入直前にJRA公式の販売画面で再確認。'
-                       'アクセスが制限された場合はスクショ・HTML取込を使用。'
-                       '自動巡回や更新回数の上限制限回避は行いません。')
     if not is_nar:
         from datetime import date as _date
         now_live = datetime.now(odds.JST)
@@ -220,6 +210,17 @@ def render(result, view):
                             "掲載価格であり、購入可能な直前価格の保証はありません。")
                     except (ValueError, TypeError, KeyError) as exc:
                         st.session_state[key+'_status'] = 'JRAオッズ未取得（照合）：' + str(exc)
+    if not is_nar:
+        with st.expander('当日の掲載元・利用上の注意', expanded=False):
+            st.markdown('[JRA公式オッズ](https://www.jra.go.jp/)'
+                        '（公式サイトの「オッズ」から選択）')
+            st.markdown(
+                '[netkeiba・このレースのオッズ](https://race.netkeiba.com/odds/index.html?race_id='
+                + jra_id + '&type=b1)'
+                '（単勝・複勝を確認）')
+            st.caption('実際の投票価格は購入直前にJRA公式の販売画面で再確認。'
+                       'アクセスが制限された場合はスクショ・HTML取込を使用。'
+                       '自動巡回や更新回数の上限制限回避は行いません。')
     if is_nar:
         st.caption('地方競馬：NAR公式の当日掲載値（配信に遅れがあります）。')
         with st.expander('NAR公式・データ掲載元', expanded=False):
