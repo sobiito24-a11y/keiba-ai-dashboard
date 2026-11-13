@@ -76,10 +76,11 @@ def render(result, view):
                     else:
                         st.session_state[key+'_historical_last_request'] = now_historical
                         st.session_state['_jra_historical_global_last_request'] = now_historical
-                        stage = '優馬JAPAN／競馬ラボ／スポーツナビの単勝・複勝ページへの接続と照合'
+                        stage = 'スポーツナビ／優馬JAPAN／競馬ラボの単勝・複勝ページへの接続と照合'
                         try:
-                            with st.spinner('過去単複：優馬JAPAN → 競馬ラボ → スポーツナビを順に確認中…'):
-                                quote = fetch_historical(identity, result.race_info or {}, now=now_historical)
+                            with st.spinner('過去単複：スポーツナビ → 優馬JAPAN → 競馬ラボの順に確認中…'):
+                                quote = fetch_historical(identity, result.race_info or {}, now=now_historical,
+                                                          prefer_sportsnavi=True)
                                 stage = '保存済みの馬番・馬名との照合'
                                 history = odds.merge(state['history'], [quote], identity)
                             stage = 'AI一覧への反映'
