@@ -31,11 +31,11 @@ def test_historical_odds_reach_actual_table_not_just_import_preview():
     table=page.select_one("#lineup-workspace .explorer-table")
     assert table is not None
     headers={th.get("data-column"):th.get_text(" ",strip=True) for th in table.select("thead th")}
-    assert "odds" in headers and "place_odds" in headers
-    assert "単勝" in headers["odds"] and "複勝" in headers["place_odds"]
+    assert "odds" in headers and "place_odds" not in headers
+    assert "オッズ単複" in headers["odds"]
     horse2=table.select_one('tbody tr[data-horse="2"]')
     assert "2.7倍" in horse2.select_one(".col-odds").get_text(" ",strip=True)
-    assert "1.2〜1.5倍" in horse2.select_one(".col-place_odds").get_text(" ",strip=True)
+    assert "1.2〜1.5倍" in horse2.select_one(".col-odds").get_text(" ",strip=True)
     assert len(table.select("tbody tr[data-horse]"))==14
     source_payload=json.loads(page.select_one("#race-data").string)
     second=next(h for h in source_payload["horses"] if str(h["no"])=="2")
@@ -56,5 +56,5 @@ def test_win_only_does_not_create_false_place_price_in_main_table():
     soup=BeautifulSoup(document(shown,info["race_id"]),"html.parser")
     horse2=soup.select_one('#lineup-workspace tbody tr[data-horse="2"]')
     assert "2.7倍" in horse2.select_one(".col-odds").text
-    assert "未取得" in horse2.select_one(".col-place_odds").text
+    assert "複 未取得" in horse2.select_one(".col-odds").text
     assert "複勝 0/14頭" in soup.get_text(" ",strip=True)
