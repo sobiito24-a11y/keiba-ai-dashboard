@@ -215,9 +215,9 @@ def test_research_sabcd_does_not_change_real_view_formal_marks_and_scores(mode):
     assert all(t.get("retro") for t in assigned)  # 2026-10-22 was in fit period
     cells=projected_records(view)
     headers=[s["key"] for s in columns(view) if not s.get("table_hidden")]
-    assert headers[headers.index("ability")+1:headers.index("ability")+3] == [
-        "class_attention", "research_sabcd",
-    ]
+    assert headers[headers.index("research_sabcd")+1] == "ability"
+    assert headers[headers.index("ability")+1] == "style"
+    assert headers[-1] == "class_attention"
     assert "research_sabcd_weight_class" not in headers
     assert "research_sabcd_old" not in headers
     assert "research_sabcd_sort" not in headers
@@ -234,7 +234,7 @@ def test_research_sabcd_does_not_change_real_view_formal_marks_and_scores(mode):
     html=BeautifulSoup(document(view, info["race_id"]), "html.parser")
     # The research letter is display-only and not part of the official
     # prediction table or stored records.
-    assert html.select_one("th.col-research_sabcd .column-label").text=="研究SABCD"
+    assert html.select_one("th.col-research_sabcd .column-label").text=="SABCD"
     assert html.select("#lineup-workspace td.col-research_sabcd")
     assert not html.select("#lineup-workspace td.col-research_sabcd_weight_class")
     assert html.select_one(".detail-basic") or html.select_one("#detail-analysis")
@@ -326,6 +326,10 @@ def test_paper_running_style_four_boxes_and_saved_positions(mode):
         if isinstance(horse.get("final_metrics"), dict):
             horse["final_metrics"]["style"] = style
             horse["final_metrics"]["corner"] = corner
+        facts = horse.get("explorer_facts") or {}
+        if isinstance(facts.get("metrics"), dict):
+            facts["metrics"]["style"] = style
+            facts["metrics"]["corner"] = corner
     before = deepcopy(view)
     doc = BeautifulSoup(document(view, info["race_id"]), "html.parser")
     heads = [cell.get("data-column") for cell in doc.select("#lineup-workspace th")]
