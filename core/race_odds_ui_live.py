@@ -101,9 +101,19 @@ def render(result, view):
                                 f'JRA過去オッズ未取得（{stage}）：'
                                 f'{type(exc).__name__}。取得値は表示へ反映していません。')
                 # Past-date availability is expressed through the disabled button.
-                with st.expander('過去オッズの予備取込・掲載元', expanded=False):
+                # A genuine upstream transport failure is not a runner-table
+                # or scoring error. Surface the backup route automatically,
+                # without retrying blocked public sites in a loop.
+                past_failed = str(st.session_state.get(key+'_status') or '').startswith(
+                    'JRA過去オッズ未取得')
+                with st.expander('過去オッズの予備取込・掲載元', expanded=past_failed):
+                    if past_failed:
+                        st.caption('自動取得先への接続・照合が完了しませんでした。'
+                                   'Streamlitサーバーから外部サイトへの通信が拒否される場合、'
+                                   '同じボタンを繰り返しても改善しないことがあります。'
+                                   '下記の公開ページをPCブラウザで保存したHTMLを読み込めます。')
                     st.caption('優馬JAPANの単勝・複勝HTMLをそれぞれ保存して読み込めます。'
-                               '競馬ラボの単複HTMLも別方式で取込できます。')
+                               '競馬ラボ・スポーツナビの単複HTMLも取込できます。')
                     yuma_win = st.file_uploader(
                         '優馬JAPANの単勝ページHTML', type=['html', 'htm'],
                         key=key+'_yuma_win_file')
