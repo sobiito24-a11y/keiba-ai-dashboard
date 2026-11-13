@@ -67,7 +67,9 @@ def fetch_once(identity, race_info, *, now=None, yuma_fetch=None,
 
     primary = attempt("優馬JAPAN", yuma_fetch)
     if primary is not None and _complete(primary):
-        return primary
+        validated = dict(primary)
+        validated["fallback_used"] = False
+        return validated
 
     alternative = attempt("競馬ラボ", keibalab_fetch)
     if not results:
