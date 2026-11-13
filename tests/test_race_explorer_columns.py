@@ -280,3 +280,11 @@ def test_place_range_never_uses_win_as_fallback():
     h["place_odds"]="取消・除外"
     h["odds"]="取消・除外"
     assert records([h])["7"]["place_odds"] is None
+
+def test_fixed_place_odds_value_keeps_same_lower_and_upper():
+    h=horse()
+    h["place_odds"]="1.2"
+    h["sort_values"].pop("place_odds_low",None)
+    h["sort_values"].pop("place_odds_high",None)
+    result=records([h])["7"]
+    assert result["place_odds"]==1.2 and result["place_odds_high"]==1.2
