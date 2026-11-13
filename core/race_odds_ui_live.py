@@ -222,11 +222,77 @@ def render(result, view):
                        'アクセスが制限された場合はスクショ・HTML取込を使用。'
                        '自動巡回や更新回数の上限制限回避は行いません。')
     if is_nar:
-        st.caption('地方競馬：NAR公式の当日掲載値（配信に遅れがあります）。')
-        with st.expander('NAR公式・データ掲載元', expanded=False):
-            st.markdown('[NAR公式オッズ](https://www.keiba.go.jp/KeibaWeb/TodayRaceInfo/TodayRaceInfoTop)')
+        from datetime import date as _date
+        from .nar_official_odds import locator as nar_locator
+        from .nar_historical_odds import fetch_monthly, parse_monthly_zip
+        now_nar = datetime.now(odds.JST)
+        try:
+            venue_nar, nar_day, _ = nar_locator(identity, result.race_info or {})
+            saved_day = _date.fromisoformat(
+                f"{nar_day[:4]}-{nar_day[4:6]}-{nar_day[6:8]}")
+            nar_date_valid = True
+        except (ValueError, TypeError, KeyError):
+            saved_day, nar_day, nar_date_valid = None, None, False
+        nar_is_past = nar_date_valid and _date(2026, 3, 1) <= saved_day < now_nar.date()
+        nar_is_today = nar_date_valid and saved_day == now_nar.date()
+        if st.button('過去オッズ取得',
+                     key=key+'_nar_historical_fetch', disabled=not nar_is_past):
+            try:
+                month_key = nar_day[:6]
+                cache = st.session_state.get('_nar_monthly_odds_one_month')
+                if cache and cache['month'] == month_key:
+                    filename, payload = cache['filename'], cache['payload']
+                else:
+                    with st.spinner('NAR公式の月次確定オッズZIPを取得中…'):
+                        filename, payload = fetch_monthly(
+                            year=int(month_key[:4]), month=int(month_key[4:6]))
+                    st.session_state['_nar_monthly_odds_one_month'] = dict(
+                        month=month_key, filename=filename, payload=payload)
+                with st.spinner('月次ZIPから該当レースの確定単複を照合中…'):
+                    quote = parse_monthly_zip(
+                        payload, filename, identity, result.race_info or {}, now=now_nar)
+                    history = odds.merge(state['history'], [quote], identity)
+                state['history'] = history
+                activate_observation(quote)
+                st.session_state[key+'_status'] = (
+                    f"取得：NAR公式の確定単勝{quote['coverage']['win']['count']}頭・"
+                    f"複勝{quote['coverage']['place']['count']}頭を反映。"
+                    "発走直前のオッズではなく確定値です。")
+            except ValueError as exc:
+                st.session_state[key+'_status'] = 'NAR公式過去オッズ未取得：' + str(exc)
+            except Exception as exc:
+                st.session_state[key+'_status'] = (
+                    'NAR公式過去オッズ未取得：' + type(exc).__name__ +
+                    '。保存予想は変更していません。')
+        if not nar_is_past and nar_date_valid and saved_day < now_nar.date():
+            st.caption('過去の公式確定単複は2026年3月以降が対象です。')
+        st.caption('過去＝公式月次確定オッズ／当日＝公式当日オッズ（配信に遅れがあります）。')
+        with st.expander('NAR公式・過去オッズのZIPを取り込む', expanded=False):
+            st.markdown('[NAR公式・月別開催日程（オッズ情報を選択）]'
+                        '(https://www.keiba.go.jp/KeibaWeb/MonthlyConveneInfo/MonthlyConveneInfoTop)')
+            monthly_upload = st.file_uploader(
+                '過去のNAR公式月次オッズZIP', type=['zip'],
+                key=key+'_nar_monthly_file')
+            if st.button('保存ZIPの確定単複を反映',
+                         key=key+'_nar_monthly_import',
+                         disabled=not (monthly_upload and nar_is_past)):
+                try:
+                    quote = parse_monthly_zip(
+                        monthly_upload.getvalue(), monthly_upload.name,
+                        identity, result.race_info or {})
+                    history = odds.merge(state['history'], [quote], identity)
+                    state['history'] = history
+                    activate_observation(quote)
+                    st.session_state[key+'_status'] = (
+                        f"取得：公式月次ZIPから単勝{quote['coverage']['win']['count']}頭・"
+                        f"複勝{quote['coverage']['place']['count']}頭を反映しました。")
+                except (ValueError, TypeError, KeyError) as exc:
+                    st.session_state[key+'_status'] = 'NAR公式過去オッズ未取得：' + str(exc)
+            st.markdown('[当日のNAR公式](https://www.keiba.go.jp/KeibaWeb/TodayRaceInfo/TodayRaceInfoTop)')
+
     if getattr(result, '_race_odds_error', None): st.warning(result._race_odds_error)
-    if is_nar and st.button('当日リアルオッズ取得', key=key+'_fetch'):
+    if is_nar and st.button('当日リアルオッズ取得', key=key+'_fetch',
+                            disabled=not nar_is_today):
         now = datetime.now(odds.JST)
         from .nar_official_odds import fetch_daily, parse_daily_zip, locator
         try:
@@ -266,7 +332,7 @@ def render(result, view):
     notice = st.session_state.get(key+'_status')
     if notice:
         if notice.startswith(('JRAオッズ未取得', 'JRAオッズ取得に失敗', 'JRA過去オッズ未取得',
-                               'NAR公式オッズ未取得', '公式オッズの取得・照合に失敗')):
+                               'NAR公式オッズ未取得', 'NAR公式過去オッズ未取得', '公式オッズの取得・照合に失敗')):
             st.error('オッズ更新結果：' + notice)
         elif ('再取得' in notice or '抑制' in notice or '連続' in notice):
             st.warning('オッズ更新結果：' + notice)
@@ -295,7 +361,8 @@ def render(result, view):
                 if singles:
                     st.dataframe(singles, hide_index=True, use_container_width=True)
                     st.caption('保存レースの全頭を表示。未取得の価格は「—」で、古い価格を補完しません。')
-                    if active.get('acquisition_method') in ('keibalab_historical_html', 'yuma_historical_html'):
+                    if active.get('acquisition_method') in ('keibalab_historical_html', 'yuma_historical_html',
+                                                              'nar_official_monthly_zip'):
                         source_archive = (st.session_state.get('game_archive_upload')
                                           or st.session_state.get('dashboard_saved_prediction'))
                         if source_archive is not None:
