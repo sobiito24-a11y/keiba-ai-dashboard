@@ -65,6 +65,16 @@ def test_actual_sports_navi_tfw_url_for_saved_2026_11_08_tokyo11():
         "https://sports.yahoo.co.jp/keiba/race/odds/tfw/2605050211")
 
 
+def test_confirmed_table_with_unrelated_predicted_odds_navigation_is_accepted():
+    # The real published page contains unrelated links mentioning predicted odds.
+    # Such text must not invalidate a complete, confirmed, named table.
+    markup = odds_page().replace(
+        b'<main>', b'<main><nav>\xe4\xba\x88\xe6\x83\xb3\xe3\x82\xaa\xe3\x83\x83\xe3\x82\xba</nav>', 1)
+    q = parse_sportsnavi_html(markup, ID, INFO, now=NOW)
+    assert q["coverage"]["win"]["count"] == 18
+    assert q["coverage"]["place"]["count"] == 18
+
+
 def test_sportsnavi_18_horse_published_win_and_place_and_overlay():
     q = parse_sportsnavi_html(odds_page(),ID,INFO,now=NOW)
     assert q["horse_count"] == q["expected_horses"] == 18
