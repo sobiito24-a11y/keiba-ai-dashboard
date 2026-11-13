@@ -1,0 +1,51 @@
+/* Original three-stage, netkeiba-inspired race formation visual.
+   All selectors scoped to this read-only map; no table/rank styling changes. */
+.race-explorer .ka-pace-board{max-width:850px;margin:18px auto 22px;padding:15px 16px 14px;border:1px solid #d3e2e9;border-radius:12px;background:#fff;color:#244054;box-shadow:0 2px 12px #1e49500c}
+.race-explorer .ka-pace-heading{display:flex;flex-wrap:wrap;align-items:baseline;gap:1px 12px;margin-bottom:12px}
+.race-explorer .ka-pace-kicker{width:100%;font-size:10px;font-weight:750;color:#53788d;letter-spacing:.12em}
+.race-explorer .ka-pace-heading h2{font-size:19px;color:#253b51;margin:0}
+.race-explorer .ka-pace-heading p{font-size:12px;color:#6c8494}
+.race-explorer .ka-pace-stage-tabs{display:grid;grid-template-columns:repeat(3,1fr);align-items:center;gap:0;background:#c2edf7;border-radius:8px 8px 0 0;padding:9px 10px 7px;min-height:45px}
+.race-explorer .ka-pace-tab{display:block;justify-self:center;max-width:155px;min-width:0;width:80%;height:29px;padding:3px 7px;border:1px solid #d5dde0;border-radius:30px;background:#fff;color:#66757b;font-weight:700;font-size:12px;line-height:1.2;text-align:center;white-space:nowrap;box-shadow:none}
+.race-explorer .ka-pace-tab[aria-selected=true]{background:#315e17;border-color:#315e17;color:#fff;box-shadow:0 1px 2px #315e173b}
+.race-explorer .ka-pace-tab:focus-visible,.race-explorer .ka-pace-runner:focus-visible{outline:3px solid #286a9d;outline-offset:2px}
+.race-explorer .ka-pace-stage-rail{display:flex;justify-content:space-around;height:22px;position:relative;background:#c2edf7;border-bottom:3px solid #f6ffff}
+.race-explorer .ka-pace-stage-rail:before{content:'';position:absolute;top:6px;left:15%;width:70%;height:1px;background:repeating-linear-gradient(90deg,#7e9b8f 0,#7e9b8f 2px,transparent 2px,transparent 7px)}
+.race-explorer .ka-pace-stage-rail i{z-index:1;position:relative;width:12px;height:12px;background:#fff;border:1px solid #9fada6;border-radius:50%;margin-top:0}
+.race-explorer .ka-pace-stage-rail i:nth-child(1){background:#315e17;border-color:#315e17}
+.race-explorer .ka-pace-scene[hidden]{display:none!important}
+.race-explorer .ka-pace-turf{position:relative;background:#b8e648;min-height:320px;overflow:hidden;border-top:2px solid #f7ffff;border-radius:0 0 3px 3px;isolation:isolate}
+.race-explorer .ka-pace-turf:before{content:'';height:10px;width:100%;position:absolute;top:0;left:0;pointer-events:none;background:repeating-linear-gradient(90deg,#c9f9ff 0,#c9f9ff 2px,transparent 2px,transparent 34px);opacity:.6}
+.race-explorer .ka-pace-runner{position:absolute;left:var(--px);top:var(--py);transform:translateX(-50%);width:59px;min-height:44px;display:flex;flex-direction:column;align-items:center;justify-content:start;gap:0;padding:0;border:0;background:transparent;color:#293f20;z-index:2;text-align:center;cursor:pointer;touch-action:manipulation}
+.race-explorer .ka-pace-runner:hover{z-index:5;filter:brightness(.89)}
+.race-explorer .ka-pace-runner-figure{display:block;position:relative;width:46px;height:26px}
+.race-explorer .ka-pace-horse-svg{display:block;width:46px;height:25px;filter:drop-shadow(0 1px 1px #68802b50)}
+.race-explorer .ka-pace-number{position:absolute;left:2px;top:10px;width:19px;height:19px;line-height:17px;display:grid;place-items:center;border:1px solid #7c897a;border-radius:50%;color:#20242a;background:#e1e4e8;font-size:11px;font-weight:900;font-variant-numeric:tabular-nums;box-shadow:0 1px 1px #25360c4d}
+.race-explorer .ka-pace-frame-1{background:#fff;color:#1e2934}
+.race-explorer .ka-pace-frame-2{background:#242424;color:#fff}
+.race-explorer .ka-pace-frame-3{background:#d73342;color:#fff}
+.race-explorer .ka-pace-frame-4{background:#2775d5;color:#fff}
+.race-explorer .ka-pace-frame-5{background:#ffdc2c;color:#222}
+.race-explorer .ka-pace-frame-6{background:#2fac4f;color:#fff}
+.race-explorer .ka-pace-frame-7{background:#f6a829;color:#242424}
+.race-explorer .ka-pace-frame-8{background:#eb8bb3;color:#242424}
+.race-explorer .ka-pace-horse-name{max-width:59px;overflow:hidden;text-overflow:clip;white-space:nowrap;font-size:11px;font-weight:700;line-height:16px;text-shadow:0 1px #bce74d}
+.race-explorer .ka-pace-no-runners{color:#476b29;padding:42px 10px;text-align:center;font-size:13px}
+.race-explorer .ka-pace-unavailable{font-size:11px;color:#61757a;line-height:1.55;padding:7px 4px 2px;min-height:22px}
+.race-explorer .ka-pace-selected{display:block;min-height:36px;margin:9px 0 5px;padding:7px 10px;border-radius:6px;background:#edf6e8;color:#2b5332;font-size:12px;line-height:1.5}
+.race-explorer .ka-pace-disclaimer{padding:3px 1px 1px;color:#667c89;font-size:11px;line-height:1.65}
+@media(max-width:700px){
+ .race-explorer .ka-pace-board{margin:13px 0 17px;padding:10px 7px 9px;border-radius:8px}
+ .race-explorer .ka-pace-heading h2{font-size:17px}
+ .race-explorer .ka-pace-heading p{font-size:11px}
+ .race-explorer .ka-pace-stage-tabs{padding:8px 2px 6px}
+ .race-explorer .ka-pace-tab{font-size:11px;width:86%;height:28px;padding:3px}
+ .race-explorer .ka-pace-turf{min-height:256px}
+ .race-explorer .ka-pace-runner{width:47px;min-height:37px}
+ .race-explorer .ka-pace-runner-figure{height:23px;width:40px}
+ .race-explorer .ka-pace-horse-svg{width:40px;height:22px}
+ .race-explorer .ka-pace-number{top:8px;left:1px;width:17px;height:17px;font-size:10px}
+ .race-explorer .ka-pace-horse-name{font-size:10px;line-height:13px;max-width:47px}
+ .race-explorer .ka-pace-selected{font-size:11px}
+ .race-explorer .ka-pace-disclaimer{font-size:10px}
+}
