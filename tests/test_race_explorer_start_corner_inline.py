@@ -59,3 +59,37 @@ def test_missing_or_invalid_start_never_fabricated(start):
     corner = BeautifulSoup(_cell(h, cells, "corner"), "html.parser")
     assert "4番手" in corner.get_text(" ")
     assert "能力順位未取得" in corner.get_text(" ")
+
+
+
+@pytest.mark.parametrize("mode", ["jra", "nar"])
+def test_saved_netkeiba_third_rank_wires_through_game_view_to_board(mode):
+    """Use the same canonical newspaper key persisted in .keiba snapshots."""
+    from core.race_development_positions import layout
+    from core.race_development_board import board_html
+    info = {"race_id":"202611080101","venue":"東京","surface":"芝","distance":1600}
+    source = [
+        dict(馬番=1, 馬名="先頭馬", 枠番=1, netkeiba_start_rank=1,
+             netkeiba_corner3_rank=3, netkeiba_corner4_rank=1,
+             market_ability_score=80, market_ability_rank=1),
+        dict(馬番=2, 馬名="追い上げ馬", 枠番=1, netkeiba_start_rank=3,
+             netkeiba_corner3_rank=1, netkeiba_corner4_rank=2,
+             market_ability_score=70, market_ability_rank=2),
+        dict(馬番=3, 馬名="中団馬", 枠番=2, netkeiba_start_rank=2,
+             netkeiba_corner3_rank=2, netkeiba_corner4_rank=3,
+             market_ability_score=60, market_ability_rank=3),
+    ]
+    predictions = prediction_table_records(source, source, info, mode)
+    before = deepcopy((source, predictions))
+    view = build_view(source, predictions, source, mode, info)
+    assert (source, predictions) == before
+    assert [h["third_rank"] for h in view] == [3, 1, 2]
+    lineup = layout(view, course_turn="left")["third"]
+    assert lineup["saved_count"] == 3
+    assert lineup["interpolated_count"] == 0
+    assert [h["no"] for h in lineup["runners"]] == [2, 3, 1]
+    dom = BeautifulSoup(board_html(view), "html.parser")
+    group = dom.select_one("#ka-pace-scene-third")
+    assert "保存予測 3頭／補間 0頭" in group.text
+    assert "保存3角予測" in group.select_one(
+        '[data-pace-runner="2"]')["aria-label"]
