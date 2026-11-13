@@ -7,6 +7,7 @@ No authentication, proxies, captcha handling, retries or automated polling.
 from datetime import datetime, date
 import re
 import unicodedata
+from urllib.parse import urljoin, urlparse
 
 from bs4 import BeautifulSoup
 
@@ -149,11 +150,25 @@ def fetch_once(identity, race_info, *, get=None, now=None):
     if get is None:
         import requests
         get = requests.get
-    try:
-        response = get(url, timeout=12, allow_redirects=False,
+    def request(url_to_fetch):
+        try:
+            return get(url_to_fetch, timeout=12, allow_redirects=False,
                        headers={"Accept": "text/html,application/xhtml+xml"})
-    except Exception as exc:
-        raise ValueError("競馬ラボに接続できません。公開ページのHTML保存取込をご利用ください") from exc
+        except Exception as exc:
+            raise ValueError("競馬ラボに接続できません。公開ページのHTML保存取込をご利用ください") from exc
+
+    response = request(url)
+    if response.status_code in (301, 302, 303, 307, 308):
+        # Allow only a canonical host redirect for this exact public race URL.
+        # Never follow sign-in, cross-site, or unrelated race pages.
+        target = urljoin(url, (getattr(response, "headers", {}) or {}).get("Location", ""))
+        original, next_url = urlparse(url), urlparse(target)
+        if (next_url.scheme != "https"
+                or next_url.hostname not in ("keibalab.jp", "www.keibalab.jp")
+                or next_url.path != original.path
+                or next_url.query != original.query):
+            raise ValueError("競馬ラボの移動先が対象レースではないため中止しました")
+        response = request(target)
     if response.status_code != 200:
         if response.status_code in (401, 403, 429):
             raise ValueError(f"競馬ラボからHTTP {response.status_code}。アクセス制限を迂回しません")
