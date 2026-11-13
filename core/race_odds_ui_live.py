@@ -55,7 +55,7 @@ def render(result, view):
         historical_links = archived_odds_urls(identity, result.race_info or {})
         if historical_links:
             with st.container():
-                from .jra_yuma_odds import fetch_once as fetch_historical
+                from .jra_historical_odds_failover import fetch_once as fetch_historical
                 from .jra_historical_odds import parse_keibalab_html
                 now_historical = datetime.now(odds.JST)
                 try:
@@ -76,9 +76,9 @@ def render(result, view):
                     else:
                         st.session_state[key+'_historical_last_request'] = now_historical
                         st.session_state['_jra_historical_global_last_request'] = now_historical
-                        stage = '単勝・複勝ページへの接続と解析'
+                        stage = '優馬JAPAN／競馬ラボの単勝・複勝ページへの接続と照合'
                         try:
-                            with st.spinner('優馬JAPANの過去単勝・複勝を取得中…'):
+                            with st.spinner('過去単複：優馬JAPAN → 必要なら競馬ラボを確認中…'):
                                 quote = fetch_historical(identity, result.race_info or {}, now=now_historical)
                                 stage = '保存済みの馬番・馬名との照合'
                                 history = odds.merge(state['history'], [quote], identity)
@@ -87,9 +87,11 @@ def render(result, view):
                             activate_observation(quote)
                             st.session_state[key+'_status'] = (
                                 f"取得：{quote['horse_count']}／{quote['expected_horses']}頭。"
-                                f"優馬JAPAN掲載値（単勝{quote['coverage']['win']['count']}頭／"
+                                f"{quote['source']}（単勝{quote['coverage']['win']['count']}頭／"
                                 f"複勝{quote['coverage']['place']['count']}頭）を表示に反映。"
-                                "最終確定オッズ・更新時刻は未確認です。")
+                                + ("優馬JAPANから競馬ラボへ自動切替。"
+                                   if quote.get('fallback_used') else "")
+                                + "過去掲載値であり最終確定オッズとの一致は未確認です。")
                         except ValueError as exc:
                             st.session_state[key+'_status'] = (
                                 f'JRA過去オッズ未取得（{stage}）：{exc}')
