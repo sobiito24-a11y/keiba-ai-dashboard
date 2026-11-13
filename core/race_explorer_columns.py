@@ -163,7 +163,9 @@ def columns(view):
     # win/place in a single column.
     visible_keys = (
         "user", "frame", "no", "name", "jockey", "odds", "popularity",
-        "research_sabcd", "ability", "style", "distance", "course",
+        "research_sabcd", "ability", "style",
+        *(("training",) if jra else ()),
+        "distance", "course",
         "run_old", "run_middle", "run_latest", "average", "maximum",
         "rest_days", "weight", "weight_delta", "jockey_change",
         "record_venue", "record_distance", "record_venue_distance",
