@@ -84,7 +84,7 @@ def columns(view):
         _spec("user", "自分の✓", "boolean"),
         _spec("frame", "枠番", "number"), _spec("no", "馬番", "number"),
         _spec("name", "馬名・性齢", "text"), _spec("age", "性齢", "text", table_hidden=True),
-        _spec("jockey", "騎手", "text"), _spec("odds", "単勝", "number"),
+        _spec("jockey", "騎手", "text"), _spec("odds", "オッズ単複", "number"),
         _spec("place_odds", "複勝", "number"),
         _spec("popularity", "人気", "rank"),
         _spec("ability", "純能力指数", "number", rank_key="ability_rank"),
@@ -116,7 +116,7 @@ def columns(view):
     result.insert(at, _spec("class_attention", "クラス・重賞注目", "text"))
     # One visible research grade: the weight/class shadow model.
     # The old 8-feature grade is retained only as hidden audit data.
-    result.insert(at + 1, _spec("research_sabcd", "研究SABCD", "text"))
+    result.insert(at + 1, _spec("research_sabcd", "SABCD", "text"))
     result.append(_spec("research_sabcd_old", "旧研究SABCD", "text", table_hidden=True))
     result.append(_spec("class_attention_reason", "クラス・重賞根拠", "text", table_hidden=True))
     result.append(_spec("research_sabcd_reason", "研究SABCDの根拠", "text", table_hidden=True))
@@ -138,9 +138,9 @@ def columns(view):
           for key, label in _RUNS),
         _spec("average", "3走平均", "number"),
         _spec("maximum", "★最高指数", "number"),
-        _spec("style", "序盤傾向", "text"),
+        _spec("style", "脚質・位置", "text"),
         _spec("corner", "4角想定", "rank"),
-        _spec("rest_days", "前走間隔", "number", unit="日"),
+        _spec("rest_days", "間隔", "number", unit="日"),
     ])
     if jra:
         result.append(_spec("training", "調教", "grade", options=["A", "B", "C", "D"]))
@@ -155,7 +155,32 @@ def columns(view):
         # but restore the compact table: show materials only on horse selection.
         _spec("materials", "判断材料", "text", table_hidden=True),
     ))
-    return result
+    # Reading-first racing-paper layout: compare horses and their expected
+    # positions before examining detailed historical conditions. The original
+    # scalar cells, hidden rank filters, past-run metrics and audit details
+    # remain intact; this only sets visible table order and column grouping.
+    # The separate place-odds field stays filterable while the table presents
+    # win/place in a single column.
+    visible_keys = (
+        "user", "frame", "no", "name", "jockey", "odds", "popularity",
+        "research_sabcd", "ability", "style", "distance", "course",
+        "run_old", "run_middle", "run_latest", "average", "maximum",
+        "rest_days", "weight", "weight_delta", "jockey_change",
+        "record_venue", "record_distance", "record_venue_distance",
+        "class_attention",
+    )
+    visible = set(visible_keys)
+    existing = {spec["key"]: spec for spec in result}
+    if len(existing) != len(result) or not visible.issubset(existing):
+        raise ValueError("比較表の列定義が不完全です")
+    # Same-venue/same-distance indices (star/away) are intentionally not
+    # duplicated in the main table; the ★maximum index and tabs are retained.
+    for spec in result:
+        if spec["key"] not in visible:
+            spec["table_hidden"] = True
+    return [existing[key] for key in visible_keys] + [
+        spec for spec in result if spec["key"] not in visible
+    ]
 
 
 def _metric(horse, metrics, key):
