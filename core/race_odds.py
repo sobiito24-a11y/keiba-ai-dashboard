@@ -304,7 +304,9 @@ def overlay(view, quote, label):
         if ns[0] in (quote or {}).get('withdrawn', []):
             h['odds'] = h['place_odds'] = '取消・除外'
             h['popularity'] = None
-        place_price = prices.get(('place', ns))
+        # A withdrawn runner cannot retain a numeric place quote even if
+        # the raw observation contains an orphaned price.
+        place_price = None if ns[0] in (quote or {}).get('withdrawn', []) else prices.get(('place', ns))
         h.setdefault('sort_values',{}).update(
             odds=prices.get(('win',ns),{}).get('low') if ns[0] not in (quote or {}).get('withdrawn',[]) else None,
             place_odds_low=place_price['low'] if place_price else None,
