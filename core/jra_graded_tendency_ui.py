@@ -14,6 +14,7 @@ import re
 import unicodedata
 
 DATA = Path(__file__).resolve().parents[1] / "data/jra_graded_trends_2021_2025.json"
+VERIFIED = Path(__file__).resolve().parents[1] / "data/jra_graded_verified_examples.json"
 
 
 def _clean(value):
@@ -27,6 +28,10 @@ def _clean(value):
 @lru_cache(maxsize=1)
 def _data():
     return json.loads(DATA.read_text(encoding="utf-8"))
+
+@lru_cache(maxsize=1)
+def _verified():
+    return json.loads(VERIFIED.read_text(encoding="utf-8")).get("races", {})
 
 
 def tendency(title, *, mode, race_date, venue="", distance="", surface=""):
@@ -60,6 +65,16 @@ def tendency(title, *, mode, race_date, venue="", distance="", surface=""):
             and (not location or x["venue"]==location)
             and (not meters or x["distance"]==meters)
             and (not condition or x["surface"]==condition)]
+    example=_verified().get(race_name)
+    verified_corner=False
+    if (example and (not location or example["venue"]==location)
+            and (not meters or example["distance"]==meters)
+            and (not condition or example["surface"]==condition)):
+        # Only explicitly JRA-verified per-year records override a partial
+        # public CSV. Always date-gate before using past race results.
+        annual=[dict(win_payout_yen=x["win_payout_yen"],**x) for x in example["annual"]
+                if x["year"]<year]
+        verified_corner=True
     if not annual:
         return None
     n=len(annual)
@@ -68,10 +83,12 @@ def tendency(title, *, mode, race_date, venue="", distance="", surface=""):
     return dict(name=race_name,grade=entry["grade"],n=n,
                 years=sorted(x["year"] for x in annual),
                 winner_10x=win10,winner_20x=win20,
+                front3=sum(x.get("winner_corner4",999)<=3 for x in annual) if verified_corner else None,
+                rear10=sum(x.get("winner_corner4",0)>=10 for x in annual) if verified_corner else None,
                 missing_years=[y for y in range(max(2021,year-5),year)
                                if y not in {x["year"] for x in annual}],
                 scoring_effect=0, rank_effect=0,
-                verified_corner=False, verified_quinella=False,
+                verified_corner=verified_corner, verified_quinella=False,
                 history_coverage_pct=_data().get("coverage_pct"))
 
 
@@ -83,11 +100,15 @@ def render(title, *, mode, race_date, venue="", distance="", surface=""):
     years="・".join(str(x) for x in fact["years"])
     absent="・".join(str(x) for x in fact["missing_years"])
     note=("※未収録年 " + absent + "。 " if absent else "")
+    pace = (f"勝ち馬4角3番手以内 {fact['front3']}／{fact['n']}開催、"
+            f"10番手以下 {fact['rear10']}／{fact['n']}開催。"
+            if fact["verified_corner"] else "4角・脚質は未検証。")
     return ('<p class="graded-history-note" role="note">'
             '<strong>JRA重賞・過去の参考傾向（研究／ランク未反映）</strong> '
             +escape(years)+'年の一致条件 '+str(fact["n"])+'開催｜'
             +'単勝10倍以上の勝ち馬 '+str(fact["winner_10x"])+'／'+str(fact["n"])+'開催、'
             +'20倍以上 '+str(fact["winner_20x"])+'／'+str(fact["n"])+'開催。'
             +escape(note)
-            +'4角・脚質・馬連/ワイドの荒れは未検証。'
+            +escape(pace)
+            +'馬連/ワイドの荒れは未検証。'
             +'過去の勝馬配当だけで今回の馬を加点しません。</p>')
