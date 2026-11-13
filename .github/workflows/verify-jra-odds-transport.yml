@@ -1,0 +1,25 @@
+name: JRA odds one-shot transport smoke
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/verify-jra-odds-transport.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  transport:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install HTTP dependency
+        run: python -m pip install 'requests>=2.32'
+      - name: Single connection per public odds page
+        run: python -m tools.verify_jra_odds_transport
