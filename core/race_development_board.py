@@ -40,7 +40,9 @@ def _runner_html(horse, stage, short):
     start = str(horse["start"]) + "番手" if horse["start"] is not None else "未取得"
     fourth = str(horse["fourth"]) + "番手" if horse["fourth"] is not None else "未取得"
     position = f'{horse["rank_display"]}番手'
-    kind = "補間による参考位置" if stage == "third" else "保存予測"
+    kind = ("保存3角予測" if stage == "third" and horse["third_source"] == "saved"
+            else "補間による参考位置" if stage == "third"
+            else "保存予測")
     detail = (f'馬番{no} {name}｜{_LABELS[stage]}：{position}（{kind}）'
               f'｜序盤：{start}｜4角：{fourth}')
     label = short[name]
@@ -48,6 +50,7 @@ def _runner_html(horse, stage, short):
         '<button type="button" class="ka-pace-runner" data-pace-runner="'
         + escape(str(no), quote=True) + '"'
         + ' data-pace-full-name="' + escape(name, quote=True) + '"'
+        + ' data-pace-third-source="' + (horse["third_source"] if stage == "third" else "not-applicable") + '"'
         + ' data-pace-description="' + escape(detail, quote=True) + '"'
         + ' style="--px:' + f'{horse["x"]:.2f}' + '%;--py:' + f'{horse["y"]:.2f}' + '%"'
         + ' title="' + escape(detail, quote=True) + '"'
@@ -124,12 +127,21 @@ def board_html(view, race_info=None, race_key=""):
             )
         else:
             html.append('<p class="ka-pace-unavailable">位置予測のある馬をすべて表示しています。</p>')
+        if stage == "third" and not straight_corner:
+            html.append('<p class="ka-pace-third-source">3角の表示元：'
+                        + '保存予測 ' + str(group["saved_count"]) + '頭／'
+                        + '補間 ' + str(group["interpolated_count"]) + '頭。'
+                        + ('保存3角順位を優先し、未取得の馬のみ序盤・4角から補間しています。'
+                           if group["interpolated_count"] else
+                           '全頭、保存された3角予測の順位を使っています。')
+                        + '</p>')
         html.append('</div>')
     html += [
         '<p class="ka-pace-selected" id="ka-pace-selected" role="status" aria-live="polite">'
         '馬をタップすると馬名と位置予測を確認できます。</p>',
         '<p class="ka-pace-disclaimer">スタート後・4角は保存された発走前の予測順位。'
-        '3角は両者の補間であり実測ではありません。'
+        '3角は保存済みの3角予測順位を優先し、未取得の馬だけ序盤と4角から補間します。'
+        'いずれも発走前の予測であり実際の通過順位ではありません。'
         '馬の向きは保存された回り方向または競馬場・コース条件から判定します。'
         '馬群の左右位置や間隔は重なりを避けるための配置で、'
         '内外の進路・馬身差を表しません。'
