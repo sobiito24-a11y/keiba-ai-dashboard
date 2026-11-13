@@ -149,7 +149,9 @@ def _get_page(get, url, kind):
         response = get(url, timeout=12, allow_redirects=False,
                        headers={"Accept": "text/html,application/xhtml+xml"})
     except Exception as exc:
-        raise ValueError("優馬JAPANのサイトに接続できません") from exc
+        from .jra_odds_connection_errors import describe_connection
+        raise ValueError("優馬JAPANのサイトに接続できません（" +
+                         describe_connection(exc) + "）") from exc
     if response.status_code in (301, 302, 303, 307, 308):
         location = response.headers.get("Location", "")
         target = urljoin(url, location)
@@ -160,7 +162,9 @@ def _get_page(get, url, kind):
             response = get(target, timeout=12, allow_redirects=False,
                            headers={"Accept": "text/html,application/xhtml+xml"})
         except Exception as exc:
-            raise ValueError("優馬JAPANの移動先に接続できません") from exc
+            from .jra_odds_connection_errors import describe_connection
+            raise ValueError("優馬JAPANの移動先に接続できません（" +
+                             describe_connection(exc) + "）") from exc
     if response.status_code != 200:
         raise ValueError(f"優馬JAPANの{kind}ページがHTTP {response.status_code}を返しました")
     if len(response.content) > MAX_BYTES:
