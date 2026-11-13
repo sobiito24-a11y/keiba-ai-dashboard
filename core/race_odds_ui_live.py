@@ -10,9 +10,8 @@ from . import race_odds as odds
 
 def render(result, view):
     import streamlit as st
-    from html import escape
     def caption(value):
-        st.markdown('<p style="color:#bbcee5;font-size:13px;line-height:1.5;overflow-wrap:anywhere">'+escape(str(value))+'</p>', unsafe_allow_html=True)
+        st.caption(str(value))
     from .independent_ai_odds import provider
     try:
         identity = odds.identity_from_result(result)
@@ -277,114 +276,119 @@ def render(result, view):
         current_id = runtime.get('active_observation')
         active = next((x for x in reversed(state['history'])
                        if x.get('observation_id') == current_id), None)
-        if (active is not None and ('取得：' in notice or '照合。' in notice
-                                   or notice.startswith('NAR公式ZIPから'))):
-            st.caption('取得元：' + str(active.get('source') or '不明') +
-                       '｜配信元更新：' + odds.format_time(active.get('observed_at')) +
-                       '｜' + odds.freshness(active, odds.start_from_result(result)))
-            names = {int(h['horse_no']): h['name'] for h in identity['horses']}
-            win_prices = {p['horses'][0]: odds.price_text(p) for p in active['prices']
-                          if p['kind'] == 'win'}
-            place_prices = {p['horses'][0]: odds.price_text(p) for p in active['prices']
-                            if p['kind'] == 'place'}
-            singles = [dict(馬番=no, 馬名=name,
-                            単勝=(win_prices.get(no, '—') + '倍' if no in win_prices else '—'),
-                            複勝=(place_prices.get(no, '—') + '倍' if no in place_prices else '—'))
-                       for no, name in sorted(names.items())]
-            if singles:
-                st.dataframe(singles, hide_index=True, use_container_width=True)
-                st.caption('保存レースの全頭を表示。未取得の価格は「—」で、古い価格を補完しません。')
-                if active.get('acquisition_method') in ('keibalab_historical_html', 'yuma_historical_html'):
-                    source_archive = (st.session_state.get('game_archive_upload')
-                                      or st.session_state.get('dashboard_saved_prediction'))
-                    if source_archive is not None:
-                        try:
-                            copied_archive = odds.export_copy(source_archive.getvalue(), identity, state)
-                            st.download_button('過去単複を反映した.keibaコピーを保存',
-                                               data=copied_archive,
-                                               file_name=identity['race_id']+'_with_historical_odds.keiba',
-                                               key=key+'_historical_copy_quick')
-                        except (ValueError, TypeError, KeyError, AttributeError):
-                            st.caption('元の.keibaが確認できないため、この画面ではコピーを作成できません。')
-                    else:
-                        st.caption('反映内容はセッション内です。必要なら下の履歴JSONを保存してください。')
-            else:
-                st.warning('単勝オッズが未取得です。取得できた券種のみ下の詳細で確認してください。')
+        with st.expander('取得した全頭の照合表・保存', expanded=False):
+            if (active is not None and ('取得：' in notice or '照合。' in notice
+                                       or notice.startswith('NAR公式ZIPから'))):
+                st.caption('取得元：' + str(active.get('source') or '不明') +
+                           '｜配信元更新：' + odds.format_time(active.get('observed_at')) +
+                           '｜' + odds.freshness(active, odds.start_from_result(result)))
+                names = {int(h['horse_no']): h['name'] for h in identity['horses']}
+                win_prices = {p['horses'][0]: odds.price_text(p) for p in active['prices']
+                              if p['kind'] == 'win'}
+                place_prices = {p['horses'][0]: odds.price_text(p) for p in active['prices']
+                                if p['kind'] == 'place'}
+                singles = [dict(馬番=no, 馬名=name,
+                                単勝=(win_prices.get(no, '—') + '倍' if no in win_prices else '—'),
+                                複勝=(place_prices.get(no, '—') + '倍' if no in place_prices else '—'))
+                           for no, name in sorted(names.items())]
+                if singles:
+                    st.dataframe(singles, hide_index=True, use_container_width=True)
+                    st.caption('保存レースの全頭を表示。未取得の価格は「—」で、古い価格を補完しません。')
+                    if active.get('acquisition_method') in ('keibalab_historical_html', 'yuma_historical_html'):
+                        source_archive = (st.session_state.get('game_archive_upload')
+                                          or st.session_state.get('dashboard_saved_prediction'))
+                        if source_archive is not None:
+                            try:
+                                copied_archive = odds.export_copy(source_archive.getvalue(), identity, state)
+                                st.download_button('過去単複を反映した.keibaコピーを保存',
+                                                   data=copied_archive,
+                                                   file_name=identity['race_id']+'_with_historical_odds.keiba',
+                                                   key=key+'_historical_copy_quick')
+                            except (ValueError, TypeError, KeyError, AttributeError):
+                                st.caption('元の.keibaが確認できないため、この画面ではコピーを作成できません。')
+                        else:
+                            st.caption('反映内容はセッション内です。必要なら下の履歴JSONを保存してください。')
+                else:
+                    st.warning('単勝オッズが未取得です。取得できた券種のみ下の詳細で確認してください。')
     elif not is_nar:
         st.caption('更新ボタンを押すと、ここに成功／失敗と取得元更新時刻を表示します。'
                    '終了レースの場合は過去の参考オッズになります。')
 
-    with st.expander("直前オッズを数行で手入力（外部サイトを見ながら）", expanded=False):
-        st.caption("例：『単勝 3 5.2』『馬連 3-7 14.8』『ワイド 3-7 4.5-5.8』。"
-                   "複勝・ワイドは範囲を指定可能。同じレースの馬番と馬名、表示倍率を確認してください。")
-        with st.form(key + "_manual_form"):
-            source_name = st.text_input("確認元のサイト名", value="外部サイト", key=key+"_manual_source")
-            typed = st.text_area("表示オッズを1行ずつ入力",
-                                 placeholder="単勝 3 5.2\\nワイド 3-7 4.5-5.8\\n馬連 3-7 14.8",
-                                 key=key+"_manual_text", height=100)
-            checked = st.checkbox(
-                "対象レース・馬番・馬名・倍率を今この外部サイトで目視確認した",
-                value=False, key=key+"_manual_checked")
-            submit_manual = st.form_submit_button("確認したオッズを反映")
-        if submit_manual:
-            from .race_odds_manual import build_observation
-            try:
-                quote = build_observation(typed, identity, source=source_name,
-                                          seen_now=checked)
-                state['history'] = odds.merge(state['history'], [quote], identity)
-                activate_observation(quote)
-                st.session_state[key+'_status'] = (
-                    f"入力 {len(quote['prices'])}点。"
-                    "確認時刻は利用者の目視確認時刻で、提供元の価格更新時刻ではありません。"
-                    "新しい入力に古い価格を補完しません。"
-                )
-            except (ValueError, TypeError, KeyError) as exc:
-                st.error(str(exc))
-        st.caption("券種ごとの正確な表示オッズを入力してください。馬連の倍率をワイドへ転用しません。"
-                   "オッズは締切まで動くので、購入直前に再確認してください。")
-    from .race_odds_screenshot_ui import render as render_screenshot
-    render_screenshot(identity, state, key)
+    with st.expander('その他の取込・履歴保存', expanded=False):
+        show_extra = st.checkbox('手動入力・スクショ・ファイル取込を使う',
+                                 value=False, key=key+'_show_extra')
+    if show_extra:
+        with st.expander("直前オッズを数行で手入力（外部サイトを見ながら）", expanded=False):
+            st.caption("例：『単勝 3 5.2』『馬連 3-7 14.8』『ワイド 3-7 4.5-5.8』。"
+                       "複勝・ワイドは範囲を指定可能。同じレースの馬番と馬名、表示倍率を確認してください。")
+            with st.form(key + "_manual_form"):
+                source_name = st.text_input("確認元のサイト名", value="外部サイト", key=key+"_manual_source")
+                typed = st.text_area("表示オッズを1行ずつ入力",
+                                     placeholder="単勝 3 5.2\\nワイド 3-7 4.5-5.8\\n馬連 3-7 14.8",
+                                     key=key+"_manual_text", height=100)
+                checked = st.checkbox(
+                    "対象レース・馬番・馬名・倍率を今この外部サイトで目視確認した",
+                    value=False, key=key+"_manual_checked")
+                submit_manual = st.form_submit_button("確認したオッズを反映")
+            if submit_manual:
+                from .race_odds_manual import build_observation
+                try:
+                    quote = build_observation(typed, identity, source=source_name,
+                                              seen_now=checked)
+                    state['history'] = odds.merge(state['history'], [quote], identity)
+                    activate_observation(quote)
+                    st.session_state[key+'_status'] = (
+                        f"入力 {len(quote['prices'])}点。"
+                        "確認時刻は利用者の目視確認時刻で、提供元の価格更新時刻ではありません。"
+                        "新しい入力に古い価格を補完しません。"
+                    )
+                except (ValueError, TypeError, KeyError) as exc:
+                    st.error(str(exc))
+            st.caption("券種ごとの正確な表示オッズを入力してください。馬連の倍率をワイドへ転用しません。"
+                       "オッズは締切まで動くので、購入直前に再確認してください。")
+        from .race_odds_screenshot_ui import render as render_screenshot
+        render_screenshot(identity, state, key)
+        with st.expander('オッズファイルを一括取込・履歴を保存', expanded=False):
+            files = st.file_uploader('同じレースのHTML／JSON、またはNAR公式の当日オッズZIP',
+                                     type=['html','htm','json','zip'],
+                                     accept_multiple_files=True, key=key+'_files')
+            if st.button('全頭分をまとめて取り込む', disabled=not files, key=key+'_import'):
+                try:
+                    incoming = []
+                    # Validate every file before committing anything to session.
+                    for file in files:
+                        if file.name.lower().endswith('.zip'):
+                            if not is_nar:
+                                raise ValueError('NAR公式ZIPは地方競馬のレースでのみ取込できます')
+                            from .nar_official_odds import parse_daily_zip
+                            incoming.append(parse_daily_zip(
+                                file.getvalue(), file.name, identity, result.race_info or {}))
+                        else:
+                            incoming.extend(odds.import_files([(file.name, file.getvalue())], identity))
+                    history = odds.merge(state['history'], incoming, identity)
+                    added = len(history)-len(state['history'])
+                    state['history'] = history
+                    if incoming:
+                        activate_observation(incoming[-1])
+                    st.session_state[key+'_status'] = f'照合済み観測を{added}件追加。有効価格なしの観測は未取得として記録します。'
+                except (ValueError, TypeError, KeyError, UnicodeError) as exc:
+                    st.session_state[key+'_status'] = '取込失敗：' + str(exc) + '。全ファイルの反映を中止しました。'
+            caption('セッション内の履歴はCloudへ永続保存されません。必要な履歴を含むコピーをダウンロードしてください。元ファイルは上書きしません。')
+            source = st.session_state.get('game_archive_upload') or st.session_state.get('dashboard_saved_prediction')
+            if source is not None and state['history']:
+                try:
+                    copied = odds.export_copy(source.getvalue(), identity, state)
+                    st.download_button('オッズ履歴付き.keibaコピーを保存', copied,
+                                       file_name=identity['race_id']+'_with_odds.keiba', key=key+'_copy')
+                except (ValueError, TypeError, KeyError):
+                    caption('現在の読込元と一致する.keibaが確認できないため、コピー出力を保留しています。')
+            st.download_button('オッズ履歴JSONを保存', json.dumps(dict(odds_history=state['history']), ensure_ascii=False, indent=2),
+                               file_name=identity['race_id']+'_odds.json', key=key+'_json')
     unseen = [q for q in state['history']
               if q['observation_id'] not in runtime['seen_history_ids']]
     if unseen:
         activate_observation(unseen[-1])
-    with st.expander('オッズファイルを一括取込・履歴を保存', expanded=False):
-        files = st.file_uploader('同じレースのHTML／JSON、またはNAR公式の当日オッズZIP',
-                                 type=['html','htm','json','zip'],
-                                 accept_multiple_files=True, key=key+'_files')
-        if st.button('全頭分をまとめて取り込む', disabled=not files, key=key+'_import'):
-            try:
-                incoming = []
-                # Validate every file before committing anything to session.
-                for file in files:
-                    if file.name.lower().endswith('.zip'):
-                        if not is_nar:
-                            raise ValueError('NAR公式ZIPは地方競馬のレースでのみ取込できます')
-                        from .nar_official_odds import parse_daily_zip
-                        incoming.append(parse_daily_zip(
-                            file.getvalue(), file.name, identity, result.race_info or {}))
-                    else:
-                        incoming.extend(odds.import_files([(file.name, file.getvalue())], identity))
-                history = odds.merge(state['history'], incoming, identity)
-                added = len(history)-len(state['history'])
-                state['history'] = history
-                if incoming:
-                    activate_observation(incoming[-1])
-                st.session_state[key+'_status'] = f'照合済み観測を{added}件追加。有効価格なしの観測は未取得として記録します。'
-            except (ValueError, TypeError, KeyError, UnicodeError) as exc:
-                st.session_state[key+'_status'] = '取込失敗：' + str(exc) + '。全ファイルの反映を中止しました。'
-        caption('セッション内の履歴はCloudへ永続保存されません。必要な履歴を含むコピーをダウンロードしてください。元ファイルは上書きしません。')
-        source = st.session_state.get('game_archive_upload') or st.session_state.get('dashboard_saved_prediction')
-        if source is not None and state['history']:
-            try:
-                copied = odds.export_copy(source.getvalue(), identity, state)
-                st.download_button('オッズ履歴付き.keibaコピーを保存', copied,
-                                   file_name=identity['race_id']+'_with_odds.keiba', key=key+'_copy')
-            except (ValueError, TypeError, KeyError):
-                caption('現在の読込元と一致する.keibaが確認できないため、コピー出力を保留しています。')
-        st.download_button('オッズ履歴JSONを保存', json.dumps(dict(odds_history=state['history']), ensure_ascii=False, indent=2),
-                           file_name=identity['race_id']+'_odds.json', key=key+'_json')
-    choices = [('未取得：新しいHTMLを取り込んでください', None)]
+    choices = [('未取得', None)]
     choices += [('保存時オッズ', q) for q in state['saved']] + [('更新オッズ', q) for q in state['history']]
     # A saved prediction's price is not the current pre-race observation.
     # Keep it selectable, but require an explicit choice until new data exists.
@@ -394,34 +398,41 @@ def render(result, view):
             f"{i}. {label} · {odds.received_label(quote)} {odds.format_time(quote.get('received_at'))}")
     active_index = next((i for i in range(len(choices)-1, 0, -1)
                          if choices[i][1]['observation_id'] == runtime['active_observation']), 0)
-    index = st.selectbox('表示するオッズ観測', range(len(choices)),
-                         index=active_index,
-                         format_func=observation_label,
-                         key=key+'_observation_v3_'+str(runtime['revision'])+'_'+str(len(choices)))
-    label, quote = choices[index]
+    with st.expander('オッズ履歴の切替', expanded=False):
+        index = st.selectbox('表示するオッズ観測', range(len(choices)),
+                             index=active_index,
+                             format_func=observation_label,
+                             key=key+'_observation_v3_'+str(runtime['revision'])+'_'+str(len(choices)))
+        label, quote = choices[index]
     runtime['active_observation'] = quote['observation_id'] if quote is not None else None
     if quote is None:
         return odds.overlay(view, None, 'オッズ未取得')
     start_at = odds.start_from_result(result)
-    caption(f"{label}｜{odds.received_label(quote)}：{odds.format_time(quote.get('received_at'))}｜提供元更新：{odds.format_time(quote.get('observed_at'))}｜情報源：{quote['source']}")
-    if quote.get('acquisition_method') == 'manual_html':
-        caption('HTML取込日時はサイトから価格を取得した日時ではありません。価格の鮮度はHTML内の提供元更新時刻で確認します。')
-    if quote.get('acquisition_method') in ('keibalab_historical_html', 'yuma_historical_html'):
-        caption('過去掲載オッズです。配信元の価格発表時刻は未確認の場合があります。'
-                '確定最終オッズと一致する保証はありません。'
-                'AIの順位・スコアは変更せず、価格だけ上書き表示します。')
-    if quote.get('acquisition_method') == 'netkeiba_free_json':
-        caption('配信元表示時刻を使用。JRA公式との直接接続ではなく、'
-                '無料版の更新制限・遅延があります。取得できた券種だけ表示し、'
-                '他の時刻の価格で補完しません。購入直前は公式で確認してください。')
-    if quote.get('acquisition_method') == 'nar_official_zip':
-        caption('公式CSVには馬名・個別オッズ更新日時がありません。保存出走馬の馬番とZIP作成時刻で照合。'
-                '発売開始前・欠損・締切後の価格を最新として扱わないでください。')
-    caption(f"{quote['horse_count']}／{quote['expected_horses']}頭（単勝または複勝）｜" + odds.freshness(quote, start_at))
-    caption(' · '.join(f"{odds.LABELS[k]} {v['count']}／{v['expected']}件" for k,v in quote['coverage'].items()))
-    pairs = [dict(券種=odds.LABELS[p['kind']], 馬番='－'.join(map(str,p['horses'])), オッズ=odds.price_text(p))
-             for p in quote['prices'] if p['kind'] in ('wide','quinella')]
-    if pairs:
-        with st.expander('馬連・ワイドの組み合わせオッズ', expanded=False):
-            st.dataframe(pairs, hide_index=True, use_container_width=True)
+    st.caption(f"取得元：{quote.get('source','不明')}｜"
+               f"単勝{quote['coverage']['win']['count']}頭・"
+               f"複勝{quote['coverage']['place']['count']}頭｜"
+               f"更新時刻：{odds.format_time(quote.get('observed_at'))}")
+    with st.expander('オッズの詳細・注意事項', expanded=False):
+        start_at = odds.start_from_result(result)
+        caption(f"{label}｜{odds.received_label(quote)}：{odds.format_time(quote.get('received_at'))}｜提供元更新：{odds.format_time(quote.get('observed_at'))}｜情報源：{quote['source']}")
+        if quote.get('acquisition_method') == 'manual_html':
+            caption('HTML取込日時はサイトから価格を取得した日時ではありません。価格の鮮度はHTML内の提供元更新時刻で確認します。')
+        if quote.get('acquisition_method') in ('keibalab_historical_html', 'yuma_historical_html'):
+            caption('過去掲載オッズです。配信元の価格発表時刻は未確認の場合があります。'
+                    '確定最終オッズと一致する保証はありません。'
+                    'AIの順位・スコアは変更せず、価格だけ上書き表示します。')
+        if quote.get('acquisition_method') == 'netkeiba_free_json':
+            caption('配信元表示時刻を使用。JRA公式との直接接続ではなく、'
+                    '無料版の更新制限・遅延があります。取得できた券種だけ表示し、'
+                    '他の時刻の価格で補完しません。購入直前は公式で確認してください。')
+        if quote.get('acquisition_method') == 'nar_official_zip':
+            caption('公式CSVには馬名・個別オッズ更新日時がありません。保存出走馬の馬番とZIP作成時刻で照合。'
+                    '発売開始前・欠損・締切後の価格を最新として扱わないでください。')
+        caption(f"{quote['horse_count']}／{quote['expected_horses']}頭（単勝または複勝）｜" + odds.freshness(quote, start_at))
+        caption(' · '.join(f"{odds.LABELS[k]} {v['count']}／{v['expected']}件" for k,v in quote['coverage'].items()))
+        pairs = [dict(券種=odds.LABELS[p['kind']], 馬番='－'.join(map(str,p['horses'])), オッズ=odds.price_text(p))
+                 for p in quote['prices'] if p['kind'] in ('wide','quinella')]
+        if pairs:
+            with st.expander('馬連・ワイドの組み合わせオッズ', expanded=False):
+                st.dataframe(pairs, hide_index=True, use_container_width=True)
     return odds.overlay(view, quote, label)
