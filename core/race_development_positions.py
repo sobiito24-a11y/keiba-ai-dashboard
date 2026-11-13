@@ -1,7 +1,8 @@
 """Display-only netkeiba-style staged race formation from saved pre-race ranks.
 
 No new forecast, horse length/inside-outside inference, scoring changes,
-past results, or random positioning. "3 corner" is labelled interpolation.
+past results, or random positioning. Explicit saved third-corner forecasts
+are used first; only missing horse-level values are interpolated.
 """
 from collections.abc import Mapping
 from math import floor, isfinite
@@ -47,9 +48,10 @@ def _horizontal(count, index, horse_number, band):
 def layout(view, *, course_turn="right"):
     """Return three stage lists of deterministic marker coordinates.
 
-    Missing/out-of-range estimates are never invented. For third corner both
-    saved estimates MUST exist; continuous interpolation is sorted and only
-    then given a tentative displayed ordinal.
+    The saved netkeiba third-corner rank takes precedence even if start/fourth
+    is missing. For horses without a valid third-corner forecast, BOTH saved
+    start and fourth ranks are required to interpolate a display-only value.
+    Interpolation never overwrites or silently masquerades as a saved value.
 
     Within each pack, the best estimated position is placed in the facing
     direction: rightmost for a left-turn course (horses face right),
@@ -66,11 +68,16 @@ def layout(view, *, course_turn="right"):
             continue
         start = _positive_integer(horse.get("start_rank"), maximum=count)
         corner = _positive_integer(horse.get("corner"), maximum=count)
+        saved_third = _positive_integer(horse.get("third_rank"), maximum=count)
         frame = _positive_integer(horse.get("frame"), maximum=8)
+        fallback = (0.45 * start + 0.55 * corner
+                    if start is not None and corner is not None else None)
         prepared.append(dict(no=no, name=str(horse.get("name") or "馬名未取得"),
                              frame=frame, start=start, fourth=corner,
-                             third=(.45 * start + .55 * corner)
-                             if start is not None and corner is not None else None))
+                             third=saved_third if saved_third is not None else fallback,
+                             third_source=("saved" if saved_third is not None else
+                                           "interpolated" if fallback is not None else
+                                           "missing")))
     output = {}
     for stage in STAGES:
         available = [dict(h) for h in prepared if h[stage] is not None]
@@ -89,11 +96,21 @@ def layout(view, *, course_turn="right"):
                     x = 100.0 - x
                 runner["x"] = round(x, 2)
                 runner["y"] = round(_BAND_Y[band] + ((runner["no"] * 3 + band) % 3 - 1) * .45, 2)
+                # A valid saved 3-corner forecast is shown verbatim; never
+                # relabel it from an interpolated ranking.
                 runner["rank_display"] = (
+                    int(runner["third"]) if stage == "third"
+                    and runner["third_source"] == "saved" else
                     index + 1 if stage == "third" else int(runner[stage]))
                 runner["band"] = band
                 index += 1
+        saved_count = (sum(h["third_source"] == "saved" for h in available)
+                       if stage == "third" else 0)
+        fallback_count = (sum(h["third_source"] == "interpolated" for h in available)
+                          if stage == "third" else 0)
         output[stage] = dict(runners=available,
                              missing=[h for h in prepared if h[stage] is None],
-                             interpolation=stage == "third")
+                             interpolation=fallback_count > 0,
+                             saved_count=saved_count,
+                             interpolated_count=fallback_count)
     return output
