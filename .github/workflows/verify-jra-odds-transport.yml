@@ -6,6 +6,7 @@ on:
     branches: [main]
     paths:
       - '.github/workflows/verify-jra-odds-transport.yml'
+      - 'tools/verify_jra_odds_transport.py'
 
 permissions:
   contents: read
@@ -20,6 +21,6 @@ jobs:
         with:
           python-version: '3.11'
       - name: Install HTTP dependency
-        run: python -m pip install 'requests>=2.32'
+        run: python -m pip install 'requests>=2.32' 'beautifulsoup4>=4.12' 'lxml>=5.2'
       - name: Single connection per public odds page
         run: python -m tools.verify_jra_odds_transport
