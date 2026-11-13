@@ -72,7 +72,10 @@ def test_normal_layout_full_field_manual_checks_and_source_nonmutation(mode, cou
         assert row.select_one('.col-name button[data-horse-open]')['data-horse-open'] == row['data-horse']
     headers = [header.select_one('.column-label').text for header in lineup.select('th')]
     assert headers[headers.index('3走前'):headers.index('3走前')+5] == ['3走前', '2走前', '前走', '3走平均', '★最高指数']
-    assert ('調教' in headers) == (mode == 'jra')
+    assert '調教' not in headers  # kept in JRA research/detail, not the compact table
+    assert '同場同距離指数' not in headers
+    assert 'オッズ単複' in headers and '脚質・位置' in headers
+    assert '4角想定' not in headers and '序盤傾向' not in headers
     specs=columns(view)
     keys=[spec['key'] for spec in specs]
     table_keys=[spec['key'] for spec in specs if not spec.get('table_hidden')]
@@ -310,3 +313,51 @@ def test_retrospective_grade_label_is_explicit_and_explained(mode):
     assert "発走前の当時予想ではありません" in retro.get("title")
     assert "後付け" not in html.select_one("#lineup-workspace td.col-research_sabcd").text
     assert "過去の保存開催では「後日算出」と表示します" in html.text
+
+
+@pytest.mark.parametrize("mode", ["jra", "nar"])
+def test_paper_running_style_four_boxes_and_saved_positions(mode):
+    _, _, info, view = field(mode, count=3)
+    for horse, style, start, corner in zip(
+            view, ("逃げ", "差し", "—"), (2, 8, None), (4, 10, None)):
+        horse["style"] = style
+        horse["start_rank"] = start
+        horse["corner"] = corner
+        if isinstance(horse.get("final_metrics"), dict):
+            horse["final_metrics"]["style"] = style
+            horse["final_metrics"]["corner"] = corner
+    before = deepcopy(view)
+    doc = BeautifulSoup(document(view, info["race_id"]), "html.parser")
+    heads = [cell.get("data-column") for cell in doc.select("#lineup-workspace th")]
+    assert heads.index("research_sabcd") < heads.index("ability") < heads.index("style")
+    assert "star" not in heads and "away" not in heads
+    assert "place_odds" not in heads and "corner" not in heads
+    for no, idx, position in ((1, 0, "序盤2 / 4角4"),
+                              (2, 2, "序盤8 / 4角10"),
+                              (3, None, "序盤— / 4角—")):
+        row = doc.select_one(f'#lineup-workspace tr[data-horse="{no}"]')
+        assert row is not None
+        squares = row.select(".col-style .running-style-square")
+        assert len(squares) == 4
+        active = [i for i, span in enumerate(squares)
+                  if "running-style-square-active" in span.get("class", [])]
+        assert active == ([] if idx is None else [idx])
+        assert position in row.select_one(".col-style .running-style-position").text
+    assert view == before
+
+
+@pytest.mark.parametrize("mode", ["jra", "nar"])
+def test_one_compact_odds_column_retains_exact_win_and_place_values(mode):
+    _, _, info, view = field(mode, count=2)
+    for horse in view:
+        horse["sort_values"]["place_odds_low"] = 1.2
+        horse["sort_values"]["place_odds_high"] = 2.3
+    before=deepcopy(view)
+    doc=BeautifulSoup(document(view,info["race_id"]),"html.parser")
+    headers=doc.select("#lineup-workspace th[data-column]")
+    assert len([x for x in headers if x["data-column"]=="odds"])==1
+    assert not doc.select("#lineup-workspace th.col-place_odds")
+    first=doc.select_one('#lineup-workspace tr[data-horse="1"] .col-odds')
+    assert first.select_one(".odds-both-cell .metric-number")
+    assert "複 1.2〜2.3倍" in first.get_text(" ",strip=True)
+    assert view==before
