@@ -15,10 +15,10 @@ def test_saved_start_and_corner_display_two_lines_without_prediction_mutation():
         info = {"race_id": "202611080101", "venue": "東京", "distance": 1800, "surface": "ダ"}
         source = [
             dict(馬番=6, 馬名="先行馬", 枠番=3, running_style_market="先",
-                 netkeiba_start_rank=2, netkeiba_corner4_rank=15,
+                 netkeiba_start_rank=2, netkeiba_corner3_rank=5, netkeiba_corner4_rank=15,
                  market_ability_score=90, market_ability_rank=13),
             dict(馬番=12, 馬名="逃げ馬", 枠番=6, running_style_market="逃",
-                 netkeiba_start_rank=1, netkeiba_corner4_rank=1,
+                 netkeiba_start_rank=1, netkeiba_corner3_rank=1, netkeiba_corner4_rank=1,
                  market_ability_score=80, market_ability_rank=1),
         ]
         predictions = prediction_table_records(source, source, info, mode)
@@ -27,6 +27,7 @@ def test_saved_start_and_corner_display_two_lines_without_prediction_mutation():
         assert (source, predictions) == before
         h = next(h for h in view if str(h["no"]) == "6")
         assert h["start_rank"] == 2
+        assert h["third_rank"] == 5
         assert h["corner"] == 15
         cells = records(view)["6"]
         assert cells["start_rank"] == 2
