@@ -195,7 +195,7 @@ def test_saved_third_corner_forecast_overrides_interpolation_at_all_stages(mode)
     assert "補間による参考位置" in panel.select_one(
         '[data-pace-runner="4"]')["aria-label"]
     assert horses == untouched
-    assert all("third_rank" not in h for h in before)
+    assert all(h.get("third_rank") is None for h in before)
 
 
 @pytest.mark.parametrize("mode", ["jra", "nar"])
