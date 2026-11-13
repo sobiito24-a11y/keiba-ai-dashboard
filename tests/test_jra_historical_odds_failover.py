@@ -1,4 +1,4 @@
-"""Offline regression tests for the one-button Yuma -> Keibalab failover.
+"""Offline regression tests for the three-source JRA historical odds failover.
 
 Mocks represent normal and blocked public endpoints, never bypass a 403 or
 depend on whether a third-party page happens to be live during CI.
@@ -10,9 +10,16 @@ import pytest
 
 from core import race_odds
 from core.jra_historical_odds import parse_keibalab_html, fetch_once as lab_fetch
-from core.jra_historical_odds_failover import fetch_once
+from core.jra_historical_odds_failover import fetch_once as real_fetch_once
 from core.jra_yuma_odds import parse_yuma_pages
 from tests.test_jra_historical_odds import ID, INFO, CLOCK, page
+
+
+def fetch_once(identity, race_info, **kwargs):
+    """Existing two-provider tests explicitly decline the third network source."""
+    kwargs.setdefault("sportsnavi_fetch", lambda *_a, **_kw: (
+        _ for _ in ()).throw(ValueError("スポーツナビはテストで無効")))
+    return real_fetch_once(identity, race_info, **kwargs)
 
 
 def yuma_page(kind):
@@ -145,12 +152,13 @@ def test_both_providers_fail_with_both_reasons_and_no_quote():
     def bad_lab(*_a, **_kw):
         count.append("lab")
         raise ValueError("HTTP 429")
-    with pytest.raises(ValueError, match="両サイトで過去の単勝・複勝を取得できませんでした") as e:
+    with pytest.raises(ValueError, match="3サイトとも過去の単勝・複勝を取得できませんでした") as e:
         fetch_once(ID, INFO, now=CLOCK,
                    yuma_fetch=bad_yuma, keibalab_fetch=bad_lab)
     assert count == ["yuma", "lab"]
     assert "優馬JAPAN：HTTP 403" in str(e.value)
     assert "競馬ラボ：HTTP 429" in str(e.value)
+    assert "スポーツナビ：" in str(e.value)
 
 
 def test_fallback_rejects_wrong_race_html_without_reusing_saved_odds():
@@ -159,7 +167,7 @@ def test_fallback_rejects_wrong_race_html_without_reusing_saved_odds():
             page(title="単勝・複勝オッズ〖2026年11月8日東京1R〗"),
             ID, INFO, now=CLOCK,
         )
-    with pytest.raises(ValueError, match="両サイト"):
+    with pytest.raises(ValueError, match="3サイト"):
         fetch_once(ID, INFO, now=CLOCK,
                    yuma_fetch=lambda *_a, **_kw: (_ for _ in ()).throw(
                        ValueError("HTTP 403")),
