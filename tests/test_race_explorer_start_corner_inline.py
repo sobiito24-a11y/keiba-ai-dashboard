@@ -34,14 +34,14 @@ def test_saved_start_and_corner_display_two_lines_without_prediction_mutation():
         assert cells["ability_rank"] == 13
         doc = BeautifulSoup(lineup_html(view), "html.parser")
         row = doc.select_one('tr[data-horse="6"]')
-        assert row.select_one('.col-style .position-two-line strong').text == "2番手"
-        assert row.select_one('.col-style .position-two-line small').text == "先行"
-        assert row.select_one('.col-corner .position-two-line strong').text == "15番手"
-        assert row.select_one('.col-corner .position-two-line small').text == "能力13位"
-        assert doc.select_one('th[data-column="style"] .column-label').text == "序盤傾向"
-        assert doc.select_one('th[data-column="corner"] .column-label').text == "4角想定"
-        # Corner remains numeric; saved source ranks are reused without extra columns.
+        assert 'running-style-square-active' in row.select_one(
+            '.col-style .running-style-square:nth-child(2)')['class']
+        assert row.select_one('.col-style .running-style-position').text == "序盤2 / 4角15"
+        assert not row.select('.col-corner')
+        assert doc.select_one('th[data-column="style"] .column-label').text == "脚質・位置"
+        # The independent pre-race corner remains numeric/filterable but not a second wide column.
         assert next(x for x in columns(view) if x["key"] == "corner")["type"] == "rank"
+        assert next(x for x in columns(view) if x["key"] == "corner")["table_hidden"] is True
         assert not any(x['key'] == 'start_rank' for x in columns(view))
         assert len(doc.select("thead th")) == len([s for s in columns(view) if not s.get("table_hidden")])
 
@@ -53,8 +53,8 @@ def test_missing_or_invalid_start_never_fabricated(start):
     cells = records([h])["6"]
     assert cells["start_rank"] is None
     style = BeautifulSoup(_cell(h, cells, "style"), "html.parser")
-    assert "未取得" in style.get_text(" ")
-    assert "逃げ" in style.get_text(" ")
+    assert "序盤— / 4角4" in style.get_text(" ")
+    assert "保存脚質 逃げ" in style.select_one(".running-style-squares")['aria-label']
     corner = BeautifulSoup(_cell(h, cells, "corner"), "html.parser")
     assert "4番手" in corner.get_text(" ")
     assert "能力順位未取得" in corner.get_text(" ")
