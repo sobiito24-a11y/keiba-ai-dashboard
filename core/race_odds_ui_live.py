@@ -60,7 +60,8 @@ def render(result, view):
             with st.expander('過去の単勝・複勝をAIへ反映', expanded=True):
                 st.caption('優馬JAPANの単勝・複勝表を取得し、全頭の馬番・馬名を照合します。'
                            '過去の掲載値であり、最終確定オッズとの一致は保証できません。'
-                           '純能力・S/A/B/Cランク・正式印は変更しません。')
+                           '純能力・S/A/B/Cランク・正式印は変更しません。'
+                           '接続に失敗した場合は、エラー内容を下の結果欄に表示します。')
                 from .jra_yuma_odds import fetch_once as fetch_historical
                 from .jra_historical_odds import parse_keibalab_html
                 now_historical = datetime.now(odds.JST)
@@ -82,10 +83,13 @@ def render(result, view):
                     else:
                         st.session_state[key+'_historical_last_request'] = now_historical
                         st.session_state['_jra_historical_global_last_request'] = now_historical
+                        stage = '単勝・複勝ページへの接続と解析'
                         try:
-                            with st.spinner('過去の単勝・複勝を取得・全出走馬と照合中…'):
+                            with st.spinner('優馬JAPANの過去単勝・複勝を取得中…'):
                                 quote = fetch_historical(identity, result.race_info or {}, now=now_historical)
+                                stage = '保存済みの馬番・馬名との照合'
                                 history = odds.merge(state['history'], [quote], identity)
+                            stage = 'AI一覧への反映'
                             state['history'] = history
                             activate_observation(quote)
                             st.session_state[key+'_status'] = (
@@ -94,9 +98,13 @@ def render(result, view):
                                 f"複勝{quote['coverage']['place']['count']}頭）を表示に反映。"
                                 "最終確定オッズ・更新時刻は未確認です。")
                         except ValueError as exc:
-                            st.session_state[key+'_status'] = 'JRA過去オッズ未取得：' + str(exc)
-                        except Exception:
-                            st.session_state[key+'_status'] = 'JRA過去オッズ未取得：サイトへの接続・解析に失敗しました。'
+                            st.session_state[key+'_status'] = (
+                                f'JRA過去オッズ未取得（{stage}）：{exc}')
+                        except Exception as exc:
+                            # Avoid showing raw external HTML or user-supplied URLs.
+                            st.session_state[key+'_status'] = (
+                                f'JRA過去オッズ未取得（{stage}）：'
+                                f'{type(exc).__name__}。取得値は表示へ反映していません。')
                 if not is_past:
                     st.caption('過去の開催日が確定したレースで利用できます。')
                 with st.expander('取得できないとき：HTMLの保存・取込', expanded=False):
