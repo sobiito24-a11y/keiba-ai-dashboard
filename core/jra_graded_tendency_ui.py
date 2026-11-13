@@ -72,7 +72,7 @@ def tendency(title, *, mode, race_date, venue="", distance="", surface=""):
             and (not condition or example["surface"]==condition)):
         # Only explicitly JRA-verified per-year records override a partial
         # public CSV. Always date-gate before using past race results.
-        annual=[dict(win_payout_yen=x["win_payout_yen"],**x) for x in example["annual"]
+        annual=[dict(x) for x in example["annual"]
                 if x["year"]<year]
         verified_corner=True
     if not annual:
