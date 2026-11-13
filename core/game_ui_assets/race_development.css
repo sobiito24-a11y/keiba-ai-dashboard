@@ -42,6 +42,7 @@
 .race-explorer .ka-pace-horse-name{max-width:59px;overflow:hidden;text-overflow:clip;white-space:nowrap;font-size:11px;font-weight:700;line-height:16px;text-shadow:0 1px #bce74d}
 .race-explorer .ka-pace-no-runners{color:#476b29;padding:42px 10px;text-align:center;font-size:13px}
 .race-explorer .ka-pace-unavailable{font-size:11px;color:#61757a;line-height:1.55;padding:7px 4px 2px;min-height:22px}
+.race-explorer .ka-pace-third-source{font-size:11px;font-weight:700;line-height:1.55;color:#426a53;padding:4px 6px 2px}
 .race-explorer .ka-pace-selected{display:block;min-height:36px;margin:9px 0 5px;padding:7px 10px;border-radius:6px;background:#edf6e8;color:#2b5332;font-size:12px;line-height:1.5}
 .race-explorer .ka-pace-disclaimer{padding:3px 1px 1px;color:#667c89;font-size:11px;line-height:1.65}
 @media(max-width:700px){
