@@ -149,3 +149,16 @@ def test_original_horse_svg_and_accessible_controls_are_local_and_safe():
     assert runner["data-pace-full-name"]=='馬<sample>&"test'
     assert html.select_one("img") is None
     assert not html.select("[onload],[onclick],[onerror]")
+
+
+def test_horse_faces_left_without_mirroring_numbers_or_forecast_positions():
+    css=(ROOT/"core/game_ui_assets/race_development.css").read_text(encoding="utf-8")
+    assert ".ka-pace-horse-svg{display:block;width:46px;height:25px;transform:scaleX(-1)" in css
+    assert ".ka-pace-runner-figure" in css
+    assert ".ka-pace-number" in css
+    view=_horses(12,"nar")
+    before=deepcopy(view)
+    positions=layout(view)
+    assert positions["start"]["runners"][0]["no"]==1
+    assert positions["fourth"]["runners"][0]["no"]==12
+    assert view==before
