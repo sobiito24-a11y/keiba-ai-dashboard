@@ -5,6 +5,7 @@ access, not Streamlit Cloud's distinct network. No retries, cookies, login,
 proxy, access restrictions workarounds, or raw page logging.
 """
 from datetime import datetime
+import os
 import json
 import requests
 
@@ -18,6 +19,8 @@ HEADERS = {"Accept": "text/html,application/xhtml+xml"}
 urls=archived_odds_urls(IDENTITY,INFO)
 results=[]
 for label in ("yuma_win","yuma_place","keibalab","sportsnavi"):
+    if label not in os.getenv("JRA_TRANSPORT_SOURCES", "sportsnavi").split(","):
+        continue
     url=urls[label]
     started=datetime.now()
     result=dict(source=label,status="unknown")
