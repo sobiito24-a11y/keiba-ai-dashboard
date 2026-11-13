@@ -1,0 +1,8362 @@
+{
+  "source": "JRA公式年度別重賞レース一覧",
+  "source_url": "https://www.jra.go.jp/datafile/seiseki/replay/",
+  "years": [
+    2021,
+    2022,
+    2023,
+    2024,
+    2025
+  ],
+  "counts": {
+    "2021": 138,
+    "2022": 139,
+    "2023": 139,
+    "2024": 139,
+    "2025": 140
+  },
+  "events": [
+    {
+      "date": "2021-01-05",
+      "venue": "中山",
+      "title": "中山金杯",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "ヒシイグアス"
+      ]
+    },
+    {
+      "date": "2021-01-05",
+      "venue": "中京",
+      "title": "京都金杯",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "ケイデンスコール"
+      ]
+    },
+    {
+      "date": "2021-01-10",
+      "venue": "中京",
+      "title": "シンザン記念",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "ピクシーナイト"
+      ]
+    },
+    {
+      "date": "2021-01-11",
+      "venue": "中山",
+      "title": "フェアリーS",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "ファインルージュ"
+      ]
+    },
+    {
+      "date": "2021-01-16",
+      "venue": "中京",
+      "title": "愛知杯",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "マジックキャッスル"
+      ]
+    },
+    {
+      "date": "2021-01-17",
+      "venue": "中山",
+      "title": "京成杯",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "グラティアス"
+      ]
+    },
+    {
+      "date": "2021-01-17",
+      "venue": "中京",
+      "title": "日経新春杯",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2200,
+      "winners": [
+        "ショウリュウイクゾ"
+      ]
+    },
+    {
+      "date": "2021-01-24",
+      "venue": "中山",
+      "title": "アメリカJCC",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2200,
+      "winners": [
+        "アリストテレス"
+      ]
+    },
+    {
+      "date": "2021-01-24",
+      "venue": "中京",
+      "title": "東海S",
+      "grade": "G2",
+      "jump": false,
+      "surface": "ダ",
+      "distance": 1800,
+      "winners": [
+        "オーヴェルニュ"
+      ]
+    },
+    {
+      "date": "2021-01-31",
+      "venue": "東京",
+      "title": "根岸S",
+      "grade": "G3",
+      "jump": false,
+      "surface": "ダ",
+      "distance": 1400,
+      "winners": [
+        "レッドルゼル"
+      ]
+    },
+    {
+      "date": "2021-01-31",
+      "venue": "中京",
+      "title": "シルクロードS",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1200,
+      "winners": [
+        "シヴァージ"
+      ]
+    },
+    {
+      "date": "2021-02-07",
+      "venue": "東京",
+      "title": "東京新聞杯",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "カラテ"
+      ]
+    },
+    {
+      "date": "2021-02-07",
+      "venue": "中京",
+      "title": "きさらぎ賞",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "ラーゴム"
+      ]
+    },
+    {
+      "date": "2021-02-13",
+      "venue": "東京",
+      "title": "クイーンC",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "アカイトリノムスメ"
+      ]
+    },
+    {
+      "date": "2021-02-14",
+      "venue": "東京",
+      "title": "共同通信杯",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1800,
+      "winners": [
+        "エフフォーリア"
+      ]
+    },
+    {
+      "date": "2021-02-14",
+      "venue": "阪神",
+      "title": "京都記念",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2200,
+      "winners": [
+        "ラヴズオンリーユー"
+      ]
+    },
+    {
+      "date": "2021-02-20",
+      "venue": "東京",
+      "title": "ダイヤモンドS",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 3400,
+      "winners": [
+        "グロンディオーズ"
+      ]
+    },
+    {
+      "date": "2021-02-20",
+      "venue": "阪神",
+      "title": "京都牝馬S",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1400,
+      "winners": [
+        "イベリス"
+      ]
+    },
+    {
+      "date": "2021-02-21",
+      "venue": "東京",
+      "title": "フェブラリーS",
+      "grade": "G1",
+      "jump": false,
+      "surface": "ダ",
+      "distance": 1600,
+      "winners": [
+        "カフェファラオ"
+      ]
+    },
+    {
+      "date": "2021-02-21",
+      "venue": "小倉",
+      "title": "小倉大賞典",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1800,
+      "winners": [
+        "テリトーリアル"
+      ]
+    },
+    {
+      "date": "2021-02-28",
+      "venue": "中山",
+      "title": "中山記念",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1800,
+      "winners": [
+        "ヒシイグアス"
+      ]
+    },
+    {
+      "date": "2021-02-28",
+      "venue": "阪神",
+      "title": "阪急杯",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1400,
+      "winners": [
+        "レシステンシア"
+      ]
+    },
+    {
+      "date": "2021-03-06",
+      "venue": "中山",
+      "title": "オーシャンS",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1200,
+      "winners": [
+        "コントラチェック"
+      ]
+    },
+    {
+      "date": "2021-03-06",
+      "venue": "阪神",
+      "title": "チューリップ賞",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "メイケイエール",
+        "エリザベスタワー"
+      ]
+    },
+    {
+      "date": "2021-03-07",
+      "venue": "中山",
+      "title": "弥生賞",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "タイトルホルダー"
+      ]
+    },
+    {
+      "date": "2021-03-13",
+      "venue": "中山",
+      "title": "中山牝馬S",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1800,
+      "winners": [
+        "ランブリングアレー"
+      ]
+    },
+    {
+      "date": "2021-03-13",
+      "venue": "阪神",
+      "title": "阪神スプリングジャンプ",
+      "grade": "G2",
+      "jump": true,
+      "surface": "障",
+      "distance": 3900,
+      "winners": [
+        "メイショウダッサイ"
+      ]
+    },
+    {
+      "date": "2021-03-14",
+      "venue": "阪神",
+      "title": "フィリーズレビュー",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1400,
+      "winners": [
+        "シゲルピンクルビー"
+      ]
+    },
+    {
+      "date": "2021-03-14",
+      "venue": "中京",
+      "title": "金鯱賞",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "ギベオン"
+      ]
+    },
+    {
+      "date": "2021-03-20",
+      "venue": "中山",
+      "title": "フラワーC",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1800,
+      "winners": [
+        "ホウオウイクセル"
+      ]
+    },
+    {
+      "date": "2021-03-20",
+      "venue": "中京",
+      "title": "ファルコンS",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1400,
+      "winners": [
+        "ルークズネスト"
+      ]
+    },
+    {
+      "date": "2021-03-21",
+      "venue": "中山",
+      "title": "スプリングS",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1800,
+      "winners": [
+        "ヴィクティファルス"
+      ]
+    },
+    {
+      "date": "2021-03-21",
+      "venue": "阪神",
+      "title": "阪神大賞典",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 3000,
+      "winners": [
+        "ディープボンド"
+      ]
+    },
+    {
+      "date": "2021-03-27",
+      "venue": "中山",
+      "title": "日経賞",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2500,
+      "winners": [
+        "ウインマリリン"
+      ]
+    },
+    {
+      "date": "2021-03-27",
+      "venue": "阪神",
+      "title": "毎日杯",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1800,
+      "winners": [
+        "シャフリヤール"
+      ]
+    },
+    {
+      "date": "2021-03-28",
+      "venue": "中山",
+      "title": "マーチS",
+      "grade": "G3",
+      "jump": false,
+      "surface": "ダ",
+      "distance": 1800,
+      "winners": [
+        "レピアーウィット"
+      ]
+    },
+    {
+      "date": "2021-03-28",
+      "venue": "中京",
+      "title": "高松宮記念",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1200,
+      "winners": [
+        "ダノンスマッシュ"
+      ]
+    },
+    {
+      "date": "2021-04-03",
+      "venue": "中山",
+      "title": "ダービー卿チャレンジT",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "テルツェット"
+      ]
+    },
+    {
+      "date": "2021-04-04",
+      "venue": "阪神",
+      "title": "大阪杯",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "レイパパレ"
+      ]
+    },
+    {
+      "date": "2021-04-10",
+      "venue": "中山",
+      "title": "ニュージーランドT",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "バスラットレオン"
+      ]
+    },
+    {
+      "date": "2021-04-10",
+      "venue": "阪神",
+      "title": "阪神牝馬S",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "デゼル"
+      ]
+    },
+    {
+      "date": "2021-04-11",
+      "venue": "阪神",
+      "title": "桜花賞",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "ソダシ"
+      ]
+    },
+    {
+      "date": "2021-04-17",
+      "venue": "中山",
+      "title": "中山グランドジャンプ",
+      "grade": "G1",
+      "jump": true,
+      "surface": "障",
+      "distance": 4250,
+      "winners": [
+        "メイショウダッサイ"
+      ]
+    },
+    {
+      "date": "2021-04-17",
+      "venue": "阪神",
+      "title": "アーリントンC",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "ホウオウアマゾン"
+      ]
+    },
+    {
+      "date": "2021-04-18",
+      "venue": "中山",
+      "title": "皐月賞",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "エフフォーリア"
+      ]
+    },
+    {
+      "date": "2021-04-18",
+      "venue": "阪神",
+      "title": "アンタレスS",
+      "grade": "G3",
+      "jump": false,
+      "surface": "ダ",
+      "distance": 1800,
+      "winners": [
+        "テーオーケインズ"
+      ]
+    },
+    {
+      "date": "2021-04-24",
+      "venue": "新潟",
+      "title": "福島牝馬S",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1800,
+      "winners": [
+        "ディアンドル"
+      ]
+    },
+    {
+      "date": "2021-04-25",
+      "venue": "東京",
+      "title": "フローラS",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "クールキャット"
+      ]
+    },
+    {
+      "date": "2021-04-25",
+      "venue": "阪神",
+      "title": "マイラーズC",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "ケイデンスコール"
+      ]
+    },
+    {
+      "date": "2021-05-01",
+      "venue": "東京",
+      "title": "青葉賞",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2400,
+      "winners": [
+        "ワンダフルタウン"
+      ]
+    },
+    {
+      "date": "2021-05-02",
+      "venue": "阪神",
+      "title": "天皇賞（春）",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 3200,
+      "winners": [
+        "ワールドプレミア"
+      ]
+    },
+    {
+      "date": "2021-05-08",
+      "venue": "中京",
+      "title": "京都新聞杯",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2200,
+      "winners": [
+        "レッドジェネシス"
+      ]
+    },
+    {
+      "date": "2021-05-09",
+      "venue": "東京",
+      "title": "NHKマイルC",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "シュネルマイスター"
+      ]
+    },
+    {
+      "date": "2021-05-09",
+      "venue": "新潟",
+      "title": "新潟大賞典",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "サンレイポケット"
+      ]
+    },
+    {
+      "date": "2021-05-15",
+      "venue": "東京",
+      "title": "京王杯スプリングC",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1400,
+      "winners": [
+        "ラウダシオン"
+      ]
+    },
+    {
+      "date": "2021-05-15",
+      "venue": "中京",
+      "title": "京都ハイジャンプ",
+      "grade": "G2",
+      "jump": true,
+      "surface": "障",
+      "distance": 3900,
+      "winners": [
+        "マーニ"
+      ]
+    },
+    {
+      "date": "2021-05-16",
+      "venue": "東京",
+      "title": "ヴィクトリアマイル",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "グランアレグリア"
+      ]
+    },
+    {
+      "date": "2021-05-22",
+      "venue": "中京",
+      "title": "平安S",
+      "grade": "G3",
+      "jump": false,
+      "surface": "ダ",
+      "distance": 1900,
+      "winners": [
+        "オーヴェルニュ"
+      ]
+    },
+    {
+      "date": "2021-05-23",
+      "venue": "東京",
+      "title": "オークス",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2400,
+      "winners": [
+        "ユーバーレーベン"
+      ]
+    },
+    {
+      "date": "2021-05-30",
+      "venue": "東京",
+      "title": "日本ダービー",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2400,
+      "winners": [
+        "シャフリヤール"
+      ]
+    },
+    {
+      "date": "2021-05-30",
+      "venue": "東京",
+      "title": "目黒記念",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2500,
+      "winners": [
+        "ウインキートス"
+      ]
+    },
+    {
+      "date": "2021-06-05",
+      "venue": "中京",
+      "title": "鳴尾記念",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "ユニコーンライオン"
+      ]
+    },
+    {
+      "date": "2021-06-06",
+      "venue": "東京",
+      "title": "安田記念",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "ダノンキングリー"
+      ]
+    },
+    {
+      "date": "2021-06-13",
+      "venue": "東京",
+      "title": "エプソムC",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1800,
+      "winners": [
+        "ザダル"
+      ]
+    },
+    {
+      "date": "2021-06-13",
+      "venue": "札幌",
+      "title": "函館スプリントS",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1200,
+      "winners": [
+        "ビアンフェ"
+      ]
+    },
+    {
+      "date": "2021-06-20",
+      "venue": "東京",
+      "title": "ユニコーンS",
+      "grade": "G3",
+      "jump": false,
+      "surface": "ダ",
+      "distance": 1600,
+      "winners": [
+        "スマッシャー"
+      ]
+    },
+    {
+      "date": "2021-06-20",
+      "venue": "阪神",
+      "title": "マーメイドS",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "シャムロックヒル"
+      ]
+    },
+    {
+      "date": "2021-06-26",
+      "venue": "東京",
+      "title": "東京ジャンプS",
+      "grade": "G3",
+      "jump": true,
+      "surface": "障",
+      "distance": 3110,
+      "winners": [
+        "スマートアペックス"
+      ]
+    },
+    {
+      "date": "2021-06-27",
+      "venue": "阪神",
+      "title": "宝塚記念",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2200,
+      "winners": [
+        "クロノジェネシス"
+      ]
+    },
+    {
+      "date": "2021-07-04",
+      "venue": "福島",
+      "title": "ラジオNIKKEI賞",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1800,
+      "winners": [
+        "ヴァイスメテオール"
+      ]
+    },
+    {
+      "date": "2021-07-04",
+      "venue": "小倉",
+      "title": "CBC賞",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1200,
+      "winners": [
+        "ファストフォース"
+      ]
+    },
+    {
+      "date": "2021-07-11",
+      "venue": "福島",
+      "title": "七夕賞",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "トーラスジェミニ"
+      ]
+    },
+    {
+      "date": "2021-07-11",
+      "venue": "小倉",
+      "title": "プロキオンS",
+      "grade": "G3",
+      "jump": false,
+      "surface": "ダ",
+      "distance": 1700,
+      "winners": [
+        "メイショウカズサ"
+      ]
+    },
+    {
+      "date": "2021-07-17",
+      "venue": "函館",
+      "title": "函館2歳S",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1200,
+      "winners": [
+        "ナムラリコリス"
+      ]
+    },
+    {
+      "date": "2021-07-18",
+      "venue": "小倉",
+      "title": "中京記念",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1800,
+      "winners": [
+        "アンドラステ"
+      ]
+    },
+    {
+      "date": "2021-07-18",
+      "venue": "函館",
+      "title": "函館記念",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "トーセンスーリヤ"
+      ]
+    },
+    {
+      "date": "2021-07-25",
+      "venue": "新潟",
+      "title": "アイビスサマーダッシュ",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1000,
+      "winners": [
+        "オールアットワンス"
+      ]
+    },
+    {
+      "date": "2021-07-31",
+      "venue": "新潟",
+      "title": "新潟ジャンプS",
+      "grade": "G3",
+      "jump": true,
+      "surface": "障",
+      "distance": 3250,
+      "winners": [
+        "トゥルボー"
+      ]
+    },
+    {
+      "date": "2021-08-01",
+      "venue": "函館",
+      "title": "クイーンS",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1800,
+      "winners": [
+        "テルツェット"
+      ]
+    },
+    {
+      "date": "2021-08-08",
+      "venue": "新潟",
+      "title": "レパードS",
+      "grade": "G3",
+      "jump": false,
+      "surface": "ダ",
+      "distance": 1800,
+      "winners": [
+        "メイショウムラクモ"
+      ]
+    },
+    {
+      "date": "2021-08-08",
+      "venue": "函館",
+      "title": "エルムS",
+      "grade": "G3",
+      "jump": false,
+      "surface": "ダ",
+      "distance": 1700,
+      "winners": [
+        "スワーヴアラミス"
+      ]
+    },
+    {
+      "date": "2021-08-15",
+      "venue": "新潟",
+      "title": "関屋記念",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "ロータスランド"
+      ]
+    },
+    {
+      "date": "2021-08-15",
+      "venue": "小倉",
+      "title": "小倉記念",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "モズナガレボシ"
+      ]
+    },
+    {
+      "date": "2021-08-22",
+      "venue": "小倉",
+      "title": "北九州記念",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1200,
+      "winners": [
+        "ヨカヨカ"
+      ]
+    },
+    {
+      "date": "2021-08-22",
+      "venue": "札幌",
+      "title": "札幌記念",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "ソダシ"
+      ]
+    },
+    {
+      "date": "2021-08-28",
+      "venue": "小倉",
+      "title": "小倉サマージャンプ",
+      "grade": "G3",
+      "jump": true,
+      "surface": "障",
+      "distance": 3390,
+      "winners": [
+        "アサクサゲンキ"
+      ]
+    },
+    {
+      "date": "2021-08-29",
+      "venue": "新潟",
+      "title": "新潟2歳S",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "セリフォス"
+      ]
+    },
+    {
+      "date": "2021-08-29",
+      "venue": "札幌",
+      "title": "キーンランドC",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1200,
+      "winners": [
+        "レイハリア"
+      ]
+    },
+    {
+      "date": "2021-09-04",
+      "venue": "札幌",
+      "title": "札幌2歳S",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1800,
+      "winners": [
+        "ジオグリフ"
+      ]
+    },
+    {
+      "date": "2021-09-05",
+      "venue": "新潟",
+      "title": "新潟記念",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "マイネルファンロン"
+      ]
+    },
+    {
+      "date": "2021-09-05",
+      "venue": "小倉",
+      "title": "小倉2歳S",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1200,
+      "winners": [
+        "ナムラクレア"
+      ]
+    },
+    {
+      "date": "2021-09-11",
+      "venue": "中山",
+      "title": "紫苑S",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "ファインルージュ"
+      ]
+    },
+    {
+      "date": "2021-09-12",
+      "venue": "中山",
+      "title": "京成杯オータムH",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "カテドラル"
+      ]
+    },
+    {
+      "date": "2021-09-12",
+      "venue": "中京",
+      "title": "セントウルS",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1200,
+      "winners": [
+        "レシステンシア"
+      ]
+    },
+    {
+      "date": "2021-09-18",
+      "venue": "中京",
+      "title": "阪神ジャンプS",
+      "grade": "G3",
+      "jump": true,
+      "surface": "障",
+      "distance": 3300,
+      "winners": [
+        "トゥルボー"
+      ]
+    },
+    {
+      "date": "2021-09-19",
+      "venue": "中京",
+      "title": "ローズS",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "アンドヴァラナウト"
+      ]
+    },
+    {
+      "date": "2021-09-20",
+      "venue": "中山",
+      "title": "セントライト記念",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2200,
+      "winners": [
+        "アサマノイタズラ"
+      ]
+    },
+    {
+      "date": "2021-09-26",
+      "venue": "中山",
+      "title": "オールカマー",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2200,
+      "winners": [
+        "ウインマリリン"
+      ]
+    },
+    {
+      "date": "2021-09-26",
+      "venue": "中京",
+      "title": "神戸新聞杯",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2200,
+      "winners": [
+        "ステラヴェローチェ"
+      ]
+    },
+    {
+      "date": "2021-10-02",
+      "venue": "中京",
+      "title": "シリウスS",
+      "grade": "G3",
+      "jump": false,
+      "surface": "ダ",
+      "distance": 1900,
+      "winners": [
+        "サンライズホープ"
+      ]
+    },
+    {
+      "date": "2021-10-03",
+      "venue": "中山",
+      "title": "スプリンターズS",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1200,
+      "winners": [
+        "ピクシーナイト"
+      ]
+    },
+    {
+      "date": "2021-10-09",
+      "venue": "東京",
+      "title": "サウジアラビアロイヤルC",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "コマンドライン"
+      ]
+    },
+    {
+      "date": "2021-10-10",
+      "venue": "東京",
+      "title": "毎日王冠",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1800,
+      "winners": [
+        "シュネルマイスター"
+      ]
+    },
+    {
+      "date": "2021-10-10",
+      "venue": "阪神",
+      "title": "京都大賞典",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2400,
+      "winners": [
+        "マカヒキ"
+      ]
+    },
+    {
+      "date": "2021-10-16",
+      "venue": "東京",
+      "title": "府中牝馬S",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1800,
+      "winners": [
+        "シャドウディーヴァ"
+      ]
+    },
+    {
+      "date": "2021-10-17",
+      "venue": "東京",
+      "title": "東京ハイジャンプ",
+      "grade": "G2",
+      "jump": true,
+      "surface": "障",
+      "distance": 3110,
+      "winners": [
+        "ラヴアンドポップ"
+      ]
+    },
+    {
+      "date": "2021-10-17",
+      "venue": "阪神",
+      "title": "秋華賞",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "アカイトリノムスメ"
+      ]
+    },
+    {
+      "date": "2021-10-23",
+      "venue": "東京",
+      "title": "富士S",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "ソングライン"
+      ]
+    },
+    {
+      "date": "2021-10-24",
+      "venue": "阪神",
+      "title": "菊花賞",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 3000,
+      "winners": [
+        "タイトルホルダー"
+      ]
+    },
+    {
+      "date": "2021-10-30",
+      "venue": "東京",
+      "title": "アルテミスS",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "サークルオブライフ"
+      ]
+    },
+    {
+      "date": "2021-10-30",
+      "venue": "阪神",
+      "title": "スワンS",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1400,
+      "winners": [
+        "ダノンファンタジー"
+      ]
+    },
+    {
+      "date": "2021-10-31",
+      "venue": "東京",
+      "title": "天皇賞（秋）",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "エフフォーリア"
+      ]
+    },
+    {
+      "date": "2021-11-06",
+      "venue": "東京",
+      "title": "京王杯2歳S",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1400,
+      "winners": [
+        "キングエルメス"
+      ]
+    },
+    {
+      "date": "2021-11-06",
+      "venue": "阪神",
+      "title": "ファンタジーS",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1400,
+      "winners": [
+        "ウォーターナビレラ"
+      ]
+    },
+    {
+      "date": "2021-11-07",
+      "venue": "東京",
+      "title": "アルゼンチン共和国杯",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2500,
+      "winners": [
+        "オーソリティ"
+      ]
+    },
+    {
+      "date": "2021-11-07",
+      "venue": "阪神",
+      "title": "みやこS",
+      "grade": "G3",
+      "jump": false,
+      "surface": "ダ",
+      "distance": 1800,
+      "winners": [
+        "メイショウハリオ"
+      ]
+    },
+    {
+      "date": "2021-11-13",
+      "venue": "東京",
+      "title": "武蔵野S",
+      "grade": "G3",
+      "jump": false,
+      "surface": "ダ",
+      "distance": 1600,
+      "winners": [
+        "ソリストサンダー"
+      ]
+    },
+    {
+      "date": "2021-11-13",
+      "venue": "阪神",
+      "title": "京都ジャンプS",
+      "grade": "G3",
+      "jump": true,
+      "surface": "障",
+      "distance": 3140,
+      "winners": [
+        "ケンホファヴァルト"
+      ]
+    },
+    {
+      "date": "2021-11-13",
+      "venue": "阪神",
+      "title": "デイリー杯2歳S",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "セリフォス"
+      ]
+    },
+    {
+      "date": "2021-11-14",
+      "venue": "阪神",
+      "title": "エリザベス女王杯",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2200,
+      "winners": [
+        "アカイイト"
+      ]
+    },
+    {
+      "date": "2021-11-14",
+      "venue": "福島",
+      "title": "福島記念",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "パンサラッサ"
+      ]
+    },
+    {
+      "date": "2021-11-20",
+      "venue": "東京",
+      "title": "東スポ杯2歳S",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1800,
+      "winners": [
+        "イクイノックス"
+      ]
+    },
+    {
+      "date": "2021-11-21",
+      "venue": "阪神",
+      "title": "マイルチャンピオンシップ",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "グランアレグリア"
+      ]
+    },
+    {
+      "date": "2021-11-27",
+      "venue": "阪神",
+      "title": "京都2歳S",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "ジャスティンロック"
+      ]
+    },
+    {
+      "date": "2021-11-28",
+      "venue": "東京",
+      "title": "ジャパンC",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2400,
+      "winners": [
+        "コントレイル"
+      ]
+    },
+    {
+      "date": "2021-11-28",
+      "venue": "阪神",
+      "title": "京阪杯",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1200,
+      "winners": [
+        "エイティーンガール"
+      ]
+    },
+    {
+      "date": "2021-12-04",
+      "venue": "中山",
+      "title": "ステイヤーズS",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 3600,
+      "winners": [
+        "ディバインフォース"
+      ]
+    },
+    {
+      "date": "2021-12-04",
+      "venue": "阪神",
+      "title": "チャレンジC",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "ソーヴァリアント"
+      ]
+    },
+    {
+      "date": "2021-12-05",
+      "venue": "中京",
+      "title": "チャンピオンズC",
+      "grade": "G1",
+      "jump": false,
+      "surface": "ダ",
+      "distance": 1800,
+      "winners": [
+        "テーオーケインズ"
+      ]
+    },
+    {
+      "date": "2021-12-11",
+      "venue": "中京",
+      "title": "中日新聞杯",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "ショウナンバルディ"
+      ]
+    },
+    {
+      "date": "2021-12-12",
+      "venue": "中山",
+      "title": "カペラS",
+      "grade": "G3",
+      "jump": false,
+      "surface": "ダ",
+      "distance": 1200,
+      "winners": [
+        "ダンシングプリンス"
+      ]
+    },
+    {
+      "date": "2021-12-12",
+      "venue": "阪神",
+      "title": "阪神ジュベナイルF",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "サークルオブライフ"
+      ]
+    },
+    {
+      "date": "2021-12-18",
+      "venue": "中山",
+      "title": "ターコイズS",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "ミスニューヨーク"
+      ]
+    },
+    {
+      "date": "2021-12-19",
+      "venue": "阪神",
+      "title": "朝日杯フューチュリティS",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "ドウデュース"
+      ]
+    },
+    {
+      "date": "2021-12-25",
+      "venue": "中山",
+      "title": "中山大障害",
+      "grade": "G1",
+      "jump": true,
+      "surface": "障",
+      "distance": 4100,
+      "winners": [
+        "オジュウチョウサン"
+      ]
+    },
+    {
+      "date": "2021-12-25",
+      "venue": "阪神",
+      "title": "阪神C",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1400,
+      "winners": [
+        "グレナディアガーズ"
+      ]
+    },
+    {
+      "date": "2021-12-26",
+      "venue": "中山",
+      "title": "有馬記念",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2500,
+      "winners": [
+        "エフフォーリア"
+      ]
+    },
+    {
+      "date": "2021-12-28",
+      "venue": "中山",
+      "title": "ホープフルS",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "キラーアビリティ"
+      ]
+    },
+    {
+      "date": "2022-01-05",
+      "venue": "中山",
+      "title": "中山金杯",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "レッドガラン"
+      ]
+    },
+    {
+      "date": "2022-01-05",
+      "venue": "中京",
+      "title": "京都金杯",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "ザダル"
+      ]
+    },
+    {
+      "date": "2022-01-09",
+      "venue": "中京",
+      "title": "シンザン記念",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "マテンロウオリオン"
+      ]
+    },
+    {
+      "date": "2022-01-10",
+      "venue": "中山",
+      "title": "フェアリーS",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "ライラック"
+      ]
+    },
+    {
+      "date": "2022-01-15",
+      "venue": "中京",
+      "title": "愛知杯",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "ルビーカサブランカ"
+      ]
+    },
+    {
+      "date": "2022-01-16",
+      "venue": "中山",
+      "title": "京成杯",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "オニャンコポン"
+      ]
+    },
+    {
+      "date": "2022-01-16",
+      "venue": "中京",
+      "title": "日経新春杯",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2200,
+      "winners": [
+        "ヨーホーレイク"
+      ]
+    },
+    {
+      "date": "2022-01-23",
+      "venue": "中山",
+      "title": "アメリカJCC",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2200,
+      "winners": [
+        "キングオブコージ"
+      ]
+    },
+    {
+      "date": "2022-01-23",
+      "venue": "中京",
+      "title": "東海S",
+      "grade": "G2",
+      "jump": false,
+      "surface": "ダ",
+      "distance": 1800,
+      "winners": [
+        "スワーヴアラミス"
+      ]
+    },
+    {
+      "date": "2022-01-30",
+      "venue": "東京",
+      "title": "根岸S",
+      "grade": "G3",
+      "jump": false,
+      "surface": "ダ",
+      "distance": 1400,
+      "winners": [
+        "テイエムサウスダン"
+      ]
+    },
+    {
+      "date": "2022-01-30",
+      "venue": "中京",
+      "title": "シルクロードS",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1200,
+      "winners": [
+        "メイケイエール"
+      ]
+    },
+    {
+      "date": "2022-02-06",
+      "venue": "東京",
+      "title": "東京新聞杯",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "イルーシヴパンサー"
+      ]
+    },
+    {
+      "date": "2022-02-06",
+      "venue": "中京",
+      "title": "きさらぎ賞",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "マテンロウレオ"
+      ]
+    },
+    {
+      "date": "2022-02-12",
+      "venue": "東京",
+      "title": "クイーンC",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "プレサージュリフト"
+      ]
+    },
+    {
+      "date": "2022-02-13",
+      "venue": "東京",
+      "title": "共同通信杯",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1800,
+      "winners": [
+        "ダノンベルーガ"
+      ]
+    },
+    {
+      "date": "2022-02-13",
+      "venue": "阪神",
+      "title": "京都記念",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2200,
+      "winners": [
+        "アフリカンゴールド"
+      ]
+    },
+    {
+      "date": "2022-02-19",
+      "venue": "東京",
+      "title": "ダイヤモンドS",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 3400,
+      "winners": [
+        "テーオーロイヤル"
+      ]
+    },
+    {
+      "date": "2022-02-19",
+      "venue": "阪神",
+      "title": "京都牝馬S",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1400,
+      "winners": [
+        "ロータスランド"
+      ]
+    },
+    {
+      "date": "2022-02-20",
+      "venue": "東京",
+      "title": "フェブラリーS",
+      "grade": "G1",
+      "jump": false,
+      "surface": "ダ",
+      "distance": 1600,
+      "winners": [
+        "カフェファラオ"
+      ]
+    },
+    {
+      "date": "2022-02-20",
+      "venue": "小倉",
+      "title": "小倉大賞典",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1800,
+      "winners": [
+        "アリーヴォ"
+      ]
+    },
+    {
+      "date": "2022-02-27",
+      "venue": "中山",
+      "title": "中山記念",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1800,
+      "winners": [
+        "パンサラッサ"
+      ]
+    },
+    {
+      "date": "2022-02-27",
+      "venue": "阪神",
+      "title": "阪急杯",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1400,
+      "winners": [
+        "ダイアトニック"
+      ]
+    },
+    {
+      "date": "2022-03-05",
+      "venue": "中山",
+      "title": "オーシャンS",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1200,
+      "winners": [
+        "ジャンダルム"
+      ]
+    },
+    {
+      "date": "2022-03-05",
+      "venue": "阪神",
+      "title": "チューリップ賞",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "ナミュール"
+      ]
+    },
+    {
+      "date": "2022-03-06",
+      "venue": "中山",
+      "title": "弥生賞",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "アスクビクターモア"
+      ]
+    },
+    {
+      "date": "2022-03-12",
+      "venue": "中山",
+      "title": "中山牝馬S",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1800,
+      "winners": [
+        "クリノプレミアム"
+      ]
+    },
+    {
+      "date": "2022-03-12",
+      "venue": "阪神",
+      "title": "阪神スプリングジャンプ",
+      "grade": "G2",
+      "jump": true,
+      "surface": "障",
+      "distance": 3900,
+      "winners": [
+        "エイシンクリック"
+      ]
+    },
+    {
+      "date": "2022-03-13",
+      "venue": "阪神",
+      "title": "フィリーズレビュー",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1400,
+      "winners": [
+        "サブライムアンセム"
+      ]
+    },
+    {
+      "date": "2022-03-13",
+      "venue": "中京",
+      "title": "金鯱賞",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "ジャックドール"
+      ]
+    },
+    {
+      "date": "2022-03-19",
+      "venue": "中京",
+      "title": "ファルコンS",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1400,
+      "winners": [
+        "プルパレイ"
+      ]
+    },
+    {
+      "date": "2022-03-20",
+      "venue": "中山",
+      "title": "スプリングS",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1800,
+      "winners": [
+        "ビーアストニッシド"
+      ]
+    },
+    {
+      "date": "2022-03-20",
+      "venue": "阪神",
+      "title": "阪神大賞典",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 3000,
+      "winners": [
+        "ディープボンド"
+      ]
+    },
+    {
+      "date": "2022-03-21",
+      "venue": "中山",
+      "title": "フラワーC",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1800,
+      "winners": [
+        "スタニングローズ"
+      ]
+    },
+    {
+      "date": "2022-03-26",
+      "venue": "中山",
+      "title": "日経賞",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2500,
+      "winners": [
+        "タイトルホルダー"
+      ]
+    },
+    {
+      "date": "2022-03-26",
+      "venue": "阪神",
+      "title": "毎日杯",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1800,
+      "winners": [
+        "ピースオブエイト"
+      ]
+    },
+    {
+      "date": "2022-03-27",
+      "venue": "中山",
+      "title": "マーチS",
+      "grade": "G3",
+      "jump": false,
+      "surface": "ダ",
+      "distance": 1800,
+      "winners": [
+        "メイショウハリオ"
+      ]
+    },
+    {
+      "date": "2022-03-27",
+      "venue": "中京",
+      "title": "高松宮記念",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1200,
+      "winners": [
+        "ナランフレグ"
+      ]
+    },
+    {
+      "date": "2022-04-02",
+      "venue": "中山",
+      "title": "ダービー卿チャレンジT",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "タイムトゥヘヴン"
+      ]
+    },
+    {
+      "date": "2022-04-03",
+      "venue": "阪神",
+      "title": "大阪杯",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "ポタジェ"
+      ]
+    },
+    {
+      "date": "2022-04-09",
+      "venue": "中山",
+      "title": "ニュージーランドT",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "ジャングロ"
+      ]
+    },
+    {
+      "date": "2022-04-09",
+      "venue": "阪神",
+      "title": "阪神牝馬S",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "メイショウミモザ"
+      ]
+    },
+    {
+      "date": "2022-04-10",
+      "venue": "阪神",
+      "title": "桜花賞",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "スターズオンアース"
+      ]
+    },
+    {
+      "date": "2022-04-16",
+      "venue": "中山",
+      "title": "中山グランドジャンプ",
+      "grade": "G1",
+      "jump": true,
+      "surface": "障",
+      "distance": 4250,
+      "winners": [
+        "オジュウチョウサン"
+      ]
+    },
+    {
+      "date": "2022-04-16",
+      "venue": "阪神",
+      "title": "アーリントンC",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "ダノンスコーピオン"
+      ]
+    },
+    {
+      "date": "2022-04-17",
+      "venue": "中山",
+      "title": "皐月賞",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "ジオグリフ"
+      ]
+    },
+    {
+      "date": "2022-04-17",
+      "venue": "阪神",
+      "title": "アンタレスS",
+      "grade": "G3",
+      "jump": false,
+      "surface": "ダ",
+      "distance": 1800,
+      "winners": [
+        "オメガパフューム"
+      ]
+    },
+    {
+      "date": "2022-04-23",
+      "venue": "福島",
+      "title": "福島牝馬S",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1800,
+      "winners": [
+        "アナザーリリック"
+      ]
+    },
+    {
+      "date": "2022-04-24",
+      "venue": "東京",
+      "title": "フローラS",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "エリカヴィータ"
+      ]
+    },
+    {
+      "date": "2022-04-24",
+      "venue": "阪神",
+      "title": "マイラーズC",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "ソウルラッシュ"
+      ]
+    },
+    {
+      "date": "2022-04-30",
+      "venue": "東京",
+      "title": "青葉賞",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2400,
+      "winners": [
+        "プラダリア"
+      ]
+    },
+    {
+      "date": "2022-05-01",
+      "venue": "阪神",
+      "title": "天皇賞（春）",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 3200,
+      "winners": [
+        "タイトルホルダー"
+      ]
+    },
+    {
+      "date": "2022-05-07",
+      "venue": "中京",
+      "title": "京都新聞杯",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2200,
+      "winners": [
+        "アスクワイルドモア"
+      ]
+    },
+    {
+      "date": "2022-05-08",
+      "venue": "東京",
+      "title": "NHKマイルC",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "ダノンスコーピオン"
+      ]
+    },
+    {
+      "date": "2022-05-08",
+      "venue": "新潟",
+      "title": "新潟大賞典",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "レッドガラン"
+      ]
+    },
+    {
+      "date": "2022-05-14",
+      "venue": "東京",
+      "title": "京王杯スプリングC",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1400,
+      "winners": [
+        "メイケイエール"
+      ]
+    },
+    {
+      "date": "2022-05-14",
+      "venue": "中京",
+      "title": "京都ハイジャンプ",
+      "grade": "G2",
+      "jump": true,
+      "surface": "障",
+      "distance": 3900,
+      "winners": [
+        "タガノエスプレッソ"
+      ]
+    },
+    {
+      "date": "2022-05-15",
+      "venue": "東京",
+      "title": "ヴィクトリアマイル",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "ソダシ"
+      ]
+    },
+    {
+      "date": "2022-05-21",
+      "venue": "中京",
+      "title": "平安S",
+      "grade": "G3",
+      "jump": false,
+      "surface": "ダ",
+      "distance": 1900,
+      "winners": [
+        "テーオーケインズ"
+      ]
+    },
+    {
+      "date": "2022-05-22",
+      "venue": "東京",
+      "title": "オークス",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2400,
+      "winners": [
+        "スターズオンアース"
+      ]
+    },
+    {
+      "date": "2022-05-28",
+      "venue": "中京",
+      "title": "葵S",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1200,
+      "winners": [
+        "ウインマーベル"
+      ]
+    },
+    {
+      "date": "2022-05-29",
+      "venue": "東京",
+      "title": "日本ダービー",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2400,
+      "winners": [
+        "ドウデュース"
+      ]
+    },
+    {
+      "date": "2022-05-29",
+      "venue": "東京",
+      "title": "目黒記念",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2500,
+      "winners": [
+        "ボッケリーニ"
+      ]
+    },
+    {
+      "date": "2022-06-04",
+      "venue": "中京",
+      "title": "鳴尾記念",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "ヴェルトライゼンデ"
+      ]
+    },
+    {
+      "date": "2022-06-05",
+      "venue": "東京",
+      "title": "安田記念",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "ソングライン"
+      ]
+    },
+    {
+      "date": "2022-06-12",
+      "venue": "東京",
+      "title": "エプソムC",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1800,
+      "winners": [
+        "ノースブリッジ"
+      ]
+    },
+    {
+      "date": "2022-06-12",
+      "venue": "函館",
+      "title": "函館スプリントS",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1200,
+      "winners": [
+        "ナムラクレア"
+      ]
+    },
+    {
+      "date": "2022-06-19",
+      "venue": "東京",
+      "title": "ユニコーンS",
+      "grade": "G3",
+      "jump": false,
+      "surface": "ダ",
+      "distance": 1600,
+      "winners": [
+        "ペイシャエス"
+      ]
+    },
+    {
+      "date": "2022-06-19",
+      "venue": "阪神",
+      "title": "マーメイドS",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "ウインマイティー"
+      ]
+    },
+    {
+      "date": "2022-06-25",
+      "venue": "東京",
+      "title": "東京ジャンプS",
+      "grade": "G3",
+      "jump": true,
+      "surface": "障",
+      "distance": 3110,
+      "winners": [
+        "ケイティクレバー"
+      ]
+    },
+    {
+      "date": "2022-06-26",
+      "venue": "阪神",
+      "title": "宝塚記念",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2200,
+      "winners": [
+        "タイトルホルダー"
+      ]
+    },
+    {
+      "date": "2022-07-03",
+      "venue": "福島",
+      "title": "ラジオNIKKEI賞",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1800,
+      "winners": [
+        "フェーングロッテン"
+      ]
+    },
+    {
+      "date": "2022-07-03",
+      "venue": "小倉",
+      "title": "CBC賞",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1200,
+      "winners": [
+        "テイエムスパーダ"
+      ]
+    },
+    {
+      "date": "2022-07-10",
+      "venue": "福島",
+      "title": "七夕賞",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "エヒト"
+      ]
+    },
+    {
+      "date": "2022-07-10",
+      "venue": "小倉",
+      "title": "プロキオンS",
+      "grade": "G3",
+      "jump": false,
+      "surface": "ダ",
+      "distance": 1700,
+      "winners": [
+        "ゲンパチルシファー"
+      ]
+    },
+    {
+      "date": "2022-07-16",
+      "venue": "函館",
+      "title": "函館2歳S",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1200,
+      "winners": [
+        "ブトンドール"
+      ]
+    },
+    {
+      "date": "2022-07-17",
+      "venue": "函館",
+      "title": "函館記念",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "ハヤヤッコ"
+      ]
+    },
+    {
+      "date": "2022-07-24",
+      "venue": "小倉",
+      "title": "中京記念",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1800,
+      "winners": [
+        "ベレヌス"
+      ]
+    },
+    {
+      "date": "2022-07-30",
+      "venue": "新潟",
+      "title": "新潟ジャンプS",
+      "grade": "G3",
+      "jump": true,
+      "surface": "障",
+      "distance": 3250,
+      "winners": [
+        "ホッコーメヴィウス"
+      ]
+    },
+    {
+      "date": "2022-07-31",
+      "venue": "新潟",
+      "title": "アイビスサマーダッシュ",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1000,
+      "winners": [
+        "ビリーバー"
+      ]
+    },
+    {
+      "date": "2022-07-31",
+      "venue": "札幌",
+      "title": "クイーンS",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1800,
+      "winners": [
+        "テルツェット"
+      ]
+    },
+    {
+      "date": "2022-08-07",
+      "venue": "新潟",
+      "title": "レパードS",
+      "grade": "G3",
+      "jump": false,
+      "surface": "ダ",
+      "distance": 1800,
+      "winners": [
+        "カフジオクタゴン"
+      ]
+    },
+    {
+      "date": "2022-08-07",
+      "venue": "札幌",
+      "title": "エルムS",
+      "grade": "G3",
+      "jump": false,
+      "surface": "ダ",
+      "distance": 1700,
+      "winners": [
+        "フルデプスリーダー"
+      ]
+    },
+    {
+      "date": "2022-08-14",
+      "venue": "新潟",
+      "title": "関屋記念",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "ウインカーネリアン"
+      ]
+    },
+    {
+      "date": "2022-08-14",
+      "venue": "小倉",
+      "title": "小倉記念",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "マリアエレーナ"
+      ]
+    },
+    {
+      "date": "2022-08-21",
+      "venue": "小倉",
+      "title": "北九州記念",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1200,
+      "winners": [
+        "ボンボヤージ"
+      ]
+    },
+    {
+      "date": "2022-08-21",
+      "venue": "札幌",
+      "title": "札幌記念",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "ジャックドール"
+      ]
+    },
+    {
+      "date": "2022-08-27",
+      "venue": "小倉",
+      "title": "小倉サマージャンプ",
+      "grade": "G3",
+      "jump": true,
+      "surface": "障",
+      "distance": 3390,
+      "winners": [
+        "アサクサゲンキ"
+      ]
+    },
+    {
+      "date": "2022-08-28",
+      "venue": "新潟",
+      "title": "新潟2歳S",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "キタウイング"
+      ]
+    },
+    {
+      "date": "2022-08-28",
+      "venue": "札幌",
+      "title": "キーンランドC",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1200,
+      "winners": [
+        "ヴェントヴォーチェ"
+      ]
+    },
+    {
+      "date": "2022-09-03",
+      "venue": "札幌",
+      "title": "札幌2歳S",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1800,
+      "winners": [
+        "ドゥーラ"
+      ]
+    },
+    {
+      "date": "2022-09-04",
+      "venue": "新潟",
+      "title": "新潟記念",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "カラテ"
+      ]
+    },
+    {
+      "date": "2022-09-04",
+      "venue": "小倉",
+      "title": "小倉2歳S",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1200,
+      "winners": [
+        "ロンドンプラン"
+      ]
+    },
+    {
+      "date": "2022-09-10",
+      "venue": "中山",
+      "title": "紫苑S",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "スタニングローズ"
+      ]
+    },
+    {
+      "date": "2022-09-11",
+      "venue": "中山",
+      "title": "京成杯オータムH",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "ファルコニア"
+      ]
+    },
+    {
+      "date": "2022-09-11",
+      "venue": "中京",
+      "title": "セントウルS",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1200,
+      "winners": [
+        "メイケイエール"
+      ]
+    },
+    {
+      "date": "2022-09-17",
+      "venue": "中京",
+      "title": "阪神ジャンプS",
+      "grade": "G3",
+      "jump": true,
+      "surface": "障",
+      "distance": 3300,
+      "winners": [
+        "ホッコーメヴィウス"
+      ]
+    },
+    {
+      "date": "2022-09-18",
+      "venue": "中京",
+      "title": "ローズS",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "アートハウス"
+      ]
+    },
+    {
+      "date": "2022-09-19",
+      "venue": "中山",
+      "title": "セントライト記念",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2200,
+      "winners": [
+        "ガイアフォース"
+      ]
+    },
+    {
+      "date": "2022-09-25",
+      "venue": "中山",
+      "title": "オールカマー",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2200,
+      "winners": [
+        "ジェラルディーナ"
+      ]
+    },
+    {
+      "date": "2022-09-25",
+      "venue": "中京",
+      "title": "神戸新聞杯",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2200,
+      "winners": [
+        "ジャスティンパレス"
+      ]
+    },
+    {
+      "date": "2022-10-01",
+      "venue": "中京",
+      "title": "シリウスS",
+      "grade": "G3",
+      "jump": false,
+      "surface": "ダ",
+      "distance": 1900,
+      "winners": [
+        "ジュンライトボルト"
+      ]
+    },
+    {
+      "date": "2022-10-02",
+      "venue": "中山",
+      "title": "スプリンターズS",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1200,
+      "winners": [
+        "ジャンダルム"
+      ]
+    },
+    {
+      "date": "2022-10-08",
+      "venue": "東京",
+      "title": "サウジアラビアロイヤルC",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "ドルチェモア"
+      ]
+    },
+    {
+      "date": "2022-10-09",
+      "venue": "東京",
+      "title": "毎日王冠",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1800,
+      "winners": [
+        "サリオス"
+      ]
+    },
+    {
+      "date": "2022-10-10",
+      "venue": "阪神",
+      "title": "京都大賞典",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2400,
+      "winners": [
+        "ヴェラアズール"
+      ]
+    },
+    {
+      "date": "2022-10-15",
+      "venue": "東京",
+      "title": "府中牝馬S",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1800,
+      "winners": [
+        "イズジョーノキセキ"
+      ]
+    },
+    {
+      "date": "2022-10-16",
+      "venue": "東京",
+      "title": "東京ハイジャンプ",
+      "grade": "G2",
+      "jump": true,
+      "surface": "障",
+      "distance": 3110,
+      "winners": [
+        "ゼノヴァース"
+      ]
+    },
+    {
+      "date": "2022-10-16",
+      "venue": "阪神",
+      "title": "秋華賞",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "スタニングローズ"
+      ]
+    },
+    {
+      "date": "2022-10-22",
+      "venue": "東京",
+      "title": "富士S",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "セリフォス"
+      ]
+    },
+    {
+      "date": "2022-10-23",
+      "venue": "阪神",
+      "title": "菊花賞",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 3000,
+      "winners": [
+        "アスクビクターモア"
+      ]
+    },
+    {
+      "date": "2022-10-29",
+      "venue": "東京",
+      "title": "アルテミスS",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "ラヴェル"
+      ]
+    },
+    {
+      "date": "2022-10-29",
+      "venue": "阪神",
+      "title": "スワンS",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1400,
+      "winners": [
+        "ダイアトニック"
+      ]
+    },
+    {
+      "date": "2022-10-30",
+      "venue": "東京",
+      "title": "天皇賞（秋）",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "イクイノックス"
+      ]
+    },
+    {
+      "date": "2022-11-05",
+      "venue": "東京",
+      "title": "京王杯2歳S",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1400,
+      "winners": [
+        "オオバンブルマイ"
+      ]
+    },
+    {
+      "date": "2022-11-05",
+      "venue": "阪神",
+      "title": "ファンタジーS",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1400,
+      "winners": [
+        "リバーラ"
+      ]
+    },
+    {
+      "date": "2022-11-06",
+      "venue": "東京",
+      "title": "アルゼンチン共和国杯",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2500,
+      "winners": [
+        "ブレークアップ"
+      ]
+    },
+    {
+      "date": "2022-11-06",
+      "venue": "阪神",
+      "title": "みやこS",
+      "grade": "G3",
+      "jump": false,
+      "surface": "ダ",
+      "distance": 1800,
+      "winners": [
+        "サンライズホープ"
+      ]
+    },
+    {
+      "date": "2022-11-12",
+      "venue": "東京",
+      "title": "武蔵野S",
+      "grade": "G3",
+      "jump": false,
+      "surface": "ダ",
+      "distance": 1600,
+      "winners": [
+        "ギルデッドミラー"
+      ]
+    },
+    {
+      "date": "2022-11-12",
+      "venue": "阪神",
+      "title": "京都ジャンプS",
+      "grade": "G3",
+      "jump": true,
+      "surface": "障",
+      "distance": 3140,
+      "winners": [
+        "ホッコーメヴィウス"
+      ]
+    },
+    {
+      "date": "2022-11-12",
+      "venue": "阪神",
+      "title": "デイリー杯2歳S",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "オールパルフェ"
+      ]
+    },
+    {
+      "date": "2022-11-13",
+      "venue": "阪神",
+      "title": "エリザベス女王杯",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2200,
+      "winners": [
+        "ジェラルディーナ"
+      ]
+    },
+    {
+      "date": "2022-11-13",
+      "venue": "福島",
+      "title": "福島記念",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "ユニコーンライオン"
+      ]
+    },
+    {
+      "date": "2022-11-19",
+      "venue": "東京",
+      "title": "東スポ杯2歳S",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1800,
+      "winners": [
+        "ガストリック"
+      ]
+    },
+    {
+      "date": "2022-11-20",
+      "venue": "阪神",
+      "title": "マイルチャンピオンシップ",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "セリフォス"
+      ]
+    },
+    {
+      "date": "2022-11-26",
+      "venue": "阪神",
+      "title": "京都2歳S",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "グリューネグリーン"
+      ]
+    },
+    {
+      "date": "2022-11-27",
+      "venue": "東京",
+      "title": "ジャパンC",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2400,
+      "winners": [
+        "ヴェラアズール"
+      ]
+    },
+    {
+      "date": "2022-11-27",
+      "venue": "阪神",
+      "title": "京阪杯",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1200,
+      "winners": [
+        "トウシンマカオ"
+      ]
+    },
+    {
+      "date": "2022-12-03",
+      "venue": "中山",
+      "title": "ステイヤーズS",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 3600,
+      "winners": [
+        "シルヴァーソニック"
+      ]
+    },
+    {
+      "date": "2022-12-03",
+      "venue": "阪神",
+      "title": "チャレンジC",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "ソーヴァリアント"
+      ]
+    },
+    {
+      "date": "2022-12-04",
+      "venue": "中京",
+      "title": "チャンピオンズC",
+      "grade": "G1",
+      "jump": false,
+      "surface": "ダ",
+      "distance": 1800,
+      "winners": [
+        "ジュンライトボルト"
+      ]
+    },
+    {
+      "date": "2022-12-10",
+      "venue": "中京",
+      "title": "中日新聞杯",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "キラーアビリティ"
+      ]
+    },
+    {
+      "date": "2022-12-11",
+      "venue": "中山",
+      "title": "カペラS",
+      "grade": "G3",
+      "jump": false,
+      "surface": "ダ",
+      "distance": 1200,
+      "winners": [
+        "リメイク"
+      ]
+    },
+    {
+      "date": "2022-12-11",
+      "venue": "阪神",
+      "title": "阪神ジュベナイルF",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "リバティアイランド"
+      ]
+    },
+    {
+      "date": "2022-12-17",
+      "venue": "中山",
+      "title": "ターコイズS",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "ミスニューヨーク"
+      ]
+    },
+    {
+      "date": "2022-12-18",
+      "venue": "阪神",
+      "title": "朝日杯フューチュリティS",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "ドルチェモア"
+      ]
+    },
+    {
+      "date": "2022-12-24",
+      "venue": "中山",
+      "title": "中山大障害",
+      "grade": "G1",
+      "jump": true,
+      "surface": "障",
+      "distance": 4100,
+      "winners": [
+        "ニシノデイジー"
+      ]
+    },
+    {
+      "date": "2022-12-24",
+      "venue": "阪神",
+      "title": "阪神C",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1400,
+      "winners": [
+        "ダイアトニック"
+      ]
+    },
+    {
+      "date": "2022-12-25",
+      "venue": "中山",
+      "title": "有馬記念",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2500,
+      "winners": [
+        "イクイノックス"
+      ]
+    },
+    {
+      "date": "2022-12-28",
+      "venue": "中山",
+      "title": "ホープフルS",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "ドゥラエレーデ"
+      ]
+    },
+    {
+      "date": "2023-01-05",
+      "venue": "中山",
+      "title": "中山金杯",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "ラーグルフ"
+      ]
+    },
+    {
+      "date": "2023-01-05",
+      "venue": "中京",
+      "title": "京都金杯",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "イルーシヴパンサー"
+      ]
+    },
+    {
+      "date": "2023-01-08",
+      "venue": "中京",
+      "title": "シンザン記念",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "ライトクオンタム"
+      ]
+    },
+    {
+      "date": "2023-01-09",
+      "venue": "中山",
+      "title": "フェアリーS",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "キタウイング"
+      ]
+    },
+    {
+      "date": "2023-01-14",
+      "venue": "中京",
+      "title": "愛知杯",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "アートハウス"
+      ]
+    },
+    {
+      "date": "2023-01-15",
+      "venue": "中山",
+      "title": "京成杯",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "ソールオリエンス"
+      ]
+    },
+    {
+      "date": "2023-01-15",
+      "venue": "中京",
+      "title": "日経新春杯",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2200,
+      "winners": [
+        "ヴェルトライゼンデ"
+      ]
+    },
+    {
+      "date": "2023-01-22",
+      "venue": "中山",
+      "title": "アメリカJCC",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2200,
+      "winners": [
+        "ノースブリッジ"
+      ]
+    },
+    {
+      "date": "2023-01-22",
+      "venue": "中京",
+      "title": "東海S",
+      "grade": "G2",
+      "jump": false,
+      "surface": "ダ",
+      "distance": 1800,
+      "winners": [
+        "プロミストウォリア"
+      ]
+    },
+    {
+      "date": "2023-01-29",
+      "venue": "東京",
+      "title": "根岸S",
+      "grade": "G3",
+      "jump": false,
+      "surface": "ダ",
+      "distance": 1400,
+      "winners": [
+        "レモンポップ"
+      ]
+    },
+    {
+      "date": "2023-01-29",
+      "venue": "中京",
+      "title": "シルクロードS",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1200,
+      "winners": [
+        "ナムラクレア"
+      ]
+    },
+    {
+      "date": "2023-02-05",
+      "venue": "東京",
+      "title": "東京新聞杯",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "ウインカーネリアン"
+      ]
+    },
+    {
+      "date": "2023-02-05",
+      "venue": "中京",
+      "title": "きさらぎ賞",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "フリームファクシ"
+      ]
+    },
+    {
+      "date": "2023-02-11",
+      "venue": "東京",
+      "title": "クイーンC",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "ハーパー"
+      ]
+    },
+    {
+      "date": "2023-02-12",
+      "venue": "東京",
+      "title": "共同通信杯",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1800,
+      "winners": [
+        "ファントムシーフ"
+      ]
+    },
+    {
+      "date": "2023-02-12",
+      "venue": "阪神",
+      "title": "京都記念",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2200,
+      "winners": [
+        "ドウデュース"
+      ]
+    },
+    {
+      "date": "2023-02-18",
+      "venue": "東京",
+      "title": "ダイヤモンドS",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 3400,
+      "winners": [
+        "ミクソロジー"
+      ]
+    },
+    {
+      "date": "2023-02-18",
+      "venue": "阪神",
+      "title": "京都牝馬S",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1400,
+      "winners": [
+        "ララクリスティーヌ"
+      ]
+    },
+    {
+      "date": "2023-02-19",
+      "venue": "東京",
+      "title": "フェブラリーS",
+      "grade": "G1",
+      "jump": false,
+      "surface": "ダ",
+      "distance": 1600,
+      "winners": [
+        "レモンポップ"
+      ]
+    },
+    {
+      "date": "2023-02-19",
+      "venue": "小倉",
+      "title": "小倉大賞典",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1800,
+      "winners": [
+        "ヒンドゥタイムズ"
+      ]
+    },
+    {
+      "date": "2023-02-26",
+      "venue": "中山",
+      "title": "中山記念",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1800,
+      "winners": [
+        "ヒシイグアス"
+      ]
+    },
+    {
+      "date": "2023-02-26",
+      "venue": "阪神",
+      "title": "阪急杯",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1400,
+      "winners": [
+        "アグリ"
+      ]
+    },
+    {
+      "date": "2023-03-04",
+      "venue": "中山",
+      "title": "オーシャンS",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1200,
+      "winners": [
+        "ヴェントヴォーチェ"
+      ]
+    },
+    {
+      "date": "2023-03-04",
+      "venue": "阪神",
+      "title": "チューリップ賞",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "モズメイメイ"
+      ]
+    },
+    {
+      "date": "2023-03-05",
+      "venue": "中山",
+      "title": "弥生賞",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "タスティエーラ"
+      ]
+    },
+    {
+      "date": "2023-03-11",
+      "venue": "中山",
+      "title": "中山牝馬S",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1800,
+      "winners": [
+        "スルーセブンシーズ"
+      ]
+    },
+    {
+      "date": "2023-03-11",
+      "venue": "阪神",
+      "title": "阪神スプリングジャンプ",
+      "grade": "G2",
+      "jump": true,
+      "surface": "障",
+      "distance": 3900,
+      "winners": [
+        "ジェミニキング"
+      ]
+    },
+    {
+      "date": "2023-03-12",
+      "venue": "阪神",
+      "title": "フィリーズレビュー",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1400,
+      "winners": [
+        "シングザットソング"
+      ]
+    },
+    {
+      "date": "2023-03-12",
+      "venue": "中京",
+      "title": "金鯱賞",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "プログノーシス"
+      ]
+    },
+    {
+      "date": "2023-03-18",
+      "venue": "中山",
+      "title": "フラワーC",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1800,
+      "winners": [
+        "エミュー"
+      ]
+    },
+    {
+      "date": "2023-03-18",
+      "venue": "中京",
+      "title": "ファルコンS",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1400,
+      "winners": [
+        "タマモブラックタイ"
+      ]
+    },
+    {
+      "date": "2023-03-19",
+      "venue": "中山",
+      "title": "スプリングS",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1800,
+      "winners": [
+        "ベラジオオペラ"
+      ]
+    },
+    {
+      "date": "2023-03-19",
+      "venue": "阪神",
+      "title": "阪神大賞典",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 3000,
+      "winners": [
+        "ジャスティンパレス"
+      ]
+    },
+    {
+      "date": "2023-03-25",
+      "venue": "中山",
+      "title": "日経賞",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2500,
+      "winners": [
+        "タイトルホルダー"
+      ]
+    },
+    {
+      "date": "2023-03-25",
+      "venue": "阪神",
+      "title": "毎日杯",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1800,
+      "winners": [
+        "シーズンリッチ"
+      ]
+    },
+    {
+      "date": "2023-03-26",
+      "venue": "中山",
+      "title": "マーチS",
+      "grade": "G3",
+      "jump": false,
+      "surface": "ダ",
+      "distance": 1800,
+      "winners": [
+        "ハヤブサナンデクン"
+      ]
+    },
+    {
+      "date": "2023-03-26",
+      "venue": "中京",
+      "title": "高松宮記念",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1200,
+      "winners": [
+        "ファストフォース"
+      ]
+    },
+    {
+      "date": "2023-04-01",
+      "venue": "中山",
+      "title": "ダービー卿チャレンジT",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "インダストリア"
+      ]
+    },
+    {
+      "date": "2023-04-02",
+      "venue": "阪神",
+      "title": "大阪杯",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "ジャックドール"
+      ]
+    },
+    {
+      "date": "2023-04-08",
+      "venue": "中山",
+      "title": "ニュージーランドT",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "エエヤン"
+      ]
+    },
+    {
+      "date": "2023-04-08",
+      "venue": "阪神",
+      "title": "阪神牝馬S",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "サウンドビバーチェ"
+      ]
+    },
+    {
+      "date": "2023-04-09",
+      "venue": "阪神",
+      "title": "桜花賞",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "リバティアイランド"
+      ]
+    },
+    {
+      "date": "2023-04-15",
+      "venue": "中山",
+      "title": "中山グランドジャンプ",
+      "grade": "G1",
+      "jump": true,
+      "surface": "障",
+      "distance": 4250,
+      "winners": [
+        "イロゴトシ"
+      ]
+    },
+    {
+      "date": "2023-04-15",
+      "venue": "阪神",
+      "title": "アーリントンC",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "オオバンブルマイ"
+      ]
+    },
+    {
+      "date": "2023-04-16",
+      "venue": "中山",
+      "title": "皐月賞",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "ソールオリエンス"
+      ]
+    },
+    {
+      "date": "2023-04-16",
+      "venue": "阪神",
+      "title": "アンタレスS",
+      "grade": "G3",
+      "jump": false,
+      "surface": "ダ",
+      "distance": 1800,
+      "winners": [
+        "プロミストウォリア"
+      ]
+    },
+    {
+      "date": "2023-04-22",
+      "venue": "福島",
+      "title": "福島牝馬S",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1800,
+      "winners": [
+        "ステラリア"
+      ]
+    },
+    {
+      "date": "2023-04-23",
+      "venue": "東京",
+      "title": "フローラS",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "ゴールデンハインド"
+      ]
+    },
+    {
+      "date": "2023-04-23",
+      "venue": "京都",
+      "title": "マイラーズC",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "シュネルマイスター"
+      ]
+    },
+    {
+      "date": "2023-04-29",
+      "venue": "東京",
+      "title": "青葉賞",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2400,
+      "winners": [
+        "スキルヴィング"
+      ]
+    },
+    {
+      "date": "2023-04-30",
+      "venue": "京都",
+      "title": "天皇賞（春）",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 3200,
+      "winners": [
+        "ジャスティンパレス"
+      ]
+    },
+    {
+      "date": "2023-05-06",
+      "venue": "京都",
+      "title": "京都新聞杯",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2200,
+      "winners": [
+        "サトノグランツ"
+      ]
+    },
+    {
+      "date": "2023-05-07",
+      "venue": "東京",
+      "title": "NHKマイルC",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "シャンパンカラー"
+      ]
+    },
+    {
+      "date": "2023-05-07",
+      "venue": "新潟",
+      "title": "新潟大賞典",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "カラテ"
+      ]
+    },
+    {
+      "date": "2023-05-13",
+      "venue": "東京",
+      "title": "京王杯スプリングC",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1400,
+      "winners": [
+        "レッドモンレーヴ"
+      ]
+    },
+    {
+      "date": "2023-05-13",
+      "venue": "京都",
+      "title": "京都ハイジャンプ",
+      "grade": "G2",
+      "jump": true,
+      "surface": "障",
+      "distance": 3930,
+      "winners": [
+        "ダイシンクローバー"
+      ]
+    },
+    {
+      "date": "2023-05-14",
+      "venue": "東京",
+      "title": "ヴィクトリアマイル",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "ソングライン"
+      ]
+    },
+    {
+      "date": "2023-05-20",
+      "venue": "京都",
+      "title": "平安S",
+      "grade": "G3",
+      "jump": false,
+      "surface": "ダ",
+      "distance": 1900,
+      "winners": [
+        "グロリアムンディ"
+      ]
+    },
+    {
+      "date": "2023-05-21",
+      "venue": "東京",
+      "title": "オークス",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2400,
+      "winners": [
+        "リバティアイランド"
+      ]
+    },
+    {
+      "date": "2023-05-27",
+      "venue": "京都",
+      "title": "葵S",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1200,
+      "winners": [
+        "モズメイメイ"
+      ]
+    },
+    {
+      "date": "2023-05-28",
+      "venue": "東京",
+      "title": "日本ダービー",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2400,
+      "winners": [
+        "タスティエーラ"
+      ]
+    },
+    {
+      "date": "2023-05-28",
+      "venue": "東京",
+      "title": "目黒記念",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2500,
+      "winners": [
+        "ヒートオンビート"
+      ]
+    },
+    {
+      "date": "2023-06-03",
+      "venue": "阪神",
+      "title": "鳴尾記念",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "ボッケリーニ"
+      ]
+    },
+    {
+      "date": "2023-06-04",
+      "venue": "東京",
+      "title": "安田記念",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "ソングライン"
+      ]
+    },
+    {
+      "date": "2023-06-11",
+      "venue": "東京",
+      "title": "エプソムC",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1800,
+      "winners": [
+        "ジャスティンカフェ"
+      ]
+    },
+    {
+      "date": "2023-06-11",
+      "venue": "函館",
+      "title": "函館スプリントS",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1200,
+      "winners": [
+        "キミワクイーン"
+      ]
+    },
+    {
+      "date": "2023-06-18",
+      "venue": "東京",
+      "title": "ユニコーンS",
+      "grade": "G3",
+      "jump": false,
+      "surface": "ダ",
+      "distance": 1600,
+      "winners": [
+        "ペリエール"
+      ]
+    },
+    {
+      "date": "2023-06-18",
+      "venue": "阪神",
+      "title": "マーメイドS",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "ビッグリボン"
+      ]
+    },
+    {
+      "date": "2023-06-24",
+      "venue": "東京",
+      "title": "東京ジャンプS",
+      "grade": "G3",
+      "jump": true,
+      "surface": "障",
+      "distance": 3110,
+      "winners": [
+        "ジューンベロシティ"
+      ]
+    },
+    {
+      "date": "2023-06-25",
+      "venue": "阪神",
+      "title": "宝塚記念",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2200,
+      "winners": [
+        "イクイノックス"
+      ]
+    },
+    {
+      "date": "2023-07-02",
+      "venue": "福島",
+      "title": "ラジオNIKKEI賞",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1800,
+      "winners": [
+        "エルトンバローズ"
+      ]
+    },
+    {
+      "date": "2023-07-02",
+      "venue": "中京",
+      "title": "CBC賞",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1200,
+      "winners": [
+        "ジャスパークローネ"
+      ]
+    },
+    {
+      "date": "2023-07-09",
+      "venue": "福島",
+      "title": "七夕賞",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "セイウンハーデス"
+      ]
+    },
+    {
+      "date": "2023-07-09",
+      "venue": "中京",
+      "title": "プロキオンS",
+      "grade": "G3",
+      "jump": false,
+      "surface": "ダ",
+      "distance": 1400,
+      "winners": [
+        "ドンフランキー"
+      ]
+    },
+    {
+      "date": "2023-07-15",
+      "venue": "函館",
+      "title": "函館2歳S",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1200,
+      "winners": [
+        "ゼルトザーム"
+      ]
+    },
+    {
+      "date": "2023-07-16",
+      "venue": "函館",
+      "title": "函館記念",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "ローシャムパーク"
+      ]
+    },
+    {
+      "date": "2023-07-23",
+      "venue": "中京",
+      "title": "中京記念",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "セルバーグ"
+      ]
+    },
+    {
+      "date": "2023-07-29",
+      "venue": "新潟",
+      "title": "新潟ジャンプS",
+      "grade": "G3",
+      "jump": true,
+      "surface": "障",
+      "distance": 3250,
+      "winners": [
+        "サクセッション"
+      ]
+    },
+    {
+      "date": "2023-07-30",
+      "venue": "新潟",
+      "title": "アイビスサマーダッシュ",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1000,
+      "winners": [
+        "オールアットワンス"
+      ]
+    },
+    {
+      "date": "2023-07-30",
+      "venue": "札幌",
+      "title": "クイーンS",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1800,
+      "winners": [
+        "ドゥーラ"
+      ]
+    },
+    {
+      "date": "2023-08-06",
+      "venue": "新潟",
+      "title": "レパードS",
+      "grade": "G3",
+      "jump": false,
+      "surface": "ダ",
+      "distance": 1800,
+      "winners": [
+        "ライオットガール"
+      ]
+    },
+    {
+      "date": "2023-08-06",
+      "venue": "札幌",
+      "title": "エルムS",
+      "grade": "G3",
+      "jump": false,
+      "surface": "ダ",
+      "distance": 1700,
+      "winners": [
+        "セキフウ"
+      ]
+    },
+    {
+      "date": "2023-08-13",
+      "venue": "新潟",
+      "title": "関屋記念",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "アヴェラーレ"
+      ]
+    },
+    {
+      "date": "2023-08-13",
+      "venue": "小倉",
+      "title": "小倉記念",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "エヒト"
+      ]
+    },
+    {
+      "date": "2023-08-20",
+      "venue": "小倉",
+      "title": "北九州記念",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1200,
+      "winners": [
+        "ジャスパークローネ"
+      ]
+    },
+    {
+      "date": "2023-08-20",
+      "venue": "札幌",
+      "title": "札幌記念",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "プログノーシス"
+      ]
+    },
+    {
+      "date": "2023-08-26",
+      "venue": "小倉",
+      "title": "小倉サマージャンプ",
+      "grade": "G3",
+      "jump": true,
+      "surface": "障",
+      "distance": 3390,
+      "winners": [
+        "テーオーソクラテス"
+      ]
+    },
+    {
+      "date": "2023-08-27",
+      "venue": "新潟",
+      "title": "新潟2歳S",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "アスコリピチェーノ"
+      ]
+    },
+    {
+      "date": "2023-08-27",
+      "venue": "札幌",
+      "title": "キーンランドC",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1200,
+      "winners": [
+        "ナムラクレア"
+      ]
+    },
+    {
+      "date": "2023-09-02",
+      "venue": "札幌",
+      "title": "札幌2歳S",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1800,
+      "winners": [
+        "セットアップ"
+      ]
+    },
+    {
+      "date": "2023-09-03",
+      "venue": "新潟",
+      "title": "新潟記念",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "ノッキングポイント"
+      ]
+    },
+    {
+      "date": "2023-09-03",
+      "venue": "小倉",
+      "title": "小倉2歳S",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1200,
+      "winners": [
+        "アスクワンタイム"
+      ]
+    },
+    {
+      "date": "2023-09-09",
+      "venue": "中山",
+      "title": "紫苑S",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "モリアーナ"
+      ]
+    },
+    {
+      "date": "2023-09-10",
+      "venue": "中山",
+      "title": "京成杯オータムH",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "ソウルラッシュ"
+      ]
+    },
+    {
+      "date": "2023-09-10",
+      "venue": "阪神",
+      "title": "セントウルS",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1200,
+      "winners": [
+        "テイエムスパーダ"
+      ]
+    },
+    {
+      "date": "2023-09-16",
+      "venue": "阪神",
+      "title": "阪神ジャンプS",
+      "grade": "G3",
+      "jump": true,
+      "surface": "障",
+      "distance": 3140,
+      "winners": [
+        "ジューンベロシティ"
+      ]
+    },
+    {
+      "date": "2023-09-17",
+      "venue": "阪神",
+      "title": "ローズS",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1800,
+      "winners": [
+        "マスクトディーヴァ"
+      ]
+    },
+    {
+      "date": "2023-09-18",
+      "venue": "中山",
+      "title": "セントライト記念",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2200,
+      "winners": [
+        "レーベンスティール"
+      ]
+    },
+    {
+      "date": "2023-09-24",
+      "venue": "中山",
+      "title": "オールカマー",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2200,
+      "winners": [
+        "ローシャムパーク"
+      ]
+    },
+    {
+      "date": "2023-09-24",
+      "venue": "阪神",
+      "title": "神戸新聞杯",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2400,
+      "winners": [
+        "サトノグランツ"
+      ]
+    },
+    {
+      "date": "2023-09-30",
+      "venue": "阪神",
+      "title": "シリウスS",
+      "grade": "G3",
+      "jump": false,
+      "surface": "ダ",
+      "distance": 2000,
+      "winners": [
+        "ハギノアレグリアス"
+      ]
+    },
+    {
+      "date": "2023-10-01",
+      "venue": "中山",
+      "title": "スプリンターズS",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1200,
+      "winners": [
+        "ママコチャ"
+      ]
+    },
+    {
+      "date": "2023-10-07",
+      "venue": "東京",
+      "title": "サウジアラビアロイヤルC",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "ゴンバデカーブース"
+      ]
+    },
+    {
+      "date": "2023-10-08",
+      "venue": "東京",
+      "title": "毎日王冠",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1800,
+      "winners": [
+        "エルトンバローズ"
+      ]
+    },
+    {
+      "date": "2023-10-09",
+      "venue": "京都",
+      "title": "京都大賞典",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2400,
+      "winners": [
+        "プラダリア"
+      ]
+    },
+    {
+      "date": "2023-10-14",
+      "venue": "東京",
+      "title": "府中牝馬S",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1800,
+      "winners": [
+        "ディヴィーナ"
+      ]
+    },
+    {
+      "date": "2023-10-15",
+      "venue": "東京",
+      "title": "東京ハイジャンプ",
+      "grade": "G2",
+      "jump": true,
+      "surface": "障",
+      "distance": 3110,
+      "winners": [
+        "マイネルグロン"
+      ]
+    },
+    {
+      "date": "2023-10-15",
+      "venue": "京都",
+      "title": "秋華賞",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "リバティアイランド"
+      ]
+    },
+    {
+      "date": "2023-10-21",
+      "venue": "東京",
+      "title": "富士S",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "ナミュール"
+      ]
+    },
+    {
+      "date": "2023-10-22",
+      "venue": "京都",
+      "title": "菊花賞",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 3000,
+      "winners": [
+        "ドゥレッツァ"
+      ]
+    },
+    {
+      "date": "2023-10-28",
+      "venue": "東京",
+      "title": "アルテミスS",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "チェルヴィニア"
+      ]
+    },
+    {
+      "date": "2023-10-28",
+      "venue": "京都",
+      "title": "スワンS",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1400,
+      "winners": [
+        "ウイングレイテスト"
+      ]
+    },
+    {
+      "date": "2023-10-29",
+      "venue": "東京",
+      "title": "天皇賞（秋）",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "イクイノックス"
+      ]
+    },
+    {
+      "date": "2023-11-04",
+      "venue": "東京",
+      "title": "京王杯2歳S",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1400,
+      "winners": [
+        "コラソンビート"
+      ]
+    },
+    {
+      "date": "2023-11-04",
+      "venue": "京都",
+      "title": "ファンタジーS",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1400,
+      "winners": [
+        "カルチャーデイ"
+      ]
+    },
+    {
+      "date": "2023-11-05",
+      "venue": "東京",
+      "title": "アルゼンチン共和国杯",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2500,
+      "winners": [
+        "ゼッフィーロ"
+      ]
+    },
+    {
+      "date": "2023-11-05",
+      "venue": "京都",
+      "title": "みやこS",
+      "grade": "G3",
+      "jump": false,
+      "surface": "ダ",
+      "distance": 1800,
+      "winners": [
+        "セラフィックコール"
+      ]
+    },
+    {
+      "date": "2023-11-11",
+      "venue": "東京",
+      "title": "武蔵野S",
+      "grade": "G3",
+      "jump": false,
+      "surface": "ダ",
+      "distance": 1600,
+      "winners": [
+        "ドライスタウト"
+      ]
+    },
+    {
+      "date": "2023-11-11",
+      "venue": "京都",
+      "title": "京都ジャンプS",
+      "grade": "G3",
+      "jump": true,
+      "surface": "障",
+      "distance": 3170,
+      "winners": [
+        "エコロデュエル"
+      ]
+    },
+    {
+      "date": "2023-11-11",
+      "venue": "京都",
+      "title": "デイリー杯2歳S",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "ジャンタルマンタル"
+      ]
+    },
+    {
+      "date": "2023-11-12",
+      "venue": "京都",
+      "title": "エリザベス女王杯",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2200,
+      "winners": [
+        "ブレイディヴェーグ"
+      ]
+    },
+    {
+      "date": "2023-11-12",
+      "venue": "福島",
+      "title": "福島記念",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "ホウオウエミーズ"
+      ]
+    },
+    {
+      "date": "2023-11-18",
+      "venue": "東京",
+      "title": "東スポ杯2歳S",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1800,
+      "winners": [
+        "シュトラウス"
+      ]
+    },
+    {
+      "date": "2023-11-19",
+      "venue": "京都",
+      "title": "マイルチャンピオンシップ",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "ナミュール"
+      ]
+    },
+    {
+      "date": "2023-11-25",
+      "venue": "京都",
+      "title": "京都2歳S",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "シンエンペラー"
+      ]
+    },
+    {
+      "date": "2023-11-26",
+      "venue": "東京",
+      "title": "ジャパンC",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2400,
+      "winners": [
+        "イクイノックス"
+      ]
+    },
+    {
+      "date": "2023-11-26",
+      "venue": "京都",
+      "title": "京阪杯",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1200,
+      "winners": [
+        "トウシンマカオ"
+      ]
+    },
+    {
+      "date": "2023-12-02",
+      "venue": "中山",
+      "title": "ステイヤーズS",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 3600,
+      "winners": [
+        "アイアンバローズ"
+      ]
+    },
+    {
+      "date": "2023-12-02",
+      "venue": "阪神",
+      "title": "チャレンジC",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "ベラジオオペラ"
+      ]
+    },
+    {
+      "date": "2023-12-03",
+      "venue": "中京",
+      "title": "チャンピオンズC",
+      "grade": "G1",
+      "jump": false,
+      "surface": "ダ",
+      "distance": 1800,
+      "winners": [
+        "レモンポップ"
+      ]
+    },
+    {
+      "date": "2023-12-09",
+      "venue": "中京",
+      "title": "中日新聞杯",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "ヤマニンサルバム"
+      ]
+    },
+    {
+      "date": "2023-12-10",
+      "venue": "中山",
+      "title": "カペラS",
+      "grade": "G3",
+      "jump": false,
+      "surface": "ダ",
+      "distance": 1200,
+      "winners": [
+        "テイエムトッキュウ"
+      ]
+    },
+    {
+      "date": "2023-12-10",
+      "venue": "阪神",
+      "title": "阪神ジュベナイルF",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "アスコリピチェーノ"
+      ]
+    },
+    {
+      "date": "2023-12-16",
+      "venue": "中山",
+      "title": "ターコイズS",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "フィアスプライド"
+      ]
+    },
+    {
+      "date": "2023-12-17",
+      "venue": "阪神",
+      "title": "朝日杯フューチュリティS",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "ジャンタルマンタル"
+      ]
+    },
+    {
+      "date": "2023-12-23",
+      "venue": "中山",
+      "title": "中山大障害",
+      "grade": "G1",
+      "jump": true,
+      "surface": "障",
+      "distance": 4100,
+      "winners": [
+        "マイネルグロン"
+      ]
+    },
+    {
+      "date": "2023-12-23",
+      "venue": "阪神",
+      "title": "阪神C",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1400,
+      "winners": [
+        "ウインマーベル"
+      ]
+    },
+    {
+      "date": "2023-12-24",
+      "venue": "中山",
+      "title": "有馬記念",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2500,
+      "winners": [
+        "ドウデュース"
+      ]
+    },
+    {
+      "date": "2023-12-28",
+      "venue": "中山",
+      "title": "ホープフルS",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "レガレイラ"
+      ]
+    },
+    {
+      "date": "2024-01-06",
+      "venue": "中山",
+      "title": "中山金杯",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "リカンカブール"
+      ]
+    },
+    {
+      "date": "2024-01-06",
+      "venue": "京都",
+      "title": "京都金杯",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "コレペティトール"
+      ]
+    },
+    {
+      "date": "2024-01-07",
+      "venue": "中山",
+      "title": "フェアリーS",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "イフェイオン"
+      ]
+    },
+    {
+      "date": "2024-01-08",
+      "venue": "京都",
+      "title": "シンザン記念",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "ノーブルロジャー"
+      ]
+    },
+    {
+      "date": "2024-01-13",
+      "venue": "小倉",
+      "title": "愛知杯",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "ミッキーゴージャス"
+      ]
+    },
+    {
+      "date": "2024-01-14",
+      "venue": "中山",
+      "title": "京成杯",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "ダノンデサイル"
+      ]
+    },
+    {
+      "date": "2024-01-14",
+      "venue": "京都",
+      "title": "日経新春杯",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2400,
+      "winners": [
+        "ブローザホーン"
+      ]
+    },
+    {
+      "date": "2024-01-21",
+      "venue": "中山",
+      "title": "アメリカJCC",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2200,
+      "winners": [
+        "チャックネイト"
+      ]
+    },
+    {
+      "date": "2024-01-21",
+      "venue": "京都",
+      "title": "東海S",
+      "grade": "G2",
+      "jump": false,
+      "surface": "ダ",
+      "distance": 1800,
+      "winners": [
+        "ウィリアムバローズ"
+      ]
+    },
+    {
+      "date": "2024-01-28",
+      "venue": "東京",
+      "title": "根岸S",
+      "grade": "G3",
+      "jump": false,
+      "surface": "ダ",
+      "distance": 1400,
+      "winners": [
+        "エンペラーワケア"
+      ]
+    },
+    {
+      "date": "2024-01-28",
+      "venue": "京都",
+      "title": "シルクロードS",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1200,
+      "winners": [
+        "ルガル"
+      ]
+    },
+    {
+      "date": "2024-02-04",
+      "venue": "東京",
+      "title": "東京新聞杯",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "サクラトゥジュール"
+      ]
+    },
+    {
+      "date": "2024-02-04",
+      "venue": "京都",
+      "title": "きさらぎ賞",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1800,
+      "winners": [
+        "ビザンチンドリーム"
+      ]
+    },
+    {
+      "date": "2024-02-10",
+      "venue": "東京",
+      "title": "クイーンC",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "クイーンズウォーク"
+      ]
+    },
+    {
+      "date": "2024-02-11",
+      "venue": "東京",
+      "title": "共同通信杯",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1800,
+      "winners": [
+        "ジャスティンミラノ"
+      ]
+    },
+    {
+      "date": "2024-02-11",
+      "venue": "京都",
+      "title": "京都記念",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2200,
+      "winners": [
+        "プラダリア"
+      ]
+    },
+    {
+      "date": "2024-02-17",
+      "venue": "東京",
+      "title": "ダイヤモンドS",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 3400,
+      "winners": [
+        "テーオーロイヤル"
+      ]
+    },
+    {
+      "date": "2024-02-17",
+      "venue": "京都",
+      "title": "京都牝馬S",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1400,
+      "winners": [
+        "ソーダズリング"
+      ]
+    },
+    {
+      "date": "2024-02-18",
+      "venue": "東京",
+      "title": "フェブラリーS",
+      "grade": "G1",
+      "jump": false,
+      "surface": "ダ",
+      "distance": 1600,
+      "winners": [
+        "ペプチドナイル"
+      ]
+    },
+    {
+      "date": "2024-02-18",
+      "venue": "小倉",
+      "title": "小倉大賞典",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1800,
+      "winners": [
+        "エピファニー"
+      ]
+    },
+    {
+      "date": "2024-02-25",
+      "venue": "中山",
+      "title": "中山記念",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1800,
+      "winners": [
+        "マテンロウスカイ"
+      ]
+    },
+    {
+      "date": "2024-02-25",
+      "venue": "阪神",
+      "title": "阪急杯",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1400,
+      "winners": [
+        "ウインマーベル"
+      ]
+    },
+    {
+      "date": "2024-03-02",
+      "venue": "中山",
+      "title": "オーシャンS",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1200,
+      "winners": [
+        "トウシンマカオ"
+      ]
+    },
+    {
+      "date": "2024-03-02",
+      "venue": "阪神",
+      "title": "チューリップ賞",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "スウィープフィート"
+      ]
+    },
+    {
+      "date": "2024-03-03",
+      "venue": "中山",
+      "title": "弥生賞",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "コスモキュランダ"
+      ]
+    },
+    {
+      "date": "2024-03-09",
+      "venue": "中山",
+      "title": "中山牝馬S",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1800,
+      "winners": [
+        "コンクシェル"
+      ]
+    },
+    {
+      "date": "2024-03-09",
+      "venue": "阪神",
+      "title": "阪神スプリングジャンプ",
+      "grade": "G2",
+      "jump": true,
+      "surface": "障",
+      "distance": 3900,
+      "winners": [
+        "マイネルグロン"
+      ]
+    },
+    {
+      "date": "2024-03-10",
+      "venue": "阪神",
+      "title": "フィリーズレビュー",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1400,
+      "winners": [
+        "エトヴプレ"
+      ]
+    },
+    {
+      "date": "2024-03-10",
+      "venue": "中京",
+      "title": "金鯱賞",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "プログノーシス"
+      ]
+    },
+    {
+      "date": "2024-03-16",
+      "venue": "中山",
+      "title": "フラワーC",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1800,
+      "winners": [
+        "ミアネーロ"
+      ]
+    },
+    {
+      "date": "2024-03-16",
+      "venue": "中京",
+      "title": "ファルコンS",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1400,
+      "winners": [
+        "ダノンマッキンリー"
+      ]
+    },
+    {
+      "date": "2024-03-17",
+      "venue": "中山",
+      "title": "スプリングS",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1800,
+      "winners": [
+        "シックスペンス"
+      ]
+    },
+    {
+      "date": "2024-03-17",
+      "venue": "阪神",
+      "title": "阪神大賞典",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 3000,
+      "winners": [
+        "テーオーロイヤル"
+      ]
+    },
+    {
+      "date": "2024-03-23",
+      "venue": "中山",
+      "title": "日経賞",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2500,
+      "winners": [
+        "シュトルーヴェ"
+      ]
+    },
+    {
+      "date": "2024-03-23",
+      "venue": "阪神",
+      "title": "毎日杯",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1800,
+      "winners": [
+        "メイショウタバル"
+      ]
+    },
+    {
+      "date": "2024-03-24",
+      "venue": "中山",
+      "title": "マーチS",
+      "grade": "G3",
+      "jump": false,
+      "surface": "ダ",
+      "distance": 1800,
+      "winners": [
+        "ヴァルツァーシャル"
+      ]
+    },
+    {
+      "date": "2024-03-24",
+      "venue": "中京",
+      "title": "高松宮記念",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1200,
+      "winners": [
+        "マッドクール"
+      ]
+    },
+    {
+      "date": "2024-03-30",
+      "venue": "中山",
+      "title": "ダービー卿チャレンジT",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "パラレルヴィジョン"
+      ]
+    },
+    {
+      "date": "2024-03-31",
+      "venue": "阪神",
+      "title": "大阪杯",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "ベラジオオペラ"
+      ]
+    },
+    {
+      "date": "2024-04-06",
+      "venue": "中山",
+      "title": "ニュージーランドT",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "エコロブルーム"
+      ]
+    },
+    {
+      "date": "2024-04-06",
+      "venue": "阪神",
+      "title": "阪神牝馬S",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "マスクトディーヴァ"
+      ]
+    },
+    {
+      "date": "2024-04-07",
+      "venue": "阪神",
+      "title": "桜花賞",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "ステレンボッシュ"
+      ]
+    },
+    {
+      "date": "2024-04-13",
+      "venue": "中山",
+      "title": "中山グランドジャンプ",
+      "grade": "G1",
+      "jump": true,
+      "surface": "障",
+      "distance": 4250,
+      "winners": [
+        "イロゴトシ"
+      ]
+    },
+    {
+      "date": "2024-04-13",
+      "venue": "阪神",
+      "title": "アーリントンC",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "ディスペランツァ"
+      ]
+    },
+    {
+      "date": "2024-04-14",
+      "venue": "中山",
+      "title": "皐月賞",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "ジャスティンミラノ"
+      ]
+    },
+    {
+      "date": "2024-04-14",
+      "venue": "阪神",
+      "title": "アンタレスS",
+      "grade": "G3",
+      "jump": false,
+      "surface": "ダ",
+      "distance": 1800,
+      "winners": [
+        "ミッキーヌチバナ"
+      ]
+    },
+    {
+      "date": "2024-04-20",
+      "venue": "福島",
+      "title": "福島牝馬S",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1800,
+      "winners": [
+        "コスタボニータ"
+      ]
+    },
+    {
+      "date": "2024-04-21",
+      "venue": "東京",
+      "title": "フローラS",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "アドマイヤベル"
+      ]
+    },
+    {
+      "date": "2024-04-21",
+      "venue": "京都",
+      "title": "マイラーズC",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "ソウルラッシュ"
+      ]
+    },
+    {
+      "date": "2024-04-27",
+      "venue": "東京",
+      "title": "青葉賞",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2400,
+      "winners": [
+        "シュガークン"
+      ]
+    },
+    {
+      "date": "2024-04-27",
+      "venue": "京都",
+      "title": "ユニコーンS",
+      "grade": "G3",
+      "jump": false,
+      "surface": "ダ",
+      "distance": 1900,
+      "winners": [
+        "ラムジェット"
+      ]
+    },
+    {
+      "date": "2024-04-28",
+      "venue": "京都",
+      "title": "天皇賞（春）",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 3200,
+      "winners": [
+        "テーオーロイヤル"
+      ]
+    },
+    {
+      "date": "2024-05-04",
+      "venue": "京都",
+      "title": "京都新聞杯",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2200,
+      "winners": [
+        "ジューンテイク"
+      ]
+    },
+    {
+      "date": "2024-05-05",
+      "venue": "東京",
+      "title": "NHKマイルC",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "ジャンタルマンタル"
+      ]
+    },
+    {
+      "date": "2024-05-05",
+      "venue": "新潟",
+      "title": "新潟大賞典",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "ヤマニンサルバム"
+      ]
+    },
+    {
+      "date": "2024-05-11",
+      "venue": "東京",
+      "title": "京王杯スプリングC",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1400,
+      "winners": [
+        "ウインマーベル"
+      ]
+    },
+    {
+      "date": "2024-05-11",
+      "venue": "京都",
+      "title": "京都ハイジャンプ",
+      "grade": "G2",
+      "jump": true,
+      "surface": "障",
+      "distance": 3930,
+      "winners": [
+        "サンデイビス"
+      ]
+    },
+    {
+      "date": "2024-05-12",
+      "venue": "東京",
+      "title": "ヴィクトリアマイル",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "テンハッピーローズ"
+      ]
+    },
+    {
+      "date": "2024-05-18",
+      "venue": "京都",
+      "title": "平安S",
+      "grade": "G3",
+      "jump": false,
+      "surface": "ダ",
+      "distance": 1900,
+      "winners": [
+        "ミトノオー"
+      ]
+    },
+    {
+      "date": "2024-05-19",
+      "venue": "東京",
+      "title": "オークス",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2400,
+      "winners": [
+        "チェルヴィニア"
+      ]
+    },
+    {
+      "date": "2024-05-25",
+      "venue": "京都",
+      "title": "葵S",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1200,
+      "winners": [
+        "ピューロマジック"
+      ]
+    },
+    {
+      "date": "2024-05-26",
+      "venue": "東京",
+      "title": "日本ダービー",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2400,
+      "winners": [
+        "ダノンデサイル"
+      ]
+    },
+    {
+      "date": "2024-05-26",
+      "venue": "東京",
+      "title": "目黒記念",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2500,
+      "winners": [
+        "シュトルーヴェ"
+      ]
+    },
+    {
+      "date": "2024-06-01",
+      "venue": "京都",
+      "title": "鳴尾記念",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "ヨーホーレイク"
+      ]
+    },
+    {
+      "date": "2024-06-02",
+      "venue": "東京",
+      "title": "安田記念",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "ロマンチックウォリアー"
+      ]
+    },
+    {
+      "date": "2024-06-09",
+      "venue": "東京",
+      "title": "エプソムC",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1800,
+      "winners": [
+        "レーベンスティール"
+      ]
+    },
+    {
+      "date": "2024-06-09",
+      "venue": "函館",
+      "title": "函館スプリントS",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1200,
+      "winners": [
+        "サトノレーヴ"
+      ]
+    },
+    {
+      "date": "2024-06-16",
+      "venue": "京都",
+      "title": "マーメイドS",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "アリスヴェリテ"
+      ]
+    },
+    {
+      "date": "2024-06-22",
+      "venue": "東京",
+      "title": "東京ジャンプS",
+      "grade": "G3",
+      "jump": true,
+      "surface": "障",
+      "distance": 3110,
+      "winners": [
+        "ジューンベロシティ"
+      ]
+    },
+    {
+      "date": "2024-06-23",
+      "venue": "京都",
+      "title": "宝塚記念",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2200,
+      "winners": [
+        "ブローザホーン"
+      ]
+    },
+    {
+      "date": "2024-06-30",
+      "venue": "福島",
+      "title": "ラジオNIKKEI賞",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1800,
+      "winners": [
+        "オフトレイル"
+      ]
+    },
+    {
+      "date": "2024-06-30",
+      "venue": "小倉",
+      "title": "北九州記念",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1200,
+      "winners": [
+        "ピューロマジック"
+      ]
+    },
+    {
+      "date": "2024-07-07",
+      "venue": "福島",
+      "title": "七夕賞",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "レッドラディエンス"
+      ]
+    },
+    {
+      "date": "2024-07-07",
+      "venue": "小倉",
+      "title": "プロキオンS",
+      "grade": "G3",
+      "jump": false,
+      "surface": "ダ",
+      "distance": 1700,
+      "winners": [
+        "ヤマニンウルス"
+      ]
+    },
+    {
+      "date": "2024-07-13",
+      "venue": "函館",
+      "title": "函館2歳S",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1200,
+      "winners": [
+        "サトノカルナバル"
+      ]
+    },
+    {
+      "date": "2024-07-14",
+      "venue": "函館",
+      "title": "函館記念",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "ホウオウビスケッツ"
+      ]
+    },
+    {
+      "date": "2024-07-21",
+      "venue": "小倉",
+      "title": "中京記念",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1800,
+      "winners": [
+        "アルナシーム"
+      ]
+    },
+    {
+      "date": "2024-07-27",
+      "venue": "新潟",
+      "title": "新潟ジャンプS",
+      "grade": "G3",
+      "jump": true,
+      "surface": "障",
+      "distance": 3250,
+      "winners": [
+        "ホッコーメヴィウス"
+      ]
+    },
+    {
+      "date": "2024-07-28",
+      "venue": "新潟",
+      "title": "アイビスサマーダッシュ",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1000,
+      "winners": [
+        "モズメイメイ"
+      ]
+    },
+    {
+      "date": "2024-07-28",
+      "venue": "札幌",
+      "title": "クイーンS",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1800,
+      "winners": [
+        "コガネノソラ"
+      ]
+    },
+    {
+      "date": "2024-08-04",
+      "venue": "新潟",
+      "title": "レパードS",
+      "grade": "G3",
+      "jump": false,
+      "surface": "ダ",
+      "distance": 1800,
+      "winners": [
+        "ミッキーファイト"
+      ]
+    },
+    {
+      "date": "2024-08-04",
+      "venue": "札幌",
+      "title": "エルムS",
+      "grade": "G3",
+      "jump": false,
+      "surface": "ダ",
+      "distance": 1700,
+      "winners": [
+        "ペイシャエス"
+      ]
+    },
+    {
+      "date": "2024-08-11",
+      "venue": "中京",
+      "title": "小倉記念",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "リフレーミング"
+      ]
+    },
+    {
+      "date": "2024-08-11",
+      "venue": "新潟",
+      "title": "関屋記念",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "トゥードジボン"
+      ]
+    },
+    {
+      "date": "2024-08-18",
+      "venue": "中京",
+      "title": "CBC賞",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1200,
+      "winners": [
+        "ドロップオブライト"
+      ]
+    },
+    {
+      "date": "2024-08-18",
+      "venue": "札幌",
+      "title": "札幌記念",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "ノースブリッジ"
+      ]
+    },
+    {
+      "date": "2024-08-24",
+      "venue": "中京",
+      "title": "小倉サマージャンプ",
+      "grade": "G3",
+      "jump": true,
+      "surface": "障",
+      "distance": 3300,
+      "winners": [
+        "ロスコフ"
+      ]
+    },
+    {
+      "date": "2024-08-25",
+      "venue": "新潟",
+      "title": "新潟2歳S",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "トータルクラリティ"
+      ]
+    },
+    {
+      "date": "2024-08-25",
+      "venue": "札幌",
+      "title": "キーンランドC",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1200,
+      "winners": [
+        "サトノレーヴ"
+      ]
+    },
+    {
+      "date": "2024-08-31",
+      "venue": "札幌",
+      "title": "札幌2歳S",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1800,
+      "winners": [
+        "マジックサンズ"
+      ]
+    },
+    {
+      "date": "2024-09-01",
+      "venue": "新潟",
+      "title": "新潟記念",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "シンリョクカ"
+      ]
+    },
+    {
+      "date": "2024-09-01",
+      "venue": "中京",
+      "title": "小倉2歳S",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1200,
+      "winners": [
+        "エイシンワンド"
+      ]
+    },
+    {
+      "date": "2024-09-07",
+      "venue": "中山",
+      "title": "紫苑S",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "クリスマスパレード"
+      ]
+    },
+    {
+      "date": "2024-09-08",
+      "venue": "中山",
+      "title": "京成杯オータムH",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "アスコリピチェーノ"
+      ]
+    },
+    {
+      "date": "2024-09-08",
+      "venue": "中京",
+      "title": "セントウルS",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1200,
+      "winners": [
+        "トウシンマカオ"
+      ]
+    },
+    {
+      "date": "2024-09-14",
+      "venue": "中京",
+      "title": "阪神ジャンプS",
+      "grade": "G3",
+      "jump": true,
+      "surface": "障",
+      "distance": 3330,
+      "winners": [
+        "サペラヴィ"
+      ]
+    },
+    {
+      "date": "2024-09-15",
+      "venue": "中京",
+      "title": "ローズS",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "クイーンズウォーク"
+      ]
+    },
+    {
+      "date": "2024-09-16",
+      "venue": "中山",
+      "title": "セントライト記念",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2200,
+      "winners": [
+        "アーバンシック"
+      ]
+    },
+    {
+      "date": "2024-09-22",
+      "venue": "中山",
+      "title": "オールカマー",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2200,
+      "winners": [
+        "レーベンスティール"
+      ]
+    },
+    {
+      "date": "2024-09-22",
+      "venue": "中京",
+      "title": "神戸新聞杯",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2200,
+      "winners": [
+        "メイショウタバル"
+      ]
+    },
+    {
+      "date": "2024-09-28",
+      "venue": "中京",
+      "title": "シリウスS",
+      "grade": "G3",
+      "jump": false,
+      "surface": "ダ",
+      "distance": 1900,
+      "winners": [
+        "ハギノアレグリアス"
+      ]
+    },
+    {
+      "date": "2024-09-29",
+      "venue": "中山",
+      "title": "スプリンターズS",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1200,
+      "winners": [
+        "ルガル"
+      ]
+    },
+    {
+      "date": "2024-10-05",
+      "venue": "東京",
+      "title": "サウジアラビアロイヤルC",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "アルテヴェローチェ"
+      ]
+    },
+    {
+      "date": "2024-10-06",
+      "venue": "東京",
+      "title": "毎日王冠",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1800,
+      "winners": [
+        "シックスペンス"
+      ]
+    },
+    {
+      "date": "2024-10-06",
+      "venue": "京都",
+      "title": "京都大賞典",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2400,
+      "winners": [
+        "シュヴァリエローズ"
+      ]
+    },
+    {
+      "date": "2024-10-13",
+      "venue": "東京",
+      "title": "東京ハイジャンプ",
+      "grade": "G2",
+      "jump": true,
+      "surface": "障",
+      "distance": 3110,
+      "winners": [
+        "ジューンベロシティ"
+      ]
+    },
+    {
+      "date": "2024-10-13",
+      "venue": "京都",
+      "title": "秋華賞",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "チェルヴィニア"
+      ]
+    },
+    {
+      "date": "2024-10-14",
+      "venue": "東京",
+      "title": "府中牝馬S",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1800,
+      "winners": [
+        "ブレイディヴェーグ"
+      ]
+    },
+    {
+      "date": "2024-10-19",
+      "venue": "東京",
+      "title": "富士S",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "ジュンブロッサム"
+      ]
+    },
+    {
+      "date": "2024-10-20",
+      "venue": "京都",
+      "title": "菊花賞",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 3000,
+      "winners": [
+        "アーバンシック"
+      ]
+    },
+    {
+      "date": "2024-10-26",
+      "venue": "東京",
+      "title": "アルテミスS",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "ブラウンラチェット"
+      ]
+    },
+    {
+      "date": "2024-10-26",
+      "venue": "京都",
+      "title": "スワンS",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1400,
+      "winners": [
+        "ダノンマッキンリー"
+      ]
+    },
+    {
+      "date": "2024-10-27",
+      "venue": "東京",
+      "title": "天皇賞（秋）",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "ドウデュース"
+      ]
+    },
+    {
+      "date": "2024-11-02",
+      "venue": "東京",
+      "title": "京王杯2歳S",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1400,
+      "winners": [
+        "パンジャタワー"
+      ]
+    },
+    {
+      "date": "2024-11-02",
+      "venue": "京都",
+      "title": "ファンタジーS",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1400,
+      "winners": [
+        "ダンツエラン"
+      ]
+    },
+    {
+      "date": "2024-11-03",
+      "venue": "東京",
+      "title": "アルゼンチン共和国杯",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2500,
+      "winners": [
+        "ハヤヤッコ"
+      ]
+    },
+    {
+      "date": "2024-11-03",
+      "venue": "京都",
+      "title": "みやこS",
+      "grade": "G3",
+      "jump": false,
+      "surface": "ダ",
+      "distance": 1800,
+      "winners": [
+        "サンライズジパング"
+      ]
+    },
+    {
+      "date": "2024-11-09",
+      "venue": "東京",
+      "title": "武蔵野S",
+      "grade": "G3",
+      "jump": false,
+      "surface": "ダ",
+      "distance": 1600,
+      "winners": [
+        "エンペラーワケア"
+      ]
+    },
+    {
+      "date": "2024-11-09",
+      "venue": "京都",
+      "title": "京都ジャンプS",
+      "grade": "G3",
+      "jump": true,
+      "surface": "障",
+      "distance": 3170,
+      "winners": [
+        "スマイルスルー"
+      ]
+    },
+    {
+      "date": "2024-11-09",
+      "venue": "京都",
+      "title": "デイリー杯2歳S",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "ランフォーヴァウ"
+      ]
+    },
+    {
+      "date": "2024-11-10",
+      "venue": "京都",
+      "title": "エリザベス女王杯",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2200,
+      "winners": [
+        "スタニングローズ"
+      ]
+    },
+    {
+      "date": "2024-11-10",
+      "venue": "福島",
+      "title": "福島記念",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "アラタ"
+      ]
+    },
+    {
+      "date": "2024-11-16",
+      "venue": "東京",
+      "title": "東スポ杯2歳S",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1800,
+      "winners": [
+        "クロワデュノール"
+      ]
+    },
+    {
+      "date": "2024-11-17",
+      "venue": "京都",
+      "title": "マイルチャンピオンシップ",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "ソウルラッシュ"
+      ]
+    },
+    {
+      "date": "2024-11-23",
+      "venue": "京都",
+      "title": "京都2歳S",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "エリキング"
+      ]
+    },
+    {
+      "date": "2024-11-24",
+      "venue": "東京",
+      "title": "ジャパンC",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2400,
+      "winners": [
+        "ドウデュース"
+      ]
+    },
+    {
+      "date": "2024-11-24",
+      "venue": "京都",
+      "title": "京阪杯",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1200,
+      "winners": [
+        "ビッグシーザー"
+      ]
+    },
+    {
+      "date": "2024-11-30",
+      "venue": "中山",
+      "title": "ステイヤーズS",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 3600,
+      "winners": [
+        "シュヴァリエローズ"
+      ]
+    },
+    {
+      "date": "2024-11-30",
+      "venue": "京都",
+      "title": "チャレンジC",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "ラヴェル"
+      ]
+    },
+    {
+      "date": "2024-12-01",
+      "venue": "中京",
+      "title": "チャンピオンズC",
+      "grade": "G1",
+      "jump": false,
+      "surface": "ダ",
+      "distance": 1800,
+      "winners": [
+        "レモンポップ"
+      ]
+    },
+    {
+      "date": "2024-12-07",
+      "venue": "中京",
+      "title": "中日新聞杯",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "デシエルト"
+      ]
+    },
+    {
+      "date": "2024-12-08",
+      "venue": "中山",
+      "title": "カペラS",
+      "grade": "G3",
+      "jump": false,
+      "surface": "ダ",
+      "distance": 1200,
+      "winners": [
+        "ガビーズシスター"
+      ]
+    },
+    {
+      "date": "2024-12-08",
+      "venue": "京都",
+      "title": "阪神ジュベナイルF",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "アルマヴェローチェ"
+      ]
+    },
+    {
+      "date": "2024-12-14",
+      "venue": "中山",
+      "title": "ターコイズS",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "アルジーヌ"
+      ]
+    },
+    {
+      "date": "2024-12-15",
+      "venue": "京都",
+      "title": "朝日杯フューチュリティS",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "アドマイヤズーム"
+      ]
+    },
+    {
+      "date": "2024-12-21",
+      "venue": "中山",
+      "title": "中山大障害",
+      "grade": "G1",
+      "jump": true,
+      "surface": "障",
+      "distance": 4100,
+      "winners": [
+        "ニシノデイジー"
+      ]
+    },
+    {
+      "date": "2024-12-21",
+      "venue": "京都",
+      "title": "阪神C",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1400,
+      "winners": [
+        "ナムラクレア"
+      ]
+    },
+    {
+      "date": "2024-12-22",
+      "venue": "中山",
+      "title": "有馬記念",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2500,
+      "winners": [
+        "レガレイラ"
+      ]
+    },
+    {
+      "date": "2024-12-28",
+      "venue": "中山",
+      "title": "ホープフルS",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "クロワデュノール"
+      ]
+    },
+    {
+      "date": "2025-01-05",
+      "venue": "中山",
+      "title": "中山金杯",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "アルナシーム"
+      ]
+    },
+    {
+      "date": "2025-01-05",
+      "venue": "中京",
+      "title": "京都金杯",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "サクラトゥジュール"
+      ]
+    },
+    {
+      "date": "2025-01-12",
+      "venue": "中山",
+      "title": "フェアリーS",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "エリカエクスプレス"
+      ]
+    },
+    {
+      "date": "2025-01-13",
+      "venue": "中京",
+      "title": "シンザン記念",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "リラエンブレム"
+      ]
+    },
+    {
+      "date": "2025-01-19",
+      "venue": "中山",
+      "title": "京成杯",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "ニシノエージェント"
+      ]
+    },
+    {
+      "date": "2025-01-19",
+      "venue": "中京",
+      "title": "日経新春杯",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2200,
+      "winners": [
+        "ロードデルレイ"
+      ]
+    },
+    {
+      "date": "2025-01-25",
+      "venue": "小倉",
+      "title": "小倉牝馬S",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "フェアエールング",
+        "シンティレーション"
+      ]
+    },
+    {
+      "date": "2025-01-26",
+      "venue": "中山",
+      "title": "アメリカJCC",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2200,
+      "winners": [
+        "ダノンデサイル"
+      ]
+    },
+    {
+      "date": "2025-01-26",
+      "venue": "中京",
+      "title": "プロキオンS",
+      "grade": "G2",
+      "jump": false,
+      "surface": "ダ",
+      "distance": 1800,
+      "winners": [
+        "サンデーファンデー"
+      ]
+    },
+    {
+      "date": "2025-02-02",
+      "venue": "東京",
+      "title": "根岸S",
+      "grade": "G3",
+      "jump": false,
+      "surface": "ダ",
+      "distance": 1400,
+      "winners": [
+        "コスタノヴァ"
+      ]
+    },
+    {
+      "date": "2025-02-02",
+      "venue": "京都",
+      "title": "シルクロードS",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1200,
+      "winners": [
+        "エイシンフェンサー"
+      ]
+    },
+    {
+      "date": "2025-02-09",
+      "venue": "東京",
+      "title": "東京新聞杯",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "ウォーターリヒト"
+      ]
+    },
+    {
+      "date": "2025-02-09",
+      "venue": "京都",
+      "title": "きさらぎ賞",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1800,
+      "winners": [
+        "サトノシャイニング"
+      ]
+    },
+    {
+      "date": "2025-02-15",
+      "venue": "東京",
+      "title": "クイーンC",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "エンブロイダリー"
+      ]
+    },
+    {
+      "date": "2025-02-15",
+      "venue": "小倉",
+      "title": "小倉ジャンプS",
+      "grade": "G3",
+      "jump": true,
+      "surface": "障",
+      "distance": 3390,
+      "winners": [
+        "スマイルスルー"
+      ]
+    },
+    {
+      "date": "2025-02-16",
+      "venue": "東京",
+      "title": "共同通信杯",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1800,
+      "winners": [
+        "マスカレードボール"
+      ]
+    },
+    {
+      "date": "2025-02-16",
+      "venue": "京都",
+      "title": "京都記念",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2200,
+      "winners": [
+        "ヨーホーレイク"
+      ]
+    },
+    {
+      "date": "2025-02-22",
+      "venue": "東京",
+      "title": "ダイヤモンドS",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 3400,
+      "winners": [
+        "ヘデントール"
+      ]
+    },
+    {
+      "date": "2025-02-22",
+      "venue": "京都",
+      "title": "阪急杯",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1400,
+      "winners": [
+        "カンチェンジュンガ"
+      ]
+    },
+    {
+      "date": "2025-02-23",
+      "venue": "東京",
+      "title": "フェブラリーS",
+      "grade": "G1",
+      "jump": false,
+      "surface": "ダ",
+      "distance": 1600,
+      "winners": [
+        "コスタノヴァ"
+      ]
+    },
+    {
+      "date": "2025-02-23",
+      "venue": "小倉",
+      "title": "小倉大賞典",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1800,
+      "winners": [
+        "ロングラン"
+      ]
+    },
+    {
+      "date": "2025-03-01",
+      "venue": "中山",
+      "title": "オーシャンS",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1200,
+      "winners": [
+        "ママコチャ"
+      ]
+    },
+    {
+      "date": "2025-03-02",
+      "venue": "中山",
+      "title": "中山記念",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1800,
+      "winners": [
+        "シックスペンス"
+      ]
+    },
+    {
+      "date": "2025-03-02",
+      "venue": "阪神",
+      "title": "チューリップ賞",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "クリノメイ"
+      ]
+    },
+    {
+      "date": "2025-03-08",
+      "venue": "中山",
+      "title": "中山牝馬S",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1800,
+      "winners": [
+        "シランケド"
+      ]
+    },
+    {
+      "date": "2025-03-08",
+      "venue": "阪神",
+      "title": "フィリーズレビュー",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1400,
+      "winners": [
+        "ショウナンザナドゥ"
+      ]
+    },
+    {
+      "date": "2025-03-09",
+      "venue": "中山",
+      "title": "弥生賞",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "ファウストラーゼン"
+      ]
+    },
+    {
+      "date": "2025-03-15",
+      "venue": "阪神",
+      "title": "阪神スプリングジャンプ",
+      "grade": "G2",
+      "jump": true,
+      "surface": "障",
+      "distance": 3900,
+      "winners": [
+        "ヴェイルネビュラ"
+      ]
+    },
+    {
+      "date": "2025-03-16",
+      "venue": "中山",
+      "title": "スプリングS",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1800,
+      "winners": [
+        "ピコチャンブラック"
+      ]
+    },
+    {
+      "date": "2025-03-16",
+      "venue": "中京",
+      "title": "金鯱賞",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "クイーンズウォーク"
+      ]
+    },
+    {
+      "date": "2025-03-22",
+      "venue": "中山",
+      "title": "フラワーC",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1800,
+      "winners": [
+        "レーゼドラマ"
+      ]
+    },
+    {
+      "date": "2025-03-22",
+      "venue": "中京",
+      "title": "ファルコンS",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1400,
+      "winners": [
+        "ヤンキーバローズ"
+      ]
+    },
+    {
+      "date": "2025-03-23",
+      "venue": "阪神",
+      "title": "阪神大賞典",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 3000,
+      "winners": [
+        "サンライズアース"
+      ]
+    },
+    {
+      "date": "2025-03-23",
+      "venue": "中京",
+      "title": "愛知杯",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1400,
+      "winners": [
+        "ワイドラトゥール"
+      ]
+    },
+    {
+      "date": "2025-03-29",
+      "venue": "中山",
+      "title": "日経賞",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2500,
+      "winners": [
+        "マイネルエンペラー"
+      ]
+    },
+    {
+      "date": "2025-03-29",
+      "venue": "阪神",
+      "title": "毎日杯",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1800,
+      "winners": [
+        "ファンダム"
+      ]
+    },
+    {
+      "date": "2025-03-30",
+      "venue": "中山",
+      "title": "マーチS",
+      "grade": "G3",
+      "jump": false,
+      "surface": "ダ",
+      "distance": 1800,
+      "winners": [
+        "ブライアンセンス"
+      ]
+    },
+    {
+      "date": "2025-03-30",
+      "venue": "中京",
+      "title": "高松宮記念",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1200,
+      "winners": [
+        "サトノレーヴ"
+      ]
+    },
+    {
+      "date": "2025-04-05",
+      "venue": "中山",
+      "title": "ダービー卿チャレンジT",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "トロヴァトーレ"
+      ]
+    },
+    {
+      "date": "2025-04-05",
+      "venue": "阪神",
+      "title": "チャーチルダウンズC",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "ランスオブカオス"
+      ]
+    },
+    {
+      "date": "2025-04-06",
+      "venue": "阪神",
+      "title": "大阪杯",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "ベラジオオペラ"
+      ]
+    },
+    {
+      "date": "2025-04-12",
+      "venue": "中山",
+      "title": "ニュージーランドT",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "イミグラントソング"
+      ]
+    },
+    {
+      "date": "2025-04-12",
+      "venue": "阪神",
+      "title": "阪神牝馬S",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "サフィラ"
+      ]
+    },
+    {
+      "date": "2025-04-13",
+      "venue": "阪神",
+      "title": "桜花賞",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "エンブロイダリー"
+      ]
+    },
+    {
+      "date": "2025-04-19",
+      "venue": "中山",
+      "title": "中山グランドジャンプ",
+      "grade": "G1",
+      "jump": true,
+      "surface": "障",
+      "distance": 4260,
+      "winners": [
+        "エコロデュエル"
+      ]
+    },
+    {
+      "date": "2025-04-19",
+      "venue": "阪神",
+      "title": "アンタレスS",
+      "grade": "G3",
+      "jump": false,
+      "surface": "ダ",
+      "distance": 1800,
+      "winners": [
+        "ミッキーファイト"
+      ]
+    },
+    {
+      "date": "2025-04-20",
+      "venue": "中山",
+      "title": "皐月賞",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "ミュージアムマイル"
+      ]
+    },
+    {
+      "date": "2025-04-20",
+      "venue": "福島",
+      "title": "福島牝馬S",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1800,
+      "winners": [
+        "アドマイヤマツリ"
+      ]
+    },
+    {
+      "date": "2025-04-26",
+      "venue": "東京",
+      "title": "青葉賞",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2400,
+      "winners": [
+        "エネルジコ"
+      ]
+    },
+    {
+      "date": "2025-04-27",
+      "venue": "東京",
+      "title": "フローラS",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "カムニャック"
+      ]
+    },
+    {
+      "date": "2025-04-27",
+      "venue": "京都",
+      "title": "マイラーズC",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "ロングラン"
+      ]
+    },
+    {
+      "date": "2025-05-03",
+      "venue": "東京",
+      "title": "京王杯スプリングC",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1400,
+      "winners": [
+        "トウシンマカオ"
+      ]
+    },
+    {
+      "date": "2025-05-03",
+      "venue": "京都",
+      "title": "ユニコーンS",
+      "grade": "G3",
+      "jump": false,
+      "surface": "ダ",
+      "distance": 1900,
+      "winners": [
+        "カナルビーグル"
+      ]
+    },
+    {
+      "date": "2025-05-04",
+      "venue": "京都",
+      "title": "天皇賞（春）",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 3200,
+      "winners": [
+        "ヘデントール"
+      ]
+    },
+    {
+      "date": "2025-05-10",
+      "venue": "東京",
+      "title": "エプソムC",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1800,
+      "winners": [
+        "セイウンハーデス"
+      ]
+    },
+    {
+      "date": "2025-05-10",
+      "venue": "京都",
+      "title": "京都新聞杯",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2200,
+      "winners": [
+        "ショウヘイ"
+      ]
+    },
+    {
+      "date": "2025-05-11",
+      "venue": "東京",
+      "title": "NHKマイルC",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "パンジャタワー"
+      ]
+    },
+    {
+      "date": "2025-05-17",
+      "venue": "京都",
+      "title": "京都ハイジャンプ",
+      "grade": "G2",
+      "jump": true,
+      "surface": "障",
+      "distance": 3930,
+      "winners": [
+        "アンクルブラック"
+      ]
+    },
+    {
+      "date": "2025-05-17",
+      "venue": "新潟",
+      "title": "新潟大賞典",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "シリウスコルト"
+      ]
+    },
+    {
+      "date": "2025-05-18",
+      "venue": "東京",
+      "title": "ヴィクトリアマイル",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "アスコリピチェーノ"
+      ]
+    },
+    {
+      "date": "2025-05-24",
+      "venue": "京都",
+      "title": "平安S",
+      "grade": "G3",
+      "jump": false,
+      "surface": "ダ",
+      "distance": 1900,
+      "winners": [
+        "アウトレンジ"
+      ]
+    },
+    {
+      "date": "2025-05-25",
+      "venue": "東京",
+      "title": "オークス",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2400,
+      "winners": [
+        "カムニャック"
+      ]
+    },
+    {
+      "date": "2025-05-31",
+      "venue": "京都",
+      "title": "葵S",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1200,
+      "winners": [
+        "アブキールベイ"
+      ]
+    },
+    {
+      "date": "2025-06-01",
+      "venue": "東京",
+      "title": "日本ダービー",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2400,
+      "winners": [
+        "クロワデュノール"
+      ]
+    },
+    {
+      "date": "2025-06-01",
+      "venue": "東京",
+      "title": "目黒記念",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2500,
+      "winners": [
+        "アドマイヤテラ"
+      ]
+    },
+    {
+      "date": "2025-06-08",
+      "venue": "東京",
+      "title": "安田記念",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "ジャンタルマンタル"
+      ]
+    },
+    {
+      "date": "2025-06-14",
+      "venue": "東京",
+      "title": "東京ジャンプS",
+      "grade": "G3",
+      "jump": true,
+      "surface": "障",
+      "distance": 3110,
+      "winners": [
+        "ジューンベロシティ"
+      ]
+    },
+    {
+      "date": "2025-06-14",
+      "venue": "函館",
+      "title": "函館スプリントS",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1200,
+      "winners": [
+        "カピリナ"
+      ]
+    },
+    {
+      "date": "2025-06-15",
+      "venue": "阪神",
+      "title": "宝塚記念",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2200,
+      "winners": [
+        "メイショウタバル"
+      ]
+    },
+    {
+      "date": "2025-06-22",
+      "venue": "東京",
+      "title": "府中牝馬S",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1800,
+      "winners": [
+        "セキトバイースト"
+      ]
+    },
+    {
+      "date": "2025-06-22",
+      "venue": "阪神",
+      "title": "しらさぎS",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "キープカルム"
+      ]
+    },
+    {
+      "date": "2025-06-29",
+      "venue": "福島",
+      "title": "ラジオNIKKEI賞",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1800,
+      "winners": [
+        "エキサイトバイオ"
+      ]
+    },
+    {
+      "date": "2025-06-29",
+      "venue": "函館",
+      "title": "函館記念",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "ヴェローチェエラ"
+      ]
+    },
+    {
+      "date": "2025-07-06",
+      "venue": "小倉",
+      "title": "北九州記念",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1200,
+      "winners": [
+        "ヤマニンアルリフラ"
+      ]
+    },
+    {
+      "date": "2025-07-13",
+      "venue": "福島",
+      "title": "七夕賞",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "コスモフリーゲン"
+      ]
+    },
+    {
+      "date": "2025-07-20",
+      "venue": "小倉",
+      "title": "小倉記念",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "イングランドアイズ"
+      ]
+    },
+    {
+      "date": "2025-07-20",
+      "venue": "函館",
+      "title": "函館2歳S",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1200,
+      "winners": [
+        "エイシンディード"
+      ]
+    },
+    {
+      "date": "2025-07-27",
+      "venue": "新潟",
+      "title": "関屋記念",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "カナテープ"
+      ]
+    },
+    {
+      "date": "2025-07-27",
+      "venue": "中京",
+      "title": "東海S",
+      "grade": "G3",
+      "jump": false,
+      "surface": "ダ",
+      "distance": 1400,
+      "winners": [
+        "ヤマニンウルス"
+      ]
+    },
+    {
+      "date": "2025-08-03",
+      "venue": "新潟",
+      "title": "アイビスサマーダッシュ",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1000,
+      "winners": [
+        "ピューロマジック"
+      ]
+    },
+    {
+      "date": "2025-08-03",
+      "venue": "札幌",
+      "title": "クイーンS",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1800,
+      "winners": [
+        "アルジーヌ"
+      ]
+    },
+    {
+      "date": "2025-08-09",
+      "venue": "札幌",
+      "title": "エルムS",
+      "grade": "G3",
+      "jump": false,
+      "surface": "ダ",
+      "distance": 1700,
+      "winners": [
+        "ペリエール"
+      ]
+    },
+    {
+      "date": "2025-08-10",
+      "venue": "新潟",
+      "title": "レパードS",
+      "grade": "G3",
+      "jump": false,
+      "surface": "ダ",
+      "distance": 1800,
+      "winners": [
+        "ドンインザムード"
+      ]
+    },
+    {
+      "date": "2025-08-10",
+      "venue": "中京",
+      "title": "CBC賞",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1200,
+      "winners": [
+        "インビンシブルパパ"
+      ]
+    },
+    {
+      "date": "2025-08-16",
+      "venue": "新潟",
+      "title": "新潟ジャンプS",
+      "grade": "G3",
+      "jump": true,
+      "surface": "障",
+      "distance": 3250,
+      "winners": [
+        "インプレス"
+      ]
+    },
+    {
+      "date": "2025-08-17",
+      "venue": "中京",
+      "title": "中京記念",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "マピュース"
+      ]
+    },
+    {
+      "date": "2025-08-17",
+      "venue": "札幌",
+      "title": "札幌記念",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "トップナイフ"
+      ]
+    },
+    {
+      "date": "2025-08-24",
+      "venue": "新潟",
+      "title": "新潟2歳S",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "リアライズシリウス"
+      ]
+    },
+    {
+      "date": "2025-08-24",
+      "venue": "札幌",
+      "title": "キーンランドC",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1200,
+      "winners": [
+        "パンジャタワー"
+      ]
+    },
+    {
+      "date": "2025-08-31",
+      "venue": "新潟",
+      "title": "新潟記念",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "シランケド"
+      ]
+    },
+    {
+      "date": "2025-08-31",
+      "venue": "中京",
+      "title": "中京2歳S",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1400,
+      "winners": [
+        "キャンディード"
+      ]
+    },
+    {
+      "date": "2025-09-06",
+      "venue": "中山",
+      "title": "京成杯オータムH",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "ホウオウラスカーズ"
+      ]
+    },
+    {
+      "date": "2025-09-06",
+      "venue": "札幌",
+      "title": "札幌2歳S",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1800,
+      "winners": [
+        "ショウナンガルフ"
+      ]
+    },
+    {
+      "date": "2025-09-07",
+      "venue": "中山",
+      "title": "紫苑S",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "ケリフレッドアスク"
+      ]
+    },
+    {
+      "date": "2025-09-07",
+      "venue": "阪神",
+      "title": "セントウルS",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1200,
+      "winners": [
+        "カンチェンジュンガ"
+      ]
+    },
+    {
+      "date": "2025-09-13",
+      "venue": "阪神",
+      "title": "チャレンジC",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "オールナット"
+      ]
+    },
+    {
+      "date": "2025-09-14",
+      "venue": "阪神",
+      "title": "ローズS",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1800,
+      "winners": [
+        "カムニャック"
+      ]
+    },
+    {
+      "date": "2025-09-15",
+      "venue": "中山",
+      "title": "セントライト記念",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2200,
+      "winners": [
+        "ミュージアムマイル"
+      ]
+    },
+    {
+      "date": "2025-09-20",
+      "venue": "阪神",
+      "title": "阪神ジャンプS",
+      "grade": "G3",
+      "jump": true,
+      "surface": "障",
+      "distance": 3140,
+      "winners": [
+        "ネビーイーム"
+      ]
+    },
+    {
+      "date": "2025-09-21",
+      "venue": "中山",
+      "title": "オールカマー",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2200,
+      "winners": [
+        "レガレイラ"
+      ]
+    },
+    {
+      "date": "2025-09-21",
+      "venue": "阪神",
+      "title": "神戸新聞杯",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2400,
+      "winners": [
+        "エリキング"
+      ]
+    },
+    {
+      "date": "2025-09-27",
+      "venue": "阪神",
+      "title": "シリウスS",
+      "grade": "G3",
+      "jump": false,
+      "surface": "ダ",
+      "distance": 2000,
+      "winners": [
+        "ホウオウルーレット"
+      ]
+    },
+    {
+      "date": "2025-09-28",
+      "venue": "中山",
+      "title": "スプリンターズS",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1200,
+      "winners": [
+        "ウインカーネリアン"
+      ]
+    },
+    {
+      "date": "2025-10-05",
+      "venue": "東京",
+      "title": "毎日王冠",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1800,
+      "winners": [
+        "レーベンスティール"
+      ]
+    },
+    {
+      "date": "2025-10-05",
+      "venue": "京都",
+      "title": "京都大賞典",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2400,
+      "winners": [
+        "ディープモンスター"
+      ]
+    },
+    {
+      "date": "2025-10-11",
+      "venue": "東京",
+      "title": "サウジアラビアロイヤルC",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "エコロアルバ"
+      ]
+    },
+    {
+      "date": "2025-10-12",
+      "venue": "東京",
+      "title": "アイルランドT",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1800,
+      "winners": [
+        "ラヴァンダ"
+      ]
+    },
+    {
+      "date": "2025-10-13",
+      "venue": "京都",
+      "title": "スワンS",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1400,
+      "winners": [
+        "オフトレイル"
+      ]
+    },
+    {
+      "date": "2025-10-18",
+      "venue": "東京",
+      "title": "富士S",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "ガイアフォース"
+      ]
+    },
+    {
+      "date": "2025-10-19",
+      "venue": "東京",
+      "title": "東京ハイジャンプ",
+      "grade": "G2",
+      "jump": true,
+      "surface": "障",
+      "distance": 3110,
+      "winners": [
+        "ジューンベロシティ"
+      ]
+    },
+    {
+      "date": "2025-10-19",
+      "venue": "京都",
+      "title": "秋華賞",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "エンブロイダリー"
+      ]
+    },
+    {
+      "date": "2025-10-25",
+      "venue": "東京",
+      "title": "アルテミスS",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "フィロステファニ"
+      ]
+    },
+    {
+      "date": "2025-10-26",
+      "venue": "京都",
+      "title": "菊花賞",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 3000,
+      "winners": [
+        "エネルジコ"
+      ]
+    },
+    {
+      "date": "2025-11-01",
+      "venue": "京都",
+      "title": "ファンタジーS",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1400,
+      "winners": [
+        "フェスティバルヒル"
+      ]
+    },
+    {
+      "date": "2025-11-02",
+      "venue": "東京",
+      "title": "天皇賞（秋）",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "マスカレードボール"
+      ]
+    },
+    {
+      "date": "2025-11-08",
+      "venue": "東京",
+      "title": "京王杯2歳S",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1400,
+      "winners": [
+        "ダイヤモンドノット"
+      ]
+    },
+    {
+      "date": "2025-11-08",
+      "venue": "京都",
+      "title": "京都ジャンプS",
+      "grade": "G3",
+      "jump": true,
+      "surface": "障",
+      "distance": 3170,
+      "winners": [
+        "ローディアマント"
+      ]
+    },
+    {
+      "date": "2025-11-09",
+      "venue": "東京",
+      "title": "アルゼンチン共和国杯",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2500,
+      "winners": [
+        "ミステリーウェイ"
+      ]
+    },
+    {
+      "date": "2025-11-09",
+      "venue": "京都",
+      "title": "みやこS",
+      "grade": "G3",
+      "jump": false,
+      "surface": "ダ",
+      "distance": 1800,
+      "winners": [
+        "ダブルハートボンド"
+      ]
+    },
+    {
+      "date": "2025-11-15",
+      "venue": "東京",
+      "title": "武蔵野S",
+      "grade": "G3",
+      "jump": false,
+      "surface": "ダ",
+      "distance": 1600,
+      "winners": [
+        "ルクソールカフェ"
+      ]
+    },
+    {
+      "date": "2025-11-15",
+      "venue": "京都",
+      "title": "デイリー杯2歳S",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "アドマイヤクワッズ"
+      ]
+    },
+    {
+      "date": "2025-11-16",
+      "venue": "京都",
+      "title": "エリザベス女王杯",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2200,
+      "winners": [
+        "レガレイラ"
+      ]
+    },
+    {
+      "date": "2025-11-22",
+      "venue": "福島",
+      "title": "福島記念",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "ニシノティアモ"
+      ]
+    },
+    {
+      "date": "2025-11-23",
+      "venue": "京都",
+      "title": "マイルチャンピオンシップ",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "ジャンタルマンタル"
+      ]
+    },
+    {
+      "date": "2025-11-24",
+      "venue": "東京",
+      "title": "東スポ杯2歳S",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1800,
+      "winners": [
+        "パントルナイーフ"
+      ]
+    },
+    {
+      "date": "2025-11-29",
+      "venue": "京都",
+      "title": "京都2歳S",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "ジャスティンビスタ"
+      ]
+    },
+    {
+      "date": "2025-11-30",
+      "venue": "東京",
+      "title": "ジャパンC",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2400,
+      "winners": [
+        "カランダガン"
+      ]
+    },
+    {
+      "date": "2025-11-30",
+      "venue": "京都",
+      "title": "京阪杯",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1200,
+      "winners": [
+        "エーティーマクフィ"
+      ]
+    },
+    {
+      "date": "2025-12-06",
+      "venue": "中山",
+      "title": "ステイヤーズS",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 3600,
+      "winners": [
+        "ホーエリート"
+      ]
+    },
+    {
+      "date": "2025-12-06",
+      "venue": "阪神",
+      "title": "鳴尾記念",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1800,
+      "winners": [
+        "デビットバローズ"
+      ]
+    },
+    {
+      "date": "2025-12-07",
+      "venue": "中京",
+      "title": "チャンピオンズC",
+      "grade": "G1",
+      "jump": false,
+      "surface": "ダ",
+      "distance": 1800,
+      "winners": [
+        "ダブルハートボンド"
+      ]
+    },
+    {
+      "date": "2025-12-13",
+      "venue": "中京",
+      "title": "中日新聞杯",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "シェイクユアハート"
+      ]
+    },
+    {
+      "date": "2025-12-14",
+      "venue": "中山",
+      "title": "カペラS",
+      "grade": "G3",
+      "jump": false,
+      "surface": "ダ",
+      "distance": 1200,
+      "winners": [
+        "テーオーエルビス"
+      ]
+    },
+    {
+      "date": "2025-12-14",
+      "venue": "阪神",
+      "title": "阪神ジュベナイルF",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "スターアニス"
+      ]
+    },
+    {
+      "date": "2025-12-20",
+      "venue": "中山",
+      "title": "ターコイズS",
+      "grade": "G3",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "ドロップオブライト"
+      ]
+    },
+    {
+      "date": "2025-12-21",
+      "venue": "阪神",
+      "title": "朝日杯フューチュリティS",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1600,
+      "winners": [
+        "カヴァレリッツォ"
+      ]
+    },
+    {
+      "date": "2025-12-27",
+      "venue": "中山",
+      "title": "中山大障害",
+      "grade": "G1",
+      "jump": true,
+      "surface": "障",
+      "distance": 4100,
+      "winners": [
+        "エコロデュエル"
+      ]
+    },
+    {
+      "date": "2025-12-27",
+      "venue": "中山",
+      "title": "ホープフルS",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2000,
+      "winners": [
+        "ロブチェン"
+      ]
+    },
+    {
+      "date": "2025-12-27",
+      "venue": "阪神",
+      "title": "阪神C",
+      "grade": "G2",
+      "jump": false,
+      "surface": "芝",
+      "distance": 1400,
+      "winners": [
+        "ルガル"
+      ]
+    },
+    {
+      "date": "2025-12-28",
+      "venue": "中山",
+      "title": "有馬記念",
+      "grade": "G1",
+      "jump": false,
+      "surface": "芝",
+      "distance": 2500,
+      "winners": [
+        "ミュージアムマイル"
+      ]
+    }
+  ]
+}
