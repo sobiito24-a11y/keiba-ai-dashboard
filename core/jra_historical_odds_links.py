@@ -28,4 +28,5 @@ def archived_odds_urls(identity, race_info):
         "keibalab": f"https://www.keibalab.jp/db/race/{key}/odds.html",
         "yuma_win": f"https://www.keiba.jp/db/race/{key}/odds.html?kind=tan",
         "yuma_place": f"https://www.keiba.jp/db/race/{key}/odds.html?kind=fuk",
+        "sportsnavi": f"https://sports.yahoo.co.jp/keiba/race/odds/tfw/{rid[2:]}",
     }
