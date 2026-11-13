@@ -42,19 +42,29 @@ def test_schema_covers_every_comparison_cell_and_has_no_ai_mark_or_membership(mo
     specs=columns(view)
     keys=[item["key"] for item in specs]
     assert len(keys)==len(set(keys))
-    assert keys[:9]==["user", "frame", "no", "name", "age", "jockey", "odds", "place_odds", "popularity"]
+    visible = [spec["key"] for spec in specs if not spec.get("table_hidden")]
+    assert visible == [
+        "user", "frame", "no", "name", "jockey", "odds", "popularity",
+        "research_sabcd", "ability", "style", "distance", "course",
+        "run_old", "run_middle", "run_latest", "average", "maximum",
+        "rest_days", "weight", "weight_delta", "jockey_change",
+        "record_venue", "record_distance", "record_venue_distance",
+        "class_attention",
+    ]
     if mode == "nar":
-        assert keys[9:13] == ["nar_hybrid_score", "nar_hybrid_rank", "ability", "ability_rank"]
+        assert "nar_hybrid_score" in keys and "nar_hybrid_rank" in keys
         assert "nar_form_rank" not in keys and "frozen_review" not in keys
     else:
-        assert keys[9:11] == ["ability", "ability_rank"]
         assert "nar_hybrid_score" not in keys
+    assert all(spec["table_hidden"] for spec in specs[len(visible):])
     assert keys[keys.index("run_old"):keys.index("run_old")+5]==[
         "run_old", "run_middle", "run_latest", "average", "maximum"]
     assert ("training" in keys)==(mode=="jra")
     assert all(item["type"] in ("number", "rank", "text", "grade", "boolean") for item in specs)
     assert not set(keys).intersection(("score", "rank", "reference_score", "mark", "formal_member", "candidate", "pickup", "focus_label"))
-    assert keys[-4:]==["record_venue", "record_distance", "record_venue_distance", "materials"]
+    assert {"record_venue", "record_distance", "record_venue_distance", "materials"}.issubset(keys)
+    assert all(key not in visible for key in ("star", "away", "corner", "training", "career_course", "place_odds"))
+    assert any(spec["key"]=="odds" and spec["label"]=="オッズ単複" for spec in specs)
     record=records(view)["7"]
     assert all(key in record for key in keys)
     assert all(record[item["text_key"]] for item in specs if "text_key" in item)
@@ -220,7 +230,9 @@ def test_research_composite_columns_are_hidden_not_deleted(mode, hidden):
     visible=[item["key"] for item in specs if not item.get("table_hidden")]
     assert hidden not in visible
     assert "class_attention" in visible
-    assert visible.index("class_attention") == visible.index("ability")+1
+    assert visible.index("class_attention") == len(visible)-1
+    assert visible.index("research_sabcd") == visible.index("ability")-1
+    assert visible.index("style") == visible.index("ability")+1
     if mode=="nar":
         assert "nar_hybrid_rank" not in visible
     else:
