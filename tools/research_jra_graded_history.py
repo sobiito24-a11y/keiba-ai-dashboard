@@ -201,7 +201,10 @@ def main():
               ("year_counts","grade_counts","total_graded_races","total_distinct_names",
                "winner_10x_all","winner_20x_all","winners_with_popularity","winners_with_corner4",
                "invalid_event_counts")},ensure_ascii=False))
-        print(START+raw+END)
+        print(START)
+        for i in range(0, len(raw), 3000):
+            print("RESEARCH_JSON_PART:" + str(i//3000) + ":" + raw[i:i+3000])
+        print(END)
     else:
         Path(args.output).write_text(json.dumps(report,ensure_ascii=False,indent=2)+"\n",
                                      encoding="utf-8")
