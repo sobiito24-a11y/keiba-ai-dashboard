@@ -7,6 +7,7 @@ The artwork is an original inline SVG; it is not taken from netkeiba.
 from html import escape
 
 from .race_development_positions import STAGES, layout
+from .race_course_direction import course_direction
 
 _LABELS = {
     "start": "スタート後",
@@ -60,17 +61,22 @@ def _runner_html(horse, stage, short):
     )
 
 
-def board_html(view):
-    """Return one tabbed section; the live DOM only toggles precomputed panels."""
+def board_html(view, race_info=None, race_key=""):
+    """Return a venue-aware, read-only three-stage formation board."""
     formations = layout(view)
-    first = formations["start"]
+    course = course_direction(view, race_info=race_info, race_key=race_key)
+    turn = course["turn"]
+    turn_text = (course["venue"] + "・" if course["venue"] else "") + course["label"]
     names = {h["name"] for stage in STAGES for h in formations[stage]["runners"]}
     short = _short_names(names)
     html = [
-        '<section id="ka-pace-board" class="ka-pace-board" aria-labelledby="ka-pace-title">',
+        '<section id="ka-pace-board" class="ka-pace-board" aria-labelledby="ka-pace-title"'
+        ' data-course-turn="' + turn + '" data-course-source="' + course["source"] + '">',
         '<header class="ka-pace-heading"><span class="ka-pace-kicker">RACE POSITION MAP</span>',
         '<h2 id="ka-pace-title">AI展開予測</h2>',
-        '<p>スタート後・3角・4角の馬群を比較</p></header>',
+        '<p>スタート後・3角・4角の馬群を比較'
+        '<span class="ka-pace-course-turn" aria-label="コースの回り方向">'
+        + escape(turn_text) + '</span></p></header>',
         '<div class="ka-pace-stage-tabs" role="tablist" aria-label="展開位置">',
     ]
     for stage in STAGES:
@@ -92,13 +98,19 @@ def board_html(view):
             + '" aria-labelledby="ka-pace-tab-' + stage + '"'
             + hidden + '><div class="ka-pace-turf" aria-label="' + _LABELS[stage] + 'の予測隊列">'
         )
-        if group["runners"]:
+        straight_corner = turn == "straight" and stage != "start"
+        if straight_corner:
+            html.append('<p class="ka-pace-no-runners">直線コースのため'
+                        + _LABELS[stage] + 'はありません。</p>')
+        elif group["runners"]:
             for horse in group["runners"]:
                 html.append(_runner_html(horse, stage, short))
         else:
             html.append('<p class="ka-pace-no-runners">この区間の位置予測は未取得です。</p>')
         html.append('</div>')
-        if group["missing"]:
+        if straight_corner:
+            html.append('<p class="ka-pace-unavailable">直線コース：3角・4角の予測は対象外です。</p>')
+        elif group["missing"]:
             html.append(
                 '<p class="ka-pace-unavailable">位置未取得：'
                 + '・'.join(escape(str(h["no"])) + ' ' + escape(short.get(h["name"], h["name"]))
@@ -112,8 +124,10 @@ def board_html(view):
         '<p class="ka-pace-selected" id="ka-pace-selected" role="status" aria-live="polite">'
         '馬をタップすると馬名と位置予測を確認できます。</p>',
         '<p class="ka-pace-disclaimer">スタート後・4角は保存された発走前の予測順位。'
-        '3角は両者の補間であり実測ではありません。馬群の左右位置や間隔は'
-        '重なりを避けるための配置で、内外の進路・馬身差を表しません。'
+        '3角は両者の補間であり実測ではありません。'
+        '馬の向きは保存された回り方向または競馬場・コース条件から判定します。'
+        '馬群の左右位置や間隔は重なりを避けるための配置で、'
+        '内外の進路・馬身差を表しません。'
         'AIランク・印・純能力には一切加点しません。</p>',
         '</section>'
     ]
