@@ -251,7 +251,7 @@ def document(view, race_key='', paper_decision=None, portable=None, postrace=Non
             +_accordion('race-pickup', 'レースピックアップ', '既存候補の状態・特徴を必要なときに確認できます。', pickup_html(view))
             +_accordion('race-development', 'レース展開予想', '保存されたペース・脚質・4角想定を確認できます。', development_html(view, context).replace('レース展開予測', 'レース展開予想'))
             +_accordion('race-ability', '純能力の見える化', '全出走馬の指数を共通の尺度で比較できます。', ability_html(view))
-            +odds_status(view)+lineup_html(view)+board_html(view)
+            +odds_status(view)+lineup_html(view)+board_html(view, race_info=context, race_key=race_key)
             +(review_html(view, postrace) if postrace else '')
             +'<details class="detail-analysis" id="detail-analysis" data-persist-panel><summary>詳細分析・研究機能 <span>独立指標10項目</span></summary>'+comparison_html(view, view[0].get('mode', 'jra') if view else 'jra')+'</details>'
             +'<details class="advanced-research" id="saved-research" data-persist-panel><summary>買い目・保存済み研究情報</summary>'+nar_watch_html(view, portable)+paper_html(view, race_key, paper_decision)+'</details>'
