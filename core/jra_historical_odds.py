@@ -155,7 +155,10 @@ def fetch_once(identity, race_info, *, get=None, now=None):
             return get(url_to_fetch, timeout=12, allow_redirects=False,
                        headers={"Accept": "text/html,application/xhtml+xml"})
         except Exception as exc:
-            raise ValueError("競馬ラボに接続できません。公開ページのHTML保存取込をご利用ください") from exc
+            from .jra_odds_connection_errors import describe_connection
+            raise ValueError("競馬ラボに接続できません（" +
+                             describe_connection(exc) +
+                             "）。公開ページのHTML保存取込も利用できます") from exc
 
     response = request(url)
     if response.status_code in (301, 302, 303, 307, 308):
