@@ -107,3 +107,42 @@ assert.deepEqual(rules.cleanFilter({presence:'missing',min:'Infinity'},spec),{pr
 assert.equal(rules.cleanFilter({choice:'X'},{key:'training',type:'grade'}),null);
 assert.equal(rules.cleanFilter({choice:'AI'},{key:'user',type:'boolean'}),null);
 """)
+
+
+def test_rank_sort_uses_pure_ability_for_ties_and_never_model_score():
+    node_check("""
+const horses = [
+ {no:7,values:{research_sabcd_sort:2,ability_rank:5,research_sabcd_weight_class_score:.69}},
+ {no:6,values:{research_sabcd_sort:2,ability_rank:1,research_sabcd_weight_class_score:.53}},
+ {no:5,values:{research_sabcd_sort:1,ability_rank:9,research_sabcd_weight_class_score:.80}},
+ {no:4,values:{research_sabcd_sort:4,ability_rank:1,research_sabcd_weight_class_score:.25}},
+ {no:3,values:{research_sabcd_sort:4,ability_rank:3,research_sabcd_weight_class_score:.24}},
+ {no:2,values:{research_sabcd_sort:4,ability_rank:null,research_sabcd_weight_class_score:.29}},
+ {no:1,values:{research_sabcd_sort:null,ability_rank:1,research_sabcd_weight_class_score:null}}
+];
+const original=JSON.stringify(horses);
+const ascending = horses.slice().sort((a,b)=>rules.compareHorses(a,b,'research_sabcd','text','asc'));
+assert.deepEqual(ascending.map(h=>h.no),[5,6,7,4,3,2,1]);
+const descending = horses.slice().sort((a,b)=>rules.compareHorses(a,b,'research_sabcd','text','desc'));
+// The tier group reverses, but each group retains stronger ability first.
+assert.deepEqual(descending.map(h=>h.no),[4,3,2,6,7,5,1]);
+const numeric=horses.slice().sort((a,b)=>rules.compareHorses(a,b,'ability_rank','rank','asc'));
+assert.deepEqual(numeric.map(h=>h.no).slice(0,4),[1,4,6,3]);
+assert.equal(JSON.stringify(horses),original);
+""")
+
+
+def test_rank_sort_ability_missing_last_and_horse_number_is_final_tiebreak():
+    node_check("""
+const horses=[
+ {no:8,values:{research_sabcd_sort:2,ability_rank:2}},
+ {no:3,values:{research_sabcd_sort:2,ability_rank:2}},
+ {no:9,values:{research_sabcd_sort:2,ability_rank:null}},
+ {no:2,values:{research_sabcd_sort:2,ability_rank:1}},
+ {no:5,values:{research_sabcd_sort:1,ability_rank:null}},
+ {no:4,values:{research_sabcd_sort:null,ability_rank:1}}
+];
+const result=horses.slice().sort((a,b)=>rules.compareHorses(a,b,'research_sabcd','text','asc'));
+assert.deepEqual(result.map(h=>h.no),[5,2,3,8,9,4]);
+assert.deepEqual(horses.map(h=>h.no),[8,3,9,2,5,4]);
+""")
