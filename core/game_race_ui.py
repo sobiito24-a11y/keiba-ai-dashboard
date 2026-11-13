@@ -214,7 +214,7 @@ def odds_html(h, compact=False):
 
 def odds_status(view):
     count=sum(number(h.get('odds')) is not None and number(h.get('odds'))>=1 for h in view)
-    place_count=sum(bool(re.fullmatch(r'\d+(?:\.\d+)?〜\d+(?:\.\d+)?', str(h.get('place_odds') or ''))) for h in view)
+    place_count=sum(bool(re.fullmatch(r'\d+(?:\.\d+)?(?:〜\d+(?:\.\d+)?)?', str(h.get('place_odds') or ''))) for h in view)
     times={h.get('odds_time','時刻不明') for h in view}
     time=next(iter(times)) if len(times)==1 else '複数の取得時刻'
     return ('<p class="odds-status">単勝 '+str(count)+'/'+str(len(view))
