@@ -192,3 +192,47 @@ def test_connection_diagnostics_are_precise_without_urls_or_secrets():
     assert "SSL" in describe_connection(SSLError("secret"))
     assert "プロキシ" in describe_connection(ProxyError("secret"))
     assert "secret" not in describe_connection(ConnectionError("secret"))
+
+
+def test_ui_prefers_verified_sportsnavi_and_skips_slow_sites_when_complete():
+    calls=[]
+    def sports(*_args, **_kwargs):
+        calls.append("sports")
+        return parse_sportsnavi_html(odds_page(),ID,INFO,now=NOW)
+    def slow(*_args, **_kwargs):
+        calls.append("slow")
+        raise ValueError("timeout")
+    q=failover(ID,INFO,now=NOW,prefer_sportsnavi=True,
+               sportsnavi_fetch=sports,yuma_fetch=slow,keibalab_fetch=slow)
+    assert calls==["sports"]
+    assert q["fallback_used"] is False
+    assert q["coverage"]["win"]["count"]==18
+    assert q["coverage"]["place"]["count"]==18
+
+
+def test_sportsnavi_rejected_then_other_verified_source_attempted_only_once():
+    calls=[]
+    def sports(*_args, **_kwargs):
+        calls.append("sports")
+        raise ValueError("HTTP 403")
+    def yuma(*_args, **_kwargs):
+        calls.append("yuma")
+        return parse_sportsnavi_html(odds_page(),ID,INFO,now=NOW)
+    def lab(*_args, **_kwargs):
+        calls.append("lab")
+        raise AssertionError("Complete second source must stop loop")
+    q=failover(ID,INFO,now=NOW,prefer_sportsnavi=True,
+               sportsnavi_fetch=sports,yuma_fetch=yuma,keibalab_fetch=lab)
+    assert calls==["sports","yuma"]
+    assert q["fallback_used"] is True
+    assert q["coverage"]["place"]["count"]==18
+
+
+def test_three_sites_fail_in_fast_priority_and_report_all_sources():
+    def fail(*_args, **_kwargs):
+        raise ValueError("通信失敗")
+    with pytest.raises(ValueError,match="3サイトとも") as err:
+        failover(ID,INFO,now=NOW,prefer_sportsnavi=True,
+                 sportsnavi_fetch=fail,yuma_fetch=fail,keibalab_fetch=fail)
+    assert all(label in str(err.value) for label in
+               ("スポーツナビ","優馬JAPAN","競馬ラボ"))
