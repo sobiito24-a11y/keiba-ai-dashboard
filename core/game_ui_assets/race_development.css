@@ -19,10 +19,16 @@
 .race-explorer .ka-pace-runner{position:absolute;left:var(--px);top:var(--py);transform:translateX(-50%);width:59px;min-height:44px;display:flex;flex-direction:column;align-items:center;justify-content:start;gap:0;padding:0;border:0;background:transparent;color:#293f20;z-index:2;text-align:center;cursor:pointer;touch-action:manipulation}
 .race-explorer .ka-pace-runner:hover{z-index:5;filter:brightness(.89)}
 .race-explorer .ka-pace-runner-figure{display:block;position:relative;width:46px;height:26px}
-/* The supplied netkeiba reference shows the runners facing left. This is
-   a drawing convention independent of clockwise/counterclockwise courses;
-   flip only the silhouette, never the horse number or position coordinates. */
+/* For the reference's direction convention:
+   clockwise(right) => left-facing horse; counterclockwise(left) => right-facing.
+   CSS flips ONLY the horse SVG, not its number, name or saved race positions. */
 .race-explorer .ka-pace-horse-svg{display:block;width:46px;height:25px;transform:scaleX(-1);transform-origin:center;filter:drop-shadow(0 1px 1px #68802b50)}
+.race-explorer .ka-pace-board[data-course-turn="left"] .ka-pace-horse-svg{transform:scaleX(1)}
+.race-explorer .ka-pace-board[data-course-turn="straight"] .ka-pace-horse-svg{transform:scaleX(1)}
+.race-explorer .ka-pace-board[data-course-turn="unknown"] .ka-pace-horse-svg{opacity:.72}
+.race-explorer .ka-pace-course-turn{display:inline-block;margin-left:9px;padding:1px 8px;border-radius:16px;background:#e5f1eb;color:#326147;font-weight:700;white-space:nowrap}
+.race-explorer .ka-pace-board[data-course-turn="unknown"] .ka-pace-course-turn{background:#fff0d5;color:#775b2e}
+.race-explorer .ka-pace-board[data-course-turn="straight"] .ka-pace-course-turn{background:#f0edfa;color:#69528c}
 .race-explorer .ka-pace-number{position:absolute;left:2px;top:10px;width:19px;height:19px;line-height:17px;display:grid;place-items:center;border:1px solid #7c897a;border-radius:50%;color:#20242a;background:#e1e4e8;font-size:11px;font-weight:900;font-variant-numeric:tabular-nums;box-shadow:0 1px 1px #25360c4d}
 .race-explorer .ka-pace-frame-1{background:#fff;color:#1e2934}
 .race-explorer .ka-pace-frame-2{background:#242424;color:#fff}
