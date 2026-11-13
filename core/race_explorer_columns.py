@@ -235,9 +235,9 @@ def records(view):
         parsed_place_low, parsed_place_high = _place_range(horse.get("place_odds"))
         place_low = _number(sort["place_odds_low"]) if "place_odds_low" in sort else parsed_place_low
         place_high = _number(sort["place_odds_high"]) if "place_odds_high" in sort else parsed_place_high
+        explicitly_withdrawn = isinstance(horse.get("odds"), str) and horse.get("odds") == "取消・除外"
         if (place_low is None or place_high is None or
-                not 1 <= place_low <= place_high or odds is None and
-                horse.get("odds") == "取消・除外"):
+                not 1 <= place_low <= place_high or explicitly_withdrawn):
             place_low = place_high = None
         popularity = _integer(sort.get("popularity") if "popularity" in sort else horse.get("popularity"))
         score, rank = _a_values(horse)
