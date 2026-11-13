@@ -31,6 +31,27 @@ for label in ("yuma_win","yuma_place","keibalab","sportsnavi"):
             result["html_candidate"]=(
                 "html" in resp.headers.get("Content-Type","").lower()
                 and len(resp.content)>200)
+            if label == "sportsnavi" and result["html_candidate"]:
+                # This is a separately bounded parser smoke; only public odds,
+                # with the historical 18-horse Tokyo 11R research fixture.
+                try:
+                    from core.jra_sportsnavi_odds import parse_sportsnavi_html
+                    from tests.test_jra_sportsnavi_odds import ID, INFO
+                    from core.race_odds import JST, overlay
+                    quote=parse_sportsnavi_html(
+                        resp.content,ID,INFO,now=datetime.now(JST))
+                    result["parsed_race_matched"]=True
+                    result["parsed_win_count"]=quote["coverage"]["win"]["count"]
+                    result["parsed_place_count"]=quote["coverage"]["place"]["count"]
+                    shown=overlay([dict(no=str(i)) for i in range(1,19)],quote,
+                                  "CI公開HTML検証")
+                    result["overlaid_win_count"]=sum(x["odds"]!="—" for x in shown)
+                except Exception as exc:
+                    result["parsed_race_matched"]=False
+                    # Restrict output to error type and first safe diagnostic.
+                    result["parse_failure"]=(
+                        type(exc).__name__ + "：" +
+                        str(exc).split("\n")[0][:140])
     except Exception as exc:
         result["status"]=describe_connection(exc)
     result["elapsed_seconds"]=round((datetime.now()-started).total_seconds(),2)
