@@ -129,7 +129,10 @@ def test_real_comparison_table_places_note_under_recent_index_and_career_by_cour
     assert cells["career_course"] == "3-2-1-4"
     assert cells["run_latest_note"] == "直線で前が詰まる"
     shown = BeautifulSoup(lineup_html(enriched), "html.parser")
-    assert shown.select_one("td.col-career_course").get_text(strip=True) == "3-2-1-4"
+    # Moved off the main paper-view table to keep user-selected columns compact.
+    # All saved current-course stats remain in the detail and typed records.
+    assert shown.select_one("td.col-career_course") is None
+    assert next(x for x in schema if x["key"] == "career_course")["table_hidden"] is True
     assert "短評：直線で前が詰まる" in shown.select_one("td.col-run_latest").get_text()
     details = BeautifulSoup(detail_html(enriched[0]), "html.parser")
     assert "全場ダ" in details.select_one(".detail-jra-career").text
