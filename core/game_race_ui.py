@@ -80,6 +80,13 @@ def build_view(rows, records, source_rows=(), mode='jra', race_info=None, materi
         raw_start = number(row.get('netkeiba_start_rank'))
         saved_start_rank = (int(raw_start) if raw_start is not None and
                             raw_start >= 1 and float(raw_start).is_integer() else None)
+        # Explicit position forecast from the frozen netkeiba newspaper HTML.
+        # Preserve it independently of both start and fourth-corner ranks.
+        # Invalid/missing positions are not fabricated; the formation board
+        # may choose its clearly-labelled interpolation fallback.
+        raw_third = number(row.get('netkeiba_corner3_rank'))
+        saved_third_rank = (int(raw_third) if raw_third is not None and
+                            raw_third >= 1 and float(raw_third).is_integer() else None)
         cells = material_cells(row, mode, (materials or {}).get(no))
         caution = rec.get('今回注意', cells['今回注意'])
         mark = text(rec.get('最終印')) or '—'
@@ -96,6 +103,7 @@ def build_view(rows, records, source_rows=(), mode='jra', race_info=None, materi
                         maximum=number(pick(source,'最高指数','max_index','最高タイム指数')),
                         distance=index_display(rec.get('距離')), course=index_display(rec.get('コース')),
                         corner=corner4_rank(row), start_rank=saved_start_rank,
+                        third_rank=saved_third_rank,
                         style=rec.get('脚質', '—'), development=a.get('development') or '—',
                         training=training(row) if mode == 'jra' else '', rest=rest_text(row),
                         stable=(a.get('stable') or {}).get('grade') or '—',
