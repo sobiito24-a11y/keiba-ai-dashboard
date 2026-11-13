@@ -202,6 +202,9 @@ def _place_range(raw):
     if not isinstance(raw, str):
         return (None, None)
     label = raw.strip().replace("～", "〜").replace("−", "〜").replace("-", "〜")
+    if re.fullmatch(r"\d+(?:\.\d+)?", label):
+        n = _number(label)
+        return (n, n) if n is not None and n >= 1 else (None, None)
     match = re.fullmatch(r"(\d+(?:\.\d+)?)\s*〜\s*(\d+(?:\.\d+)?)", label)
     if not match:
         return (None, None)
