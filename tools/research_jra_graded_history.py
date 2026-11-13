@@ -1,217 +1,225 @@
-"""Five complete years of JRA graded-race RESULT research (2021--2025).
+"""Research ALL 2021--2025 JRA graded races, without inventing pace or odds.
 
-Public research CSV: https://github.com/whitedogk/jra-condition-app
-Provider describes extraction from JRA official race-result pages.
-Not a source of pre-race features, corner positions or exact race quinella.
-Only aggregated non-identifying derived statistics are emitted; raw dataset is
-never stored in this repository. No model scores/marks are adjusted here.
+Graded event dates, venues, names, grade and winners are sourced from the five
+JRA official annual graded-race tables, retained as
+data/jra_graded_calendar_2021_2025.json.
+CSV of official-result-derived runner outcomes/solo winner win payouts:
+https://github.com/whitedogk/jra-condition-app
 
-Run:
-    python tools/research_jra_graded_history.py --source-url ... --output -
-Output includes begin/end sentinels for GitHub Actions log collection.
+The public CSV does NOT contain raceClass, raceName, popularity, corner
+positions or quinella. Match each event to the winner by date + venue +
+horse name, then use date + venue + race number to count the complete field.
+Never use an event's own outcome to produce a same-year prediction.
+This is race-level retrospective research, NOT a horse-specific score.
 """
 import argparse
-import collections
+from collections import Counter, defaultdict
 import csv
-import io
-import json
-import re
-import sys
-import urllib.request
 from datetime import date
 from decimal import Decimal, InvalidOperation
+import io
+import json
 from pathlib import Path
+import re
+import unicodedata
+from urllib.request import Request, urlopen
 
 SOURCE_URL = "https://raw.githubusercontent.com/whitedogk/jra-condition-app/main/jra-results-actual.csv"
-GRADE = {"G1":"G1","GI":"G1","GⅠ":"G1",
-         "G2":"G2","GII":"G2","GⅡ":"G2",
-         "G3":"G3","GIII":"G3","GⅢ":"G3"}
+CALENDAR = Path(__file__).resolve().parents[1] / "data/jra_graded_calendar_2021_2025.json"
 MAX_BYTES = 40_000_000
-YEARS = frozenset(range(2021, 2026))
-START, END = "BEGIN_JRA_GRADED_JSON:", ":END_JRA_GRADED_JSON"
+YEARS = range(2021, 2026)
 
 
-def normalize_grade(value):
-    raw = str(value or "").upper().replace(" ", "").replace("Ｇ","G")
-    if raw.startswith(("J-G","J・G","J.G","JG","障")):
-        return None  # jump results need an independent pace model
-    return GRADE.get(raw)
+def normalize(value):
+    return re.sub(r"\s+", "", unicodedata.normalize("NFKC", str(value or "")))
 
 
-def to_num(value):
+def scalar(value):
     try:
-        d = Decimal(str(value or "").replace(",","").replace("倍","").strip())
+        n = Decimal(str(value or "").replace(",", "").strip())
     except (InvalidOperation, ValueError):
         return None
-    return float(d) if d.is_finite() and d >= 0 else None
+    return float(n) if n.is_finite() and n >= 0 else None
 
 
-def clean_name(value):
-    return re.sub(r"[\s　]+", "", str(value or "").replace("ステークス","S").replace("カップ","C"))
-
-
-def load_csv(url, *, local=None):
+def load_csv(url=SOURCE_URL, *, local=None):
     if local:
         blob = Path(local).read_bytes()
     else:
-        req = urllib.request.Request(url,headers={"User-Agent":"JRA-Graded-Research/1.0 (research aggregate)"})
-        with urllib.request.urlopen(req,timeout=35) as response:
+        request = Request(url, headers={"User-Agent": "JRA-Five-Year-Aggregate/1.0"})
+        with urlopen(request, timeout=45) as response:
             if response.status != 200:
-                raise RuntimeError("Public results CSV returned HTTP " + str(response.status))
+                raise ValueError(f"公開実績CSVがHTTP {response.status}を返しました")
             blob = response.read(MAX_BYTES + 1)
     if len(blob) > MAX_BYTES:
-        raise RuntimeError("Research CSV exceeds 40MB limit")
+        raise ValueError("研究用CSVが40MBを超えています")
     return csv.DictReader(io.StringIO(blob.decode("utf-8-sig")))
 
 
-def summarize(reader):
-    headers = reader.fieldnames or []
-    required = ("date","course","surface","distance","race","raceName","raceClass","finish","horseNumber","winPayout")
-    missing = [x for x in required if x not in headers]
-    if missing:
-        print("RESEARCH_ACTUAL_CSV_HEADERS:" + ",".join(headers))
-        sample = next(iter(reader), None)
-        if sample:
-            print("RESEARCH_SAMPLE_ROW:" + json.dumps(sample, ensure_ascii=False)[:2000])
-        raise ValueError("Missing required research columns: "+",".join(missing))
-    keys = ["finalOdds","winOdds","odds","popularity","corner4","fourthCorner","raceNumber"]
-    present = [k for k in keys if k in headers]
-    grouped = collections.defaultdict(list)
-    for row in reader:
-        daytext = (row.get("date") or "").strip()
+def summary(rows, calendar):
+    required = ("date", "course", "surface", "distance", "race", "finish",
+                "horseNumber", "horse", "winPayout")
+    fields = rows.fieldnames or []
+    if not all(x in fields for x in required):
+        raise ValueError("公開CSVに必要な列がありません: " +
+                         ",".join(x for x in required if x not in fields))
+    events = calendar["events"]
+    if len(events) < 600 or set(calendar.get("years", [])) != set(YEARS):
+        raise ValueError("JRA公式5年間の重賞暦が不完全です")
+    runners = defaultdict(list)
+    winners = defaultdict(list)
+    for row in rows:
+        day = row.get("date","")
         try:
-            d = date.fromisoformat(daytext)
-        except ValueError:
+            year=int(day[:4])
+        except (ValueError,TypeError):
             continue
-        if d.year not in YEARS:
+        if year not in YEARS: continue
+        number=str(row.get("race") or "")
+        if not number.isdecimal():continue
+        course=str(row.get("course") or "").strip()
+        key=(day,course,int(number))
+        runners[key].append(row)
+        finish=normalize(row.get("finish"))
+        if finish in ("1","1.0"):
+            winners[(day,course,normalize(row.get("horse")))].append(key)
+    matched=[]
+    unmatched=[]
+    ambiguity=[]
+    for event in events:
+        day,venue=event["date"],event["venue"]
+        win_names=event["winners"]
+        match_keys=set()
+        for name in win_names:
+            match_keys.update(winners.get((day,venue,normalize(name)),[]))
+        if not match_keys:
+            unmatched.append(dict(date=day,venue=venue,title=event["title"],winners=win_names))
             continue
-        grade = normalize_grade(row.get("raceClass"))
-        if not grade:
+        if len(match_keys)>1:
+            ambiguity.append(dict(date=day,venue=venue,title=event["title"],candidate_races=sorted(k[2] for k in match_keys)))
             continue
-        course = str(row.get("course") or "").strip()
-        no = str(row.get("race") or "").strip()
-        race_name = clean_name(row.get("raceName"))
-        if not course or not no.isdecimal() or not race_name:
+        key=next(iter(match_keys))
+        field=runners[key]
+        if not field: continue
+        actual_winners=[r for r in field if normalize(r.get("finish")) in ("1","1.0")]
+        if not all(normalize(name) in [normalize(x.get("horse")) for x in actual_winners] for name in win_names):
+            ambiguity.append(dict(date=day,venue=venue,title=event["title"],reason="勝ち馬の一致不完全"))
             continue
-        grouped[(daytext,course,int(no))].append(row)
-    events = []
-    wrong_grade, missing_winner, duplicate_winner = [], [], []
-    for (day, course, no), rows in sorted(grouped.items()):
-        grades = {normalize_grade(r.get("raceClass")) for r in rows}
-        titles = {clean_name(r.get("raceName")) for r in rows}
-        if len(grades)!=1 or len(titles)!=1:
-            wrong_grade.append((day,course,no));continue
-        winners=[r for r in rows if str(r.get("finish") or "").strip() in ("1","1.0")]
-        if not winners:
-            missing_winner.append((day,course,no));continue
-        if len(winners)>1:
-            duplicate_winner.append((day,course,no));continue
-        win=winners[0]
-        payout=to_num(win.get("winPayout"))
-        try: distance=int(float(str(win.get("distance")).replace(",","")))
-        except (ValueError,TypeError): distance=0
-        odds_key=next((k for k in ("finalOdds","winOdds","odds") if k in headers),None)
-        popularity_key=next((k for k in ("popularity","popularityRank") if k in headers),None)
-        popularity=None
-        if popularity_key and (val:=to_num(win.get(popularity_key))):
-            if int(val)==val and val>0: popularity=int(val)
-        elif odds_key:
-            valid=[to_num(r.get(odds_key)) for r in rows]
-            own=to_num(win.get(odds_key))
-            if own is not None and all(v is not None and v>0 for v in valid):
-                # Tied odds have a shared rank, not a guaranteed betting popularity.
-                popularity=1+sum(v<own for v in valid)
-        surface=str(win.get("surface") or "").strip()
-        if not surface or not distance or payout is None:
-            missing_winner.append((day,course,no));continue
-        events.append(dict(date=day,course=course,race_no=no,title=next(iter(titles)),
-                           grade=next(iter(grades)),surface=surface,distance=distance,
-                           runners=len(rows),winner_win_payout_yen=payout,
-                           winner_popularity=popularity))
-    year_counts=collections.Counter(int(e["date"][:4]) for e in events)
-    grade_counts=collections.Counter(e["grade"] for e in events)
-    by_title=collections.defaultdict(list)
-    for e in events:
-        by_title[e["title"]].append(e)
-
-    def statistics(subset):
-        n=len(subset)
-        if not n:return dict(n=0)
-        amounts=[e["winner_win_payout_yen"] for e in subset]
-        known_pop=[e["winner_popularity"] for e in subset if e["winner_popularity"] is not None]
-        return dict(n=n,years=sorted(set(int(e["date"][:4]) for e in subset)),
-                    winner_10x=sum(v>=1000 for v in amounts),
-                    winner_20x=sum(v>=2000 for v in amounts),
-                    winner_50x=sum(v>=5000 for v in amounts),
-                    median_winning_odds_yen=sorted(amounts)[(n-1)//2],
-                    winner_popularity_known=len(known_pop),
-                    winner_popularity_6plus=sum(v>=6 for v in known_pop),
-                    winner_popularity_10plus=sum(v>=10 for v in known_pop),
-                    winners_with_corner4=0)
-    summaries=[]
-    for name, group in sorted(by_title.items()):
-        group.sort(key=lambda e:e["date"])
-        s=statistics(group)
-        s.update(name=name, grade=group[-1]["grade"],
-                 courses=sorted(set(e["course"] for e in group)),
-                 conditions=sorted(set(f"{e['course']}/{e['surface']}{e['distance']}" for e in group)),
-                 annual=[dict(year=e["date"][:4],winner_popularity=e["winner_popularity"],
-                              winner_win_payout_yen=e["winner_win_payout_yen"],
-                              venue=e["course"],distance=e["distance"],
-                              surface=e["surface"]) for e in group])
-        summaries.append(s)
-    groups=collections.defaultdict(list)
-    for e in events:
-        groups[(e["course"],e["surface"],e["distance"],e["grade"])].append(e)
-    comparable=[dict(course=k[0],surface=k[1],distance=k[2],grade=k[3],
-                     **statistics(group)) for k,group in groups.items() if len(group)>=4]
-    return dict(schema_version=1,period="2021–2025",
-                data_source="JRA公式結果から作成された公開研究CSV（whitedogk/jra-condition-app）",
-                source_url=SOURCE_URL, complete_full_years=True,
-                fields=list(headers), available_optional_fields=present,
-                methodological_notes=[
-                   "全重賞の結果から勝ち馬の単勝払戻・人気を調べる。4角通過順位や馬連配当は元CSVにないため、この集計では推定しない",
-                   "重賞名の統合では短縮表記だけ統一。名称変更・施行条件変更は分けて解釈する",
-                   "勝ち馬の単勝払戻が1000円以上を10倍以上と数える。馬連・ワイドが荒れた保証ではない",
-                   "対象年の結果を同年の予想根拠として使わない。原則2021–24学習・2025年独立検証",
-                   "集計値だけで馬ごとのSABCDランクを調整しない。予測4角・適性との条件付き相関を検証してから採用する",
-                ],
-                total_graded_races=len(events),
-                year_counts={str(k):year_counts[k] for k in sorted(YEARS)},
-                grade_counts=dict(grade_counts),
-                invalid_event_counts=dict(mixed_grade=len(wrong_grade),
-                                          missing_winner_or_data=len(missing_winner),
-                                          duplicate_winner=len(duplicate_winner)),
-                total_distinct_names=len(summaries),
-                winner_10x_all=sum(e["winner_win_payout_yen"]>=1000 for e in events),
-                winner_20x_all=sum(e["winner_win_payout_yen"]>=2000 for e in events),
-                winners_with_popularity=sum(e["winner_popularity"] is not None for e in events),
-                winners_with_corner4=0,
-                by_race=summaries,
-                by_condition=comparable)
+        if any(normalize(r.get("surface"))!=normalize(event["surface"]) or
+               int(float(r.get("distance") or 0))!=event["distance"] for r in field):
+            ambiguity.append(dict(date=day,venue=venue,title=event["title"],reason="芝ダート・距離不一致"))
+            continue
+        amounts=[scalar(r.get("winPayout")) for r in actual_winners]
+        if not amounts or any(x is None for x in amounts):
+            unmatched.append(dict(date=day,venue=venue,title=event["title"],reason="単勝払戻不明"))
+            continue
+        matched.append(dict(date=day,venue=venue,title=event["title"],
+                            grade=event["grade"],jump=event["jump"],
+                            surface=event["surface"],distance=event["distance"],
+                            field_size=len(field),
+                            winner_win_payouts_yen=amounts,
+                            any_winner_10x=any(v>=1000 for v in amounts),
+                            any_winner_20x=any(v>=2000 for v in amounts),
+                            any_winner_50x=any(v>=5000 for v in amounts)))
+    flats=[e for e in matched if not e["jump"]]
+    year_count=Counter(int(x["date"][:4]) for x in matched)
+    calendar_count=Counter(int(x["date"][:4]) for x in events)
+    by_name=defaultdict(list)
+    by_condition=defaultdict(list)
+    for event in flats:
+        by_name[event["title"]].append(event)
+        by_condition[(event["venue"],event["surface"],event["distance"],event["grade"])].append(event)
+    def stats(group):
+        n=len(group)
+        if n==0: return dict(n=0)
+        return dict(n=n, years=sorted({int(x["date"][:4]) for x in group}),
+                    winner_10x=sum(x["any_winner_10x"] for x in group),
+                    winner_20x=sum(x["any_winner_20x"] for x in group),
+                    winner_50x=sum(x["any_winner_50x"] for x in group),
+                    # A race with two first-place finishers is still ONE event.
+                    median_winner_payout_yen=sorted(max(x["winner_win_payouts_yen"]) for x in group)[(n-1)//2])
+    per_race=[]
+    for name, group in sorted(by_name.items()):
+        group.sort(key=lambda x:x["date"])
+        entry=stats(group)
+        entry.update(name=name,grade=group[-1]["grade"],
+                     conditions=sorted({f"{e['venue']}/{e['surface']}{e['distance']}" for e in group}),
+                     annual=[dict(year=int(e["date"][:4]),venue=e["venue"],
+                                  surface=e["surface"],distance=e["distance"],
+                                  win_payout_yen=max(e["winner_win_payouts_yen"]),
+                                  upset10=e["any_winner_10x"],upset20=e["any_winner_20x"])
+                             for e in group])
+        per_race.append(entry)
+    pooled=[]
+    for (venue,surface,distance,grade),group in sorted(by_condition.items()):
+        if len(group)<8:continue
+        entry=stats(group)
+        entry.update(venue=venue,surface=surface,distance=distance,grade=grade)
+        pooled.append(entry)
+    train=[e for e in flats if e["date"][:4]<"2025"]
+    holdout=[e for e in flats if e["date"][:4]=="2025"]
+    prior_rate=sum(e["any_winner_10x"] for e in train)/len(train) if train else 0
+    by_name_train=defaultdict(list)
+    for x in train:by_name_train[x["title"]].append(x)
+    # Shrink four observations per title toward the global G1-3 frequency.
+    # Report holdout Brier error: useful to judge predictive value as an
+    # upset-frequency descriptor, NOT proof of a horse-specific ranking edge.
+    base_sq=0; local_sq=0
+    for race in holdout:
+        past=by_name_train.get(race["title"],[])
+        posterior=(sum(x["any_winner_10x"] for x in past)+20*prior_rate)/(len(past)+20)
+        y=int(race["any_winner_10x"])
+        base_sq+=(prior_rate-y)**2
+        local_sq+=(posterior-y)**2
+    return dict(schema_version=1,period="2021-2025",source="JRA公式重賞一覧 × JRA公式レース結果由来の公開CSV",
+                calendar_url="https://www.jra.go.jp/datafile/seiseki/replay/",
+                outcomes_url=SOURCE_URL, source_csv_fields=fields,
+                all_graded_calendar_events=len(events),
+                matched_graded_events=len(matched),
+                matched_flat_events=len(flats),
+                year_calendar_counts={str(y):calendar_count[y] for y in YEARS},
+                year_matched_counts={str(y):year_count[y] for y in YEARS},
+                coverage_pct=round(100*len(matched)/len(events),2),
+                missing_events=unmatched[:30],
+                ambiguous_events=ambiguity[:30],
+                has_corner_positions=False, has_horse_popularity=False,
+                has_quinella_payouts=False,
+                flat_graded_overall=stats(flats),
+                brier_2025_winner10=dict(n=len(holdout),
+                     global_prior=round(prior_rate,5),
+                     baseline=round(base_sq/len(holdout),6) if holdout else None,
+                     title_shrunk=round(local_sq/len(holdout),6) if holdout else None),
+                race_tendencies=per_race, pooled_conditions=pooled,
+                research_limitations=[
+                    "4角位置、ラップ・ペースは公開CSVにないため、展開や前残りは未検証",
+                    "人気順位・馬連/ワイド配当は元CSVにないため、人気別的中や馬連荒れは未検証",
+                    "単勝1000円以上の勝ち馬がいるレースを「10倍以上勝利」と数える",
+                    "単勝払戻だけでは3着内の穴馬率・荒れ確率の確率校正はできない",
+                    "同名レースでも開催場・距離が変わる年は表示で分離する",
+                    "2025年ホールドアウト評価が有利でも馬別評価への加点根拠にはならない",
+                ])
 
 
 def main():
-    parser=argparse.ArgumentParser()
-    parser.add_argument("--source-url",default=SOURCE_URL)
-    parser.add_argument("--file",default=None)
-    parser.add_argument("--output",default="-")
-    args=parser.parse_args()
-    report=summarize(load_csv(args.source_url,local=args.file))
-    raw=json.dumps(report,ensure_ascii=False,separators=(",",":"),sort_keys=True)
+    p=argparse.ArgumentParser()
+    p.add_argument("--file")
+    p.add_argument("--calendar",default=str(CALENDAR))
+    p.add_argument("--output",default="-")
+    args=p.parse_args()
+    calendar=json.loads(Path(args.calendar).read_text(encoding="utf-8"))
+    output=summary(load_csv(local=args.file),calendar)
+    raw=json.dumps(output,ensure_ascii=False,separators=(",",":"),sort_keys=True)
     if args.output=="-":
-        print("RESEARCH_HEADERS:"+",".join(report["fields"]))
-        print("RESEARCH_COVERAGE:"+json.dumps({k:report[k] for k in
-              ("year_counts","grade_counts","total_graded_races","total_distinct_names",
-               "winner_10x_all","winner_20x_all","winners_with_popularity","winners_with_corner4",
-               "invalid_event_counts")},ensure_ascii=False))
-        print(START)
-        for i in range(0, len(raw), 3000):
-            print("RESEARCH_JSON_PART:" + str(i//3000) + ":" + raw[i:i+3000])
-        print(END)
+        print("RESEARCH_COUNTS:"+json.dumps({k:output[k] for k in
+              ("all_graded_calendar_events","matched_graded_events",
+               "matched_flat_events","coverage_pct","year_calendar_counts",
+               "year_matched_counts","brier_2025_winner10")},ensure_ascii=False))
+        print("BEGIN_JRA_GRADED_JSON:")
+        for i in range(0,len(raw),3000):
+            print("RESEARCH_JSON_PART:"+str(i//3000)+":"+raw[i:i+3000])
+        print(":END_JRA_GRADED_JSON")
     else:
-        Path(args.output).write_text(json.dumps(report,ensure_ascii=False,indent=2)+"\n",
-                                     encoding="utf-8")
+        Path(args.output).write_text(json.dumps(output,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
 
 
 if __name__=="__main__":
