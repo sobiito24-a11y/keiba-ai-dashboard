@@ -45,23 +45,17 @@ def render(result, view):
     except (ValueError, TypeError):
         connection = provider()
     st.markdown('#### オッズ')
+    st.caption('単勝・複勝｜保存済みの評価・順位は変更しません。')
     is_nar = identity['mode'] == 'nar'
     if not is_nar:
         jra_id = identity['race_id']
-        st.caption('JRAのオッズ：過去＝優馬JAPAN単複、当日＝JRA公式・netkeiba試験')
-        st.caption('JRAオッズ更新（試験）：netkeibaの無料配信から単勝・複勝のみ取得を試みます。'
-                   'JRA公式の直接取得ではありません。'
-                   '無料版には更新間隔・利用制限があり、最新の購入可能価格とは限りません。')
+        # Both flows are read-only and user-triggered; details stay collapsed.
         # Historical observations remain on third-party race archives even when
         # the JRA current-meeting selector no longer lists that race.
         from .jra_historical_odds_links import archived_odds_urls
         historical_links = archived_odds_urls(identity, result.race_info or {})
         if historical_links:
-            with st.expander('過去の単勝・複勝をAIへ反映', expanded=True):
-                st.caption('優馬JAPANの単勝・複勝表を取得し、全頭の馬番・馬名を照合します。'
-                           '過去の掲載値であり、最終確定オッズとの一致は保証できません。'
-                           '純能力・S/A/B/Cランク・正式印は変更しません。'
-                           '接続に失敗した場合は、エラー内容を下の結果欄に表示します。')
+            with st.container():
                 from .jra_yuma_odds import fetch_once as fetch_historical
                 from .jra_historical_odds import parse_keibalab_html
                 now_historical = datetime.now(odds.JST)
@@ -72,7 +66,7 @@ def render(result, view):
                     is_past = _date.fromisoformat(race_date) < now_historical.date()
                 except ValueError:
                     is_past = False
-                if st.button('過去単複をAIへ反映（優馬JAPAN）',
+                if st.button('過去オッズ取得',
                              key=key+'_historical_fetch', disabled=not is_past):
                     previous = st.session_state.get(key+'_historical_last_request')
                     across = st.session_state.get('_jra_historical_global_last_request')
@@ -105,9 +99,8 @@ def render(result, view):
                             st.session_state[key+'_status'] = (
                                 f'JRA過去オッズ未取得（{stage}）：'
                                 f'{type(exc).__name__}。取得値は表示へ反映していません。')
-                if not is_past:
-                    st.caption('過去の開催日が確定したレースで利用できます。')
-                with st.expander('取得できないとき：HTMLの保存・取込', expanded=False):
+                # Past-date availability is expressed through the disabled button.
+                with st.expander('過去オッズの予備取込・掲載元', expanded=False):
                     st.caption('優馬JAPANの単勝・複勝HTMLをそれぞれ保存して読み込めます。'
                                '競馬ラボの単複HTMLも別方式で取込できます。')
                     yuma_win = st.file_uploader(
@@ -136,6 +129,9 @@ def render(result, view):
                                 "優馬JAPANの保存HTMLからAIへ反映しました。")
                         except (ValueError, TypeError) as exc:
                             st.session_state[key+'_status'] = 'JRA過去オッズ未取得：' + str(exc)
+                    st.markdown('[競馬ラボ：単勝・複勝一覧](' + historical_links['keibalab'] + ')')
+                    st.markdown('[優馬JAPAN：単勝一覧](' + historical_links['yuma_win'] + ')')
+                    st.markdown('[優馬JAPAN：複勝一覧](' + historical_links['yuma_place'] + ')')
                     archived_file = st.file_uploader(
                         '競馬ラボの過去単複ページ（HTML）', type=['html', 'htm'],
                         key=key+'_historical_file')
@@ -154,10 +150,9 @@ def render(result, view):
                                 "保存HTMLの過去単複をAIの表示に反映しました。")
                         except (ValueError, TypeError) as exc:
                             st.session_state[key+'_status'] = 'JRA過去オッズ未取得：' + str(exc)
-                st.markdown('[競馬ラボ：単勝・複勝一覧](' + historical_links['keibalab'] + ')')
-                st.markdown('[優馬JAPAN：単勝一覧](' + historical_links['yuma_win'] + ')')
-                st.markdown('[優馬JAPAN：複勝一覧](' + historical_links['yuma_place'] + ')')
-        with st.expander('JRA公式／netkeibaの元画面を確認', expanded=False):
+                # The matching source pages are available only inside the
+                # collapsed backup panel above; the main UI has two actions.
+        with st.expander('当日の掲載元・利用上の注意', expanded=False):
             st.markdown('[JRA公式オッズ](https://www.jra.go.jp/)'
                         '（公式サイトの「オッズ」から選択）')
             st.markdown(
@@ -168,119 +163,103 @@ def render(result, view):
                        'アクセスが制限された場合はスクショ・HTML取込を使用。'
                        '自動巡回や更新回数の上限制限回避は行いません。')
     if not is_nar:
-        if st.button('JRA公式から単複取得（試験）', key=key+'_official_fetch'):
-            last_official = st.session_state.get(key+'_official_last_request')
-            now_official = datetime.now(odds.JST)
-            if last_official and (now_official-last_official).total_seconds() < 180:
-                st.session_state[key+'_status'] = 'JRA公式への再取得は180秒以上あけてください。'
+        from datetime import date as _date
+        now_live = datetime.now(odds.JST)
+        date_text = str((result.race_info or {}).get('race_date')
+                        or (result.race_info or {}).get('date') or '').replace('/', '-')
+        try:
+            is_today = _date.fromisoformat(date_text) == now_live.date()
+        except ValueError:
+            is_today = False
+        if st.button('当日リアルオッズ取得',
+                     key=key+'_live_fetch', disabled=not is_today):
+            last = st.session_state.get(key+'_live_last_request')
+            global_last = st.session_state.get('_jra_free_odds_global_request')
+            if last and (now_live-last).total_seconds() < 180:
+                st.session_state[key+'_status'] = '同じレースの再取得は180秒以上あけてください。'
+            elif global_last and (now_live-global_last).total_seconds() < 30:
+                st.session_state[key+'_status'] = '当日の連続取得は30秒以上あけてください。'
             else:
-                st.session_state[key+'_official_last_request'] = now_official
+                st.session_state[key+'_live_last_request'] = now_live
+                st.session_state['_jra_free_odds_global_request'] = now_live
+                quote = None
+                failures = []
                 try:
                     import asyncio
                     from .jra_official_odds import fetch_once as fetch_jra_official
-                    with st.spinner('JRA公式の単複表を確認中…'):
-                        quote = asyncio.run(fetch_jra_official(identity, result.race_info or {}, now=now_official))
-                        history = odds.merge(state['history'], [quote], identity)
-                    state['history'] = history
-                    activate_observation(quote)
-                    st.session_state[key+'_status'] = (
-                        f"取得：{quote['horse_count']}／{quote['expected_horses']}頭。"
-                        "JRA公式の単複を反映（配信元更新時刻は未確認）。")
-                except ValueError as exc:
-                    st.session_state[key+'_status'] = 'JRAオッズ未取得：' + str(exc)
-                except Exception:
-                    st.session_state[key+'_status'] = 'JRAオッズ取得に失敗。ブラウザ設定または配信元への接続を確認してください。'
-    if is_nar:
-        st.caption('NAR公式ZIPモード：無料の単勝・複勝・馬連・ワイド取得を試せます。'
-                   '約2分間隔の配布です。ZIP作成時刻は実際のオッズ発表時刻ではありません。'
-                   '個人確認用の表示に限定し、転載・再配布しません。')
-        st.markdown('[NAR公式データダウンロード](https://www.keiba.go.jp/KeibaWeb/TodayRaceInfo/TodayRaceInfoTop)'
-                    '（取得できない場合は公式ZIPを手動で保存して下から取込）')
-    if getattr(result, '_race_odds_error', None): st.warning(result._race_odds_error)
-    if st.button('オッズ更新（無料・試験）' if not is_nar and not connection.available
-                 else 'オッズ更新', key=key+'_fetch', disabled=False):
-        now = datetime.now(odds.JST)
-        if is_nar:
-            from .nar_official_odds import fetch_daily, parse_daily_zip, locator
-            try:
-                venue, day, _ = locator(identity, result.race_info or {})
-                cached = st.session_state.get('_nar_zip_last_private_fetch')
-                # A single user's session reuses the SAME ZIP for all races.
-                # This also avoids 12 network calls for a 12R venue.
-                if cached and cached['day'] == day and (now - cached['received']).total_seconds() < 120:
-                    filename, payload = cached['name'], cached['data']
-                elif (cached and (now - cached['received']).total_seconds() < 120):
-                    st.session_state[key+'_status'] = '公式への再アクセスを抑制中。約2分後に更新してください。'
-                    filename, payload = None, None
+                    with st.spinner('JRA公式で当日の単勝・複勝を確認中…'):
+                        quote = asyncio.run(fetch_jra_official(
+                            identity, result.race_info or {}, now=now_live))
+                except (ValueError, RuntimeError, OSError, TimeoutError) as exc:
+                    failures.append('JRA公式：' + str(exc)[:140])
+                except Exception as exc:
+                    failures.append('JRA公式：' + type(exc).__name__)
+                if quote is None:
+                    try:
+                        with st.spinner('別の無料配信で単勝・複勝を確認中…'):
+                            if connection.available:
+                                quote = odds.validate(connection.fetch(identity['race_id']), identity)
+                                quote['acquisition_method'] = 'authorized_json'
+                            else:
+                                from .jra_netkeiba_odds import fetch_once as fetch_free
+                                quote = fetch_free(identity, result.race_info or {}, now=now_live)
+                    except (ValueError, RuntimeError, OSError, TimeoutError) as exc:
+                        failures.append('無料配信：' + str(exc)[:140])
+                    except Exception as exc:
+                        failures.append('無料配信：' + type(exc).__name__)
+                if quote is None:
+                    st.session_state[key+'_status'] = ('JRAオッズ未取得：' + '／'.join(failures)
+                                                       + '。保存オッズは代用しません。')
                 else:
-                    with st.spinner('NAR公式の当日オッズZIPを取得中…'):
-                        filename, payload = fetch_daily()
-                    st.session_state['_nar_zip_last_private_fetch'] = dict(
-                        day=day, received=now, name=filename, data=payload)
-                if filename is not None:
-                    with st.spinner('保存済み出走馬とオッズを照合中…'):
-                        quote = parse_daily_zip(
-                            payload, filename, identity, result.race_info or {}, now=now)
+                    try:
                         history = odds.merge(state['history'], [quote], identity)
-                    added = len(history) - len(state['history'])
-                    state['history'] = history
-                    activate_observation(quote)
-                    st.session_state[key+'_status'] = (
-                        f"NAR公式ZIPから{quote['horse_count']}／{quote['expected_horses']}頭を照合。"
-                        + ('更新済みの同一ZIPです。' if not added else '単複・馬連・ワイドの価格を反映。')
-                        + ' 発表時刻ではなくZIP作成時刻の参考情報です。')
-            except ValueError as exc:
-                st.session_state[key+'_status'] = 'NAR公式オッズ未取得：' + str(exc)
-            except Exception:
-                st.session_state[key+'_status'] = '公式オッズの取得・照合に失敗。保存時の予想を維持します。'
-        else:
-            # Licensed JSON bridge, when configured, takes priority.
-            # Otherwise only one explicit user-triggered read of the FREE
-            # netkeiba action=init feed (one win/place request).
-            last = st.session_state.get(key+'_last_request')
-            min_delay = 30 if connection.available else 180
-            global_last = st.session_state.get('_jra_free_odds_global_request')
-            if last and (now-last).total_seconds() < min_delay:
-                st.session_state[key+'_status'] = (
-                    f'同じレースの再取得は{min_delay}秒以上あけてください。'
-                    '保存済みの最新観測は下から選べます。')
-            elif (not connection.available and global_last and
-                  (now-global_last).total_seconds() < 30):
-                st.session_state[key+'_status'] = (
-                    '無料配信への連続アクセスを抑制しています。'
-                    '他レースは30秒以上あけて更新してください。')
+                        state['history'] = history
+                        activate_observation(quote)
+                        st.session_state[key+'_status'] = (
+                            f"取得：単勝{quote['coverage']['win']['count']}頭／"
+                            f"複勝{quote['coverage']['place']['count']}頭。"
+                            "掲載価格であり、購入可能な直前価格の保証はありません。")
+                    except (ValueError, TypeError, KeyError) as exc:
+                        st.session_state[key+'_status'] = 'JRAオッズ未取得（照合）：' + str(exc)
+    if is_nar:
+        st.caption('地方競馬：NAR公式の当日掲載値（配信に遅れがあります）。')
+        with st.expander('NAR公式・データ掲載元', expanded=False):
+            st.markdown('[NAR公式オッズ](https://www.keiba.go.jp/KeibaWeb/TodayRaceInfo/TodayRaceInfoTop)')
+    if getattr(result, '_race_odds_error', None): st.warning(result._race_odds_error)
+    if is_nar and st.button('当日リアルオッズ取得', key=key+'_fetch'):
+        now = datetime.now(odds.JST)
+        from .nar_official_odds import fetch_daily, parse_daily_zip, locator
+        try:
+            venue, day, _ = locator(identity, result.race_info or {})
+            cached = st.session_state.get('_nar_zip_last_private_fetch')
+            # A single user's session reuses the SAME ZIP for all races.
+            # This also avoids 12 network calls for a 12R venue.
+            if cached and cached['day'] == day and (now - cached['received']).total_seconds() < 120:
+                filename, payload = cached['name'], cached['data']
+            elif (cached and (now - cached['received']).total_seconds() < 120):
+                st.session_state[key+'_status'] = '公式への再アクセスを抑制中。約2分後に更新してください。'
+                filename, payload = None, None
             else:
-                st.session_state[key+'_last_request'] = now
-                if not connection.available:
-                    st.session_state['_jra_free_odds_global_request'] = now
-                try:
-                    with st.spinner('JRAオッズを取得し、保存した馬番と照合中…'):
-                        if connection.available:
-                            quote = odds.validate(connection.fetch(identity['race_id']), identity)
-                            quote['acquisition_method'] = 'authorized_json'
-                        else:
-                            from .jra_netkeiba_odds import fetch_once
-                            quote = fetch_once(identity, result.race_info or {}, now=now)
-                        history = odds.merge(state['history'], [quote], identity)
-                    added = len(history)-len(state['history'])
-                    state['history'] = history
-                    activate_observation(quote)
-                    st.session_state[key+'_status'] = (
-                        f"取得：{quote['horse_count']}／{quote['expected_horses']}頭。"
-                        + ('有効価格未取得。' if not quote['prices'] else
-                           ('netkeiba無料配信の観測値を表示。' if not connection.available
-                            else '接続元のオッズを表示。'))
-                        + ('同じ配信時刻のため追加更新なし。' if not added else '')
-                    )
-                except ValueError as exc:
-                    st.session_state[key+'_status'] = (
-                        'JRAオッズ未取得：' + str(exc) +
-                        '。取得できない時は予想オッズを代用しません。')
-                except Exception:
-                    st.session_state[key+'_status'] = (
-                        'JRAオッズ取得に失敗。無料配信の利用制限・応答変更・通信状態を確認してください。'
-                        '保存時の予想と旧オッズ履歴は保持しています。')
-
+                with st.spinner('NAR公式の当日オッズZIPを取得中…'):
+                    filename, payload = fetch_daily()
+                st.session_state['_nar_zip_last_private_fetch'] = dict(
+                    day=day, received=now, name=filename, data=payload)
+            if filename is not None:
+                with st.spinner('保存済み出走馬とオッズを照合中…'):
+                    quote = parse_daily_zip(
+                        payload, filename, identity, result.race_info or {}, now=now)
+                    history = odds.merge(state['history'], [quote], identity)
+                added = len(history) - len(state['history'])
+                state['history'] = history
+                activate_observation(quote)
+                st.session_state[key+'_status'] = (
+                    f"NAR公式ZIPから{quote['horse_count']}／{quote['expected_horses']}頭を照合。"
+                    + ('更新済みの同一ZIPです。' if not added else '単複・馬連・ワイドの価格を反映。')
+                    + ' 発表時刻ではなくZIP作成時刻の参考情報です。')
+        except ValueError as exc:
+            st.session_state[key+'_status'] = 'NAR公式オッズ未取得：' + str(exc)
+        except Exception:
+            st.session_state[key+'_status'] = '公式オッズの取得・照合に失敗。保存時の予想を維持します。'
     # Show the outcome immediately below the button, not below several long
     # import / screenshot widgets.  Otherwise a valid click appears inert
     # on narrow mobile screens.
