@@ -63,9 +63,9 @@ def _runner_html(horse, stage, short):
 
 def board_html(view, race_info=None, race_key=""):
     """Return a venue-aware, read-only three-stage formation board."""
-    formations = layout(view)
     course = course_direction(view, race_info=race_info, race_key=race_key)
     turn = course["turn"]
+    formations = layout(view, course_turn=turn)
     turn_text = (course["venue"] + "・" if course["venue"] else "") + course["label"]
     names = {h["name"] for stage in STAGES for h in formations[stage]["runners"]}
     short = _short_names(names)
@@ -76,7 +76,12 @@ def board_html(view, race_info=None, race_key=""):
         '<h2 id="ka-pace-title">AI展開予測</h2>',
         '<p>スタート後・3角・4角の馬群を比較'
         '<span class="ka-pace-course-turn" aria-label="コースの回り方向">'
-        + escape(turn_text) + '</span></p></header>',
+        + escape(turn_text) + '</span>'
+        + ('<span class="ka-pace-forward-hint">' +
+           ('隊列の先頭側 →' if turn in ("left", "straight") else
+            '← 隊列の先頭側' if turn == "right" else
+            '先頭側の左右位置は未判定') + '</span>')
+        + '</p></header>',
         '<div class="ka-pace-stage-tabs" role="tablist" aria-label="展開位置">',
     ]
     for stage in STAGES:
