@@ -17,6 +17,7 @@ from .jra_historical_odds_links import archived_odds_urls
 from .jra_yuma_odds import VENUES
 
 SOURCE = "スポーツナビ・過去の確定単勝複勝（公開掲載値）"
+LIVE_SOURCE = "スポーツナビ・当日の中間単勝複勝（公開掲載値）"
 MAX_BYTES = 3_000_000
 NUM = re.compile(r"^\d+(?:\.\d{1,2})?$")
 RANGE = re.compile(r"^(\d+(?:\.\d{1,2})?)-(\d+(?:\.\d{1,2})?)$")
@@ -63,9 +64,13 @@ def _race(identity, race_info):
     return urls["sportsnavi"], day, VENUES[rid[4:6]], meeting, course_day, race_no
 
 
-def parse_sportsnavi_html(raw_html, identity, race_info, *, now=None):
+def parse_sportsnavi_html(raw_html, identity, race_info, *, now=None, odds_stage="historical"):
     now = now or datetime.now(JST)
+    if odds_stage not in ("historical", "intermediate"):
+        raise ValueError("スポーツナビのオッズ種別が不正です")
     url, race_day, venue, meeting, course_day, race_no = _race(identity, race_info)
+    if odds_stage == "intermediate" and race_day != now.date():
+        raise ValueError("当日掲載オッズは保存レースの開催当日のみ対象です")
     soup = BeautifulSoup(raw_html, "html.parser")
     main = soup.find("main")
     if main is None:
@@ -78,8 +83,10 @@ def parse_sportsnavi_html(raw_html, identity, race_info, *, now=None):
     heading = re.escape(f"{race_no}R{formatted_day}") + r"(?:\([^)]{1,4}\))?" + re.escape(marker)
     if re.search(heading, text) is None:
         raise ValueError("スポーツナビの開催日・会場・回次・Rが保存レースと一致しません")
-    if "確定オッズ" not in text:
+    if odds_stage == "historical" and "確定オッズ" not in text:
         raise ValueError("確定オッズ表示を確認できないため反映しません")
+    if odds_stage == "intermediate" and "中間オッズ" not in text:
+        raise ValueError("当日の中間オッズ表示を確認できないため反映しません")
     # This race page can contain the words "予想オッズ" in a navigation or
     # related-items area even when the current race's table is explicitly
     # labelled "確定オッズ". The complete race identity and table contents
@@ -128,6 +135,11 @@ def parse_sportsnavi_html(raw_html, identity, race_info, *, now=None):
         raise ValueError(f"出走馬の照合が不完全です（{len(matches)}/{len(saved)}頭）。反映を中止します")
     if not prices:
         raise ValueError("有効な単勝・複勝オッズがありません")
+    if odds_stage == "intermediate":
+        win_numbers = {p["horses"][0] for p in prices if p["kind"] == "win"}
+        place_numbers = {p["horses"][0] for p in prices if p["kind"] == "place"}
+        if win_numbers != set(saved) or place_numbers != set(saved):
+            raise ValueError("当日単勝・複勝の全頭価格が揃っていません。反映を中止します")
     observed_at = None
     match = UPDATED.search(main.get_text(' ', strip=True))
     if match:
@@ -142,15 +154,22 @@ def parse_sportsnavi_html(raw_html, identity, race_info, *, now=None):
         race_id=identity["race_id"], mode="jra",
         identities={str(h["horse_no"]): h["name"] for h in identity["horses"]},
         prices=prices, popularity={}, withdrawn=[],
-        source=SOURCE, source_url=url, observed_at=observed_at,
-        received_at=now.isoformat(), acquisition_method="sportsnavi_historical_html",
-        price_status="published_odds", availability="closed",
+        source=(LIVE_SOURCE if odds_stage == "intermediate" else SOURCE),
+        source_url=url, observed_at=observed_at,
+        received_at=now.isoformat(),
+        acquisition_method=("sportsnavi_intermediate_html" if odds_stage == "intermediate"
+                            else "sportsnavi_historical_html"),
+        price_status="published_odds",
+        availability=("unknown" if odds_stage == "intermediate" else "closed"),
         missing_kinds=["quinella", "wide"],
-        warnings=[
+        warnings=([
+            "当日の中間オッズで、購入直前の最新価格と一致する保証はありません",
+            "サイトの更新時刻がない場合、取得時刻を価格更新時刻と扱いません",
+            "必ず購入直前にJRA公式のオッズを再確認してください",
+        ] if odds_stage == "intermediate" else [
             "スポーツナビが公表する終了レースの確定オッズ。予想時点の価格とは異なります",
             "サイトの掲載時刻が取得できない場合、受信時刻を配信更新時刻として扱いません",
-            "保存予想・ランク・純能力・印は変更していません",
-        ],
+        ]) + ["保存予想・ランク・純能力・印は変更していません"],
     )
     return validate(quote, identity)
 
@@ -188,3 +207,31 @@ def fetch_once(identity, race_info, *, get=None, now=None):
     if len(response.content) > MAX_BYTES or not response.content:
         raise ValueError("スポーツナビのHTMLが空または3MB超過です")
     return parse_sportsnavi_html(response.content, identity, race_info, now=now)
+
+def fetch_live_once(identity, race_info, *, get=None, now=None):
+    """One explicit request for SAME-DAY public intermediate win/place odds.
+
+    Never claim the download time is the odds update time. Strictly verify
+    the saved race header and every saved horse number/name and BOTH prices.
+    No automatic polling, proxies, retries or private API endpoints.
+    """
+    now = now or datetime.now(JST)
+    url, day, *_ = _race(identity, race_info)
+    if day != now.date():
+        raise ValueError("スポーツナビの当日中間オッズは開催日のみ取得できます")
+    if get is None:
+        import requests
+        get = requests.get
+    try:
+        response = get(url, timeout=12, allow_redirects=False,
+                       headers={"Accept": "text/html,application/xhtml+xml"})
+    except Exception as exc:
+        from .jra_odds_connection_errors import describe_connection
+        raise ValueError("スポーツナビ当日オッズに接続できません（"
+                         + describe_connection(exc) + "）") from exc
+    if response.status_code != 200:
+        raise ValueError(f"スポーツナビ当日オッズはHTTP {response.status_code}です")
+    if not response.content or len(response.content) > MAX_BYTES:
+        raise ValueError("スポーツナビの当日HTMLが空または3MB超過です")
+    return parse_sportsnavi_html(response.content, identity, race_info,
+                                 now=now, odds_stage="intermediate")
