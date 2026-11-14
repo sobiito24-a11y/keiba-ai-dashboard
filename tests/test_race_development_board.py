@@ -242,3 +242,87 @@ def test_saved_third_rank_can_display_when_start_or_fourth_are_missing():
     assert 1 not in [h["no"] for h in layout(view)["third"]["missing"]]
     assert "序盤：未取得" in BeautifulSoup(board_html(view), "html.parser").select_one(
         '#ka-pace-scene-third [data-pace-runner="1"]')["aria-label"]
+
+
+
+@pytest.mark.parametrize("mode", ["jra", "nar"])
+def test_original_saved_netkeiba_top_left_lanes_override_guessed_six_groups(mode):
+    # These exact style coordinates occur in a November 11 NAR newspaper
+    # archive. In the real diagram, first five horses share the top lane,
+    # although their left-based longitudinal ranks are NOT all top-five.
+    coords=[
+        (-4,0),(-4,15.46),(-4,53.91),(-4,66.41),(-4,105.5),
+        (12,0),(12,58.47),(12,99.61),(30,70.67),(46,68.44),
+        (64,69.65),(80,75.0)
+    ]
+    horses=_horses(12, mode)
+    for i, (h,(top,left)) in enumerate(zip(horses,coords),1):
+        h["third_rank"]=i
+        h["saved_position_geometry"]={
+            name: f"top={top}%, left={left}%, SpeedUp_02"
+            for name in ("start","third","fourth")
+        }
+    frozen=deepcopy(horses)
+    for direction in ("right","left"):
+        formations=layout(horses, course_turn=direction)
+        for stage in ("start","third","fourth"):
+            group=formations[stage]
+            assert group["layout_source"]=="netkeiba_saved_coordinates"
+            assert group["coordinates_available"]==12
+            p={h["no"]:h for h in group["runners"]}
+            assert len({p[i]["y"] for i in range(1,6)})==1
+            assert all(p[i]["y"] < p[j]["y"] for i,j in [(1,6),(6,9),(9,10),(10,11),(11,12)])
+            assert p[1]["x"]== (7 if direction=="right" else 93)
+            if direction=="right":
+                assert [p[i]["x"] for i in range(1,6)]==sorted(p[i]["x"] for i in range(1,6))
+            else:
+                assert [p[i]["x"] for i in range(1,6)]==sorted(
+                    (p[i]["x"] for i in range(1,6)),reverse=True)
+    doc=BeautifulSoup(board_html(horses, race_info={"venue":"福島","surface":"芝","distance":1200}),
+                      "html.parser")
+    scene=doc.select_one("#ka-pace-scene-fourth")
+    assert scene["data-layout-source"]=="netkeiba_saved_coordinates"
+    assert "保存されたnetkeiba展開図の上下・左右座標" in scene.text
+    assert horses==frozen
+
+
+def test_incomplete_source_coordinates_fall_back_for_entire_stage_not_a_mixed_map():
+    horses=_horses(12,"nar")
+    for horse in horses:
+        horse["saved_position_geometry"]={
+            "start":f'top=-4%, left={horse["no"]*7}%',
+            "third":f'top=12%, left={horse["no"]*7}%',
+            "fourth":f'top=30%, left={horse["no"]*7}%',
+        }
+        horse["third_rank"]=int(horse["no"])
+    # Missing data in only one stage must not destroy the other maps.
+    horses[3]["saved_position_geometry"]["fourth"]=None
+    formations=layout(horses)
+    assert formations["start"]["layout_source"]=="netkeiba_saved_coordinates"
+    assert formations["third"]["layout_source"]=="netkeiba_saved_coordinates"
+    assert formations["fourth"]["layout_source"]=="rank_based_fallback"
+    assert formations["fourth"]["coordinates_available"]==11
+    dom=BeautifulSoup(board_html(horses),"html.parser")
+    assert dom.select_one("#ka-pace-scene-fourth")["data-layout-source"]=="rank_based_fallback"
+    assert "元の座標が11／12頭" in dom.select_one("#ka-pace-scene-fourth").text
+    assert dom.select_one("#ka-pace-scene-third")["data-layout-source"]=="netkeiba_saved_coordinates"
+
+
+@pytest.mark.parametrize("invalid",[
+    "top=bad, left=3%", "top=NaN%, left=3%", "top=20%, left=500%",
+    "top=-500%, left=5%", "top=30px, left=40px",
+    '<script>alert(1)</script>',
+])
+def test_invalid_source_geometry_is_never_executed_or_guessed(invalid):
+    horses=_horses(12,"jra")
+    for horse in horses:
+        horse["saved_position_geometry"]={"start":"top=12%, left=30%",
+                                         "third":"top=12%, left=30%",
+                                         "fourth":"top=12%, left=30%"}
+    horses[0]["saved_position_geometry"]["fourth"]=invalid
+    group=layout(horses)["fourth"]
+    assert group["layout_source"]=="rank_based_fallback"
+    assert group["coordinates_available"]==11
+    dom=BeautifulSoup(board_html(horses),"html.parser")
+    assert not dom.select("script")
+    assert not dom.select("[onclick],[onerror]")
