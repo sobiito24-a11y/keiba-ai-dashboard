@@ -46,8 +46,8 @@ def attention(days, mode, training=None):
                 f"中央{interval}かつ保存調教{grade}。休養と調教を組み合わせて再確認（機械的減点なし）")
     if grade in ("A", "B"):
         label = "長休×調教A/B" if days >= 180 else "調教A/B確認"
-        return (label, "info",
-                f"中央{interval}・保存調教{grade}。休養だけで消さず、他条件も確認（加点なし）")
+        return (label, "positive",
+                f"中央{interval}・保存調教{grade}。長期休養の不安を和らげる確認材料ですが、仕上がりや好走を保証せず、他条件も確認（加点なし）")
     label = "長休・調教未取得" if days >= 180 else "調教未取得"
     return (label, "info",
             f"中央{interval}だが保存調教A/B/C/Dが未取得。仕上がりを判定できません")
