@@ -7,6 +7,7 @@ on:
     paths:
       - '.github/workflows/verify-jra-odds-transport.yml'
       - 'tools/verify_jra_odds_transport.py'
+      - 'tools/verify_jra_live_sportsnavi_transport.py'
 
 permissions:
   contents: read
@@ -24,3 +25,5 @@ jobs:
         run: python -m pip install 'requests>=2.32' 'beautifulsoup4>=4.12' 'lxml>=5.2' 'numpy>=1.26,<3' 'pandas>=2.2,<3' 'pytest>=8,<10'
       - name: Single connection per public odds page
         run: python -m tools.verify_jra_odds_transport
+      - name: Nov 14 live intermediate quote and all-horse identity check
+        run: python -m tools.verify_jra_live_sportsnavi_transport
