@@ -207,16 +207,31 @@ def render(result, view):
                 st.session_state['_jra_free_odds_global_request'] = now_live
                 quote = None
                 failures = []
+                # The same public Sports Navi URL proven for historical odds
+                # also shows SAME-DAY intermediate quotes. Verify exact race
+                # header and every horse+both prices, with no fake feed time.
+                # Try this once before the official browser/free API paths,
+                # which may block server-side access.
                 try:
-                    import asyncio
-                    from .jra_official_odds import fetch_once as fetch_jra_official
-                    with st.spinner('JRA公式で当日の単勝・複勝を確認中…'):
-                        quote = asyncio.run(fetch_jra_official(
-                            identity, result.race_info or {}, now=now_live))
+                    from .jra_sportsnavi_odds import fetch_live_once as fetch_sports_live
+                    with st.spinner('スポーツナビの当日中間単複を照合中…'):
+                        quote = fetch_sports_live(
+                            identity, result.race_info or {}, now=now_live)
                 except (ValueError, RuntimeError, OSError, TimeoutError) as exc:
-                    failures.append('JRA公式：' + str(exc)[:140])
+                    failures.append('スポーツナビ：' + str(exc)[:140])
                 except Exception as exc:
-                    failures.append('JRA公式：' + type(exc).__name__)
+                    failures.append('スポーツナビ：' + type(exc).__name__)
+                if quote is None:
+                    try:
+                        import asyncio
+                        from .jra_official_odds import fetch_once as fetch_jra_official
+                        with st.spinner('JRA公式で当日の単勝・複勝を確認中…'):
+                            quote = asyncio.run(fetch_jra_official(
+                                identity, result.race_info or {}, now=now_live))
+                    except (ValueError, RuntimeError, OSError, TimeoutError) as exc:
+                        failures.append('JRA公式：' + str(exc)[:140])
+                    except Exception as exc:
+                        failures.append('JRA公式：' + type(exc).__name__)
                 if quote is None:
                     try:
                         with st.spinner('別の無料配信で単勝・複勝を確認中…'):
@@ -241,13 +256,21 @@ def render(result, view):
                         st.session_state[key+'_status'] = (
                             f"取得：単勝{quote['coverage']['win']['count']}頭／"
                             f"複勝{quote['coverage']['place']['count']}頭。"
-                            "掲載価格であり、購入可能な直前価格の保証はありません。")
+                            + ("スポーツナビの中間オッズ・提供元更新時刻不明。"
+                               if quote.get('acquisition_method') == 'sportsnavi_intermediate_html'
+                               and not quote.get('observed_at') else "")
+                            + "掲載価格であり、購入可能な直前価格の保証はありません。")
                     except (ValueError, TypeError, KeyError) as exc:
                         st.session_state[key+'_status'] = 'JRAオッズ未取得（照合）：' + str(exc)
     if not is_nar:
         with st.expander('当日の掲載元・利用上の注意', expanded=False):
             st.markdown('[JRA公式オッズ](https://www.jra.go.jp/)'
                         '（公式サイトの「オッズ」から選択）')
+            from .jra_historical_odds_links import archived_odds_urls as _odds_urls
+            sports_url = _odds_urls(identity, result.race_info or {}).get('sportsnavi')
+            if sports_url:
+                st.markdown('[スポーツナビ・このレースの単勝複勝](' + sports_url +
+                            ')（当日の中間掲載値。提供元更新時刻を確認してください）')
             st.markdown(
                 '[netkeiba・このレースのオッズ](https://race.netkeiba.com/odds/index.html?race_id='
                 + jra_id + '&type=b1)'
