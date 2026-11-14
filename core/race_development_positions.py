@@ -6,10 +6,45 @@ are used first; only missing horse-level values are interpolated.
 """
 from collections.abc import Mapping
 from math import floor, isfinite
+import re
 
 STAGES = ("start", "third", "fourth")
 _WEIGHTS = (.34, .23, .17, .12, .09, .05)
 _BAND_Y = (5.0, 22.0, 39.0, 56.0, 70.0, 83.0)
+_ORIGINAL_POSITION = re.compile(r"top\s*=\s*(-?\d+(?:\.\d+)?)%\s*,\s*left\s*=\s*(-?\d+(?:\.\d+)?)%", re.I)
+
+
+def _saved_coordinates(value):
+    """Parse ONLY archived netkeiba percentage coordinates, never guess lanes.
+
+    The raw source uses left=0 for the leading side, left up to about 105.5
+    and vertical lanes top=-4,12,30,...,80. Do not treat top as ranking.
+    """
+    if not isinstance(value, str):
+        return None
+    match = _ORIGINAL_POSITION.search(value)
+    if not match:
+        return None
+    y, x = map(float, match.groups())
+    if not isfinite(x) or not isfinite(y) or not -10 <= y <= 85 or not -2 <= x <= 110:
+        return None
+    return (y, x)
+
+
+def _original_xy(raw, direction):
+    """Scale saved source coordinates into our board without re-tiering.
+
+    Horizontal mirroring on a left-turn course preserves the app's existing
+    direction convention (horse faces right). 福島/right follows netkeiba's
+    saved left-to-right order exactly. The original top lanes remain intact.
+    """
+    top, left = raw
+    x = min(93.0, max(7.0, 7.0 + 86.0 * left / 105.5))
+    if direction in ("left", "straight"):
+        x = 100.0 - x
+    y = min(85.0, max(5.0, 7.0 + (top + 4.0) * 0.90))
+    return round(x, 2), round(y, 2)
+
 
 
 def _positive_integer(value, *, maximum):
@@ -72,8 +107,12 @@ def layout(view, *, course_turn="right"):
         frame = _positive_integer(horse.get("frame"), maximum=8)
         fallback = (0.45 * start + 0.55 * corner
                     if start is not None and corner is not None else None)
+        geometry = horse.get("saved_position_geometry")
+        coordinates = ({key: _saved_coordinates(geometry.get(key)) for key in STAGES}
+                       if isinstance(geometry, Mapping) else {})
         prepared.append(dict(no=no, name=str(horse.get("name") or "馬名未取得"),
                              frame=frame, start=start, fourth=corner,
+                             original_coordinates=coordinates,
                              third=saved_third if saved_third is not None else fallback,
                              third_source=("saved" if saved_third is not None else
                                            "interpolated" if fallback is not None else
@@ -82,6 +121,12 @@ def layout(view, *, course_turn="right"):
     for stage in STAGES:
         available = [dict(h) for h in prepared if h[stage] is not None]
         available.sort(key=lambda h: (h[stage], h["frame"] or 99, h["no"]))
+        # The diagram and the derived rank are DIFFERENT data. Archived
+        # top/left coordinates reproduce netkeiba's true staggered pack lanes.
+        # Use them only if ALL ranked runners have source coordinates, to
+        # avoid mixing two unrelated layout coordinate systems in one panel.
+        use_original = bool(available) and all(
+            h["original_coordinates"].get(stage) is not None for h in available)
         sizes = _bands(len(available))
         index = 0
         for band, size in enumerate(sizes):
@@ -94,8 +139,12 @@ def layout(view, *, course_turn="right"):
                 # Only presentation x changes; no saved ranking is reversed.
                 if course_turn in ("left", "straight"):
                     x = 100.0 - x
-                runner["x"] = round(x, 2)
-                runner["y"] = round(_BAND_Y[band] + ((runner["no"] * 3 + band) % 3 - 1) * .45, 2)
+                if use_original:
+                    runner["x"], runner["y"] = _original_xy(
+                        runner["original_coordinates"][stage], course_turn)
+                else:
+                    runner["x"] = round(x, 2)
+                    runner["y"] = round(_BAND_Y[band] + ((runner["no"] * 3 + band) % 3 - 1) * .45, 2)
                 # A valid saved 3-corner forecast is shown verbatim; never
                 # relabel it from an interpolated ranking.
                 runner["rank_display"] = (
@@ -112,5 +161,10 @@ def layout(view, *, course_turn="right"):
                              missing=[h for h in prepared if h[stage] is None],
                              interpolation=fallback_count > 0,
                              saved_count=saved_count,
-                             interpolated_count=fallback_count)
+                             interpolated_count=fallback_count,
+                             layout_source=("netkeiba_saved_coordinates" if use_original
+                                            else "rank_based_fallback"),
+                             coordinates_available=sum(
+                                 h["original_coordinates"].get(stage) is not None
+                                 for h in available))
     return output
