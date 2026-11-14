@@ -16,6 +16,9 @@ def test_saved_start_and_corner_display_two_lines_without_prediction_mutation():
         source = [
             dict(馬番=6, 馬名="先行馬", 枠番=3, running_style_market="先",
                  netkeiba_start_rank=2, netkeiba_corner3_rank=5, netkeiba_corner4_rank=15,
+                 _estimated_position_start="top=-4%, left=10%",
+                 _estimated_position_corner3="top=12%, left=32%",
+                 _estimated_position_corner4="top=30%, left=45%",
                  market_ability_score=90, market_ability_rank=13),
             dict(馬番=12, 馬名="逃げ馬", 枠番=6, running_style_market="逃",
                  netkeiba_start_rank=1, netkeiba_corner3_rank=1, netkeiba_corner4_rank=1,
@@ -29,6 +32,11 @@ def test_saved_start_and_corner_display_two_lines_without_prediction_mutation():
         assert h["start_rank"] == 2
         assert h["third_rank"] == 5
         assert h["corner"] == 15
+        assert h["saved_position_geometry"] == {
+            "start": "top=-4%, left=10%",
+            "third": "top=12%, left=32%",
+            "fourth": "top=30%, left=45%",
+        }
         cells = records(view)["6"]
         assert cells["start_rank"] == 2
         assert cells["corner"] == 15
