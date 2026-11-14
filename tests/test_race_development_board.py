@@ -290,9 +290,9 @@ def test_incomplete_source_coordinates_fall_back_for_entire_stage_not_a_mixed_ma
     horses=_horses(12,"nar")
     for horse in horses:
         horse["saved_position_geometry"]={
-            "start":f'top=-4%, left={horse["no"]*7}%',
-            "third":f'top=12%, left={horse["no"]*7}%',
-            "fourth":f'top=30%, left={horse["no"]*7}%',
+            "start":f'top=-4%, left={int(horse["no"])*7}%',
+            "third":f'top=12%, left={int(horse["no"])*7}%',
+            "fourth":f'top=30%, left={int(horse["no"])*7}%',
         }
         horse["third_rank"]=int(horse["no"])
     # Missing data in only one stage must not destroy the other maps.
