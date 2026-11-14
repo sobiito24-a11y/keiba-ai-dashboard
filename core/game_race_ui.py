@@ -87,6 +87,14 @@ def build_view(rows, records, source_rows=(), mode='jra', race_info=None, materi
         raw_third = number(row.get('netkeiba_corner3_rank'))
         saved_third_rank = (int(raw_third) if raw_third is not None and
                             raw_third >= 1 and float(raw_third).is_integer() else None)
+        # The saved netkeiba newspaper includes the diagram's ORIGINAL
+        # top/left positions, not only the derived 1..N rank. Preserve
+        # these source strings for display only; scoring never reads them.
+        saved_geometry = {
+            "start": row.get("_estimated_position_start"),
+            "third": row.get("_estimated_position_corner3"),
+            "fourth": row.get("_estimated_position_corner4"),
+        }
         cells = material_cells(row, mode, (materials or {}).get(no))
         caution = rec.get('今回注意', cells['今回注意'])
         mark = text(rec.get('最終印')) or '—'
@@ -104,6 +112,7 @@ def build_view(rows, records, source_rows=(), mode='jra', race_info=None, materi
                         distance=index_display(rec.get('距離')), course=index_display(rec.get('コース')),
                         corner=corner4_rank(row), start_rank=saved_start_rank,
                         third_rank=saved_third_rank,
+                        saved_position_geometry=saved_geometry,
                         style=rec.get('脚質', '—'), development=a.get('development') or '—',
                         training=training(row) if mode == 'jra' else '', rest=rest_text(row),
                         stable=(a.get('stable') or {}).get('grade') or '—',
