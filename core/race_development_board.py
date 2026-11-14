@@ -104,6 +104,7 @@ def board_html(view, race_info=None, race_key=""):
         html.append(
             '<div class="ka-pace-scene" role="tabpanel" id="ka-pace-scene-' + stage
             + '" aria-labelledby="ka-pace-tab-' + stage + '"'
+            + ' data-layout-source="' + group["layout_source"] + '"'
             + hidden + '><div class="ka-pace-turf" aria-label="' + _LABELS[stage] + 'の予測隊列">'
         )
         straight_corner = turn == "straight" and stage != "start"
@@ -127,6 +128,15 @@ def board_html(view, race_info=None, race_key=""):
             )
         else:
             html.append('<p class="ka-pace-unavailable">位置予測のある馬をすべて表示しています。</p>')
+        if not straight_corner:
+            if group["layout_source"] == "netkeiba_saved_coordinates":
+                html.append('<p class="ka-pace-original-source">馬群配置：保存されたnetkeiba展開図の上下・左右座標を再現'
+                            '（コースの回り方向に応じて左右反転）。</p>')
+            else:
+                html.append('<p class="ka-pace-original-source">馬群配置：元の座標が'
+                            + str(group["coordinates_available"]) + '／'
+                            + str(len(group["runners"])) + '頭のため、'
+                            '順位をもとに簡易配置しています。</p>')
         if stage == "third" and not straight_corner:
             html.append('<p class="ka-pace-third-source">3角の表示元：'
                         + '保存予測 ' + str(group["saved_count"]) + '頭／'
@@ -143,8 +153,9 @@ def board_html(view, race_info=None, race_key=""):
         '3角は保存済みの3角予測順位を優先し、未取得の馬だけ序盤と4角から補間します。'
         'いずれも発走前の予測であり実際の通過順位ではありません。'
         '馬の向きは保存された回り方向または競馬場・コース条件から判定します。'
-        '馬群の左右位置や間隔は重なりを避けるための配置で、'
-        '内外の進路・馬身差を表しません。'
+        '保存されたnetkeibaの位置座標が揃う場合はその配列を再現し、'
+        '不足時は保存順位から簡易配置します。'
+        '位置の左右や間隔は実際の内外の進路・馬身差を表しません。'
         'AIランク・印・純能力には一切加点しません。</p>',
         '</section>'
     ]
