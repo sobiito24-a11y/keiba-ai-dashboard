@@ -363,8 +363,22 @@
   white-space:normal;
   overflow-wrap:anywhere;
 }
+/* JRA 70+ days: saved training A/B is a reassuring check, not a
+   guaranteed result or any change to rankings. C/D remains a warning.
+   Unknown training and all NAR interval notes keep the neutral default. */
+.race-explorer .explorer-table td .rest-attention-positive{
+  color:#196e44;
+  background:#e5f4ea;
+  border-radius:3px;
+  padding:1px 3px;
+  font-weight:700;
+}
 .race-explorer .explorer-table td .rest-attention-caution{
-  color:#946017;
+  color:#ac3140;
+  background:#fbe9eb;
+  border-radius:3px;
+  padding:1px 3px;
+  font-weight:700;
 }
 @media (max-width:700px){
   .race-explorer .explorer-table td .rest-attention{
