@@ -288,6 +288,7 @@ def records(view):
         class_attention = _mapping(_mapping(horse.get("profile")).get("class_attention"))
         sabcd = _mapping(horse.get("research_sabcd"))
         sabcd_trial = _mapping(horse.get("research_sabcd_weight_class"))
+        fusion = _mapping(horse.get("research_formal_sabcd_fusion"))
         positioning = _mapping(horse.get("research_positioning"))
         suitability = _mapping(horse.get("research_suitability_attention"))
         trial_tier = sabcd_trial.get("grade") if sabcd_trial.get("grade") in ("S", "A", "B", "C", "D") else None
@@ -308,6 +309,7 @@ def records(view):
             research_suitability_label=_text(suitability.get("label")),
             research_suitability_reason=_text(suitability.get("reason")),
             research_sabcd_score=_number(sabcd_trial.get("score")),
+            research_fusion_rank=_integer(fusion.get("rank")),
             research_sabcd_reason=_text(sabcd_trial.get("reason")),
             # Historical 8-feature model stays available for auditing only.
             research_sabcd_old=tier,
