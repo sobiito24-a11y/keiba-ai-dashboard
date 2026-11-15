@@ -236,7 +236,7 @@ def test_research_composite_columns_are_hidden_not_deleted(mode, hidden):
     assert hidden not in visible
     assert "class_attention" in visible
     assert visible.index("class_attention") == len(visible)-1
-    assert visible.index("research_sabcd") == visible.index("ability")-1
+    assert visible.index("research_sabcd") == visible.index("rank")-1 and visible.index("rank") == visible.index("ability")-1
     assert visible.index("style") == visible.index("ability")+1
     if mode=="nar":
         assert "nar_hybrid_rank" not in visible
