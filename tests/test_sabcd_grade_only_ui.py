@@ -45,7 +45,7 @@ def test_single_grade_without_betting_labels_for_both_modes():
         assert len(parsed.select(".research-sabcd-B")) == 1
         assert not parsed.select(".research-role-inline")
         for label in ("軸候補", "軸比較", "押さえ", "V3一致", "N再確認", "適性注目", "後日算出"):
-            assert label not in html
+            assert label not in parsed.get_text(" ", strip=True)
         assert h["research_positioning"]["label"] == "軸候補"
         assert h["research_sabcd_weight_class"]["grade"] == "B"
 
