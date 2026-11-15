@@ -60,3 +60,20 @@ def test_three_year_old_restricted_does_not_inherit_unrelated_b1():
         "html.parser",
     )
     assert race_class_info_from_soup(soup) == (None, "3歳")
+
+
+@pytest.mark.parametrize("name,conditions,expected", [
+    ("黄菊賞", "サラ系２歳 １勝クラス", (30, "1勝")),
+    ("ドンカスターC", "サラ系３歳以上 ３勝クラス", (50, "3勝")),
+    ("ユートピアS", "サラ系３歳以上 ３勝クラス", (50, "3勝")),
+    ("福島2歳S", "サラ系２歳 オープン", (60, "OP")),
+    ("三陸特別", "サラ系３歳以上 ２勝クラス", (40, "2勝")),
+])
+def test_saved_named_jra_races_prioritize_actual_conditions(name, conditions, expected):
+    # All five incorrectly used A級/B級 in the overnight 2026-11-15 snapshot.
+    # This parser correction was deployed earlier; lock it in for future data.
+    html = (f'<div class="RaceName">{name}</div>'
+            '<div class="RaceData01">芝1800m 右 外 B</div>'
+            f'<div class="RaceData02">{conditions}</div>'
+            '<div class="PastRace"><div class="RaceName">A級/B級</div></div>')
+    assert race_class_info_from_soup(BeautifulSoup(html, "html.parser")) == expected
