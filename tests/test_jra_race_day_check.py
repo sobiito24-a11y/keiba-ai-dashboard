@@ -118,7 +118,7 @@ def test_html_escape_is_not_bypassed():
 def test_existing_race_header_invokes_v3_and_handles_unavailable_b(monkeypatch):
     from core import model_b
     monkeypatch.setattr(model_b, "resolve", lambda _result: {"status": "unavailable"})
-    info = dict(race_name="未勝利", race_date="2026-11-15",
+    info = dict(race_name="未勝利", race_number=1, race_date="2026-11-15",
                 racecourse="東京", distance="芝1600m", surface="芝",
                 race_data2="サラ系2歳 未勝利", going="良")
     result = SimpleNamespace(race_name="未勝利", race_info=info, race_mode="jra",
