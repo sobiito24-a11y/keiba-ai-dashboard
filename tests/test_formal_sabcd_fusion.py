@@ -1,5 +1,6 @@
 """The experimental fusion must never become another visible grade or alter bets."""
 from copy import deepcopy
+import json
 
 import pytest
 from bs4 import BeautifulSoup
@@ -84,7 +85,9 @@ def test_ui_has_one_grade_column_and_fusion_only_inside_optional_details():
     assert not lineup.select(".col-rank, .col-research_formal_sabcd_fusion")
     assert not lineup.find(string=lambda text: bool(text and "統合試験値" in text))
     # Research text must require an explicit horse detail click, never under S/A/B/C/D.
-    details = page.select(".detail-research-model")
+    payload = json.loads(page.select_one("#race-data").string)
+    details = [BeautifulSoup(card, "html.parser").select_one(".detail-research-model")
+               for card in payload["cards"]]
     assert len(details) == len(view)
-    assert all(not detail.has_attr("open") for detail in details)
+    assert all(detail is not None and not detail.has_attr("open") for detail in details)
     assert all("正式×SABCD統合試験値（未採用）" in detail.get_text() for detail in details)
