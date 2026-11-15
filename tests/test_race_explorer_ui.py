@@ -381,3 +381,12 @@ def test_one_compact_odds_column_retains_exact_win_and_place_values(mode):
     assert first.select_one(".odds-both-cell .metric-number")
     assert "複 1.2〜2.3倍" in first.get_text(" ",strip=True)
     assert view==before
+
+
+def test_formal_rank_never_inferred_from_sabcd_or_ability():
+    from core.race_explorer_ui import _cell
+    h = {"no": 8, "name": "保存馬8", "mode": "nar"}
+    assert "判定不可" in _cell(h, {"rank": None, "research_sabcd": "S", "ability_rank": 1}, "rank")
+    assert "formal-top5-rank" not in _cell(h, {"rank": None, "research_sabcd": "S", "ability_rank": 1}, "rank")
+    assert "formal-top5-rank" in _cell(h, {"rank": 5, "research_sabcd": "D", "ability_rank": 12}, "rank")
+    assert "formal-top5-rank" not in _cell(h, {"rank": 6, "research_sabcd": "S", "ability_rank": 1}, "rank")
