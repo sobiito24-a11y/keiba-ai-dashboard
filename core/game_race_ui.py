@@ -388,7 +388,7 @@ def race_header(result, view=None):
         try:
             from .model_b import resolve as resolve_model_b
             report = resolve_model_b(result)
-        except (ValueError, KeyError, TypeError, OSError):
+        except (AttributeError, ValueError, KeyError, TypeError, OSError):
             report = None  # Do not break ordinary JRA predictions if B fails.
         from .jra_race_day_check import annotate as annotate_today, render as render_today
         annotate_today(view, report, info)
