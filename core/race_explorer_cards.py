@@ -224,8 +224,12 @@ def detail_html(horse):
                  else _mapping(horse.get("nar_race_day_check")))
     research_rows = [
         ("旧正式順位（比較用）", (str(cells["rank"]) + "位") if cells.get("rank") is not None else "判定不可"),
-        ("研究SABCD（参考）", cells.get("research_sabcd")),
-        ("研究モデル値（未校正）", cells.get("research_sabcd_score")),
+        ("統合SABCD（研究）", cells.get("research_sabcd")),
+        ("統合順位（研究）", (str(cells["unified_sabcd_rank"]) + "位") if cells.get("unified_sabcd_rank") is not None else "判定不可"),
+        ("統合相対強度（確率ではありません）", cells.get("research_sabcd_score")),
+        ("元の研究SABCD（比較用）", cells.get("research_sabcd_weight_class")),
+        ("元の研究モデル値（未校正）", cells.get("research_sabcd_weight_class_score")),
+        ("統合状態", cells.get("unified_sabcd_status")),
         ("研究格付け根拠", cells.get("research_sabcd_reason")),
         ("研究上の位置づけ（未検証）", cells.get("research_positioning_label")),
         ("位置づけの根拠と注意", cells.get("research_positioning_reason")),
@@ -238,7 +242,7 @@ def detail_html(horse):
         research_rows.append(("保存済み予想との関係", "後日算出。発走前の当時予想ではありません"))
     research_html = (
         '<details class="detail-research-model"><summary>研究評価の詳細（任意）</summary>'
-        '<p class="detail-note">通常一覧はSABCDを主評価として確認し、旧正式順位は比較資料としてのみ参照してください。評価の一致・候補ラベルは購入指示ではありません。'
+        '<p class="detail-note">一覧には統合SABCDだけを表示し、旧正式順位と元の研究SABCDは検証用に分離しています。評価の一致・候補ラベルは購入指示ではありません。'
         '正式順位・印・馬券判断は変わりません。</p>'
         + _definition_list(research_rows, "detail-research-facts")
         + '</details>'
