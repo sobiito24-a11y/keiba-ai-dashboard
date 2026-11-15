@@ -56,7 +56,16 @@ def annotate(view):
         # A clearly documented pre-race layoff plus poor workout is a
         # verification warning, never a hidden numeric model penalty.
         training = str(h.get("training") or "").strip()
-        if formal is not None and formal <= 3 and _rest_at_least_70_days(h.get("rest")) and (
+        raw_days = h.get("rest_days")
+        try:
+            exact_days = float(raw_days) if raw_days is not None else None
+            if exact_days is not None and not math.isfinite(exact_days):
+                exact_days = None
+        except (TypeError, ValueError):
+            exact_days = None
+        long_layoff = ((exact_days >= 70) if exact_days is not None
+                       else _rest_at_least_70_days(h.get("rest")))
+        if formal is not None and formal <= 3 and long_layoff and (
                 training.startswith("C") or training.startswith("D")):
             role = "軸注意"
             reasons.append("70日以上休養＋調教C/D")
