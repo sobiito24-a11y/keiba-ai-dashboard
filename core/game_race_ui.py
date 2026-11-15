@@ -103,6 +103,7 @@ def build_view(rows, records, source_rows=(), mode='jra', race_info=None, materi
         out.append(dict(no=no, name=name, mode=mode, frame=frame, mark=mark,
                         score_label=score_label, score=rec.get(score_label, '—'), rank=rec.get(rank_label, '—'),
                         ability=rec.get('純能力', '—'), ability_rank=rec.get('純能力順位', '—'),
+                        current_evaluation_rank=number(source.get('current_evaluation_rank')),
                         odds=f'{odds:.1f}' if odds is not None and odds > 0 else '—',
                         formal_member=(row.get('pure_ability_top5_group') is True) if mode=='nar' else (number(rec.get('JRA順位')) is not None and 1<=number(rec.get('JRA順位'))<=5),
                         star=dict(value=idx.get('star_index_value'),rank=idx.get('star_index_rank')),
@@ -178,7 +179,9 @@ def build_view(rows, records, source_rows=(), mode='jra', race_info=None, materi
     from .research_sabcd import assign_to_view
     from .research_sabcd_weight_class import assign_to_view as assign_shadow_grade
     from .research_positioning import assign_to_view as assign_research_position
-    return focus_annotate(assign_research_position(assign_shadow_grade(assign_to_view(out))))
+    final_view=focus_annotate(assign_research_position(assign_shadow_grade(assign_to_view(out))))
+    from .jra_rank_second_look import annotate as jra_second_look
+    return jra_second_look(final_view)
 
 
 def mark_html(mark):
@@ -374,8 +377,11 @@ def race_header(result, view=None):
             race_date=pick(info,'race_date','date','開催日'),
             venue=pick(info,'racecourse','venue','競馬場'),
             distance=pick(info,'distance_label','distance','距離'),
-            surface=pick(info,'surface','芝ダート'))
-    return '<section class="game-race-header"><span class="game-eyebrow">KEIBA AI / RACE BRIEFING</span><h2>'+escape(name)+'</h2>'+assessment+grade_note+'<div class="game-race-meta">'+''.join('<span><small>'+escape(k)+'</small> '+escape(text(v) or '—')+'</span>' for k,v in values)+'</div></section>'
+            surface=pick(info,'surface','芝ダート'),
+            going=pick(info,'going','馬場状態'))
+    from .jra_rank_second_look import render as render_jra_second_look
+    rank_check = render_jra_second_look(view) if result.race_mode == 'jra' else ''
+    return '<section class="game-race-header"><span class="game-eyebrow">KEIBA AI / RACE BRIEFING</span><h2>'+escape(name)+'</h2>'+assessment+grade_note+rank_check+'<div class="game-race-meta">'+''.join('<span><small>'+escape(k)+'</small> '+escape(text(v) or '—')+'</span>' for k,v in values)+'</div></section>'
 
 
 def render_component(view, race_key, paper_decision=None, postrace=None):
