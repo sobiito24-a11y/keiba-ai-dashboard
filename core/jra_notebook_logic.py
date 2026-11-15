@@ -360,7 +360,7 @@ def race_class_info_from_soup(soup, *fallback_texts):
     def _verified_local_class(value, label):
         if label not in {"A級", "B級", "C級"}:
             return True
-        return bool(re.search(r"[ABC]\\s*級", value, flags=re.I))
+        return bool(re.search(r"[ABC]\s*級", value, flags=re.I))
 
     for value in candidates:
         rank, label = race_class_info(value)
