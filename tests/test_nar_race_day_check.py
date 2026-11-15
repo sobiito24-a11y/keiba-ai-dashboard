@@ -100,3 +100,11 @@ def test_nar_header_renders_without_model_b_dependency():
     html = race_header(result, view)
     assert "NAR研究照合" in html
     assert "Top5外再確認" in html
+
+
+def test_banei_is_explicitly_excluded_from_thoroughbred_fourth_corner_model():
+    view = _view()
+    annotate(view, {"racecourse": "帯広(ば)", "race_name": "ばんえい十勝"})
+    assert all(h["nar_race_day_check"]["role"] == "" for h in view)
+    assert "対象外" in render(view)
+    assert "74/183" not in render(view)
