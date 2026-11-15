@@ -80,14 +80,14 @@ def test_html_escape():
     assert "<script>" not in html and "&lt;script&gt;" in html
 
 
-def test_nar_mobile_badges_in_existing_sabcd_cell():
+def test_nar_research_flags_are_not_under_sabcd_cell():
     from core.race_explorer_ui import _cell
     view = _view()
     annotate(view, {"race_name": "C1－10組"})
     html = _cell(view[0], {"research_sabcd": "C"}, "research_sabcd")
-    assert "N再確認" in html and "research-sabcd-C" in html
-    assert "純能力6位" in html
-    assert "N位置?" in _cell(view[1], {"research_sabcd": "A"}, "research_sabcd")
+    assert "research-sabcd-C" in html
+    assert "N再確認" not in html and "純能力6位" not in html
+    assert "N位置?" not in _cell(view[1], {"research_sabcd": "A"}, "research_sabcd")
 
 
 def test_nar_header_renders_without_model_b_dependency():

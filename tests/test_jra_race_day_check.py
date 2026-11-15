@@ -131,7 +131,7 @@ def test_existing_race_header_invokes_v3_and_handles_unavailable_b(monkeypatch):
     assert view[0]["rank"] == "1位"
 
 
-def test_v3_flag_is_visible_inside_existing_mobile_sabcd_column():
+def test_v3_flag_does_not_push_betting_language_under_sabcd():
     from core.race_explorer_ui import _cell
     h = dict(mode="jra", no="3", name="再確認候補",
              jra_race_day_check={
@@ -140,8 +140,9 @@ def test_v3_flag_is_visible_inside_existing_mobile_sabcd_column():
              })
     cell = _cell(h, dict(research_sabcd="C", research_sabcd_score=0.41), "research_sabcd")
     assert "research-sabcd-C" in cell
-    assert "V3再確認" in cell
-    assert "研究B2位・正式7位" in cell
+    assert "V3再確認" not in cell
+    assert "研究B2位・正式7位" not in cell
+    assert "軸候補" not in cell and "押さえ" not in cell
     assert "判定不可" not in cell
 
 

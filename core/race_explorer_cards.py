@@ -216,14 +216,32 @@ def detail_html(horse):
             "倍") if cells.get("place_odds") is not None and cells.get("place_odds_high") is not None else "未取得"),
         ("クラス・重賞注目", cells.get("class_attention")),
         ("注目根拠", cells.get("class_attention_reason")),
-        ("研究SABCD（斤量・クラス）", cells.get("research_sabcd")),
+    ]
+    # A deliberate click and expansion is required to read betting-sounding
+    # research roles. Never place these under S/A/B/C/D in the main list.
+    day_check = (_mapping(horse.get("jra_race_day_check"))
+                 if horse.get("mode") == "jra"
+                 else _mapping(horse.get("nar_race_day_check")))
+    research_rows = [
+        ("研究SABCD（参考）", cells.get("research_sabcd")),
         ("研究モデル値（未校正）", cells.get("research_sabcd_score")),
         ("研究格付け根拠", cells.get("research_sabcd_reason")),
-        ("軸・押さえ位置づけ（研究）", cells.get("research_positioning_label")),
-        ("軸・押さえ根拠／判定不可の理由", cells.get("research_positioning_reason")),
+        ("研究上の位置づけ（未検証）", cells.get("research_positioning_label")),
+        ("位置づけの根拠と注意", cells.get("research_positioning_reason")),
         ("距離・近走の適性注目（研究）", cells.get("research_suitability_label")),
         ("適性注目の根拠・注意", cells.get("research_suitability_reason")),
+        ("別モデルとの照合（研究）", day_check.get("role")),
+        ("照合・位置予測の根拠", " ／ ".join(day_check.get("reasons") or [])),
     ]
+    if cells.get("research_sabcd_retro"):
+        research_rows.append(("保存済み予想との関係", "後日算出。発走前の当時予想ではありません"))
+    research_html = (
+        '<details class="detail-research-model"><summary>研究評価の詳細（任意）</summary>'
+        '<p class="detail-note">評価の一致・候補ラベルは購入指示ではありません。'
+        '正式順位・印・馬券判断は変わりません。</p>'
+        + _definition_list(research_rows, "detail-research-facts")
+        + '</details>'
+    )
     if horse.get("mode") == "jra":
         basic.append(("調教評価", facts.get("training")))
     form_html = ""
@@ -314,6 +332,7 @@ def detail_html(horse):
         factor_html +
         _definition_list(basic, "detail-basic") +
         form_html +
+        research_html +
         ('<section class="detail-frozen-review"><h4>検証用チェック（2026/11/08条件固定）</h4>'
          '<p><b>' + value(cells.get("frozen_review")) + '</b></p>'
          '<p>' + value(cells.get("frozen_review_reason")) + '</p>'

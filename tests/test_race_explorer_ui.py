@@ -313,11 +313,16 @@ def test_retrospective_grade_label_is_explicit_and_explained(mode):
             "score": .55, "retro": True,
         }
     html = BeautifulSoup(lineup_html(view), "html.parser")
-    retro = html.select_one("#lineup-workspace td.col-research_sabcd .research-sabcd-retro")
-    assert retro.text == "後日算出"
-    assert "発走前の当時予想ではありません" in retro.get("title")
-    assert "後付け" not in html.select_one("#lineup-workspace td.col-research_sabcd").text
-    assert "過去の保存開催では「後日算出」と表示します" in html.text
+    # Provenance belongs in a single lineup note and in the grade tooltip,
+    # never as repeated bait-like text beneath every S/A/B/C/D badge.
+    assert html.select_one("#lineup-workspace td.col-research_sabcd .research-sabcd-retro") is None
+    cell = html.select_one("#lineup-workspace td.col-research_sabcd")
+    grade = cell.select_one(".research-sabcd")
+    assert grade.text == "A"
+    assert "後日算出" in grade.get("title")
+    assert "発走前の当時予想ではありません" in grade.get("title")
+    assert "後付け" not in cell.text
+    assert "後日算出が含まれます" in html.get_text()
 
 
 @pytest.mark.parametrize("mode", ["jra", "nar"])

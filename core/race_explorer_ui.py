@@ -100,55 +100,22 @@ def _cell(horse, cells, key):
     if key == 'weight_delta':
         return value(cells.get('weight_delta_label'))
     if key == 'research_sabcd':
-        # Research-only role in the SAME cell: never one more wide column.
-        role = cells.get('research_positioning_label') or ''
-        role_reason = cells.get('research_positioning_reason') or ''
-        suitability = cells.get('research_suitability_label') or ''
-        suitability_reason = cells.get('research_suitability_reason') or ''
-        role_short = {'押さえ候補': '押さえ', '押さえ参考': '押さえ参考',
-                      '相手本線': '相手本線'}.get(role, role)
-        if suitability == '適性注目':
-            # One short annotation only, even when a front-position cover flag
-            # also applies. C/D remains C/D; this is not a ticket instruction.
-            role_short = ('押さえ＋適性' if role == '押さえ候補'
-                          else '適性注目')
-            role_reason = (role_reason + ' ／ ' + suitability_reason).strip(' ／ ')
-        role_html = ('<small class="research-role-inline" title="'
-                     + plain(role_reason) + '">' + plain(role_short) + '</small>'
-                     if (role in ('軸候補', '軸慎重', '軸比較', '相手本線',
-                                  '押さえ候補', '押さえ参考')
-                         or suitability == '適性注目') else '')
-        # V3 day-of-race check is separate from the stored SABCD score.
-        # Do not add a wide column to the smartphone table.
-        day_check = horse.get('jra_race_day_check') or {}
-        day_role = day_check.get('role') if horse.get('mode') == 'jra' else ''
-        day_short = {'取りこぼし再確認': 'V3再確認', '軸注意': 'V3軸注意',
-                     '3評価一致': 'V3一致'}.get(day_role, '')
-        day_html = ('<small class="research-role-inline" title="'
-                    + plain(' ／ '.join(day_check.get('reasons') or []))
-                    + '">' + plain(day_short) + '</small>' if day_short else '')
-        nar_day = horse.get('nar_race_day_check') or {}
-        nar_role = nar_day.get('role') if horse.get('mode') == 'nar' else ''
-        nar_short = {'Top5外再確認': 'N再確認', '中位×4角前': 'N前目注目',
-                     '位置予測注意': 'N位置?'}.get(nar_role, '')
-        nar_html = ('<small class="research-role-inline" title="'
-                    + plain(' ／ '.join(nar_day.get('reasons') or []))
-                    + '">' + plain(nar_short) + '</small>' if nar_short else '')
+        # The main lineup must not suggest bets through inline labels such as
+        # 軸候補 / 押さえ / V3一致 / N再確認. Those research annotations
+        # remain available on explicit horse-detail inspection only.
+        # Preserve the original S/A/B/C/D or 判定不可 without changing
+        # the model, saved ranks, scores, marks or sort order.
         if item not in ('S', 'A', 'B', 'C', 'D'):
-            return ('<span class="missing-cell" title="'
-                    + plain(cells.get('research_sabcd_reason') or role_reason)
-                    + '">判定不可</span>' + role_html + day_html + nar_html)
-        # Neither this study label nor the provisional model score is a bet.
+            return '<span class="missing-cell">判定不可</span>'
         reason = cells.get('research_sabcd_reason') or ''
         score = cells.get('research_sabcd_score')
         score_label = (f'／モデル値 {score:.3f}（未校正）'
                        if score is not None else '')
-        retro = ('<small class="research-sabcd-retro" title="保存済みの過去レースを研究モデルで後日再評価。発走前の当時予想ではありません">後日算出</small>'
-                 if cells.get('research_sabcd_retro') else '')
+        retrospective = ('／後日算出（発走前の当時予想ではありません）'
+                         if cells.get('research_sabcd_retro') else '')
         return ('<span class="research-sabcd research-sabcd-'+plain(item)+'"'
-                ' title="'+plain(str(reason)+score_label)+'"'
-                ' aria-label="研究用SABCD '+plain(item)+'">'+value(item)+'</span>'
-                + role_html + day_html + nar_html + retro)
+                ' title="'+plain(str(reason)+score_label+retrospective)+'"'
+                ' aria-label="研究用SABCD '+plain(item)+'">'+value(item)+'</span>')
     if key == 'class_attention':
         return ('<span class="comparison-snippet">'+value(item)+'</span>'
                 if item is not None else '<span class="missing-cell">未取得</span>')
@@ -215,13 +182,17 @@ def lineup_html(view):
             content.append('<td class="'+cls+'" data-label="'+plain(spec['label'])+'" title="'+plain(tooltip)+'">'+_cell(horse, row, key)+'</td>')
         rows.append('<tr data-row="'+plain(no)+'" data-horse="'+plain(no)+'">'+''.join(content)+'</tr>')
     class_help = '<p class="help">「クラス・重賞注目」は前走の「前走」の文字だけ省略した表示です。過去3走の根拠は列の説明・馬別詳細で確認できます。加点・純能力順位・正式印は変更しません。</p>'
-    sabcd_help = '<p class="help">研究SABCDは斤量・クラスを含む研究モデルで全頭を個別評価（人数制限なし）。同じセル内の「軸候補／軸比較／軸慎重／押さえ」は過去データからの仮説ラベルです。「適性注目」はC/Dに残る複数の過去好走歴を示すだけで、買い推奨ではありません。Sは人数制限なし・必ずしも軸ではなく、Aも独立して軸候補になります。総合ランクや買い目には影響しません。モデル値は未校正で実際の馬券内確率ではありません。JRAの「V3一致・V3再確認・V3軸注意」は正式・今回評価・研究Bの順位照合で、SABCD自体や正式印を変更しません。旧8項目モデルは内部検証用に保持。純能力・正式印・購入判断は変更しません。過去の保存開催では「後日算出」と表示します（当時の発走前予想ではありません）。</p>'
+    sabcd_help = '<p class="help">SABCDは研究用の参考評価で、購入指示ではありません。評価根拠や他モデルとの照合は、馬名を開いて「研究評価の詳細」を選ぶと確認できます。</p>'
+    retro_note = ('<p class="help">※この開催の研究SABCDには後日算出が含まれます。当時の発走前予想ではありません。</p>'
+                  if any(isinstance(h.get('research_sabcd_weight_class'), dict)
+                         and h['research_sabcd_weight_class'].get('retro') for h in view)
+                  else '')
     nar_help = ('<p class="help">研究用の「今回評価」は横一覧から非表示にしました。'
                 '馬名の詳細で根拠を確認できます。印・正式順位・純能力は変更しません。</p>'
                 if view and view[0].get("mode") == "nar" else '')
     return ('<section class="lineup-workspace" id="lineup-workspace"><div class="explorer-section-heading"><div><span class="eyebrow">COMPARE ALL RUNNERS</span><h2>全頭予想・比較一覧</h2></div><span class="count">全'+str(len(view))+'頭</span></div>'
             '<p class="help">自分の✓は何頭でも選べます。予測・保存・買い目には反映しません。列見出しで並び替え、馬名から詳細を開けます。</p>'
-            +nar_help+sabcd_help+
+            +nar_help+sabcd_help+retro_note+
             '<p class="help">プラス・注意材料は馬名を選択すると表示される馬別詳細で確認できます。レースピックアップにも表示しています。</p>'
             '<div class="lineup-toolbar"><label>表示 <select id="lineup-filter"><option value="all">全頭表示</option><option value="selected">自分の✓だけ表示</option></select></label>'
             '<label>並び順 <select id="lineup-sort">'+_options(schema, 'no')+'</select></label>'
