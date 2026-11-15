@@ -325,19 +325,42 @@ def extract_class_text_candidates(soup):
             unique.append(text)
     return unique
 def race_class_info_from_soup(soup, *fallback_texts):
+    """Identify the RACE class, not the turf-course configuration (A/B/C).
+
+    Netkeiba places `芝1800m 右 A` in RaceData01 and `1勝クラス`
+    in RaceData02. A bare ASCII A/B/C is never reliable evidence of
+    a Japanese local racing class. Preserve explicit A級/B級/C級 and A1 etc.
+    """
     candidates = extract_class_text_candidates(soup)
-    candidates += [norm_text(str(text)) for text in fallback_texts if text]
+    candidates += [norm_text(str(value)) for value in fallback_texts if value]
+
+    def class_evidence(value):
+        rank, label = race_class_info(value)
+        if label in {"A級", "B級", "C級"} and not re.search(r"[ABCＡＢＣ]\\s*級", value):
+            return None, ""  # Bare A/B/C could be the turf course or another tag.
+        return rank, label
+
     major_labels = {"G1", "G2", "G3", "Jpn1", "Jpn2", "Jpn3", "重賞", "準重賞", "L"}
-    for text in candidates:
-        rank, label = race_class_info(text)
+    for value in candidates:
+        rank, label = class_evidence(value)
         if rank is not None and label in major_labels:
             return rank, label
-    for text in candidates:
-        rank, label = race_class_info(text)
+
+    # For JRA races the authoritative class is on the race CONDITIONS line,
+    # not the course line. This ordering also works with explicit fallback
+    # strings when the RaceData02 HTML node is absent.
+    jra_conditions = ("新馬", "未勝利", "1勝", "2勝", "3勝")
+    for value in candidates:
+        rank, label = class_evidence(value)
+        if rank is not None and label in jra_conditions:
+            return rank, label
+
+    for value in candidates:
+        rank, label = class_evidence(value)
         if rank is not None:
             return rank, label
-    compact_fallback = " ".join(norm_text(str(text)) for text in fallback_texts if text)
-    return race_class_info(compact_fallback)
+    fallback = " ".join(norm_text(str(value)) for value in fallback_texts if value)
+    return class_evidence(fallback)
 
 
 def class_shift_label(current_rank, past_rank):
