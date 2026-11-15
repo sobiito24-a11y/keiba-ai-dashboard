@@ -340,10 +340,17 @@ def race_class_info_from_soup(soup, *fallback_texts):
             return None, ""  # Bare A/B/C could be the turf course or another tag.
         return rank, label
 
-    major_labels = {"G1", "G2", "G3", "Jpn1", "Jpn2", "Jpn3", "重賞", "準重賞", "L"}
+    # An explicit grade icon outranks the generic word "重賞" in a race
+    # title. Otherwise scanning header text first can silently downgrade G1
+    # to the generic "重賞" class even when its grade icon is present.
+    explicit_grades = {"G1", "G2", "G3", "Jpn1", "Jpn2", "Jpn3"}
     for value in candidates:
         rank, label = class_evidence(value)
-        if rank is not None and label in major_labels:
+        if rank is not None and label in explicit_grades:
+            return rank, label
+    for value in candidates:
+        rank, label = class_evidence(value)
+        if rank is not None and label in {"重賞", "準重賞", "L"}:
             return rank, label
 
     # For JRA races the authoritative class is on the race CONDITIONS line,
