@@ -103,7 +103,7 @@ def build_view(rows, records, source_rows=(), mode='jra', race_info=None, materi
         out.append(dict(no=no, name=name, mode=mode, frame=frame, mark=mark,
                         score_label=score_label, score=rec.get(score_label, '—'), rank=rec.get(rank_label, '—'),
                         ability=rec.get('純能力', '—'), ability_rank=rec.get('純能力順位', '—'),
-                        current_evaluation_rank=number(source.get('current_evaluation_rank')),
+                        current_evaluation_rank=pick(source,'current_evaluation_rank','今回評価順位','今回評価'),
                         odds=f'{odds:.1f}' if odds is not None and odds > 0 else '—',
                         formal_member=(row.get('pure_ability_top5_group') is True) if mode=='nar' else (number(rec.get('JRA順位')) is not None and 1<=number(rec.get('JRA順位'))<=5),
                         star=dict(value=idx.get('star_index_value'),rank=idx.get('star_index_rank')),
