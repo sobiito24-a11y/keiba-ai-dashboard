@@ -129,3 +129,24 @@ def test_existing_race_header_invokes_v3_and_handles_unavailable_b(monkeypatch):
     assert "2歳未勝利" in html
     assert "研究B未照合" in html
     assert view[0]["rank"] == "1位"
+
+
+def test_v3_flag_is_visible_inside_existing_mobile_sabcd_column():
+    from core.race_explorer_ui import _cell
+    h = dict(mode="jra", no="3", name="再確認候補",
+             jra_race_day_check={
+                 "role": "取りこぼし再確認",
+                 "reasons": ["研究B2位・正式7位"],
+             })
+    cell = _cell(h, dict(research_sabcd="C", research_sabcd_score=0.41), "research_sabcd")
+    assert "research-sabcd-C" in cell
+    assert "V3再確認" in cell
+    assert "研究B2位・正式7位" in cell
+    assert "判定不可" not in cell
+
+
+def test_v3_never_appears_in_nar_sabcd_cell():
+    from core.race_explorer_ui import _cell
+    h = dict(mode="nar", no="1", name="地方候補",
+             jra_race_day_check={"role": "軸注意", "reasons": ["元"]})
+    assert "V3軸注意" not in _cell(h, dict(research_sabcd="A"), "research_sabcd")
