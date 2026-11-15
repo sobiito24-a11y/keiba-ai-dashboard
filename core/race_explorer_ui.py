@@ -112,19 +112,19 @@ def _cell(horse, cells, key):
         # The main lineup must not suggest bets through inline labels such as
         # 軸候補 / 押さえ / V3一致 / N再確認. Those research annotations
         # remain available on explicit horse-detail inspection only.
-        # Preserve the original S/A/B/C/D or 判定不可 without changing
-        # the model, saved ranks, scores, marks or sort order.
+        # Only one integrated research grade is shown. Formal predictions
+        # and marks are never overwritten; no betting-role caption is shown.
         if item not in ('S', 'A', 'B', 'C', 'D'):
             return '<span class="missing-cell">判定不可</span>'
         reason = cells.get('research_sabcd_reason') or ''
         score = cells.get('research_sabcd_score')
-        score_label = (f'／モデル値 {score:.3f}（未校正）'
+        score_label = (f'／統合順位強度 {score:.3f}（確率ではありません）'
                        if score is not None else '')
         retrospective = ('／後日算出（発走前の当時予想ではありません）'
                          if cells.get('research_sabcd_retro') else '')
         return ('<span class="research-sabcd research-sabcd-'+plain(item)+'"'
                 ' title="'+plain(str(reason)+score_label+retrospective)+'"'
-                ' aria-label="研究用SABCD '+plain(item)+'">'+value(item)+'</span>')
+                ' aria-label="統合研究SABCD '+plain(item)+'">'+value(item)+'</span>')
     if key == 'class_attention':
         return ('<span class="comparison-snippet">'+value(item)+'</span>'
                 if item is not None else '<span class="missing-cell">未取得</span>')
@@ -191,7 +191,7 @@ def lineup_html(view):
             content.append('<td class="'+cls+'" data-label="'+plain(spec['label'])+'" title="'+plain(tooltip)+'">'+_cell(horse, row, key)+'</td>')
         rows.append('<tr data-row="'+plain(no)+'" data-horse="'+plain(no)+'">'+''.join(content)+'</tr>')
     class_help = '<p class="help">「クラス・重賞注目」は前走の「前走」の文字だけ省略した表示です。過去3走の根拠は列の説明・馬別詳細で確認できます。加点・純能力順位・正式印は変更しません。</p>'
-    sabcd_help = '<p class="help">SABCDは研究用の参考評価で、購入指示ではありません。評価根拠や他モデルとの照合は、馬名を開いて「研究評価の詳細」を選ぶと確認できます。</p>'
+    sabcd_help = '<p class="help">統合SABCDは研究用です。従来の研究評価を中心に、保存済み正式Top5を少量だけ加味して一つのランクにしています。未校正で購入指示ではありません。旧正式順位・元SABCDは馬名の「研究評価の詳細」で確認できます。</p>'
     retro_note = ('<p class="help">※この開催の研究SABCDには後日算出が含まれます。当時の発走前予想ではありません。</p>'
                   if any(isinstance(h.get('research_sabcd_weight_class'), dict)
                          and h['research_sabcd_weight_class'].get('retro') for h in view)
