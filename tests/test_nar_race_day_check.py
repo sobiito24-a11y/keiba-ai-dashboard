@@ -15,6 +15,7 @@ from core.nar_race_day_check import annotate, race_group, render
     ({"race_name": "北國王冠３歳上", "race_data2": "重賞"}, "重賞・交流"),
     ({"race_name": "2歳5"}, "2歳戦"),
     ({"race_name": "3歳2組"}, "3歳限定"),
+    ({"race_name": "3歳上 C1"}, "C1級"),
     ({"race_name": "ファーストステップ 2歳 新馬"}, "新馬"),
     ({"race_name": "条件不明", "race_data2": "ダート1400m Aコース"}, "区分不明"),
 ])
