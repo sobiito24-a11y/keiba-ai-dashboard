@@ -182,6 +182,9 @@ def build_view(rows, records, source_rows=(), mode='jra', race_info=None, materi
     from .research_positioning import assign_to_view as assign_research_position
     final_view=focus_annotate(assign_research_position(assign_shadow_grade(assign_to_view(out))))
     from .jra_rank_second_look import annotate as jra_second_look
+    if mode == 'nar':
+        from .nar_race_day_check import annotate as annotate_nar_day
+        final_view = annotate_nar_day(final_view, race_info)
     return jra_second_look(final_view)
 
 
@@ -395,7 +398,12 @@ def race_header(result, view=None):
         today_check = render_today(view)
     from .jra_rank_second_look import render as render_jra_second_look
     rank_check = render_jra_second_look(view) if result.race_mode == 'jra' else ''
-    return '<section class="game-race-header"><span class="game-eyebrow">KEIBA AI / RACE BRIEFING</span><h2>'+escape(name)+'</h2>'+assessment+grade_note+today_check+rank_check+'<div class="game-race-meta">'+''.join('<span><small>'+escape(k)+'</small> '+escape(text(v) or '—')+'</span>' for k,v in values)+'</div></section>'
+    nar_check = ''
+    if result.race_mode == 'nar' and view is not None:
+        from .nar_race_day_check import annotate as annotate_nar_day, render as render_nar_day
+        annotate_nar_day(view, info)
+        nar_check = render_nar_day(view)
+    return '<section class="game-race-header"><span class="game-eyebrow">KEIBA AI / RACE BRIEFING</span><h2>'+escape(name)+'</h2>'+assessment+grade_note+today_check+rank_check+nar_check+'<div class="game-race-meta">'+''.join('<span><small>'+escape(k)+'</small> '+escape(text(v) or '—')+'</span>' for k,v in values)+'</div></section>'
 
 
 def render_component(view, race_key, paper_decision=None, postrace=None):
