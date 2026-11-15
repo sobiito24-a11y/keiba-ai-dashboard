@@ -222,8 +222,13 @@ def detail_html(horse):
     day_check = (_mapping(horse.get("jra_race_day_check"))
                  if horse.get("mode") == "jra"
                  else _mapping(horse.get("nar_race_day_check")))
+    fusion = _mapping(horse.get("research_formal_sabcd_fusion"))
+    fusion_value = fusion.get("score")
     research_rows = [
         ("旧正式順位（比較用）", (str(cells["rank"]) + "位") if cells.get("rank") is not None else "判定不可"),
+        ("正式×SABCD統合試験値（未採用）",
+         f"{fusion_value:.3f}" if isinstance(fusion_value, (int, float)) else "判定不可"),
+        ("統合試験の検証と注意", fusion.get("reason")),
         ("研究SABCD（参考）", cells.get("research_sabcd")),
         ("研究モデル値（未校正）", cells.get("research_sabcd_score")),
         ("研究格付け根拠", cells.get("research_sabcd_reason")),
