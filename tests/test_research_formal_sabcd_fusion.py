@@ -58,7 +58,6 @@ def test_missing_formal_rank_and_missing_shadow_are_not_filled_from_ability():
     assert outcome["2"]["rank"] is None
     assert "未取得" in outcome["1"]["reason"]
     assert "参考順位" in outcome["7"]["reason"]
-    assert all("SABCD" not in h or True for h in data)
 
 
 def test_under_five_comparable_horses_never_proclaim_five_selections():
