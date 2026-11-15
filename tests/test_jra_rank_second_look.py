@@ -40,3 +40,15 @@ def test_nar_empty_or_missing_rank_does_not_invent_facts():
     jra=[dict(mode="jra", no="4", name="データ不足", rank="—",
               current_evaluation_rank=None, ability_rank=None)]
     assert render(annotate(jra)) == ""
+
+
+def test_exact_saved_70days_used_even_if_display_is_approximate():
+    view=[dict(mode="jra", no="3", name="休養馬", rank=2,
+               current_evaluation_rank=2, ability_rank=1,
+               rest="約2か月", rest_days=72, training="D")]
+    annotate(view)
+    assert view[0]["jra_rank_second_look"]["role"] == "軸注意"
+    assert "70日以上休養＋調教C/D" in view[0]["jra_rank_second_look"]["reasons"]
+    view[0]["rest_days"] = 60
+    annotate(view)
+    assert view[0]["jra_rank_second_look"]["role"] is None
