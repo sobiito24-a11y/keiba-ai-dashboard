@@ -52,9 +52,9 @@ def class_group(info):
     if ("障" in surface or re.search(r"障害|ジャンプ", raw)):
         return "障害"
     # Explicit G1–G3 and Jpn grades override generic OPEN.
-    if (re.search(r"(?<![A-Za-z0-9])(?:Jpn|G)[123](?!\\d)", label, flags=re.I)
+    if (re.search(r"(?<![A-Za-z0-9])(?:Jpn|G)[123](?!\d)", label, flags=re.I)
             or label in ("G1", "G2", "G3", "L", "OP")
-            or re.search(r"(?<![A-Za-z0-9])(?:Jpn|G)[123](?!\\d)|重賞|オープン|リステッド", raw, flags=re.I)):
+            or re.search(r"(?<![A-Za-z0-9])(?:Jpn|G)[123](?!\d)|重賞|オープン|リステッド", raw, flags=re.I)):
         return "OP・重賞"
     for klass in ("3勝", "2勝", "1勝"):
         if klass in condition or label == klass:
