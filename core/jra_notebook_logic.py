@@ -336,7 +336,7 @@ def race_class_info_from_soup(soup, *fallback_texts):
 
     def class_evidence(value):
         rank, label = race_class_info(value)
-        if label in {"A級", "B級", "C級"} and not re.search(r"[ABCＡＢＣ]\\s*級", value):
+        if label in {"A級", "B級", "C級"} and not re.search(r"[ABCＡＢＣ]\s*級", value):
             return None, ""  # Bare A/B/C could be the turf course or another tag.
         return rank, label
 
