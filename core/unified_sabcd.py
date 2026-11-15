@@ -97,11 +97,15 @@ def evaluate_race(view):
                     if formal_available else pct)
         fused.append((no, horse, score, old, formal_rank, strength))
     fused.sort(key=lambda item: (-item[5], -item[2], _number_key(item[1])))
-    raw_order = sorted(scores, reverse=True)
+    # Use the *source grade* rather than reconstructing from rounded source
+    # scores: a rounded 0.5000 may have been below the A cutoff originally.
+    grade_order = sorted(valid, key=lambda item: (-item[2], _number_key(item[1])))
+    source_grades = [item[3].get("grade") for item in grade_order]
     output = {}
     for order, (no, horse, score, old, formal_rank, strength) in enumerate(fused, 1):
-        mapped = raw_order[order-1]
-        tier = grade_from_probability(mapped)
+        source_grade = source_grades[order - 1]
+        tier = source_grade if source_grade in GRADES else grade_from_probability(
+            grade_order[order - 1][2])
         origin = old.get("grade")
         status = "integrated" if formal_available else "shadow_only"
         reason = (
