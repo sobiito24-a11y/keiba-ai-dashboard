@@ -182,13 +182,17 @@ def lineup_html(view):
             content.append('<td class="'+cls+'" data-label="'+plain(spec['label'])+'" title="'+plain(tooltip)+'">'+_cell(horse, row, key)+'</td>')
         rows.append('<tr data-row="'+plain(no)+'" data-horse="'+plain(no)+'">'+''.join(content)+'</tr>')
     class_help = '<p class="help">「クラス・重賞注目」は前走の「前走」の文字だけ省略した表示です。過去3走の根拠は列の説明・馬別詳細で確認できます。加点・純能力順位・正式印は変更しません。</p>'
-    sabcd_help = '<p class="help">SABCDは研究用の参考ランクで、人数制限なく個別評価します。的中率を保証するものではありません。軸・購入判断を誘導しないよう、順位の下に候補ラベルを表示していません。詳細な算出根拠や別モデルとの照合は、馬名を選択した際の「研究評価の詳細」に格納しています。ランク・印・買い目はこの表示変更で変わりません。</p>'
+    sabcd_help = '<p class="help">SABCDは研究用の参考評価で、購入指示ではありません。評価根拠や他モデルとの照合は、馬名を開いて「研究評価の詳細」を選ぶと確認できます。</p>'
+    retro_note = ('<p class="help">※この開催の研究SABCDには後日算出が含まれます。当時の発走前予想ではありません。</p>'
+                  if any(isinstance(h.get('research_sabcd_weight_class'), dict)
+                         and h['research_sabcd_weight_class'].get('retro') for h in view)
+                  else '')
     nar_help = ('<p class="help">研究用の「今回評価」は横一覧から非表示にしました。'
                 '馬名の詳細で根拠を確認できます。印・正式順位・純能力は変更しません。</p>'
                 if view and view[0].get("mode") == "nar" else '')
     return ('<section class="lineup-workspace" id="lineup-workspace"><div class="explorer-section-heading"><div><span class="eyebrow">COMPARE ALL RUNNERS</span><h2>全頭予想・比較一覧</h2></div><span class="count">全'+str(len(view))+'頭</span></div>'
             '<p class="help">自分の✓は何頭でも選べます。予測・保存・買い目には反映しません。列見出しで並び替え、馬名から詳細を開けます。</p>'
-            +nar_help+sabcd_help+
+            +nar_help+sabcd_help+retro_note+
             '<p class="help">プラス・注意材料は馬名を選択すると表示される馬別詳細で確認できます。レースピックアップにも表示しています。</p>'
             '<div class="lineup-toolbar"><label>表示 <select id="lineup-filter"><option value="all">全頭表示</option><option value="selected">自分の✓だけ表示</option></select></label>'
             '<label>並び順 <select id="lineup-sort">'+_options(schema, 'no')+'</select></label>'
