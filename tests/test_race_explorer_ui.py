@@ -123,7 +123,8 @@ def test_normal_workspace_hides_final_scores_and_shows_ten_independent_analyses(
     assert all(horse['values']['user'] is False for horse in payload['horses'])
     assert [horse['values']['score'] for horse in payload['horses']]==[formal_score(horse) for horse in view]
     table_rows = doc.select('#lineup-workspace tr[data-horse]')
-    assert not doc.select('.col-score,.col-rank,.col-reference_score')
+    assert not doc.select('.col-score,.col-reference_score')
+    assert doc.select('#lineup-workspace .col-rank')
     assert not doc.select('#lineup-sort option[value="score"],#filter-column option[value="reference_score"]')
     assert all('最終評価' not in row.get_text() for row in table_rows)
     analyses = doc.select_one('details#detail-analysis')
@@ -223,7 +224,8 @@ def test_research_sabcd_does_not_change_real_view_formal_marks_and_scores(mode):
     assert all(t.get("retro") for t in assigned)  # 2026-10-22 was in fit period
     cells=projected_records(view)
     headers=[s["key"] for s in columns(view) if not s.get("table_hidden")]
-    assert headers[headers.index("research_sabcd")+1] == "ability"
+    assert headers[headers.index("research_sabcd")+1] == "rank"
+    assert headers[headers.index("rank")+1] == "ability"
     assert headers[headers.index("ability")+1] == "style"
     assert ("training" in headers) == (mode == "jra")
     if mode == "jra":
