@@ -1,0 +1,37 @@
+name: JRA graded trends and rank regression
+
+on:
+  pull_request:
+    paths:
+      - "core/jra_graded_tendency_ui.py"
+      - "core/jra_rank_second_look.py"
+      - "core/game_race_ui.py"
+      - "data/jra_graded_verified_examples.json"
+      - "data/jra_graded_trends_2021_2025.json"
+      - "tests/test_jra_graded_tendency_ui.py"
+      - "tests/test_jra_rank_second_look.py"
+      - ".github/workflows/jra-graded-rank-regression.yml"
+  push:
+    branches: ["main"]
+    paths:
+      - "core/jra_graded_tendency_ui.py"
+      - "core/jra_rank_second_look.py"
+      - "core/game_race_ui.py"
+      - "data/jra_graded_verified_examples.json"
+      - "tests/test_jra_graded_tendency_ui.py"
+      - "tests/test_jra_rank_second_look.py"
+
+jobs:
+  jra:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install test dependencies
+        run: pip install -r requirements-test.txt
+      - name: Compile changed Python sources
+        run: python -m compileall -q core/jra_graded_tendency_ui.py core/jra_rank_second_look.py core/game_race_ui.py
+      - name: Test no lookahead, course-ground isolation, and rank alerts
+        run: pytest -q tests/test_jra_graded_tendency_ui.py tests/test_jra_rank_second_look.py

@@ -3,8 +3,8 @@
 Aggregates contain 2021-2025 official JRA graded calendar (695) and
 293 race results matched against a public official-result-derived dataset.
 Historical outcomes are date-gated to STRICTLY before the displayed race.
-No corner positions, race popularity, quinella payouts or post-race feature
-engineering is claimed. No impact on NAR, marks or SABCD.
+Only selected JRA-verified races additionally contain historical corner, pace,
+popularity and going. Unverified fields stay unknown. No impact on NAR, marks or SABCD.
 """
 from functools import lru_cache
 from html import escape
@@ -34,7 +34,7 @@ def _verified():
     return json.loads(VERIFIED.read_text(encoding="utf-8")).get("races", {})
 
 
-def tendency(title, *, mode, race_date, venue="", distance="", surface=""):
+def tendency(title, *, mode, race_date, venue="", distance="", surface="", going=""):
     """Date-safe and course-aware race history. No score or odds alteration."""
     if str(mode or "").lower()!="jra":
         return None
@@ -66,49 +66,99 @@ def tendency(title, *, mode, race_date, venue="", distance="", surface=""):
             and (not meters or x["distance"]==meters)
             and (not condition or x["surface"]==condition)]
     example=_verified().get(race_name)
+    # Verified year-by-year records are authoritative for their OWN venue,
+    # distance and surface. A relocated running is NOT a course match.
     verified_corner=False
-    if (example and (not location or example["venue"]==location)
-            and (not meters or example["distance"]==meters)
-            and (not condition or example["surface"]==condition)):
-        # Only explicitly JRA-verified per-year records override a partial
-        # public CSV. Always date-gate before using past race results.
-        annual=[dict(x) for x in example["annual"]
-                if x["year"]<year]
-        verified_corner=True
+    nonmatch_years=[]
+    if example:
+        all_verified=[dict(x) for x in example.get("annual", ())
+                      if x["year"] < year]
+        compatible=(not location or _clean(example.get("venue"))==location) and (
+            not meters or example.get("distance")==meters) and (
+            not condition or example.get("surface")==condition)
+        if compatible:
+            annual=[x for x in all_verified if
+                    (not location or x.get("venue", example.get("venue"))==location)
+                    and (not meters or x.get("distance", example.get("distance"))==meters)
+                    and (not condition or x.get("surface", example.get("surface"))==condition)]
+            nonmatch_years=sorted({x["year"] for x in all_verified if x not in annual})
+            verified_corner=bool(annual) and all(isinstance(x.get("winner_corner4"), int) for x in annual)
     if not annual:
         return None
     n=len(annual)
     win10=sum(x["win_payout_yen"]>=1000 for x in annual)
     win20=sum(x["win_payout_yen"]>=2000 for x in annual)
+    grounds=("良","稍重","重","不良")
+    goings={g:sum(x.get("going")==g for x in annual) for g in grounds}
+    goings={g:count for g,count in goings.items() if count}
+    going_observations=sum(goings.values())
+    current_going=str(going or "").strip()
+    current_going=current_going if current_going in grounds else ""
+    ages=[x["winner_age"] for x in annual if isinstance(x.get("winner_age"),int)]
+    pace=[x for x in annual if isinstance(x.get("first_1000_sec"),(int,float))
+          and isinstance(x.get("last_1000_sec"),(int,float))]
+    past_years={x["year"] for x in annual}
+    expected={y for y in range(max(2021,year-5),year)}
     return dict(name=race_name,grade=entry["grade"],n=n,
-                years=sorted(x["year"] for x in annual),
-                winner_10x=win10,winner_20x=win20,
+                years=sorted(past_years),winner_10x=win10,winner_20x=win20,
+                winner_popularity_max=max((x.get("winner_popularity") or 0 for x in annual),default=0) if verified_corner else None,
                 front3=sum(x.get("winner_corner4",999)<=3 for x in annual) if verified_corner else None,
                 rear10=sum(x.get("winner_corner4",0)>=10 for x in annual) if verified_corner else None,
-                missing_years=[y for y in range(max(2021,year-5),year)
-                               if y not in {x["year"] for x in annual}],
-                scoring_effect=0, rank_effect=0,
-                verified_corner=verified_corner, verified_quinella=False,
+                going_counts=goings,going_observations=going_observations,
+                going_unknown=n-going_observations,current_going=current_going,
+                matching_going=goings.get(current_going,0) if current_going else None,
+                young_winner_count=sum(x<=4 for x in ages) if ages else None,
+                age_observations=len(ages),
+                late_faster=sum(x["last_1000_sec"]<x["first_1000_sec"] for x in pace) if pace else None,
+                pace_observations=len(pace),
+                relocated_years=nonmatch_years,
+                missing_years=sorted(expected - past_years - set(nonmatch_years)),
+                scoring_effect=0,rank_effect=0,
+                verified_corner=verified_corner,verified_quinella=False,
                 history_coverage_pct=_data().get("coverage_pct"))
 
-
-def render(title, *, mode, race_date, venue="", distance="", surface=""):
+def render(title, *, mode, race_date, venue="", distance="", surface="", going=""):
+    """Display observed historical context without changing model ranks."""
     fact=tendency(title,mode=mode,race_date=race_date,venue=venue,
-                  distance=distance,surface=surface)
+                  distance=distance,surface=surface,going=going)
     if not fact:
         return ""
     years="・".join(str(x) for x in fact["years"])
-    absent="・".join(str(x) for x in fact["missing_years"])
-    note=("※未収録年 " + absent + "。 " if absent else "")
-    pace = (f"勝ち馬4角3番手以内 {fact['front3']}／{fact['n']}開催、"
-            f"10番手以下 {fact['rear10']}／{fact['n']}開催。"
-            if fact["verified_corner"] else "4角・脚質は未検証。")
+    parts=[escape(years)+"年の同一開催条件 "+str(fact["n"])+"開催"]
+    if fact["verified_corner"] and fact["winner_popularity_max"]:
+        parts.append("勝ち馬の最高人気 "+str(fact["winner_popularity_max"])+"番人気")
+    else:
+        parts.append("勝ち馬10倍以上 "+str(fact["winner_10x"])+"／"+str(fact["n"])+"開催")
+    if fact["going_observations"]:
+        grounds="・".join(f"{g}{v}回" for g,v in fact["going_counts"].items())
+        parts.append("馬場 "+grounds+"（確認"+str(fact["going_observations"])+
+                     "／"+str(fact["n"])+"）")
+        if fact["current_going"]:
+            parts.append("今回"+fact["current_going"]+"と同馬場 "+
+                         str(fact["matching_going"])+"／"+str(fact["n"])+"回")
+        if not any(g in fact["going_counts"] for g in ("稍重","重","不良")):
+            parts.append("道悪実績なし・道悪傾向は未検証")
+    else:
+        parts.append("過去の馬場状態は未取得・馬場傾向は未検証")
+    if fact["verified_corner"]:
+        parts.append("勝ち馬4角3番手以内 "+str(fact["front3"])+"／"+
+                     str(fact["n"])+"、10番手以下 "+str(fact["rear10"])+"／"+
+                     str(fact["n"]))
+    else:
+        parts.append("4角・脚質は未検証")
+    if fact["pace_observations"]:
+        parts.append("後半1000mが速い "+str(fact["late_faster"])+"／"+
+                     str(fact["pace_observations"])+"開催")
+    else:
+        parts.append("ラップ・ペースは未検証")
+    if fact["age_observations"]:
+        parts.append("勝ち馬4歳以下 "+str(fact["young_winner_count"])+
+                     "／"+str(fact["age_observations"])+"開催")
+    if fact["relocated_years"]:
+        parts.append("別競馬場開催 "+ "・".join(str(y) for y in fact["relocated_years"])+"年は除外")
+    if fact["missing_years"]:
+        parts.append("未収録年 "+ "・".join(str(y) for y in fact["missing_years"]))
+    parts.append("過去実績は参考情報。今回の順位・印・加点には未反映")
     return ('<p class="graded-history-note" role="note">'
             '<strong>JRA重賞・過去の参考傾向（研究／ランク未反映）</strong> '
-            +escape(years)+'年の一致条件 '+str(fact["n"])+'開催｜'
-            +'単勝10倍以上の勝ち馬 '+str(fact["winner_10x"])+'／'+str(fact["n"])+'開催、'
-            +'20倍以上 '+str(fact["winner_20x"])+'／'+str(fact["n"])+'開催。'
-            +escape(note)
-            +escape(pace)
-            +'馬連/ワイドの荒れは未検証。'
-            +'過去の勝馬配当だけで今回の馬を加点しません。</p>')
+            + "。".join(escape(part) for part in parts) + "。</p>")
