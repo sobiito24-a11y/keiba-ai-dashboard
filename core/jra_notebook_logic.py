@@ -362,6 +362,24 @@ def race_class_info_from_soup(soup, *fallback_texts):
         if label in {"新馬", "未勝利", "1勝", "2勝", "3勝", "OP", "L"}:
             return rank, label
 
+    # NAR 2/3-year-old restricted races have their own class systems, not
+    # the open-age B1 etc. A generic B1 in the page's past-race sidebar must
+    # never become the CURRENT race class for "サラ系2歳 / 2歳ー7組".
+    # Keep current grade and explicit JRA classes ahead of this rule.
+    race_conditions = []
+    if soup is not None:
+        for selector in (".RaceData02", ".data_intro .smalltxt"):
+            node = soup.select_one(selector)
+            if node is not None:
+                race_conditions.append(text_of(node))
+    if not race_conditions:
+        race_conditions = [str(value) for value in fallback_texts if value]
+    restricted = " ".join(norm_text(value) for value in race_conditions)
+    if re.search(r"2歳(?!以上|上)", restricted):
+        return None, "2歳"
+    if re.search(r"3歳(?!以上|上)", restricted):
+        return None, "3歳"
+
     # NAR class names (A級, B2, C1 etc.) remain valid when explicitly stated.
     # A bare A/B/C in "芝... A/B" is a rail setting, not a race class.
     def _verified_local_class(value, label):
