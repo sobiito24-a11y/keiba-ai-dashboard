@@ -224,14 +224,19 @@ def detail_html(horse):
                  else _mapping(horse.get("nar_race_day_check")))
     fusion = _mapping(horse.get("research_formal_sabcd_fusion"))
     fusion_rank = fusion.get("rank")
+    unified_rank = cells.get("unified_sabcd_rank")
     research_rows = [
-        ("統合Top5順位（研究・未校正）", (
-            str(fusion_rank) + "位" if isinstance(fusion_rank, int) else "判定不可")),
-        ("正式25%＋SABCD75%の根拠", fusion.get("reason")),
+        ("統合SABCD（研究）", cells.get("research_sabcd")),
+        ("統合研究順位", (str(unified_rank) + "位") if isinstance(unified_rank, int) else "判定不可"),
+        ("統合相対強度（確率ではありません）", cells.get("research_sabcd_score")),
+        ("統合評価の根拠", cells.get("research_sabcd_reason")),
+        ("統合状態", cells.get("unified_sabcd_status")),
+        ("元の研究SABCD（比較用）", cells.get("research_sabcd_weight_class")),
+        ("元の研究モデル値（未校正）", cells.get("research_sabcd_weight_class_score")),
         ("旧正式順位（比較用）", (str(cells["rank"]) + "位") if cells.get("rank") is not None else "判定不可"),
-        ("研究SABCD（参考）", cells.get("research_sabcd")),
-        ("研究モデル値（未校正）", cells.get("research_sabcd_score")),
-        ("研究格付け根拠", cells.get("research_sabcd_reason")),
+        ("旧式25/75順位（研究比較）", (
+            str(fusion_rank) + "位" if isinstance(fusion_rank, int) else "判定不可")),
+        ("旧式25/75順位の根拠（研究比較）", fusion.get("reason")),
         ("研究上の位置づけ（未検証）", cells.get("research_positioning_label")),
         ("位置づけの根拠と注意", cells.get("research_positioning_reason")),
         ("距離・近走の適性注目（研究）", cells.get("research_suitability_label")),
@@ -243,7 +248,7 @@ def detail_html(horse):
         research_rows.append(("保存済み予想との関係", "後日算出。発走前の当時予想ではありません"))
     research_html = (
         '<details class="detail-research-model"><summary>研究評価の詳細（任意）</summary>'
-        '<p class="detail-note">通常一覧はSABCDを主評価として確認し、旧正式順位は比較資料としてのみ参照してください。評価の一致・候補ラベルは購入指示ではありません。'
+        '<p class="detail-note">通常一覧には統合SABCDを1つだけ表示し、元の研究SABCD・旧正式順位・旧式研究順位はこの比較資料で確認できます。評価の一致・候補ラベルは購入指示ではありません。'
         '正式順位・印・馬券判断は変わりません。</p>'
         + _definition_list(research_rows, "detail-research-facts")
         + '</details>'
