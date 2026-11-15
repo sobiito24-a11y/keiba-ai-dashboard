@@ -45,7 +45,7 @@ def test_schema_covers_every_comparison_cell_and_has_no_ai_mark_or_membership(mo
     visible = [spec["key"] for spec in specs if not spec.get("table_hidden")]
     assert visible == [
         "user", "frame", "no", "name", "jockey", "odds", "popularity",
-        "research_sabcd", "ability", "style",
+        "research_sabcd", "rank", "ability", "style",
         *(['training'] if mode == 'jra' else []),
         "distance", "course",
         "run_old", "run_middle", "run_latest", "average", "maximum",
