@@ -1,6 +1,6 @@
 {
   "source": "JRA公式・各年アルゼンチン共和国杯レース結果（2021–2025）",
-  "note": "個別結果を検証した競走のみ。ほかのJRA重賞には自動で転用しない。",
+  "note": "JRA公式の年別結果を確認したレースのみ追加。馬場・人気・4角・ペースは欠損年を自動補完しない。阪神と京都は別条件として扱う。",
   "races": {
     "アルゼンチン共和国杯": {
       "grade": "G2",
@@ -13,35 +13,114 @@
           "win_payout_yen": 300,
           "winner_popularity": 1,
           "winner_corner4": 3,
-          "source": "https://www.jra.go.jp/datafile/seiseki/replay/2021/099.html"
+          "source": "https://www.jra.go.jp/datafile/seiseki/replay/2021/099.html",
+          "going": "良"
         },
         {
           "year": 2022,
           "win_payout_yen": 1770,
           "winner_popularity": 6,
           "winner_corner4": 3,
-          "source": "https://www.jra.go.jp/datafile/seiseki/replay/2022/099.html"
+          "source": "https://www.jra.go.jp/datafile/seiseki/replay/2022/099.html",
+          "going": "良"
         },
         {
           "year": 2023,
           "win_payout_yen": 240,
           "winner_popularity": 1,
           "winner_corner4": 15,
-          "source": "https://www.jra.go.jp/datafile/seiseki/replay/2023/099.html"
+          "source": "https://www.jra.go.jp/datafile/seiseki/replay/2023/099.html",
+          "going": "良"
         },
         {
           "year": 2024,
           "win_payout_yen": 3530,
           "winner_popularity": 10,
           "winner_corner4": 15,
-          "source": "https://www.jra.go.jp/datafile/seiseki/replay/2024/099.html"
+          "source": "https://www.jra.go.jp/datafile/seiseki/replay/2024/099.html",
+          "going": "良"
         },
         {
           "year": 2025,
           "win_payout_yen": 2770,
           "winner_popularity": 9,
           "winner_corner4": 1,
-          "source": "https://www.jra.go.jp/datafile/seiseki/replay/2025/101.html"
+          "source": "https://www.jra.go.jp/datafile/seiseki/replay/2025/101.html",
+          "going": "良"
+        }
+      ]
+    },
+    "エリザベス女王杯": {
+      "grade": "G1",
+      "surface": "芝",
+      "distance": 2200,
+      "venue": "京都",
+      "annual": [
+        {
+          "year": 2021,
+          "venue": "阪神",
+          "surface": "芝",
+          "distance": 2200,
+          "going": "良",
+          "win_payout_yen": 6490,
+          "winner_popularity": 10,
+          "winner_corner4": 7,
+          "winner_age": 4,
+          "source": "https://www.jra.go.jp/datafile/seiseki/g1/eliza/result/eliza2021.html"
+        },
+        {
+          "year": 2022,
+          "venue": "阪神",
+          "surface": "芝",
+          "distance": 2200,
+          "going": "重",
+          "win_payout_yen": 810,
+          "winner_popularity": 4,
+          "winner_corner4": 9,
+          "winner_age": 4,
+          "source": "https://www.jra.go.jp/datafile/seiseki/g1/eliza/result/eliza2022.html"
+        },
+        {
+          "year": 2023,
+          "venue": "京都",
+          "surface": "芝",
+          "distance": 2200,
+          "going": "良",
+          "win_payout_yen": 240,
+          "winner_popularity": 1,
+          "winner_corner4": 5,
+          "winner_age": 3,
+          "first_1000_sec": 61.1,
+          "last_1000_sec": 59.6,
+          "source": "https://www.jra.go.jp/datafile/seiseki/g1/eliza/result/eliza2023.html"
+        },
+        {
+          "year": 2024,
+          "venue": "京都",
+          "surface": "芝",
+          "distance": 2200,
+          "going": "良",
+          "win_payout_yen": 950,
+          "winner_popularity": 3,
+          "winner_corner4": 2,
+          "winner_age": 5,
+          "first_1000_sec": 59.6,
+          "last_1000_sec": 59,
+          "source": "https://www.jra.go.jp/datafile/seiseki/g1/eliza/result/eliza2024.html"
+        },
+        {
+          "year": 2025,
+          "venue": "京都",
+          "surface": "芝",
+          "distance": 2200,
+          "going": "良",
+          "win_payout_yen": 230,
+          "winner_popularity": 1,
+          "winner_corner4": 8,
+          "winner_age": 4,
+          "first_1000_sec": 59.9,
+          "last_1000_sec": 59,
+          "source": "https://www.jra.go.jp/datafile/seiseki/g1/eliza/result/eliza2025.html"
         }
       ]
     }
