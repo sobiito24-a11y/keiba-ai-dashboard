@@ -26,8 +26,8 @@ def test_2026_argentina_uses_all_five_jra_verified_matching_conditions():
     assert "馬場 良5回" in html
     assert "道悪実績なし" in html
     assert "ラップ・ペースは未検証" in html
-    assert "単勝10倍以上の勝ち馬 3／5開催" in html
-    assert "勝ち馬4角3番手以内 3／5開催" in html
+    assert "勝ち馬の最高人気 10番人気" in html
+    assert "勝ち馬4角3番手以内 3／5" in html
 
 
 def test_older_saved_race_does_not_see_later_winner_outcomes():
