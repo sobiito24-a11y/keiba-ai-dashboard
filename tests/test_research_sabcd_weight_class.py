@@ -65,7 +65,7 @@ def test_all_horses_have_independent_trial_grades_and_projections_are_readonly()
     for i, h in enumerate(view):
         assert h["mark"] == saved[i]["mark"]
         assert h["score"] == saved[i]["score"]
-        assert h["research_sabcd_weight_class"] == result[str(i)]
+        assert h["research_sabcd_weight_class"] == result[str(i + 1)]
     # Calibrating the total by construction is not the same as validation.
     assert sum(h["research_sabcd_weight_class"]["normalized_score"] for h in view) == pytest.approx(3, abs=0.0005)
 
