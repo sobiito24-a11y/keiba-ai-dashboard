@@ -5,6 +5,8 @@ on:
     paths:
       - "core/jra_graded_tendency_ui.py"
       - "core/jra_rank_second_look.py"
+      - "core/jra_race_day_check.py"
+      - "tests/test_jra_race_day_check.py"
       - "core/jra_notebook_logic.py"
       - "tests/test_jra_course_rail_class_parser.py"
       - "core/game_race_ui.py"
@@ -18,6 +20,8 @@ on:
     paths:
       - "core/jra_graded_tendency_ui.py"
       - "core/jra_rank_second_look.py"
+      - "core/jra_race_day_check.py"
+      - "tests/test_jra_race_day_check.py"
       - "core/jra_notebook_logic.py"
       - "tests/test_jra_course_rail_class_parser.py"
       - "core/game_race_ui.py"
@@ -36,6 +40,6 @@ jobs:
       - name: Install test dependencies
         run: pip install -r requirements-test.txt
       - name: Compile changed Python sources
-        run: python -m compileall -q core/jra_graded_tendency_ui.py core/jra_rank_second_look.py core/game_race_ui.py core/jra_notebook_logic.py
+        run: python -m compileall -q core/jra_graded_tendency_ui.py core/jra_rank_second_look.py core/jra_race_day_check.py core/game_race_ui.py core/jra_notebook_logic.py
       - name: Test no lookahead, course-ground isolation, and rank alerts
-        run: pytest -q tests/test_jra_graded_tendency_ui.py tests/test_jra_rank_second_look.py tests/test_jra_course_rail_class_parser.py
+        run: pytest -q tests/test_jra_graded_tendency_ui.py tests/test_jra_rank_second_look.py tests/test_jra_race_day_check.py tests/test_jra_course_rail_class_parser.py
