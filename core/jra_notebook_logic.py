@@ -349,7 +349,7 @@ def race_class_info_from_soup(soup, *fallback_texts):
     # For JRA races the authoritative class is on the race CONDITIONS line,
     # not the course line. This ordering also works with explicit fallback
     # strings when the RaceData02 HTML node is absent.
-    jra_conditions = ("新馬", "未勝利", "1勝", "2勝", "3勝")
+    jra_conditions = ("新馬", "未勝利", "1勝", "2勝", "3勝", "OP")
     for value in candidates:
         rank, label = class_evidence(value)
         if rank is not None and label in jra_conditions:
