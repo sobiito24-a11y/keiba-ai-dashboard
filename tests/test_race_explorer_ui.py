@@ -86,10 +86,16 @@ def test_normal_layout_full_field_manual_checks_and_source_nonmutation(mode, cou
     assert [button['data-column-filter'] for button in lineup.select('[data-column-filter]')]==table_keys
     assert [option['value'] for option in lineup.select('#filter-column option')]==keys
     assert {option['value'] for option in lineup.select('#lineup-sort option')}==set(keys)
-    assert not {'rank','ability_rank','distance_rank','course_rank'}.intersection(table_keys)
+    assert 'rank' in table_keys
+    assert 'rank' in keys
+    assert not {'ability_rank','distance_rank','course_rank'}.intersection(table_keys)
+    assert headers.index('正式順位') == headers.index('SABCD') + 1
+    assert [r.select_one('.col-rank').get_text(strip=True) for r in runners[:5]] == [
+        f'{i}位' for i in range(1, 6)]
+    assert len(lineup.select('.formal-top5-rank')) == 5
     assert 'age' not in table_keys and 'age' in keys
     assert {'ability_rank','distance_rank','course_rank'}.issubset(keys)
-    assert not {'score','rank','reference_score'}.intersection(keys)
+    assert not {'score','reference_score'}.intersection(keys)
     assert all(len(row.select('td'))==len(headers) for row in runners)
     assert lineup.select_one('#filter-min')['type']=='number'
     assert lineup.select_one('#filter-max')['type']=='number'
@@ -117,7 +123,8 @@ def test_normal_workspace_hides_final_scores_and_shows_ten_independent_analyses(
     assert all(horse['values']['user'] is False for horse in payload['horses'])
     assert [horse['values']['score'] for horse in payload['horses']]==[formal_score(horse) for horse in view]
     table_rows = doc.select('#lineup-workspace tr[data-horse]')
-    assert not doc.select('.col-score,.col-rank,.col-reference_score')
+    assert not doc.select('.col-score,.col-reference_score')
+    assert doc.select('#lineup-workspace .col-rank')
     assert not doc.select('#lineup-sort option[value="score"],#filter-column option[value="reference_score"]')
     assert all('最終評価' not in row.get_text() for row in table_rows)
     analyses = doc.select_one('details#detail-analysis')
@@ -217,7 +224,8 @@ def test_research_sabcd_does_not_change_real_view_formal_marks_and_scores(mode):
     assert all(t.get("retro") for t in assigned)  # 2026-10-22 was in fit period
     cells=projected_records(view)
     headers=[s["key"] for s in columns(view) if not s.get("table_hidden")]
-    assert headers[headers.index("research_sabcd")+1] == "ability"
+    assert headers[headers.index("research_sabcd")+1] == "rank"
+    assert headers[headers.index("rank")+1] == "ability"
     assert headers[headers.index("ability")+1] == "style"
     assert ("training" in headers) == (mode == "jra")
     if mode == "jra":
@@ -375,3 +383,12 @@ def test_one_compact_odds_column_retains_exact_win_and_place_values(mode):
     assert first.select_one(".odds-both-cell .metric-number")
     assert "複 1.2〜2.3倍" in first.get_text(" ",strip=True)
     assert view==before
+
+
+def test_formal_rank_never_inferred_from_sabcd_or_ability():
+    from core.race_explorer_ui import _cell
+    h = {"no": 8, "name": "保存馬8", "mode": "nar"}
+    assert "判定不可" in _cell(h, {"rank": None, "research_sabcd": "S", "ability_rank": 1}, "rank")
+    assert "formal-top5-rank" not in _cell(h, {"rank": None, "research_sabcd": "S", "ability_rank": 1}, "rank")
+    assert "formal-top5-rank" in _cell(h, {"rank": 5, "research_sabcd": "D", "ability_rank": 12}, "rank")
+    assert "formal-top5-rank" not in _cell(h, {"rank": 6, "research_sabcd": "S", "ability_rank": 1}, "rank")

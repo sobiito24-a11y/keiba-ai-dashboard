@@ -87,6 +87,9 @@ def columns(view):
         _spec("jockey", "騎手", "text"), _spec("odds", "オッズ単複", "number"),
         _spec("place_odds", "複勝", "number"),
         _spec("popularity", "人気", "rank"),
+        # Formal pre-race rank, not research SABCD and not pure ability.
+        # NAR rows without an actual formal score remain unavailable.
+        _spec("rank", "正式順位", "rank"),
         _spec("ability", "純能力指数", "number", rank_key="ability_rank"),
         _spec("ability_rank", "純能力順位", "rank", table_hidden=True),
         _spec("distance", "距離指数", "number", rank_key="distance_rank"),
@@ -163,7 +166,7 @@ def columns(view):
     # win/place in a single column.
     visible_keys = (
         "user", "frame", "no", "name", "jockey", "odds", "popularity",
-        "research_sabcd", "ability", "style",
+        "research_sabcd", "rank", "ability", "style",
         *(("training",) if jra else ()),
         "distance", "course",
         "run_old", "run_middle", "run_latest", "average", "maximum",

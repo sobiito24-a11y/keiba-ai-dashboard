@@ -45,7 +45,7 @@ def test_schema_covers_every_comparison_cell_and_has_no_ai_mark_or_membership(mo
     visible = [spec["key"] for spec in specs if not spec.get("table_hidden")]
     assert visible == [
         "user", "frame", "no", "name", "jockey", "odds", "popularity",
-        "research_sabcd", "ability", "style",
+        "research_sabcd", "rank", "ability", "style",
         *(['training'] if mode == 'jra' else []),
         "distance", "course",
         "run_old", "run_middle", "run_latest", "average", "maximum",
@@ -63,7 +63,7 @@ def test_schema_covers_every_comparison_cell_and_has_no_ai_mark_or_membership(mo
         "run_old", "run_middle", "run_latest", "average", "maximum"]
     assert ("training" in keys)==(mode=="jra")
     assert all(item["type"] in ("number", "rank", "text", "grade", "boolean") for item in specs)
-    assert not set(keys).intersection(("score", "rank", "reference_score", "mark", "formal_member", "candidate", "pickup", "focus_label"))
+    assert not set(keys).intersection(("score", "reference_score", "mark", "formal_member", "candidate", "pickup", "focus_label"))
     assert {"record_venue", "record_distance", "record_venue_distance", "materials"}.issubset(keys)
     assert all(key not in visible for key in ("star", "away", "corner", "career_course", "place_odds"))
     assert ("training" in visible) == (mode == "jra")
@@ -236,7 +236,7 @@ def test_research_composite_columns_are_hidden_not_deleted(mode, hidden):
     assert hidden not in visible
     assert "class_attention" in visible
     assert visible.index("class_attention") == len(visible)-1
-    assert visible.index("research_sabcd") == visible.index("ability")-1
+    assert visible.index("research_sabcd") == visible.index("rank")-1 and visible.index("rank") == visible.index("ability")-1
     assert visible.index("style") == visible.index("ability")+1
     if mode=="nar":
         assert "nar_hybrid_rank" not in visible
