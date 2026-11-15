@@ -128,6 +128,8 @@ def columns(view):
     result.append(_spec("research_sabcd_weight_class_normalized", "全頭合計調整参考値", "number", table_hidden=True))
     result.append(_spec("research_sabcd_weight_class_reason", "斤量クラス研究版の根拠", "text", table_hidden=True))
     result.append(_spec("research_sabcd_sort", "研究SABCD順", "number", table_hidden=True))
+    # Opt-in sortable research projection; never a second visible headline grade.
+    result.append(_spec("research_fusion_rank", "研究統合順位（未校正）", "rank", table_hidden=True))
     result.append(_spec("research_positioning_label", "研究・馬券候補", "text", table_hidden=True))
     result.append(_spec("research_positioning_reason", "候補の根拠と注意", "text", table_hidden=True))
     result.append(_spec("research_suitability_label", "6項目の適性注目", "text", table_hidden=True))
