@@ -223,6 +223,7 @@ def detail_html(horse):
                  if horse.get("mode") == "jra"
                  else _mapping(horse.get("nar_race_day_check")))
     research_rows = [
+        ("旧正式順位（比較用）", (str(cells["rank"]) + "位") if cells.get("rank") is not None else "判定不可"),
         ("研究SABCD（参考）", cells.get("research_sabcd")),
         ("研究モデル値（未校正）", cells.get("research_sabcd_score")),
         ("研究格付け根拠", cells.get("research_sabcd_reason")),
@@ -237,7 +238,7 @@ def detail_html(horse):
         research_rows.append(("保存済み予想との関係", "後日算出。発走前の当時予想ではありません"))
     research_html = (
         '<details class="detail-research-model"><summary>研究評価の詳細（任意）</summary>'
-        '<p class="detail-note">評価の一致・候補ラベルは購入指示ではありません。'
+        '<p class="detail-note">通常一覧はSABCDを主評価として確認し、旧正式順位は比較資料としてのみ参照してください。評価の一致・候補ラベルは購入指示ではありません。'
         '正式順位・印・馬券判断は変わりません。</p>'
         + _definition_list(research_rows, "detail-research-facts")
         + '</details>'
