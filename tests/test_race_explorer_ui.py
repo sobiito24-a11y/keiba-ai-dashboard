@@ -86,10 +86,16 @@ def test_normal_layout_full_field_manual_checks_and_source_nonmutation(mode, cou
     assert [button['data-column-filter'] for button in lineup.select('[data-column-filter]')]==table_keys
     assert [option['value'] for option in lineup.select('#filter-column option')]==keys
     assert {option['value'] for option in lineup.select('#lineup-sort option')}==set(keys)
-    assert not {'rank','ability_rank','distance_rank','course_rank'}.intersection(table_keys)
+    assert 'rank' in table_keys
+    assert 'rank' in keys
+    assert not {'ability_rank','distance_rank','course_rank'}.intersection(table_keys)
+    assert headers.index('正式順位') == headers.index('SABCD') + 1
+    assert [r.select_one('.col-rank').get_text(strip=True) for r in runners[:5]] == [
+        f'{i}位' for i in range(1, 6)]
+    assert len(lineup.select('.formal-top5-rank')) == 5
     assert 'age' not in table_keys and 'age' in keys
     assert {'ability_rank','distance_rank','course_rank'}.issubset(keys)
-    assert not {'score','rank','reference_score'}.intersection(keys)
+    assert not {'score','reference_score'}.intersection(keys)
     assert all(len(row.select('td'))==len(headers) for row in runners)
     assert lineup.select_one('#filter-min')['type']=='number'
     assert lineup.select_one('#filter-max')['type']=='number'
