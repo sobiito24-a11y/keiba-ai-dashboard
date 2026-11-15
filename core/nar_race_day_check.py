@@ -52,7 +52,7 @@ def race_group(info):
         return "新馬"
     if re.search(r"2歳|2才", s):
         return "2歳戦"
-    if re.search(r"3歳|3才", s) and not re.search(r"3歳以上|3才以上", s):
+    if re.search(r"3歳|3才", s) and not re.search(r"3歳(?:以上|上)|3才(?:以上|上)", s):
         return "3歳限定"
     # Prefer explicit current class, never guess from a past-race name.
     match = re.search(r"(?<![A-Za-z])([ABC])([123])(?=級|組|[一二三四五六七八九十]|\b)", s)
