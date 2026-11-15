@@ -89,7 +89,7 @@ def test_normal_layout_full_field_manual_checks_and_source_nonmutation(mode, cou
     assert 'rank' not in table_keys
     assert 'rank' in keys
     assert not {'ability_rank','distance_rank','course_rank'}.intersection(table_keys)
-    assert headers.index('純能力指数') == headers.index('SABCD') + 1
+    assert headers.index('純能力指数') == headers.index('統合SABCD') + 1
     assert not lineup.select('.col-rank')
     assert 'rank' in keys
     assert 'age' not in table_keys and 'age' in keys
@@ -238,15 +238,16 @@ def test_research_sabcd_does_not_change_real_view_formal_marks_and_scores(mode):
         item=cells[str(horse["no"])]
         assert item["research_sabcd"] in ("S", "A", "B", "C", "D", None)
         assert item["research_sabcd_weight_class"] in ("S", "A", "B", "C", "D", None)
-        assert item["research_sabcd"] == item["research_sabcd_weight_class"]
+        assert item["research_sabcd"] == horse["unified_sabcd"].get("grade")
+        assert item["unified_sabcd_rank"] == horse["unified_sabcd"].get("rank")
         assert item["research_sabcd_old"] == horse["research_sabcd"].get("grade")
         if item["research_sabcd"]:
-            assert "購入判断には不使用" in item["research_sabcd_reason"]
+            assert "購入推奨" in item["research_sabcd_reason"]
     snapshot=deepcopy((rows,original))
     html=BeautifulSoup(document(view, info["race_id"]), "html.parser")
     # The research letter is display-only and not part of the official
     # prediction table or stored records.
-    assert html.select_one("th.col-research_sabcd .column-label").text=="SABCD"
+    assert html.select_one("th.col-research_sabcd .column-label").text=="統合SABCD"
     assert html.select("#lineup-workspace td.col-research_sabcd")
     assert not html.select("#lineup-workspace td.col-research_sabcd_weight_class")
     assert html.select_one(".detail-basic") or html.select_one("#detail-analysis")
@@ -261,9 +262,9 @@ def test_research_grade_tints_only_its_cell_in_normal_and_postrace_tables(mode):
     tiers = ("S", "A", "B", "C", "D", None)
     for horse, tier in zip(view, tiers):
         # Test the *visual layer*, not the model allocation or official marks.
-        horse["research_sabcd_weight_class"] = {
-            "grade": tier, "reason": "研究表示のみ", "retro": False,
-            "score": .45,
+        horse["unified_sabcd"] = {
+            "grade": tier, "reason": "統合研究表示のみ", "retro": False,
+            "strength": .45,
         }
     normal = BeautifulSoup(lineup_html(view), "html.parser")
     review = BeautifulSoup(
@@ -318,6 +319,10 @@ def test_retrospective_grade_label_is_explicit_and_explained(mode):
         horse["research_sabcd_weight_class"] = {
             "grade": "A", "reason": "斤量・クラスで評価。過去開催で再計算",
             "score": .55, "retro": True,
+        }
+        horse["unified_sabcd"] = {
+            "grade": "A", "reason": "統合研究。過去開催で再計算",
+            "strength": .55, "retro": True,
         }
     html = BeautifulSoup(lineup_html(view), "html.parser")
     # Provenance belongs in a single lineup note and in the grade tooltip,
