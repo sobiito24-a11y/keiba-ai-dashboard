@@ -335,10 +335,17 @@ def race_class_info_from_soup(soup, *fallback_texts):
     """
     candidates = extract_class_text_candidates(soup)
     candidates += [norm_text(str(text)) for text in fallback_texts if text]
-    major_labels = {"G1", "G2", "G3", "Jpn1", "Jpn2", "Jpn3", "重賞", "準重賞", "L"}
+    # Check explicit race-grade icons before the generic word "重賞".
+    # Header text typically precedes icon attributes in extracted candidates,
+    # so a single mixed pass would otherwise mislabel G1 as generic 重賞.
+    explicit_grades = {"G1", "G2", "G3", "Jpn1", "Jpn2", "Jpn3"}
     for text in candidates:
         rank, label = race_class_info(text)
-        if rank is not None and label in major_labels:
+        if rank is not None and label in explicit_grades:
+            return rank, label
+    for text in candidates:
+        rank, label = race_class_info(text)
+        if rank is not None and label in {"重賞", "準重賞", "L"}:
             return rank, label
 
     # Actual race-condition text outranks a course lane letter, on current
