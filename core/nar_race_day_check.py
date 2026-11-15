@@ -120,6 +120,8 @@ def render(view):
     if not isinstance(first, Mapping):
         return ""
     group = first["group"]
+    if group == "ばんえい・対象外":
+        return '<p class="nar-race-day-check" role="note">NAR研究照合：ばんえい競馬は平地4角予測の研究対象外です。正式順位・印は維持します。</p>'
     notices = []
     for role in ("Top5外再確認", "中位×4角前", "位置予測注意"):
         items = [h for h in view if (h.get("nar_race_day_check") or {}).get("role") == role]
