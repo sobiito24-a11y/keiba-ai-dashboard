@@ -179,8 +179,11 @@ def build_view(rows, records, source_rows=(), mode='jra', race_info=None, materi
     # No formal score, Top5, marks, saved predictions or betting decisions change.
     from .research_sabcd import assign_to_view
     from .research_sabcd_weight_class import assign_to_view as assign_shadow_grade
+    from .formal_sabcd_fusion import assign_to_view as assign_formal_fusion
     from .research_positioning import assign_to_view as assign_research_position
-    final_view=focus_annotate(assign_research_position(assign_shadow_grade(assign_to_view(out))))
+    # This fusion remains an optional retrospective statistic, never the
+    # single visible research SABCD grade or an official ranking input.
+    final_view=focus_annotate(assign_research_position(assign_formal_fusion(assign_shadow_grade(assign_to_view(out)))))
     from .jra_rank_second_look import annotate as jra_second_look
     if mode == 'nar':
         from .nar_race_day_check import annotate as annotate_nar_day
