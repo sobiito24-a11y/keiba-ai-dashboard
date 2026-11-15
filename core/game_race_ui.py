@@ -380,9 +380,22 @@ def race_header(result, view=None):
             distance=pick(info,'distance_label','distance','距離'),
             surface=pick(info,'surface','芝ダート'),
             going=pick(info,'going','馬場状態'))
+    # Race-day V3: a read-only class-aware agreement/miss lens. Do not use
+    # postrace reconstructed Model B or silently change official A/marks.
+    today_check = ''
+    if result.race_mode == 'jra' and view is not None:
+        report = None
+        try:
+            from .model_b import resolve as resolve_model_b
+            report = resolve_model_b(result)
+        except (ValueError, KeyError, TypeError, OSError):
+            report = None  # Do not break ordinary JRA predictions if B fails.
+        from .jra_race_day_check import annotate as annotate_today, render as render_today
+        annotate_today(view, report, info)
+        today_check = render_today(view)
     from .jra_rank_second_look import render as render_jra_second_look
     rank_check = render_jra_second_look(view) if result.race_mode == 'jra' else ''
-    return '<section class="game-race-header"><span class="game-eyebrow">KEIBA AI / RACE BRIEFING</span><h2>'+escape(name)+'</h2>'+assessment+grade_note+rank_check+'<div class="game-race-meta">'+''.join('<span><small>'+escape(k)+'</small> '+escape(text(v) or '—')+'</span>' for k,v in values)+'</div></section>'
+    return '<section class="game-race-header"><span class="game-eyebrow">KEIBA AI / RACE BRIEFING</span><h2>'+escape(name)+'</h2>'+assessment+grade_note+today_check+rank_check+'<div class="game-race-meta">'+''.join('<span><small>'+escape(k)+'</small> '+escape(text(v) or '—')+'</span>' for k,v in values)+'</div></section>'
 
 
 def render_component(view, race_key, paper_decision=None, postrace=None):
