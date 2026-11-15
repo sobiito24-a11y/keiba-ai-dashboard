@@ -67,7 +67,18 @@ def race_group(info):
 def annotate(view, race_info=None):
     if not view or view[0].get("mode") != "nar":
         return view
-    group = race_group(race_info or view[0].get("race_context"))
+    info = race_info or view[0].get("race_context") or {}
+    venue = _text(info.get("racecourse") or info.get("venue"))
+    # Ban'ei is a separate sport: 4th-corner thoroughbred projections do not apply.
+    if "帯広" in venue or "ばんえい" in venue or "ばんえい" in _text(info.get("race_name")):
+        for h in view:
+            h["nar_race_day_check"] = {
+                "version": VERSION, "group": "ばんえい・対象外",
+                "role": "", "reasons": [], "rank_changed": False,
+                "probability_calibrated": False,
+            }
+        return view
+    group = race_group(info)
     for h in view:
         ability = _rank(h.get("ability_rank"))
         corner = _rank(h.get("corner"))
