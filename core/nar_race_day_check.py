@@ -46,7 +46,7 @@ def race_group(info):
     raw = _text(info.get("race_data2") or info.get("raw_class_text") or "")
     label = _text(info.get("class_label_v2") or info.get("class_label") or "")
     s = " ".join((name, raw, label))
-    if re.search(r"重賞|Jpn[123]|(?<![A-Z])G[123](?!\\d)", s, re.I):
+    if re.search(r"重賞|Jpn[123]|(?<![A-Z])G[123](?!\d)", s, re.I):
         return "重賞・交流"
     if "新馬" in s:
         return "新馬"
