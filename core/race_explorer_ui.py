@@ -82,6 +82,15 @@ def _cell(horse, cells, key):
         upper = cells['place_odds_high']
         interval = value(item)+('〜'+value(upper) if upper != item else '')+'倍'
         return '<span class="place-odds-range">'+interval+'</span>'
+    if key == 'rank':
+        # Explicit saved formal order, not a new Top5 model or research grade.
+        # Missing formal ranks must not be filled from ability or SABCD.
+        if item is None:
+            return '<span class="missing-cell">判定不可</span>'
+        if 1 <= item <= 5:
+            return ('<strong class="formal-top5-rank" title="保存済み正式順位">'
+                    +value(item)+'位</strong>')
+        return '<span class="formal-other-rank">'+value(item)+'位</span>'
     if key == 'popularity':
         return value(item)+'番人気' if item is not None else '<span class="missing-cell">未取得</span>'
     if key == 'rest_days':
