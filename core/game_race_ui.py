@@ -116,6 +116,7 @@ def build_view(rows, records, source_rows=(), mode='jra', race_info=None, materi
                         saved_position_geometry=saved_geometry,
                         style=rec.get('脚質', '—'), development=a.get('development') or '—',
                         training=training(row) if mode == 'jra' else '', rest=rest_text(row),
+                        rest_days=(a.get('rest_days') if mode == 'jra' else None),
                         stable=(a.get('stable') or {}).get('grade') or '—',
                         comment=text(pick(row, 'stable_comment_market', '厩舎コメント', '新聞コメント', 'stable_comment')) if mode == 'jra' else '',
                         overview=text(rec.get('コメント') or pick(row, '表示コメント', 'display_comment', '一言コメント')),
