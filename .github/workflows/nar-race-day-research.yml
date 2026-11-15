@@ -28,4 +28,4 @@ jobs:
           python-version: "3.11"
       - run: pip install -r requirements-test.txt
       - run: python -m compileall -q core/nar_race_day_check.py core/game_race_ui.py core/race_explorer_ui.py
-      - run: pytest -q tests/test_nar_race_day_check.py tests/test_nar_class_v2.py tests/test_nar_hybrid_evaluation.py
+      - run: pytest -q tests/test_nar_race_day_check.py tests/test_nar_canonical_rank.py tests/test_nar_hybrid_evaluation.py
