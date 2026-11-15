@@ -3,8 +3,8 @@
 Aggregates contain 2021-2025 official JRA graded calendar (695) and
 293 race results matched against a public official-result-derived dataset.
 Historical outcomes are date-gated to STRICTLY before the displayed race.
-No corner positions, race popularity, quinella payouts or post-race feature
-engineering is claimed. No impact on NAR, marks or SABCD.
+Only selected JRA-verified races additionally contain historical corner, pace,
+popularity and going. Unverified fields stay unknown. No impact on NAR, marks or SABCD.
 """
 from functools import lru_cache
 from html import escape
