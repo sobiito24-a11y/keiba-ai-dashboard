@@ -51,3 +51,14 @@ def test_db_netkeiba_smalltxt_class_outweighs_racedata_course_rail():
         '</div>', "html.parser",
     )
     assert race_class_info_from_soup(soup) == (40, "2勝")
+
+
+@pytest.mark.parametrize("icon,expected", [
+    ("Icon_GradeType1", (90, "G1")),
+    ("Icon_GradeType2", (80, "G2")),
+    ("Icon_GradeType3", (70, "G3")),
+])
+def test_grade_icon_outranks_generic_graded_word_in_same_header(icon, expected):
+    """A generic 重賞 label must not mask an explicit grade icon."""
+    soup = _html("サラ系3歳以上 オープン", "B", "重賞競走", icon)
+    assert race_class_info_from_soup(soup) == expected
