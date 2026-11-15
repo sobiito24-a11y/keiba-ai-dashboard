@@ -55,7 +55,7 @@ def race_group(info):
     if re.search(r"3歳|3才", s) and not re.search(r"3歳以上|3才以上", s):
         return "3歳限定"
     # Prefer explicit current class, never guess from a past-race name.
-    match = re.search(r"(?<![A-Za-z])([ABC])([123])(?=級|組|[一二三四五六七八九十]|\\b)", s)
+    match = re.search(r"(?<![A-Za-z])([ABC])([123])(?=級|組|[一二三四五六七八九十]|\b)", s)
     if match:
         return match.group(1) + match.group(2) + "級"
     match = re.search(r"(?<![A-Za-z])([ABC])級", s)
