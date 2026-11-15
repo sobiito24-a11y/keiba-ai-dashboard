@@ -127,10 +127,17 @@ def _cell(horse, cells, key):
         day_html = ('<small class="research-role-inline" title="'
                     + plain(' ／ '.join(day_check.get('reasons') or []))
                     + '">' + plain(day_short) + '</small>' if day_short else '')
+        nar_day = horse.get('nar_race_day_check') or {}
+        nar_role = nar_day.get('role') if horse.get('mode') == 'nar' else ''
+        nar_short = {'Top5外再確認': 'N再確認', '中位×4角前': 'N前目注目',
+                     '位置予測注意': 'N位置?'}.get(nar_role, '')
+        nar_html = ('<small class="research-role-inline" title="'
+                    + plain(' ／ '.join(nar_day.get('reasons') or []))
+                    + '">' + plain(nar_short) + '</small>' if nar_short else '')
         if item not in ('S', 'A', 'B', 'C', 'D'):
             return ('<span class="missing-cell" title="'
                     + plain(cells.get('research_sabcd_reason') or role_reason)
-                    + '">判定不可</span>' + role_html + day_html)
+                    + '">判定不可</span>' + role_html + day_html + nar_html)
         # Neither this study label nor the provisional model score is a bet.
         reason = cells.get('research_sabcd_reason') or ''
         score = cells.get('research_sabcd_score')
@@ -141,7 +148,7 @@ def _cell(horse, cells, key):
         return ('<span class="research-sabcd research-sabcd-'+plain(item)+'"'
                 ' title="'+plain(str(reason)+score_label)+'"'
                 ' aria-label="研究用SABCD '+plain(item)+'">'+value(item)+'</span>'
-                + role_html + day_html + retro)
+                + role_html + day_html + nar_html + retro)
     if key == 'class_attention':
         return ('<span class="comparison-snippet">'+value(item)+'</span>'
                 if item is not None else '<span class="missing-cell">未取得</span>')

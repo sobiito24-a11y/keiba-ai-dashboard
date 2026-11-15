@@ -1,0 +1,31 @@
+name: NAR race-day research regression
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "core/nar_race_day_check.py"
+      - "core/game_race_ui.py"
+      - "core/race_explorer_ui.py"
+      - "tests/test_nar_race_day_check.py"
+      - ".github/workflows/nar-race-day-research.yml"
+  pull_request:
+    paths:
+      - "core/nar_race_day_check.py"
+      - "core/game_race_ui.py"
+      - "core/race_explorer_ui.py"
+      - "tests/test_nar_race_day_check.py"
+      - ".github/workflows/nar-race-day-research.yml"
+  workflow_dispatch:
+
+jobs:
+  nar-research:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -r requirements-test.txt
+      - run: python -m compileall -q core/nar_race_day_check.py core/game_race_ui.py core/race_explorer_ui.py
+      - run: pytest -q tests/test_nar_race_day_check.py tests/test_nar_canonical_rank.py tests/test_nar_hybrid_evaluation.py
