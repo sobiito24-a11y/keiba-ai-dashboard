@@ -76,7 +76,7 @@ def test_recent_high_requires_sufficient_field():
 def test_high_index_alternative_without_win():
     horses = [
         sample(no=str(i), runs=[dict(date="2026-10-27", venue="大井",
-               surface="ダ", distance=1600, finish="8着", time_index=i)])
+               surface="ダ", distance=1600, finish=("3着" if i == 6 else "8着"), time_index=i)])
         for i in range(1, 7)
     ]
     assign_to_view(horses)
