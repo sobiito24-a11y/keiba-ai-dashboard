@@ -104,8 +104,6 @@ def assess(horse, *, recent_high_rank=None):
     runs = _past3(horse)
     wins = [run for run in runs if run['finish'] == 1]
     good_high = recent_high_rank is not None and 1 <= recent_high_rank <= 3
-    if not wins and not good_high:
-        return result
     ctx = horse.get('race_context') or {}
     venue = str(ctx.get('venue') or ctx.get('racecourse') or '').strip()
     surface = str(ctx.get('surface') or ctx.get('芝ダート') or '').replace('ダート', 'ダ')
@@ -114,6 +112,8 @@ def assess(horse, *, recent_high_rank=None):
                and run['venue'] == venue and run['surface'] == surface
                and run['distance'] is not None and length is not None
                and abs(run['distance'] - length) <= 200]
+    if not wins and not (good_high and matches):
+        return result
     status = str((horse.get('profile') or {}).get('class_shift') or '')
     comparable = status in ('同級', '昇級', '降級', 'クラス昇級', 'クラス降級')
     caution = str(horse.get('caution') or '')
