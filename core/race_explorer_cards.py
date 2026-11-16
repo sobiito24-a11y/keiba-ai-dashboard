@@ -241,6 +241,8 @@ def detail_html(horse):
         ("位置づけの根拠と注意", cells.get("research_positioning_reason")),
         ("距離・近走の適性注目（研究）", cells.get("research_suitability_label")),
         ("適性注目の根拠・注意", cells.get("research_suitability_reason")),
+        ("指数適性の再点検（研究）", cells.get("research_index_rescue_label")),
+        ("指数適性再点検の根拠・注意", cells.get("research_index_rescue_reason")),
         ("別モデルとの照合（研究）", day_check.get("role")),
         ("照合・位置予測の根拠", " ／ ".join(day_check.get("reasons") or [])),
     ]
