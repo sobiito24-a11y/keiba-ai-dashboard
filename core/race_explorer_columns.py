@@ -10,6 +10,7 @@ import re
 
 from .final_candidate_selection import formal_score
 from .race_explorer_common import material_text
+from .ai_evaluation_memo import evaluation_memo
 
 
 _MISSING = frozenset(("", "—", "―", "－", "-", "未取得", "不明", "対象外",
@@ -138,6 +139,7 @@ def columns(view):
     result.append(_spec("research_suitability_reason", "適性注目の根拠", "text", table_hidden=True))
     result.append(_spec("research_index_rescue_label", "指数適性再点検（研究）", "text", table_hidden=True))
     result.append(_spec("research_index_rescue_reason", "指数適性再点検の根拠", "text", table_hidden=True))
+    result.append(_spec("ai_memo", "AI評価メモ", "text"))
     for key, label in (("star", "同場同距離指数"), ("away", "別場同距離指数")):
         if any(_number(_mapping(_mapping(horse).get(key)).get("value")) is not None for horse in view or ()):
             result.extend((_spec(key, label, "number", rank_key=key + "_rank"),
@@ -178,7 +180,7 @@ def columns(view):
         "run_old", "run_middle", "run_latest", "average", "maximum",
         "rest_days", "weight", "weight_delta", "jockey_change",
         "record_venue", "record_distance", "record_venue_distance",
-        "class_attention",
+        "class_attention", "ai_memo",
     )
     visible = set(visible_keys)
     existing = {spec["key"]: spec for spec in result}
@@ -310,6 +312,7 @@ def records(view):
             ability=ability, ability_rank=ability_rank,
             class_attention=_compact_class_attention(class_attention.get("display") or class_attention.get("label")),
             class_attention_reason=_text(class_attention.get("reason")),
+            ai_memo=evaluation_memo(horse),
             research_sabcd=merged_tier,
             research_positioning_label=_text(positioning.get("label")),
             research_positioning_reason=_text(positioning.get("reason")),
