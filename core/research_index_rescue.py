@@ -131,7 +131,7 @@ def assess(horse, *, recent_high_rank=None):
               'コース・距離は同じ過去走に由来する可能性があるため独立加点しません。'
               + ('クラス比較不可（この点検では不利加点なし）。' if not comparable else f'クラス{status}。')
               + ('近走下降は警戒材料として維持。' if decline else '')
-              + '統合Dのみ根拠確認後に表示Cへ引上げ。元モデル値・順位・正式印・購入候補は変更しません。')
+              + '同会場・同馬場・距離±200mの過去3着内が確認できたDのみ表示Cへ引上げ。元モデル値・順位・正式印・購入候補は変更しません。')
     return dict(result, label='適性再点検', reason=reason, ranked_index_signal=1,
                 historical_success_starts=len(matches),
                 class_status=status if comparable else '比較不可', recent_decline=decline)
@@ -143,7 +143,8 @@ def _apply_display_c_floor(horse):
     unified = horse.get('unified_sabcd') or {}
     if not isinstance(unified, Mapping) or unified.get('grade') != 'D':
         return False
-    if review.get('label') != '適性再点検':
+    if (review.get('label') != '適性再点検'
+            or not review.get('historical_success_starts')):
         return False
     original = dict(unified)
     original['grade'] = 'C'
@@ -153,7 +154,7 @@ def _apply_display_c_floor(horse):
     original['status'] = 'suitability_c_floor'
     original['reason'] = (
         str(unified.get('reason') or '')
-        + '【適性補正】発走前の適性指数上位＋近走好走根拠により'
+        + '【適性補正】発走前の適性指数上位＋同会場・同馬場・近似距離好走により'
           'Dから表示上Cに引上げ。モデル値・統合順位は不変。'
           '原モデルの評価はDで、Cは校正済み好走確率を意味しません。'
     )
