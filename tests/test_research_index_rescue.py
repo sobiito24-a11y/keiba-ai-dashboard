@@ -47,12 +47,38 @@ def test_current_and_future_results_are_excluded():
     assert assess(horse)["label"] is None
 
 
-def test_rank_and_marks_are_never_mutated():
+def test_only_supported_d_receives_display_c_floor():
     horse = sample()
+    horse["research_sabcd_weight_class"] = {"grade": "D", "score": .077}
     result = assign_to_view([horse])[0]
     assert result["research_index_rescue"]["label"] == "適性再点検"
-    assert result["unified_sabcd"] == {"grade": "D", "rank": 7, "raw_score": .077}
+    assert result["unified_sabcd"]["grade"] == "C"
+    assert result["unified_sabcd"]["grade_before_suitability"] == "D"
+    assert result["unified_sabcd"]["suitability_c_floor"] is True
+    assert result["unified_sabcd"]["rank"] == 7
+    assert result["unified_sabcd"]["raw_score"] == .077
+    assert result["research_sabcd_weight_class"] == {"grade": "D", "score": .077}
     assert result["mark"] == ""
+    assert "モデル値・統合順位は不変" in result["unified_sabcd"]["reason"]
+    assign_to_view([horse])
+    assert horse["unified_sabcd"]["grade"] == "C"
+
+
+def test_missing_evidence_never_promotes():
+    horse = sample()
+    horse["course"]["rank"] = 7
+    horse["distance"]["rank"] = 8
+    result = assign_to_view([horse])[0]
+    assert result["unified_sabcd"]["grade"] == "D"
+    assert result["research_index_rescue"]["label"] is None
+
+
+def test_existing_c_is_not_upgraded():
+    horse = sample(grade="C")
+    result = assign_to_view([horse])[0]
+    assert result["unified_sabcd"]["grade"] == "C"
+    assert result["unified_sabcd"].get("suitability_c_floor") is None
+    assert result["unified_sabcd"]["rank"] == 7
 
 
 def test_top_grade_and_no_index_signal_are_excluded():
