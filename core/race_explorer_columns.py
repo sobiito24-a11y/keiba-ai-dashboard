@@ -136,6 +136,8 @@ def columns(view):
     result.append(_spec("research_positioning_reason", "候補の根拠と注意", "text", table_hidden=True))
     result.append(_spec("research_suitability_label", "6項目の適性注目", "text", table_hidden=True))
     result.append(_spec("research_suitability_reason", "適性注目の根拠", "text", table_hidden=True))
+    result.append(_spec("research_index_rescue_label", "指数適性再点検（研究）", "text", table_hidden=True))
+    result.append(_spec("research_index_rescue_reason", "指数適性再点検の根拠", "text", table_hidden=True))
     for key, label in (("star", "同場同距離指数"), ("away", "別場同距離指数")):
         if any(_number(_mapping(_mapping(horse).get(key)).get("value")) is not None for horse in view or ()):
             result.extend((_spec(key, label, "number", rank_key=key + "_rank"),
@@ -294,6 +296,7 @@ def records(view):
         fusion = _mapping(horse.get("research_formal_sabcd_fusion"))
         positioning = _mapping(horse.get("research_positioning"))
         suitability = _mapping(horse.get("research_suitability_attention"))
+        index_review = _mapping(horse.get("research_index_rescue"))
         trial_tier = sabcd_trial.get("grade") if sabcd_trial.get("grade") in ("S", "A", "B", "C", "D") else None
         merged_tier = unified.get("grade") if unified.get("grade") in ("S", "A", "B", "C", "D") else None
         tier = sabcd.get("grade") if sabcd.get("grade") in ("S", "A", "B", "C", "D") else None
@@ -312,6 +315,8 @@ def records(view):
             research_positioning_reason=_text(positioning.get("reason")),
             research_suitability_label=_text(suitability.get("label")),
             research_suitability_reason=_text(suitability.get("reason")),
+            research_index_rescue_label=_text(index_review.get("label")),
+            research_index_rescue_reason=_text(index_review.get("reason")),
             research_sabcd_score=_number(unified.get("strength")),
             research_fusion_rank=_integer(fusion.get("rank")),
             research_sabcd_reason=_text(unified.get("reason")),

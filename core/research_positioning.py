@@ -129,7 +129,8 @@ def assess(horse):
 
 def assign_to_view(view):
     from .research_suitability_attention import assess as suitability
+    from .research_index_rescue import assign_to_view as add_index_review
     for horse in view:
         horse["research_positioning"] = assess(horse)
         horse["research_suitability_attention"] = suitability(horse)
-    return view
+    return add_index_review(view)
