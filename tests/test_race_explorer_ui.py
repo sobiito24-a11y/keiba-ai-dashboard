@@ -77,6 +77,7 @@ def test_normal_layout_full_field_manual_checks_and_source_nonmutation(mode, cou
         assert headers.index('調教') == headers.index('脚質・位置') + 1
     assert '同場同距離指数' not in headers
     assert 'オッズ単複' in headers and '脚質・位置' in headers
+    assert headers[-1] == 'AI評価メモ'
     assert '4角想定' not in headers and '序盤傾向' not in headers
     specs=columns(view)
     keys=[spec['key'] for spec in specs]
@@ -229,7 +230,7 @@ def test_research_sabcd_does_not_change_real_view_formal_marks_and_scores(mode):
     assert ("training" in headers) == (mode == "jra")
     if mode == "jra":
         assert headers.index("training") == headers.index("style") + 1
-    assert headers[-1] == "class_attention"
+    assert headers[-2:] == ["class_attention", "ai_memo"]
     assert "research_sabcd_weight_class" not in headers
     assert "research_sabcd_old" not in headers
     assert "research_sabcd_sort" not in headers
