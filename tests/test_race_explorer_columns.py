@@ -51,7 +51,7 @@ def test_schema_covers_every_comparison_cell_and_has_no_ai_mark_or_membership(mo
         "run_old", "run_middle", "run_latest", "average", "maximum",
         "rest_days", "weight", "weight_delta", "jockey_change",
         "record_venue", "record_distance", "record_venue_distance",
-        "class_attention",
+        "class_attention", "ai_memo",
     ]
     if mode == "nar":
         assert "nar_hybrid_score" in keys and "nar_hybrid_rank" in keys
@@ -235,7 +235,8 @@ def test_research_composite_columns_are_hidden_not_deleted(mode, hidden):
     visible=[item["key"] for item in specs if not item.get("table_hidden")]
     assert hidden not in visible
     assert "class_attention" in visible
-    assert visible.index("class_attention") == len(visible)-1
+    assert visible.index("class_attention") == len(visible)-2
+    assert visible[-1] == "ai_memo"
     assert visible.index("research_sabcd") == visible.index("ability")-1
     assert visible.index("style") == visible.index("ability")+1
     if mode=="nar":

@@ -128,6 +128,13 @@ def _cell(horse, cells, key):
     if key == 'class_attention':
         return ('<span class="comparison-snippet">'+value(item)+'</span>'
                 if item is not None else '<span class="missing-cell">未取得</span>')
+    if key == 'ai_memo':
+        # Exactly two short factual lines. Escape model-supplied strings.
+        parts = str(item or '特記材料なし').splitlines()[:2]
+        first = value(parts[0])
+        second = ('<small>'+value(parts[1])+'</small>' if len(parts) > 1 else '')
+        return ('<span class="ai-evaluation-memo" title="'+plain(str(item or '特記材料なし'))+'">'
+                '<strong>'+first+'</strong>'+second+'</span>')
     if key == 'materials':
         # Short visual summaries only; records(), source facts, and detail_html()
         # retain the full wording and remain the sortable/searchable data.
@@ -152,12 +159,12 @@ def _options(schema, first=None):
 
 def comparison_widths():
     """One width map shared by the normal and mirrored post-race table."""
-    widths = dict(user=42, frame=36, no=44, name=190, jockey=85, odds=104, place_odds=98, score=120, nar_hybrid_score=108, frozen_review=128, class_attention=178, career_course=142,
+    widths = dict(user=42, frame=36, no=44, name=190, jockey=85, odds=104, place_odds=98, score=120, nar_hybrid_score=108, frozen_review=128, class_attention=178, ai_memo=218, career_course=142,
                   research_sabcd=70, rank=70, popularity=70, style=102, corner=82, training=60,
                   run_old=134, run_middle=134, run_latest=134, jockey_change=160,
                   record_venue=190, record_distance=190, record_venue_distance=190, materials=220)
     mobile_widths = dict(user=34, frame=28, no=34, name=118, research_sabcd=62, jockey=68, odds=94, place_odds=83,
-                         score=100, reference_score=110, nar_hybrid_score=93, frozen_review=104, class_attention=148, career_course=112, popularity=56, style=94,
+                         score=100, reference_score=110, nar_hybrid_score=93, frozen_review=104, class_attention=148, ai_memo=184, career_course=112, popularity=56, style=94,
                          corner=77, training=48, run_old=108, run_middle=108,
                          run_latest=108, jockey_change=128, record_venue=156,
                          record_distance=156, record_venue_distance=156, materials=176)
