@@ -73,6 +73,20 @@ def test_missing_evidence_never_promotes():
     assert result["research_index_rescue"]["label"] is None
 
 
+def test_unrelated_prior_win_is_attention_only_not_c_floor():
+    horse = sample(runs=[
+        dict(date="2026-10-27", venue="船橋", surface="ダ",
+             distance=1200, finish="1着", time_index=77),
+        dict(date="2026-10-11", venue="大井", surface="ダ",
+             distance=1200, finish="9着", time_index=33),
+    ])
+    result = assign_to_view([horse])[0]
+    assert result["research_index_rescue"]["label"] == "適性再点検"
+    assert result["research_index_rescue"]["historical_success_starts"] == 0
+    assert result["unified_sabcd"]["grade"] == "D"
+    assert result["mark"] == ""
+
+
 def test_existing_c_is_not_upgraded():
     horse = sample(grade="C")
     result = assign_to_view([horse])[0]
