@@ -1,6 +1,8 @@
-"""Read-only review of overlooked course/distance specialists.
+"""Display-only C floor for overlooked course/distance specialists.
 
-No changes to unified SABCD, formal Top5, model scores, marks or bets.
+When a unified research grade is D and independent pre-start evidence warrants
+review, show C (not A/B/S). Frozen model scores, unified order, formal Top5,
+marks, betting selections and archives are not changed.
 The course/distance indices have no verified source-run provenance, so
 coincident numerical values are never treated as independent evidence.
 """
@@ -11,7 +13,7 @@ from math import isfinite
 from collections.abc import Mapping
 import re
 
-VERSION = "index-suitability-review-20261117-v1"
+VERSION = "index-suitability-review-20261117-v2-c-floor"
 
 
 def _number(value):
@@ -129,14 +131,39 @@ def assess(horse, *, recent_high_rank=None):
               'コース・距離は同じ過去走に由来する可能性があるため独立加点しません。'
               + ('クラス比較不可（この点検では不利加点なし）。' if not comparable else f'クラス{status}。')
               + ('近走下降は警戒材料として維持。' if decline else '')
-              + 'SABCD・印・購入候補は変更しません。')
+              + '統合Dのみ根拠確認後に表示Cへ引上げ。元モデル値・順位・正式印・購入候補は変更しません。')
     return dict(result, label='適性再点検', reason=reason, ranked_index_signal=1,
                 historical_success_starts=len(matches),
                 class_status=status if comparable else '比較不可', recent_decline=decline)
+
+
+def _apply_display_c_floor(horse):
+    """Only change the transient unified letter; NEVER recompute its score/order."""
+    review = horse.get('research_index_rescue') or {}
+    unified = horse.get('unified_sabcd') or {}
+    if not isinstance(unified, Mapping) or unified.get('grade') != 'D':
+        return False
+    if review.get('label') != '適性再点検':
+        return False
+    original = dict(unified)
+    original['grade'] = 'C'
+    original['grade_before_suitability'] = 'D'
+    original['suitability_c_floor'] = True
+    original['status_before_suitability'] = unified.get('status')
+    original['status'] = 'suitability_c_floor'
+    original['reason'] = (
+        str(unified.get('reason') or '')
+        + '【適性補正】発走前の適性指数上位＋近走好走根拠により'
+          'Dから表示上Cに引上げ。モデル値・統合順位は不変。'
+          '原モデルの評価はDで、Cは校正済み好走確率を意味しません。'
+    )
+    horse['unified_sabcd'] = original
+    return True
 
 
 def assign_to_view(view):
     ranks = recent_index_ranks(view)
     for horse in view or ():
         horse['research_index_rescue'] = assess(horse, recent_high_rank=ranks.get(str(horse.get('no'))))
+        _apply_display_c_floor(horse)
     return view
