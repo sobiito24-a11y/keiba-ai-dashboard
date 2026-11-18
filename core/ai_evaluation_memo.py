@@ -88,6 +88,18 @@ def evaluation_memo(horse):
     state = str(profile.get("state") or "")
     caution = str(horse.get("caution") or "")
     declined = state in ("注意", "下降") or "近走下降" in caution or "指数下降" in caution
+    age_review = horse.get("research_age_suitability") or {}
+    if isinstance(age_review, Mapping) and age_review.get("qualified") is True:
+        a = age_review["age"]
+        c, d = age_review["course_age_rank"], age_review["distance_age_rank"]
+        starts, placed = age_review["exact_starts"], age_review["exact_podiums"]
+        primary = f"{a}歳内 コース{c}位・距離{d}位"
+        detail = f"同場同距離{starts}戦{placed}回3着内"
+        if declined:
+            detail += "／近走下降注意"
+        elif "昇級" in str(profile.get("class_shift") or ""):
+            detail += "／昇級注意"
+        return primary + "\n" + detail
     secondary = "／".join(x for x in (supportive, "近走下降注意" if declined else "") if x)
     if not primary:
         primary, secondary = secondary, ""
