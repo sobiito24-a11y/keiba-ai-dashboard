@@ -1768,6 +1768,14 @@ def render_game_prediction(result, *, show_header=False):
             view = with_nar_hybrid_evaluation(view, matches[0], event_races)
         # Keep old research metrics out of the visible table without
         # mutating any saved formal or pure-ability ranking.
+    # Current-evaluation D→C research shadow uses only *frozen pre-start*
+    # archive horse evidence. It does not alter the displayed unified grade.
+    from core.research_current_eval_c_floor import annotate_view as annotate_current_eval_c
+    event = st.session_state.get("dashboard_event_snapshot")
+    archived = (event.get("races") or []) if isinstance(event, Mapping) else []
+    same_race = [r for r in archived if isinstance(r, Mapping)
+                 and str(r.get("race_id") or "") == str(rid)]
+    view = annotate_current_eval_c(view, same_race[0] if len(same_race) == 1 else None)
     # Outcome-free, frozen 2026-11-08 comparisons. Never overwrite the model.
     from core.frozen_research_review import with_frozen_reviews
     view = with_frozen_reviews(view)
