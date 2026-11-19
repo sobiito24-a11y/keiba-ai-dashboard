@@ -1756,6 +1756,12 @@ def render_game_prediction(result, *, show_header=False):
             st.caption(f"新聞から照合済み：{len(frames)}頭")
             for message in dict.fromkeys(audit): st.caption(message)
     view = build_view(rows, records, sources, result.race_mode, result.race_info, saved_materials(result), frames)
+    from core.sabcd_snapshot import apply_saved as apply_saved_sabcd
+    view = apply_saved_sabcd(result, view)
+    if any(h.get("sabcd_origin") == "historical_recalculation" for h in view):
+        st.caption("統合ランク：当時の保存値なし。現行ロジックによる参考再計算です。")
+    elif any(h.get("sabcd_origin") in ("post_start", "time_unverified") for h in view):
+        st.caption("統合ランクは保存済みですが、発走前の確定値としては扱えません。")
     if result_race_mode(result) == "nar":
         # Read-only hybrid shadow, using the exact saved pre-race race
         # snapshot, not reconstructed scores or current results.
