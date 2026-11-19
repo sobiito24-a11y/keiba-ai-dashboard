@@ -1,11 +1,10 @@
-"""Frozen-current-evaluation versus unified-SABCD D-to-C *shadow* review.
+"""Frozen current-evaluation evidence for a conservative unified D-to-C display floor.
 
-Hypothesis selected after inspecting 2026-11-11/15/18 results; therefore it
-must NOT change the visible grade until validated on NEW racing dates.
-
-No results, final odds, purchases or retrospective outcomes are inputs.
-Evidence is taken from the matching race's originally frozen horse materials,
-NOT the re-rendered table's newer/materially different commentary.
+Hypothesis selected after inspecting 2026-11-11/15/18 results; this is an
+uncalibrated *display* correction, not a refit of research model probabilities.
+Model values/ranks, formal marks, frozen source predictions and buying decisions
+remain unchanged. Only a verified pre-race archive supplies the evidence.
+Never use race_results_v1, final odds or retrospective race outcomes as inputs.
 """
 from __future__ import annotations
 
@@ -14,7 +13,7 @@ from copy import deepcopy
 
 from .research_index_rescue import _number, _past3
 
-VERSION = "current-eval-c-shadow-20261119-v1"
+VERSION = "current-eval-c-display-floor-20261119-v2"
 GRADES = ("S", "A", "B", "C", "D")
 
 
@@ -62,7 +61,14 @@ def assess(horse, frozen_horse):
     if not isinstance(unified, Mapping) or unified.get("grade") not in GRADES:
         result.update(status="ungraded", reason="統合研究ランク未取得")
         return result
-    if unified.get("grade") != "D":
+    # Calling annotate_view twice must retain a previously adjusted C rather
+    # than erasing its audit or interpreting the C as an independent model C.
+    already_adjusted = (
+        unified.get("grade") == "C"
+        and unified.get("current_eval_c_floor") is True
+        and unified.get("grade_before_current_eval") == "D"
+    )
+    if unified.get("grade") != "D" and not already_adjusted:
         result.update(status="not_d", reason="統合SABCDがDではないため対象外")
         return result
     rank = _rank(horse.get("current_evaluation_rank"))
@@ -94,8 +100,8 @@ def assess(horse, frozen_horse):
     ]
     reasons = [r for r in reasons if r]
     explanation = (" / ".join(reasons)
-        + "。研究DのC補正候補として記録するのみ。"
-        "実際のSABCD・モデル値・順位・正式印・買い目は不変。"
+        + "。保存済み今回評価を根拠に研究Dを表示上Cへ補正。"
+        "元モデル値・統合順位・正式印・買い目は不変。"
         "適性指数と同場同距離実績は相関し得るため独立確率として加算しない。")
     if conflict:
         explanation += f"注意：保存済み近走上昇と状態「{state}」が矛盾。"
@@ -108,11 +114,35 @@ def assess(horse, frozen_horse):
     return result
 
 
-def annotate_view(view, race_snapshot=None):
-    """Attach preview evidence only; immutable event and visible grade remain unchanged.
+def _apply_display_c_floor(horse, review):
+    """Adjust only the display's unified letter when pre-start evidence qualifies."""
+    unified = horse.get("unified_sabcd") or {}
+    if not review.get("candidate") or not isinstance(unified, Mapping):
+        return False
+    if unified.get("grade") == "C" and unified.get("current_eval_c_floor") is True:
+        return False  # idempotent
+    if unified.get("grade") != "D":
+        return False
+    updated = dict(unified)
+    updated["grade"] = "C"
+    updated["grade_before_current_eval"] = "D"
+    updated["current_eval_c_floor"] = True
+    updated["status_before_current_eval"] = unified.get("status")
+    updated["status"] = "current_eval_c_floor"
+    updated["reason"] = (
+        str(unified.get("reason") or "")
+        + "【今回評価C補正】" + str(review.get("reason") or "")
+        + "これは表示補正で、モデル値・研究順位・正式印は変更しません。"
+    )
+    horse["unified_sabcd"] = updated
+    return True
 
-    A race_id/date mismatch abstains, and only the original frozen horse list
-    is used. race_results_v1 is deliberately never read.
+
+def annotate_view(view, race_snapshot=None):
+    """Annotate verified pre-start evidence and apply D-to-C *display* correction.
+
+    A race_id/date mismatch abstains. Only the frozen original horse list is
+    consulted; race_results_v1 and final odds are deliberately never read.
     """
     race = race_snapshot if isinstance(race_snapshot, Mapping) else {}
     original_horses = race.get("horses")
@@ -130,5 +160,7 @@ def annotate_view(view, race_snapshot=None):
         same_id = not rid or rid == str(race.get("race_id") or "")
         same_mode = h.get("mode") == race.get("race_mode")
         saved = frozen.get(str(h.get("no") or "")) if same_date and same_id and same_mode else None
-        h["research_current_eval_c_floor"] = assess(h, saved)
+        review = assess(h, saved)
+        h["research_current_eval_c_floor"] = review
+        _apply_display_c_floor(h, review)
     return view
