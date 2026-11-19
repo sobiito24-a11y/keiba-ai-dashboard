@@ -75,3 +75,13 @@ def test_real_export_restore_roundtrip():
     assert freeze(restored)==loaded[KEY]
     legacy=deepcopy(loaded);legacy.pop(KEY);legacy['mobile_snapshot'].pop(KEY);legacy['prediction_result']['debug_info'].pop(KEY)
     assert freeze(restore_prediction_result(legacy)) is None
+
+
+def test_missing_numeric_inputs_hash_the_serialized_evidence():
+    import hashlib,json
+    v=view();v[0]["weight_delta"]=float("nan")
+    a=freeze(result(),v,now="2026-11-20T09:00:00")
+    assert a["horses"][0]["inputs"]["weight_delta"] is None
+    body=dict(identity=a["identity"],horses=[{k:h[k] for k in ("no","name","inputs")} for h in a["horses"]])
+    encoded=json.dumps(body,sort_keys=True,ensure_ascii=False,allow_nan=False).encode("utf8")
+    assert a["input_sha256"]==hashlib.sha256(encoded).hexdigest()

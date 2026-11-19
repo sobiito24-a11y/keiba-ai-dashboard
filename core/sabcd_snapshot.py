@@ -80,13 +80,15 @@ def freeze(result, view=None, *, now=None):
         inputs['profile'] = {k: deepcopy(profile.get(k)) for k in ('runs', 'class_shift', 'state')}
         horses.append(dict(no=str(h['no']), name=h['name'], inputs=inputs,
                            outputs={k: deepcopy(h.get(k)) for k in OUTPUT_KEYS}))
+    from .prediction_snapshot import _json_ready
+    horses = _json_ready(horses)
     if len({h['no'] for h in horses}) != len(horses):
         raise ValueError('Duplicate horse numbers in integrated grade capture')
-    modules = ('game_race_ui', 'candidate_profile', 'research_sabcd', 'research_sabcd_weight_class',
+    modules = ('sabcd_snapshot', 'game_race_ui', 'candidate_profile', 'research_sabcd', 'research_sabcd_weight_class',
                'unified_sabcd', 'research_index_rescue', 'research_age_suitability')
     code = {m: hashlib.sha256(Path(__file__).with_name(m + '.py').read_bytes()).hexdigest() for m in modules}
     inputs = dict(identity=_identity(result), horses=[dict(no=h['no'], name=h['name'], inputs=h['inputs']) for h in horses])
-    body = json.dumps(inputs, sort_keys=True, ensure_ascii=False, default=str).encode('utf8')
+    body = json.dumps(inputs, sort_keys=True, ensure_ascii=False, allow_nan=False).encode('utf8')
     return dict(schema_version=1, version=VERSION, identity=_identity(result), captured_at=now.isoformat(),
                 scheduled_start=start.isoformat() if start else None, status=status,
                 origin='display' if view is not None else 'export_projection',
