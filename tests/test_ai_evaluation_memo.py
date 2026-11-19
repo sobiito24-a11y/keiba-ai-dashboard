@@ -92,3 +92,99 @@ def test_horse_list_render_escapes_text_and_keeps_two_lines():
     unsafe = _cell(horse, {"ai_memo": "<script>alert(1)</script>\n危険"}, "ai_memo")
     assert "<script>" not in unsafe
     assert not BeautifulSoup(unsafe, "html.parser").select("script")
+
+
+
+def sonoda_seven():
+    """Saved pre-start facts behind 2026/11/19 Sonoda 4R number 7."""
+    from core.research_age_suitability import assign_to_view
+
+    def item(no, age, course, distance, runs=None):
+        return dict(
+            no=str(no), name="ベラジオカムイ" if no == 7 else "同年齢比較馬",
+            mode="nar", age=f"牡{age}", course=dict(value=course, rank=1),
+            distance=dict(value=distance, rank=3),
+            profile=dict(class_shift="判定不可", state="横ばい",
+                         runs=list(runs or [])),
+            race_context=dict(
+                race_date="2026-11-19", venue="園田", surface="ダ",
+                distance=1400,
+                raw_class_text="サラ系3歳以上 C3二"),
+            unified_sabcd=dict(grade="D", rank=8, raw_score=.1455),
+            research_sabcd_weight_class=dict(grade="D", score=.1455),
+            mark="", rank=None,
+        )
+
+    recent = [
+        dict(date="2026-10-28", venue="園田", surface="ダ", distance=1400,
+             finish="10着", class_raw="C2一", time_index=-33),
+        dict(date="2026-10-09", venue="園田", surface="ダ", distance=1400,
+             finish="8着", class_raw="C2二", time_index=19),
+        dict(date="2026-07-01", venue="園田", surface="ダ", distance=1230,
+             finish="4着", class_raw="C2二", time_index=18),
+    ]
+    view = [
+        item(7, 3, 58, 58, recent),
+        item(4, 3, 22, 51),
+        item(2, 3, 44, 46),
+        item(1, 4, 58, 58),
+    ]
+    assign_to_view(view)
+    return view
+
+
+def test_sonoda_seven_memo_shows_good_and_bad_without_changing_grade():
+    view = sonoda_seven()
+    horse = view[0]
+    original = deepcopy(view)
+    flag = horse["research_age_suitability"]
+    assert (flag["course_age_rank"], flag["distance_age_rank"]) == (1, 1)
+    assert flag["qualified"] is False
+    assert evaluation_memo(horse) == (
+        "3歳内 コース1位・距離1位\n"
+        "C2→C3降級／近2走10着・8着"
+    )
+    assert horse["unified_sabcd"] == {"grade": "D", "rank": 8, "raw_score": .1455}
+    assert horse["mark"] == ""
+    assert view == original
+
+
+def test_memo_does_not_invent_drop_for_unknown_or_conflicting_classes():
+    horse = sonoda_seven()[0]
+    horse["profile"]["runs"][0]["class_raw"] = "前走クラス不明"
+    horse["profile"]["runs"][1]["class_raw"] = "前走クラス不明"
+    assert "降級" not in evaluation_memo(horse)
+    assert "近2走10着・8着" in evaluation_memo(horse)
+    horse["profile"]["runs"][0]["class_raw"] = "C2/C3混合"
+    assert "降級" not in evaluation_memo(horse)
+
+
+def test_memo_does_not_invent_drop_across_venues_or_future_results():
+    horse = sonoda_seven()[0]
+    horse["profile"]["runs"][0]["venue"] = "姫路"
+    assert "降級" not in evaluation_memo(horse)
+    horse["profile"]["runs"][0]["date"] = "2026-11-19"
+    horse["profile"]["runs"][1]["class_raw"] = "級未取得"
+    assert "降級" not in evaluation_memo(horse)
+    horse["actual_finish"] = 1
+    horse["final_win_odds"] = 200
+    assert "降級" not in evaluation_memo(horse)
+
+
+def test_single_good_age_rank_without_class_or_bad_finishes_does_not_override_memo():
+    horse = sonoda_seven()[0]
+    horse["profile"]["runs"] = [
+        dict(date="2026-10-28", venue="園田", surface="ダ",
+             distance=1400, finish="1着", class_raw="C3"),
+        dict(date="2026-10-09", venue="園田", surface="ダ",
+             distance=1400, finish="2着", class_raw="C3")]
+    assert evaluation_memo(horse) == "コース指数1位・距離指数3位\n同場近似距離1勝"
+
+
+def test_age_top2_memo_for_nar_and_jra_requires_only_prestart_evidence():
+    view = sonoda_seven()
+    horse = view[0]
+    horse["mode"] = "jra"
+    assert evaluation_memo(horse) == (
+        "3歳内 コース1位・距離1位\n近2走10着・8着"
+    )
