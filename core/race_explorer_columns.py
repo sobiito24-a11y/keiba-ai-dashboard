@@ -139,6 +139,10 @@ def columns(view):
     result.append(_spec("research_suitability_reason", "適性注目の根拠", "text", table_hidden=True))
     result.append(_spec("research_index_rescue_label", "指数適性再点検（研究）", "text", table_hidden=True))
     result.append(_spec("research_index_rescue_reason", "指数適性再点検の根拠", "text", table_hidden=True))
+    # A/B/C/D remains untouched. Archive-backed C hypothesis is hidden audit.
+    result.append(_spec("research_current_eval_c_candidate", "今回評価C補正候補（研究）", "boolean", table_hidden=True))
+    result.append(_spec("research_current_eval_c_reason", "今回評価C補正候補の根拠", "text", table_hidden=True))
+    result.append(_spec("research_current_eval_c_conflict", "近走状態の保存材料矛盾", "boolean", table_hidden=True))
     result.append(_spec("ai_memo", "AI評価メモ", "text"))
     for key, label in (("star", "同場同距離指数"), ("away", "別場同距離指数")):
         if any(_number(_mapping(_mapping(horse).get(key)).get("value")) is not None for horse in view or ()):
@@ -299,6 +303,7 @@ def records(view):
         positioning = _mapping(horse.get("research_positioning"))
         suitability = _mapping(horse.get("research_suitability_attention"))
         index_review = _mapping(horse.get("research_index_rescue"))
+        current_eval_review = _mapping(horse.get("research_current_eval_c_floor"))
         trial_tier = sabcd_trial.get("grade") if sabcd_trial.get("grade") in ("S", "A", "B", "C", "D") else None
         merged_tier = unified.get("grade") if unified.get("grade") in ("S", "A", "B", "C", "D") else None
         tier = sabcd.get("grade") if sabcd.get("grade") in ("S", "A", "B", "C", "D") else None
@@ -320,6 +325,9 @@ def records(view):
             research_suitability_reason=_text(suitability.get("reason")),
             research_index_rescue_label=_text(index_review.get("label")),
             research_index_rescue_reason=_text(index_review.get("reason")),
+            research_current_eval_c_candidate=current_eval_review.get("candidate") is True,
+            research_current_eval_c_reason=_text(current_eval_review.get("reason")),
+            research_current_eval_c_conflict=current_eval_review.get("form_conflict") is True,
             research_sabcd_score=_number(unified.get("strength")),
             research_fusion_rank=_integer(fusion.get("rank")),
             research_sabcd_reason=_text(unified.get("reason")),
