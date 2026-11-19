@@ -1,4 +1,4 @@
-"""Current-evaluation Top5/✓ C *hypothesis* must never rewrite SABCD."""
+"""Current-evaluation Top5/✓ conservatively adjusts only displayed D→C."""
 from copy import deepcopy
 
 import pytest
@@ -34,7 +34,7 @@ def event(horses):
                 race_results_v1=dict(race_status="final", horses=[dict(horse_no="9", finish=2)]))
 
 
-def test_ooi_nine_shadow_c_with_saved_form_conflict_but_visible_grade_unchanged():
+def test_ooi_nine_display_c_with_saved_form_conflict_and_frozen_model():
     horse = view_horse(9, current=5)
     archived = event([frozen(9, current=5, state="弱含み")])
     before = deepcopy((horse, archived))
@@ -44,20 +44,24 @@ def test_ooi_nine_shadow_c_with_saved_form_conflict_but_visible_grade_unchanged(
     assert check["candidate_grade"] == "C"
     assert check["independent_family_count"] == 2
     assert check["form_conflict"] is True
-    assert annotated["unified_sabcd"]["grade"] == "D"
+    assert annotated["unified_sabcd"]["grade"] == "C"
+    assert annotated["unified_sabcd"]["grade_before_current_eval"] == "D"
+    assert annotated["unified_sabcd"]["current_eval_c_floor"] is True
     assert annotated["unified_sabcd"]["rank"] == 8
     assert annotated["unified_sabcd"]["raw_score"] == .12
     assert annotated["mark"] == ""
+    assert annotated["research_sabcd_weight_class"] == before[0]["research_sabcd_weight_class"]
     assert archived == before[1]
 
 
-def test_ooi_five_shadow_and_eight_b_excluded():
+def test_ooi_five_promoted_and_eight_b_excluded():
     horses = [view_horse(5, current=4, mark="✓"),
               view_horse(8, grade="B", current=6, mark="▲")]
     saved = event([frozen(5, current=4, mark="✓"), frozen(8, current=6, mark="▲")])
     annotate_view(horses, saved)
     assert horses[0]["research_current_eval_c_floor"]["candidate"] is True
-    assert horses[0]["unified_sabcd"]["grade"] == "D"
+    assert horses[0]["unified_sabcd"]["grade"] == "C"
+    assert horses[0]["unified_sabcd"]["grade_before_current_eval"] == "D"
     assert horses[1]["research_current_eval_c_floor"]["status"] == "not_d"
     assert horses[1]["unified_sabcd"]["grade"] == "B"
 
@@ -146,7 +150,7 @@ def test_shadow_visible_only_as_hidden_audit_field():
     result = records([h])["9"]
     assert result["research_current_eval_c_candidate"] is True
     assert result["research_current_eval_c_conflict"] is False
-    assert result["research_sabcd"] == "D"
+    assert result["research_sabcd"] == "C"
     assert h == before
 
 
@@ -156,3 +160,33 @@ def test_same_shadow_rule_for_jra():
     archived = event([frozen(9)])
     archived["race_mode"] = "jra"
     assert annotate_view([h], archived)[0]["research_current_eval_c_floor"]["candidate"]
+
+
+
+def test_repeated_render_is_idempotent():
+    horse = view_horse(9, current=5)
+    archived = event([frozen(9, state="弱含み")])
+    annotate_view([horse], archived)
+    first = deepcopy(horse["unified_sabcd"])
+    annotate_view([horse], archived)
+    assert horse["unified_sabcd"] == first
+    assert horse["research_current_eval_c_floor"]["candidate"] is True
+    assert horse["unified_sabcd"]["reason"].count("【今回評価C補正】") == 1
+
+
+def test_other_races_same_rule_when_identifiers_match():
+    other = view_horse(3, current=2)
+    other["race_context"]["race_id"] = "202650111904"
+    record = event([frozen(3, current=2)])
+    record["race_id"] = "202650111904"
+    assert annotate_view([other], record)[0]["unified_sabcd"]["grade"] == "C"
+
+
+def test_insufficient_evidence_and_grade_c_no_double_promotion():
+    weak = view_horse(2, current=6)
+    included = view_horse(4, grade="C", current=2)
+    a = event([frozen(2, current=6), frozen(4, current=2)])
+    annotate_view([weak, included], a)
+    assert weak["unified_sabcd"]["grade"] == "D"
+    assert included["unified_sabcd"]["grade"] == "C"
+    assert included["unified_sabcd"].get("current_eval_c_floor") is None
