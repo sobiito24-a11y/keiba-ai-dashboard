@@ -8557,8 +8557,6 @@ def print_ver30_all_horse_rating(df, race_type="nar"):
             "勢いスコア": row.get("momentum_score", ""),
             "勢い理由": _nar_safe_text(row.get("momentum_reason")) or "-",
             "近3走傾向": _nar_safe_text(row.get("recent3_trend")) or "-",
-            "総合ランク": _nar_safe_text(row.get("overall_rank")) or "-",
-            "総合ランク理由": _nar_safe_text(row.get("overall_rank_reason")) or "-",
             "AI順位": _ver30_audit_rank_display(row),
             "軸信頼度": _nar_safe_text(row.get("axis_confidence")) or "-",
             "軸信頼度理由": _nar_safe_text(row.get("axis_confidence_reason")) or "-",

@@ -7,7 +7,7 @@ from typing import Any
 import pandas as pd
 
 from .condition_fit import evaluate_condition_fit
-from .form_rank import add_form_rank_columns
+from .form_rank import LEGACY_OVERALL_COLUMNS, add_form_rank_columns
 
 
 AXIS_CONFIDENCE_CONFIG = {
@@ -89,8 +89,6 @@ AUDIT_OUTPUT_COLUMNS = [
     "recent3_volatility",
     "recent3_valid_count",
     "form_state",
-    "overall_rank",
-    "overall_rank_reason",
     "power_group",
     "power_group_label",
     "has_same_course",
@@ -349,7 +347,7 @@ def add_audit_evaluation_columns(df: pd.DataFrame | None, *, race_type: str = "n
     """Add display/audit-only evaluation columns without changing scores or marks."""
     if df is None:
         return df
-    result = df.copy()
+    result = df.drop(columns=list(LEGACY_OVERALL_COLUMNS), errors="ignore").copy()
     if result.empty:
         for column in AUDIT_OUTPUT_COLUMNS:
             if column not in result.columns:
