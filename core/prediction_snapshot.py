@@ -50,6 +50,10 @@ def race_snapshot_from_result(
     result = attach_jockey_evidence(copy.deepcopy(result))
     from .race_insight_snapshot import KEY as insight_key, freeze as freeze_insight
     result.debug_info = {**(result.debug_info or {}), insight_key: freeze_insight(result)}
+    from .sabcd_snapshot import KEY as sabcd_key, freeze as freeze_sabcd
+    captured = freeze_sabcd(result)
+    if captured is not None:
+        result.debug_info = {**(result.debug_info or {}), sabcd_key: captured}
     mobile_snapshot = build_prediction_snapshot(result)
     race_info = dict(mobile_snapshot.get("race_info") or {})
     race_id = _text(race_info.get("race_id"))
@@ -83,6 +87,8 @@ def race_snapshot_from_result(
 
     from .model_b import KEY as model_b_key, freeze as freeze_model_b
     snapshot[model_b_key] = _json_ready(freeze_model_b(result))
+    if captured is not None:
+        snapshot[sabcd_key] = _json_ready(captured)
     probability_snapshot = mobile_snapshot.get("jra_win_probability_calibration")
     if probability_snapshot is not None:
         snapshot["jra_win_probability_calibration"] = probability_snapshot
@@ -268,6 +274,8 @@ def restore_prediction_result(race_snapshot: Mapping[str, Any]) -> PredictionRes
         logic_version=_text(payload.get("logic_version")) or "market",
         ver4_summary=dict(payload.get("ver4_summary") or {}),
     )
+    from .sabcd_snapshot import restore as restore_sabcd
+    restore_sabcd(result, race_snapshot)
     from .model_b import KEY as model_b_key
     if isinstance(race_snapshot.get(model_b_key), Mapping):
         result.debug_info[model_b_key] = copy.deepcopy(race_snapshot[model_b_key])

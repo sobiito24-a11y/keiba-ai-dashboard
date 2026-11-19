@@ -146,6 +146,10 @@ def build_prediction_snapshot(result: PredictionResult, investment_decision: Any
         payload[shift_key] = payload[development_key]['development_shift_audit']
     from .race_insight_snapshot import KEY as insight_key, freeze as freeze_insight
     payload[insight_key] = freeze_insight(result)
+    from .sabcd_snapshot import KEY as sabcd_key, freeze as freeze_sabcd
+    captured = freeze_sabcd(result)
+    if captured is not None:
+        payload[sabcd_key] = captured
     from .independent_ai import saved_fields
     payload.update(saved_fields(result))
     from .game_ui_frame_snapshot import copy_frame_metadata
