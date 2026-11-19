@@ -159,11 +159,11 @@ def render(view):
     if group == "1勝":
         segments.append("取りこぼし最多のため、上位順位のみで軸を決めない")
     elif group == "2歳未勝利":
-        segments.append("保存総合ランクDが345/408頭。Dだけを理由に消さない")
+        segments.append("出走経験や比較材料が少ないため、評価の根拠と欠損を確認")
     elif group == "OP・重賞":
-        segments.append("過去8RのSは3着内0/8。小標本のためSを自動消去しない")
+        segments.append("比較標本が少ないため、ランクだけで取捨を決めない")
     elif group == "障害":
-        segments.append("材料不足が多く、総合Dの信頼度に注意")
+        segments.append("材料不足が多いため、評価の根拠と欠損を確認")
 
     rechecks = []
     warnings = []

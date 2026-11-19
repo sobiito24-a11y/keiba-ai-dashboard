@@ -9,6 +9,11 @@ from typing import Any
 import pandas as pd
 
 
+LEGACY_OVERALL_COLUMNS = (
+    "overall_rank", "overall_rank_reason", "総合ランク", "総合ランク理由",
+)
+
+
 ABILITY_RANK_THRESHOLDS = {
     "S": 82.0,
     "A": 76.0,
@@ -62,7 +67,8 @@ def add_form_rank_columns(df: pd.DataFrame | None, *, race_type: str = "nar") ->
     """Add display/audit columns only; prediction scores and marks are not modified."""
     if df is None:
         return df
-    result = df.copy()
+    # Retire the old grade from newly evaluated rows, without editing archives.
+    result = df.drop(columns=list(LEGACY_OVERALL_COLUMNS), errors="ignore").copy()
     if result.empty:
         for column in _empty_columns():
             if column not in result.columns:
@@ -106,23 +112,9 @@ def add_form_rank_columns(df: pd.DataFrame | None, *, race_type: str = "nar") ->
     result["check_summary"] = result["チェック項目"]
     result["supplement_note"] = result["補足"]
 
-    overall_ranks: list[str] = []
-    overall_reasons: list[str] = []
-    power_groups: list[str] = []
-    power_labels: list[str] = []
-    for _, row in result.iterrows():
-        overall, reason = overall_rank_for_row(row, race_type=race_type)
-        overall_ranks.append(overall)
-        overall_reasons.append(reason)
-        group, label = power_group_for_row(row)
-        power_groups.append(group)
-        power_labels.append(label)
-    result["overall_rank"] = overall_ranks
-    result["overall_rank_reason"] = overall_reasons
-    result["power_group"] = power_groups
-    result["power_group_label"] = power_labels
-    result["総合ランク"] = result["overall_rank"]
-    result["総合ランク理由"] = result["overall_rank_reason"]
+    groups = [power_group_for_row(row) for _, row in result.iterrows()]
+    result["power_group"] = [group for group, _ in groups]
+    result["power_group_label"] = [label for _, label in groups]
     result["勢力図グループ"] = result["power_group"]
     result["勢力図役割"] = result["power_group_label"]
     return result
@@ -311,83 +303,13 @@ def form_state_from_trend(value: Any) -> str:
     return "判定なし"
 
 
-def overall_rank_for_row(row: pd.Series, *, race_type: str = "nar") -> tuple[str, str]:
-    points = 0.0
-    reasons: list[str] = []
-    ability = _text_value(row.get("ability_rank"))
-    momentum = _text_value(row.get("momentum_rank"))
-    ability_points = {"S": 5.0, "A": 4.0, "B": 3.0, "C": 2.0, "D": 1.0}.get(ability, 0.0)
-    momentum_points = {"S": 2.0, "A": 1.5, "B": 1.0, "C": 0.0, "D": -1.0}.get(momentum, 0.0)
-    points += ability_points + momentum_points
-    if ability:
-        reasons.append(f"能力{ability}")
-    if momentum:
-        reasons.append(f"勢い{momentum}")
-
-    axis = _text_value(row.get("axis_confidence"))
-    if axis == "A":
-        points += 1.0
-        reasons.append("軸信頼A")
-    elif axis == "B":
-        points += 0.5
-    elif axis == "C":
-        points -= 0.5
-
-    band = _text_value(row.get("ability_band"))
-    if band == "上位帯":
-        points += 0.6
-    elif band == "下位帯":
-        points -= 0.5
-
-    difficulty = _text_value(row.get("race_difficulty"))
-    if difficulty == "絞りやすい" and band == "上位帯":
-        points += 0.6
-    elif difficulty == "混戦":
-        points -= 0.2
-
-    if _text_value(row.get("展開印")):
-        points += 0.5
-        reasons.append("展開材料")
-
-    market = _safe_float(row.get("market_score"))
-    if market is None:
-        market = _first_numeric_value(row, ["市場反映勝率", "推定勝率"])
-    if market is not None:
-        if market >= 25:
-            points += 0.7
-            reasons.append("市場評価")
-        elif market <= 8:
-            points -= 0.3
-
-    if str(race_type).lower() == "jra":
-        grade = training_grade(row)
-        if grade in {"S", "A", "A相当"}:
-            points += 0.8
-            reasons.append("調教良好")
-        elif grade in {"C", "C相当"}:
-            points -= 0.2
-        elif grade == "D":
-            points -= 0.5
-
-    if points >= 8.0:
-        return "S", "、".join(_unique(reasons)[:3]) or "総合材料上位"
-    if points >= 6.5:
-        return "A", "、".join(_unique(reasons)[:3]) or "総合材料あり"
-    if points >= 5.0:
-        return "B", "、".join(_unique(reasons)[:3]) or "比較対象"
-    if points >= 3.5:
-        return "C", "、".join(_unique(reasons)[:3]) or "押さえ候補"
-    return "D", "、".join(_unique(reasons)[:3]) or "材料控えめ"
-
-
 def power_group_for_row(row: pd.Series) -> tuple[str, str]:
     mark = _text_value(row.get("display_mark")) or _text_value(row.get("表示印")) or _text_value(row.get("最終印"))
     ability_band = _text_value(row.get("ability_band"))
     ability_rank_value = _text_value(row.get("ability_rank"))
-    overall = _text_value(row.get("overall_rank"))
     hole = _truthy(row.get("hole_candidate")) or mark == "✓"
     watch = _truthy(row.get("watch_horse"))
-    if mark == "◎" or (ability_band == "上位帯" and overall in {"S", "A"}):
+    if mark == "◎":
         return "SS", "軸"
     if mark in {"○", "▲"} or (ability_band == "上位帯" and ability_rank_value in {"S", "A"}):
         return "A", "相手本線"
@@ -494,8 +416,6 @@ def _empty_columns() -> list[str]:
         "recent3_volatility",
         "recent3_valid_count",
         "form_state",
-        "overall_rank",
-        "overall_rank_reason",
         "power_group",
         "power_group_label",
         "has_same_course",
