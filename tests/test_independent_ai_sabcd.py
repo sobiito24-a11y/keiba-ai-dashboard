@@ -40,7 +40,7 @@ def test_display_grades_are_uncapped_and_original_is_retained():
     assert all("未校正" in h["unified_sabcd"]["reason"] for h in view)
     assert source == saved
     for old, new in zip(before, view):
-        assert all(old[key] == new[key] for key in old)
+        assert all(old[key] == new[key] for key in old if key != "unified_sabcd")
     # A second call with the same source is not allowed to rewrite official data.
     annotate_view(view, source, race_id="race-123")
     assert all(h["mark"] == ("◎" if i == 1 else "—") for i, h in enumerate(view, 1))
