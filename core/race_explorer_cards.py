@@ -225,12 +225,16 @@ def detail_html(horse):
     fusion = _mapping(horse.get("research_formal_sabcd_fusion"))
     fusion_rank = fusion.get("rank")
     unified_rank = cells.get("unified_sabcd_rank")
+    previous_unified = _mapping(horse.get("unified_sabcd_previous"))
+    independent_grade = _mapping(horse.get("independent_ai_sabcd"))
     research_rows = [
         ("統合SABCD（研究）", cells.get("research_sabcd")),
         ("統合研究順位", (str(unified_rank) + "位") if isinstance(unified_rank, int) else "判定不可"),
         ("統合相対強度（確率ではありません）", cells.get("research_sabcd_score")),
         ("統合評価の根拠", cells.get("research_sabcd_reason")),
         ("統合状態", cells.get("unified_sabcd_status")),
+        ("旧統合SABCD（比較用）", previous_unified.get("grade")),
+        ("独立AI参考値（未校正）", independent_grade.get("score")),
         ("元の研究SABCD（比較用）", cells.get("research_sabcd_weight_class")),
         ("元の研究モデル値（未校正）", cells.get("research_sabcd_weight_class_score")),
         ("旧正式順位（比較用）", (str(cells["rank"]) + "位") if cells.get("rank") is not None else "判定不可"),
