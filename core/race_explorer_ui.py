@@ -198,7 +198,15 @@ def lineup_html(view):
             content.append('<td class="'+cls+'" data-label="'+plain(spec['label'])+'" title="'+plain(tooltip)+'">'+_cell(horse, row, key)+'</td>')
         rows.append('<tr data-row="'+plain(no)+'" data-horse="'+plain(no)+'">'+''.join(content)+'</tr>')
     class_help = '<p class="help">「クラス・重賞注目」は前走の「前走」の文字だけ省略した表示です。過去3走の根拠は列の説明・馬別詳細で確認できます。加点・純能力順位・正式印は変更しません。</p>'
-    sabcd_help = '<p class="help">統合SABCDは研究用です。従来の研究評価を中心に、保存済み正式Top5を少量だけ加味して一つのランクにしています。未校正で購入指示ではありません。旧正式順位・元SABCDは馬名の「研究評価の詳細」で確認できます。</p>'
+    independent_grade_active = any(bool(h.get('independent_ai_sabcd')) for h in view)
+    sabcd_help = (
+        '<p class="help">統合SABCDは研究用です。保存済み発走前の独立AI参考値をS:0.70以上、A:0.50以上、B:0.30以上、C:0.15以上、それ以外をDに分類します。'
+        'この数値は実測で校正済みの馬券内確率ではなく、購入推奨ではありません。正式順位・純能力・印・買い目は変更しません。'
+        '以前の統合SABCDは馬名の研究評価詳細で比較できます。</p>'
+        if independent_grade_active else
+        '<p class="help">統合SABCDは研究用です。従来の研究評価を中心に、保存済み正式Top5を少量だけ加味して一つのランクにしています。'
+        '未校正で購入指示ではありません。旧正式順位・元SABCDは馬名の「研究評価の詳細」で確認できます。</p>'
+    )
     retro_note = ('<p class="help">※この開催の研究SABCDには後日算出が含まれます。当時の発走前予想ではありません。</p>'
                   if any(isinstance(h.get('research_sabcd_weight_class'), dict)
                          and h['research_sabcd_weight_class'].get('retro') for h in view)
