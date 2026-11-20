@@ -112,7 +112,11 @@ def annotate_view(view, prediction, *, race_id=None):
         no = str(horse["no"])
         score = source[no][1]
         grade = next(letter for letter, cutoff in CUTS if score >= cutoff)
-        old = horse.get("unified_sabcd")
+        already = horse.get("independent_ai_sabcd") or {}
+        if isinstance(already, Mapping) and already.get("version") == VERSION:
+            old = horse.get("unified_sabcd_previous")
+        else:
+            old = horse.get("unified_sabcd")
         previous = dict(old) if isinstance(old, Mapping) else {}
         horse["unified_sabcd_previous"] = previous
         horse["unified_sabcd"] = {
