@@ -889,8 +889,10 @@
           "top3": [
             7,
             8,
-            2
-          ]
+            2,
+            5
+          ],
+          "tie_at_third": true
         },
         {
           "r": 9,
@@ -9066,6 +9068,8 @@
   "problems": [],
   "notes": [
     "When third place is dead-heated the top3 array has FOUR horse numbers; positions 3 and 4 share 3rd place.",
-    "Morioka 2026-11-10 1R and Kawasaki 2026-11-11 9R checked against official results."
+    "Morioka 2026-11-10 1R and Kawasaki 2026-11-11 9R checked against official results.",
+    "JRA Kyoto 2026-11-08 8R third-place tie (2 and 5), both 3着内.",
+    "JRA Tokyo 2026-11-01 4R second-place tie, top three finishers unchanged."
   ]
 }
