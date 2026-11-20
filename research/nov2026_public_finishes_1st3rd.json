@@ -1,0 +1,2737 @@
+{
+  "dataset": "published_race_outcomes_20261101_to_20261119",
+  "generated_for": "cross-check archived pre-race AI ranks; public race-day results",
+  "entries": [
+    {
+      "mode": "nar",
+      "venue": "名古屋",
+      "day": "10",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261110240000000000",
+      "races": []
+    },
+    {
+      "mode": "nar",
+      "venue": "川崎",
+      "day": "10",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261110210000000000",
+      "races": []
+    },
+    {
+      "mode": "nar",
+      "venue": "盛岡",
+      "day": "10",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261110100000000000",
+      "races": []
+    },
+    {
+      "mode": "nar",
+      "venue": "金沢",
+      "day": "10",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261110220000000000",
+      "races": []
+    },
+    {
+      "mode": "nar",
+      "venue": "門別",
+      "day": "10",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261110360000000000",
+      "races": []
+    },
+    {
+      "mode": "nar",
+      "venue": "名古屋",
+      "day": "11",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261111240000000000",
+      "races": []
+    },
+    {
+      "mode": "nar",
+      "venue": "園田",
+      "day": "11",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261111270000000000",
+      "races": []
+    },
+    {
+      "mode": "nar",
+      "venue": "川崎",
+      "day": "11",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261111210000000000",
+      "races": []
+    },
+    {
+      "mode": "nar",
+      "venue": "門別",
+      "day": "11",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261111360000000000",
+      "races": []
+    },
+    {
+      "mode": "nar",
+      "venue": "名古屋",
+      "day": "12",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261112240000000000",
+      "races": []
+    },
+    {
+      "mode": "nar",
+      "venue": "園田",
+      "day": "12",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261112270000000000",
+      "races": []
+    },
+    {
+      "mode": "nar",
+      "venue": "川崎",
+      "day": "12",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261112210000000000",
+      "races": []
+    },
+    {
+      "mode": "nar",
+      "venue": "門別",
+      "day": "12",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261112360000000000",
+      "races": []
+    },
+    {
+      "mode": "nar",
+      "venue": "名古屋",
+      "day": "13",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261113240000000000",
+      "races": []
+    },
+    {
+      "mode": "nar",
+      "venue": "園田",
+      "day": "13",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261113270000000000",
+      "races": []
+    },
+    {
+      "mode": "nar",
+      "venue": "川崎",
+      "day": "13",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261113210000000000",
+      "races": []
+    },
+    {
+      "mode": "nar",
+      "venue": "金沢",
+      "day": "13",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261113220000000000",
+      "races": []
+    },
+    {
+      "mode": "nar",
+      "venue": "佐賀",
+      "day": "14",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261114320000000000",
+      "races": []
+    },
+    {
+      "mode": "nar",
+      "venue": "高知",
+      "day": "14",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261114310000000000",
+      "races": []
+    },
+    {
+      "mode": "nar",
+      "venue": "佐賀",
+      "day": "15",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261115320000000000",
+      "races": []
+    },
+    {
+      "mode": "nar",
+      "venue": "水沢",
+      "day": "15",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261115110000000000",
+      "races": []
+    },
+    {
+      "mode": "nar",
+      "venue": "金沢",
+      "day": "15",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261115220000000000",
+      "races": []
+    },
+    {
+      "mode": "nar",
+      "venue": "高知",
+      "day": "15",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261115310000000000",
+      "races": []
+    },
+    {
+      "mode": "nar",
+      "venue": "大井",
+      "day": "16",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261116200000000000",
+      "races": []
+    },
+    {
+      "mode": "nar",
+      "venue": "水沢",
+      "day": "16",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261116110000000000",
+      "races": []
+    },
+    {
+      "mode": "nar",
+      "venue": "金沢",
+      "day": "16",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261116220000000000",
+      "races": []
+    },
+    {
+      "mode": "nar",
+      "venue": "大井",
+      "day": "17",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261117200000000000",
+      "races": []
+    },
+    {
+      "mode": "nar",
+      "venue": "水沢",
+      "day": "17",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261117110000000000",
+      "races": []
+    },
+    {
+      "mode": "nar",
+      "venue": "金沢",
+      "day": "17",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261117220000000000",
+      "races": []
+    },
+    {
+      "mode": "nar",
+      "venue": "園田",
+      "day": "18",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261118270000000000",
+      "races": []
+    },
+    {
+      "mode": "nar",
+      "venue": "大井",
+      "day": "18",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261118200000000000",
+      "races": []
+    },
+    {
+      "mode": "nar",
+      "venue": "笠松",
+      "day": "18",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261118230000000000",
+      "races": []
+    },
+    {
+      "mode": "nar",
+      "venue": "園田",
+      "day": "19",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261119270000000000",
+      "races": []
+    },
+    {
+      "mode": "nar",
+      "venue": "大井",
+      "day": "19",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261119200000000000",
+      "races": []
+    },
+    {
+      "mode": "nar",
+      "venue": "笠松",
+      "day": "19",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261119230000000000",
+      "races": []
+    },
+    {
+      "mode": "nar",
+      "venue": "佐賀",
+      "day": "01",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261101320000000000",
+      "races": []
+    },
+    {
+      "mode": "nar",
+      "venue": "盛岡",
+      "day": "01",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261101100000000000",
+      "races": []
+    },
+    {
+      "mode": "nar",
+      "venue": "高知",
+      "day": "01",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261101310000000000",
+      "races": []
+    },
+    {
+      "mode": "nar",
+      "venue": "盛岡",
+      "day": "02",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261102100000000000",
+      "races": []
+    },
+    {
+      "mode": "nar",
+      "venue": "笠松",
+      "day": "02",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261102230000000000",
+      "races": []
+    },
+    {
+      "mode": "nar",
+      "venue": "船橋",
+      "day": "02",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261102190000000000",
+      "races": []
+    },
+    {
+      "mode": "nar",
+      "venue": "船橋",
+      "day": "03",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261103190000000000",
+      "races": []
+    },
+    {
+      "mode": "nar",
+      "venue": "金沢",
+      "day": "03",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261103220000000000",
+      "races": []
+    },
+    {
+      "mode": "nar",
+      "venue": "門別",
+      "day": "03",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261103360000000000",
+      "races": []
+    },
+    {
+      "mode": "nar",
+      "venue": "園田",
+      "day": "04",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261104270000000000",
+      "races": []
+    },
+    {
+      "mode": "nar",
+      "venue": "盛岡",
+      "day": "04",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261104100000000000",
+      "races": []
+    },
+    {
+      "mode": "nar",
+      "venue": "船橋",
+      "day": "04",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261104190000000000",
+      "races": []
+    },
+    {
+      "mode": "nar",
+      "venue": "金沢",
+      "day": "04",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261104220000000000",
+      "races": []
+    },
+    {
+      "mode": "nar",
+      "venue": "門別",
+      "day": "04",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261104360000000000",
+      "races": []
+    },
+    {
+      "mode": "nar",
+      "venue": "園田",
+      "day": "05",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261105270000000000",
+      "races": []
+    },
+    {
+      "mode": "nar",
+      "venue": "笠松",
+      "day": "05",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261105230000000000",
+      "races": []
+    },
+    {
+      "mode": "nar",
+      "venue": "船橋",
+      "day": "05",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261105190000000000",
+      "races": []
+    },
+    {
+      "mode": "nar",
+      "venue": "門別",
+      "day": "05",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261105360000000000",
+      "races": []
+    },
+    {
+      "mode": "nar",
+      "venue": "園田",
+      "day": "06",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261106270000000000",
+      "races": []
+    },
+    {
+      "mode": "nar",
+      "venue": "笠松",
+      "day": "06",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261106230000000000",
+      "races": []
+    },
+    {
+      "mode": "nar",
+      "venue": "船橋",
+      "day": "06",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261106190000000000",
+      "races": []
+    },
+    {
+      "mode": "nar",
+      "venue": "佐賀",
+      "day": "07",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261107320000000000",
+      "races": []
+    },
+    {
+      "mode": "nar",
+      "venue": "高知",
+      "day": "07",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261107310000000000",
+      "races": []
+    },
+    {
+      "mode": "nar",
+      "venue": "佐賀",
+      "day": "08",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261108320000000000",
+      "races": []
+    },
+    {
+      "mode": "nar",
+      "venue": "盛岡",
+      "day": "08",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261108100000000000",
+      "races": []
+    },
+    {
+      "mode": "nar",
+      "venue": "高知",
+      "day": "08",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261108310000000000",
+      "races": []
+    },
+    {
+      "mode": "nar",
+      "venue": "佐賀",
+      "day": "09",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261109320000000000",
+      "races": []
+    },
+    {
+      "mode": "nar",
+      "venue": "名古屋",
+      "day": "09",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261109240000000000",
+      "races": []
+    },
+    {
+      "mode": "nar",
+      "venue": "川崎",
+      "day": "09",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261109210000000000",
+      "races": []
+    },
+    {
+      "mode": "nar",
+      "venue": "盛岡",
+      "day": "09",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261109100000000000",
+      "races": []
+    },
+    {
+      "mode": "jra",
+      "venue": "05",
+      "day": "26050411",
+      "url": "https://sports.yahoo.co.jp/keiba/race/list/26050411",
+      "races": [
+        {
+          "r": 1,
+          "headcount": null,
+          "top3": [
+            1,
+            13,
+            11
+          ]
+        },
+        {
+          "r": 2,
+          "headcount": null,
+          "top3": [
+            2,
+            6,
+            10
+          ]
+        },
+        {
+          "r": 3,
+          "headcount": null,
+          "top3": [
+            9,
+            4,
+            5
+          ]
+        },
+        {
+          "r": 4,
+          "headcount": null,
+          "top3": [
+            13,
+            1,
+            7
+          ]
+        },
+        {
+          "r": 5,
+          "headcount": null,
+          "top3": [
+            3,
+            6,
+            7
+          ]
+        },
+        {
+          "r": 6,
+          "headcount": null,
+          "top3": [
+            12,
+            9,
+            15
+          ]
+        },
+        {
+          "r": 7,
+          "headcount": null,
+          "top3": [
+            12,
+            13,
+            4
+          ]
+        },
+        {
+          "r": 8,
+          "headcount": null,
+          "top3": [
+            7,
+            4,
+            2
+          ]
+        },
+        {
+          "r": 9,
+          "headcount": null,
+          "top3": [
+            1,
+            14,
+            6
+          ]
+        },
+        {
+          "r": 10,
+          "headcount": null,
+          "top3": [
+            12,
+            5,
+            13
+          ]
+        },
+        {
+          "r": 11,
+          "headcount": null,
+          "top3": [
+            17,
+            10,
+            3
+          ]
+        },
+        {
+          "r": 12,
+          "headcount": null,
+          "top3": [
+            8,
+            13,
+            9
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "jra",
+      "venue": "08",
+      "day": "26080411",
+      "url": "https://sports.yahoo.co.jp/keiba/race/list/26080411",
+      "races": [
+        {
+          "r": 1,
+          "headcount": null,
+          "top3": [
+            6,
+            10,
+            2
+          ]
+        },
+        {
+          "r": 2,
+          "headcount": null,
+          "top3": [
+            1,
+            5,
+            3
+          ]
+        },
+        {
+          "r": 3,
+          "headcount": null,
+          "top3": [
+            8,
+            5,
+            7
+          ]
+        },
+        {
+          "r": 4,
+          "headcount": null,
+          "top3": [
+            4,
+            13,
+            5
+          ]
+        },
+        {
+          "r": 5,
+          "headcount": null,
+          "top3": [
+            17,
+            2,
+            12
+          ]
+        },
+        {
+          "r": 6,
+          "headcount": null,
+          "top3": [
+            8,
+            6,
+            13
+          ]
+        },
+        {
+          "r": 7,
+          "headcount": null,
+          "top3": [
+            11,
+            7,
+            15
+          ]
+        },
+        {
+          "r": 8,
+          "headcount": null,
+          "top3": [
+            4,
+            10,
+            9
+          ]
+        },
+        {
+          "r": 9,
+          "headcount": null,
+          "top3": [
+            6,
+            2,
+            4
+          ]
+        },
+        {
+          "r": 10,
+          "headcount": null,
+          "top3": [
+            1,
+            3,
+            6
+          ]
+        },
+        {
+          "r": 11,
+          "headcount": null,
+          "top3": [
+            7,
+            8,
+            12
+          ]
+        },
+        {
+          "r": 12,
+          "headcount": null,
+          "top3": [
+            1,
+            6,
+            5
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "jra",
+      "venue": "03",
+      "day": "26030301",
+      "url": "https://sports.yahoo.co.jp/keiba/race/list/26030301",
+      "races": [
+        {
+          "r": 1,
+          "headcount": null,
+          "top3": [
+            4,
+            2,
+            8
+          ]
+        },
+        {
+          "r": 2,
+          "headcount": null,
+          "top3": [
+            9,
+            8,
+            13
+          ]
+        },
+        {
+          "r": 3,
+          "headcount": null,
+          "top3": [
+            4,
+            2,
+            9
+          ]
+        },
+        {
+          "r": 4,
+          "headcount": null,
+          "top3": [
+            16,
+            9,
+            5
+          ]
+        },
+        {
+          "r": 5,
+          "headcount": null,
+          "top3": [
+            12,
+            4,
+            1
+          ]
+        },
+        {
+          "r": 6,
+          "headcount": null,
+          "top3": [
+            11,
+            14,
+            4
+          ]
+        },
+        {
+          "r": 7,
+          "headcount": null,
+          "top3": [
+            9,
+            4,
+            10
+          ]
+        },
+        {
+          "r": 8,
+          "headcount": null,
+          "top3": [
+            9,
+            12,
+            1
+          ]
+        },
+        {
+          "r": 9,
+          "headcount": null,
+          "top3": [
+            9,
+            5,
+            4
+          ]
+        },
+        {
+          "r": 10,
+          "headcount": null,
+          "top3": [
+            8,
+            13,
+            16
+          ]
+        },
+        {
+          "r": 11,
+          "headcount": null,
+          "top3": [
+            12,
+            6,
+            11
+          ]
+        },
+        {
+          "r": 12,
+          "headcount": null,
+          "top3": [
+            15,
+            12,
+            6
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "jra",
+      "venue": "05",
+      "day": "26050501",
+      "url": "https://sports.yahoo.co.jp/keiba/race/list/26050501",
+      "races": [
+        {
+          "r": 1,
+          "headcount": null,
+          "top3": [
+            5,
+            10,
+            7
+          ]
+        },
+        {
+          "r": 2,
+          "headcount": null,
+          "top3": [
+            1,
+            12,
+            5
+          ]
+        },
+        {
+          "r": 3,
+          "headcount": null,
+          "top3": [
+            12,
+            11,
+            8
+          ]
+        },
+        {
+          "r": 4,
+          "headcount": null,
+          "top3": [
+            8,
+            6,
+            7
+          ]
+        },
+        {
+          "r": 5,
+          "headcount": null,
+          "top3": [
+            9,
+            8,
+            1
+          ]
+        },
+        {
+          "r": 6,
+          "headcount": null,
+          "top3": [
+            4,
+            1,
+            5
+          ]
+        },
+        {
+          "r": 7,
+          "headcount": null,
+          "top3": [
+            16,
+            12,
+            3
+          ]
+        },
+        {
+          "r": 8,
+          "headcount": null,
+          "top3": [
+            3,
+            7,
+            5
+          ]
+        },
+        {
+          "r": 9,
+          "headcount": null,
+          "top3": [
+            6,
+            13,
+            14
+          ]
+        },
+        {
+          "r": 10,
+          "headcount": null,
+          "top3": [
+            10,
+            2,
+            8
+          ]
+        },
+        {
+          "r": 11,
+          "headcount": null,
+          "top3": [
+            9,
+            2,
+            5
+          ]
+        },
+        {
+          "r": 12,
+          "headcount": null,
+          "top3": [
+            15,
+            14,
+            5
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "jra",
+      "venue": "08",
+      "day": "26080501",
+      "url": "https://sports.yahoo.co.jp/keiba/race/list/26080501",
+      "races": [
+        {
+          "r": 1,
+          "headcount": null,
+          "top3": [
+            1,
+            9,
+            8
+          ]
+        },
+        {
+          "r": 2,
+          "headcount": null,
+          "top3": [
+            11,
+            13,
+            14
+          ]
+        },
+        {
+          "r": 3,
+          "headcount": null,
+          "top3": [
+            4,
+            7,
+            13
+          ]
+        },
+        {
+          "r": 4,
+          "headcount": null,
+          "top3": [
+            11,
+            8,
+            14
+          ]
+        },
+        {
+          "r": 5,
+          "headcount": null,
+          "top3": [
+            2,
+            8,
+            1
+          ]
+        },
+        {
+          "r": 6,
+          "headcount": null,
+          "top3": [
+            11,
+            8,
+            1
+          ]
+        },
+        {
+          "r": 7,
+          "headcount": null,
+          "top3": [
+            7,
+            9,
+            3
+          ]
+        },
+        {
+          "r": 8,
+          "headcount": null,
+          "top3": [
+            8,
+            6,
+            9
+          ]
+        },
+        {
+          "r": 9,
+          "headcount": null,
+          "top3": [
+            9,
+            5,
+            4
+          ]
+        },
+        {
+          "r": 10,
+          "headcount": null,
+          "top3": [
+            5,
+            6,
+            13
+          ]
+        },
+        {
+          "r": 11,
+          "headcount": null,
+          "top3": [
+            3,
+            13,
+            10
+          ]
+        },
+        {
+          "r": 12,
+          "headcount": null,
+          "top3": [
+            16,
+            15,
+            8
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "jra",
+      "venue": "03",
+      "day": "26030302",
+      "url": "https://sports.yahoo.co.jp/keiba/race/list/26030302",
+      "races": [
+        {
+          "r": 1,
+          "headcount": null,
+          "top3": [
+            5,
+            3,
+            4
+          ]
+        },
+        {
+          "r": 2,
+          "headcount": null,
+          "top3": [
+            6,
+            3,
+            5
+          ]
+        },
+        {
+          "r": 3,
+          "headcount": null,
+          "top3": [
+            13,
+            2,
+            10
+          ]
+        },
+        {
+          "r": 4,
+          "headcount": null,
+          "top3": [
+            6,
+            3,
+            1
+          ]
+        },
+        {
+          "r": 5,
+          "headcount": null,
+          "top3": [
+            6,
+            8,
+            9
+          ]
+        },
+        {
+          "r": 6,
+          "headcount": null,
+          "top3": [
+            8,
+            15,
+            1
+          ]
+        },
+        {
+          "r": 7,
+          "headcount": null,
+          "top3": [
+            15,
+            16,
+            7
+          ]
+        },
+        {
+          "r": 8,
+          "headcount": null,
+          "top3": [
+            6,
+            9,
+            15
+          ]
+        },
+        {
+          "r": 9,
+          "headcount": null,
+          "top3": [
+            13,
+            6,
+            9
+          ]
+        },
+        {
+          "r": 10,
+          "headcount": null,
+          "top3": [
+            6,
+            1,
+            3
+          ]
+        },
+        {
+          "r": 11,
+          "headcount": null,
+          "top3": [
+            8,
+            6,
+            7
+          ]
+        },
+        {
+          "r": 12,
+          "headcount": null,
+          "top3": [
+            16,
+            12,
+            15
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "jra",
+      "venue": "05",
+      "day": "26050502",
+      "url": "https://sports.yahoo.co.jp/keiba/race/list/26050502",
+      "races": [
+        {
+          "r": 1,
+          "headcount": null,
+          "top3": [
+            2,
+            7,
+            4
+          ]
+        },
+        {
+          "r": 2,
+          "headcount": null,
+          "top3": [
+            6,
+            3,
+            9
+          ]
+        },
+        {
+          "r": 3,
+          "headcount": null,
+          "top3": [
+            14,
+            10,
+            7
+          ]
+        },
+        {
+          "r": 4,
+          "headcount": null,
+          "top3": [
+            11,
+            8,
+            6
+          ]
+        },
+        {
+          "r": 5,
+          "headcount": null,
+          "top3": [
+            15,
+            1,
+            4
+          ]
+        },
+        {
+          "r": 6,
+          "headcount": null,
+          "top3": [
+            7,
+            8,
+            12
+          ]
+        },
+        {
+          "r": 7,
+          "headcount": null,
+          "top3": [
+            7,
+            14,
+            3
+          ]
+        },
+        {
+          "r": 8,
+          "headcount": null,
+          "top3": [
+            7,
+            5,
+            14
+          ]
+        },
+        {
+          "r": 9,
+          "headcount": null,
+          "top3": [
+            7,
+            6,
+            3
+          ]
+        },
+        {
+          "r": 10,
+          "headcount": null,
+          "top3": [
+            8,
+            3,
+            7
+          ]
+        },
+        {
+          "r": 11,
+          "headcount": null,
+          "top3": [
+            6,
+            15,
+            12
+          ]
+        },
+        {
+          "r": 12,
+          "headcount": null,
+          "top3": [
+            4,
+            7,
+            8
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "jra",
+      "venue": "08",
+      "day": "26080502",
+      "url": "https://sports.yahoo.co.jp/keiba/race/list/26080502",
+      "races": [
+        {
+          "r": 1,
+          "headcount": null,
+          "top3": [
+            2,
+            5,
+            12
+          ]
+        },
+        {
+          "r": 2,
+          "headcount": null,
+          "top3": [
+            1,
+            7,
+            2
+          ]
+        },
+        {
+          "r": 3,
+          "headcount": null,
+          "top3": [
+            6,
+            1,
+            3
+          ]
+        },
+        {
+          "r": 4,
+          "headcount": null,
+          "top3": [
+            6,
+            8,
+            7
+          ]
+        },
+        {
+          "r": 5,
+          "headcount": null,
+          "top3": [
+            3,
+            5,
+            6
+          ]
+        },
+        {
+          "r": 6,
+          "headcount": null,
+          "top3": [
+            14,
+            9,
+            10
+          ]
+        },
+        {
+          "r": 7,
+          "headcount": null,
+          "top3": [
+            4,
+            9,
+            8
+          ]
+        },
+        {
+          "r": 8,
+          "headcount": null,
+          "top3": [
+            7,
+            8,
+            2
+          ]
+        },
+        {
+          "r": 9,
+          "headcount": null,
+          "top3": [
+            4,
+            10,
+            3
+          ]
+        },
+        {
+          "r": 10,
+          "headcount": null,
+          "top3": [
+            6,
+            8,
+            2
+          ]
+        },
+        {
+          "r": 11,
+          "headcount": null,
+          "top3": [
+            11,
+            8,
+            3
+          ]
+        },
+        {
+          "r": 12,
+          "headcount": null,
+          "top3": [
+            12,
+            18,
+            5
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "jra",
+      "venue": "03",
+      "day": "26030303",
+      "url": "https://sports.yahoo.co.jp/keiba/race/list/26030303",
+      "races": [
+        {
+          "r": 1,
+          "headcount": null,
+          "top3": [
+            15,
+            11,
+            13
+          ]
+        },
+        {
+          "r": 2,
+          "headcount": null,
+          "top3": [
+            15,
+            13,
+            3
+          ]
+        },
+        {
+          "r": 3,
+          "headcount": null,
+          "top3": [
+            14,
+            13,
+            10
+          ]
+        },
+        {
+          "r": 4,
+          "headcount": null,
+          "top3": [
+            9,
+            5,
+            14
+          ]
+        },
+        {
+          "r": 5,
+          "headcount": null,
+          "top3": [
+            14,
+            8,
+            9
+          ]
+        },
+        {
+          "r": 6,
+          "headcount": null,
+          "top3": [
+            12,
+            8,
+            3
+          ]
+        },
+        {
+          "r": 7,
+          "headcount": null,
+          "top3": [
+            10,
+            2,
+            3
+          ]
+        },
+        {
+          "r": 8,
+          "headcount": null,
+          "top3": [
+            8,
+            10,
+            9
+          ]
+        },
+        {
+          "r": 9,
+          "headcount": null,
+          "top3": [
+            13,
+            1,
+            2
+          ]
+        },
+        {
+          "r": 10,
+          "headcount": null,
+          "top3": [
+            10,
+            9,
+            5
+          ]
+        },
+        {
+          "r": 11,
+          "headcount": null,
+          "top3": [
+            3,
+            14,
+            4
+          ]
+        },
+        {
+          "r": 12,
+          "headcount": null,
+          "top3": [
+            4,
+            12,
+            15
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "jra",
+      "venue": "05",
+      "day": "26050503",
+      "url": "https://sports.yahoo.co.jp/keiba/race/list/26050503",
+      "races": [
+        {
+          "r": 1,
+          "headcount": null,
+          "top3": [
+            1,
+            10,
+            13
+          ]
+        },
+        {
+          "r": 2,
+          "headcount": null,
+          "top3": [
+            2,
+            13,
+            8
+          ]
+        },
+        {
+          "r": 3,
+          "headcount": null,
+          "top3": [
+            7,
+            1,
+            3
+          ]
+        },
+        {
+          "r": 4,
+          "headcount": null,
+          "top3": [
+            2,
+            1,
+            8
+          ]
+        },
+        {
+          "r": 5,
+          "headcount": null,
+          "top3": [
+            4,
+            9,
+            1
+          ]
+        },
+        {
+          "r": 6,
+          "headcount": null,
+          "top3": [
+            5,
+            2,
+            10
+          ]
+        },
+        {
+          "r": 7,
+          "headcount": null,
+          "top3": [
+            3,
+            14,
+            9
+          ]
+        },
+        {
+          "r": 8,
+          "headcount": null,
+          "top3": [
+            9,
+            6,
+            8
+          ]
+        },
+        {
+          "r": 9,
+          "headcount": null,
+          "top3": [
+            13,
+            11,
+            5
+          ]
+        },
+        {
+          "r": 10,
+          "headcount": null,
+          "top3": [
+            10,
+            15,
+            17
+          ]
+        },
+        {
+          "r": 11,
+          "headcount": null,
+          "top3": [
+            15,
+            1,
+            13
+          ]
+        },
+        {
+          "r": 12,
+          "headcount": null,
+          "top3": [
+            4,
+            12,
+            9
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "jra",
+      "venue": "08",
+      "day": "26080503",
+      "url": "https://sports.yahoo.co.jp/keiba/race/list/26080503",
+      "races": [
+        {
+          "r": 1,
+          "headcount": null,
+          "top3": [
+            10,
+            3,
+            7
+          ]
+        },
+        {
+          "r": 2,
+          "headcount": null,
+          "top3": [
+            10,
+            13,
+            9
+          ]
+        },
+        {
+          "r": 3,
+          "headcount": null,
+          "top3": [
+            12,
+            14,
+            2
+          ]
+        },
+        {
+          "r": 4,
+          "headcount": null,
+          "top3": [
+            13,
+            9,
+            8
+          ]
+        },
+        {
+          "r": 5,
+          "headcount": null,
+          "top3": [
+            10,
+            9,
+            4
+          ]
+        },
+        {
+          "r": 6,
+          "headcount": null,
+          "top3": [
+            1,
+            11,
+            10
+          ]
+        },
+        {
+          "r": 7,
+          "headcount": null,
+          "top3": [
+            15,
+            14,
+            10
+          ]
+        },
+        {
+          "r": 8,
+          "headcount": null,
+          "top3": [
+            8,
+            4,
+            3
+          ]
+        },
+        {
+          "r": 9,
+          "headcount": null,
+          "top3": [
+            6,
+            10,
+            8
+          ]
+        },
+        {
+          "r": 10,
+          "headcount": null,
+          "top3": [
+            1,
+            13,
+            2
+          ]
+        },
+        {
+          "r": 11,
+          "headcount": null,
+          "top3": [
+            5,
+            11,
+            7
+          ]
+        },
+        {
+          "r": 12,
+          "headcount": null,
+          "top3": [
+            16,
+            7,
+            13
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "jra",
+      "venue": "03",
+      "day": "26030304",
+      "url": "https://sports.yahoo.co.jp/keiba/race/list/26030304",
+      "races": [
+        {
+          "r": 1,
+          "headcount": null,
+          "top3": [
+            8,
+            5,
+            7
+          ]
+        },
+        {
+          "r": 2,
+          "headcount": null,
+          "top3": [
+            11,
+            14,
+            4
+          ]
+        },
+        {
+          "r": 3,
+          "headcount": null,
+          "top3": [
+            3,
+            12,
+            8
+          ]
+        },
+        {
+          "r": 4,
+          "headcount": null,
+          "top3": [
+            1,
+            10,
+            12
+          ]
+        },
+        {
+          "r": 5,
+          "headcount": null,
+          "top3": [
+            6,
+            2,
+            9
+          ]
+        },
+        {
+          "r": 6,
+          "headcount": null,
+          "top3": [
+            4,
+            8,
+            3
+          ]
+        },
+        {
+          "r": 7,
+          "headcount": null,
+          "top3": [
+            15,
+            11,
+            6
+          ]
+        },
+        {
+          "r": 8,
+          "headcount": null,
+          "top3": [
+            12,
+            13,
+            11
+          ]
+        },
+        {
+          "r": 9,
+          "headcount": null,
+          "top3": [
+            1,
+            3,
+            12
+          ]
+        },
+        {
+          "r": 10,
+          "headcount": null,
+          "top3": [
+            9,
+            7,
+            13
+          ]
+        },
+        {
+          "r": 11,
+          "headcount": null,
+          "top3": [
+            7,
+            15,
+            4
+          ]
+        },
+        {
+          "r": 12,
+          "headcount": null,
+          "top3": [
+            15,
+            2,
+            5
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "jra",
+      "venue": "05",
+      "day": "26050504",
+      "url": "https://sports.yahoo.co.jp/keiba/race/list/26050504",
+      "races": [
+        {
+          "r": 1,
+          "headcount": null,
+          "top3": [
+            7,
+            12,
+            9
+          ]
+        },
+        {
+          "r": 2,
+          "headcount": null,
+          "top3": [
+            8,
+            11,
+            1
+          ]
+        },
+        {
+          "r": 3,
+          "headcount": null,
+          "top3": [
+            11,
+            9,
+            14
+          ]
+        },
+        {
+          "r": 4,
+          "headcount": null,
+          "top3": [
+            12,
+            8,
+            4
+          ]
+        },
+        {
+          "r": 5,
+          "headcount": null,
+          "top3": [
+            5,
+            8,
+            10
+          ]
+        },
+        {
+          "r": 6,
+          "headcount": null,
+          "top3": [
+            3,
+            5,
+            7
+          ]
+        },
+        {
+          "r": 7,
+          "headcount": null,
+          "top3": [
+            7,
+            8,
+            6
+          ]
+        },
+        {
+          "r": 8,
+          "headcount": null,
+          "top3": [
+            5,
+            8,
+            10
+          ]
+        },
+        {
+          "r": 9,
+          "headcount": null,
+          "top3": [
+            8,
+            14,
+            1
+          ]
+        },
+        {
+          "r": 10,
+          "headcount": null,
+          "top3": [
+            10,
+            4,
+            9
+          ]
+        },
+        {
+          "r": 11,
+          "headcount": null,
+          "top3": [
+            15,
+            14,
+            10
+          ]
+        },
+        {
+          "r": 12,
+          "headcount": null,
+          "top3": [
+            1,
+            4,
+            2
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "jra",
+      "venue": "08",
+      "day": "26080504",
+      "url": "https://sports.yahoo.co.jp/keiba/race/list/26080504",
+      "races": [
+        {
+          "r": 1,
+          "headcount": null,
+          "top3": [
+            9,
+            3,
+            2
+          ]
+        },
+        {
+          "r": 2,
+          "headcount": null,
+          "top3": [
+            4,
+            2,
+            10
+          ]
+        },
+        {
+          "r": 3,
+          "headcount": null,
+          "top3": [
+            6,
+            9,
+            1
+          ]
+        },
+        {
+          "r": 4,
+          "headcount": null,
+          "top3": [
+            13,
+            3,
+            12
+          ]
+        },
+        {
+          "r": 5,
+          "headcount": null,
+          "top3": [
+            8,
+            18,
+            10
+          ]
+        },
+        {
+          "r": 6,
+          "headcount": null,
+          "top3": [
+            2,
+            9,
+            13
+          ]
+        },
+        {
+          "r": 7,
+          "headcount": null,
+          "top3": [
+            6,
+            17,
+            7
+          ]
+        },
+        {
+          "r": 8,
+          "headcount": null,
+          "top3": [
+            3,
+            7,
+            1
+          ]
+        },
+        {
+          "r": 9,
+          "headcount": null,
+          "top3": [
+            1,
+            2,
+            9
+          ]
+        },
+        {
+          "r": 10,
+          "headcount": null,
+          "top3": [
+            9,
+            7,
+            8
+          ]
+        },
+        {
+          "r": 11,
+          "headcount": null,
+          "top3": [
+            15,
+            7,
+            16
+          ]
+        },
+        {
+          "r": 12,
+          "headcount": null,
+          "top3": [
+            16,
+            14,
+            4
+          ]
+        }
+      ]
+    }
+  ],
+  "problems": [
+    {
+      "target": {
+        "mode": "nar",
+        "venue": "名古屋",
+        "day": "10",
+        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261110240000000000"
+      },
+      "error": "zero_rows",
+      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
+    },
+    {
+      "target": {
+        "mode": "nar",
+        "venue": "川崎",
+        "day": "10",
+        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261110210000000000"
+      },
+      "error": "zero_rows",
+      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
+    },
+    {
+      "target": {
+        "mode": "nar",
+        "venue": "盛岡",
+        "day": "10",
+        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261110100000000000"
+      },
+      "error": "zero_rows",
+      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
+    },
+    {
+      "target": {
+        "mode": "nar",
+        "venue": "金沢",
+        "day": "10",
+        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261110220000000000"
+      },
+      "error": "zero_rows",
+      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
+    },
+    {
+      "target": {
+        "mode": "nar",
+        "venue": "門別",
+        "day": "10",
+        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261110360000000000"
+      },
+      "error": "zero_rows",
+      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
+    },
+    {
+      "target": {
+        "mode": "nar",
+        "venue": "名古屋",
+        "day": "11",
+        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261111240000000000"
+      },
+      "error": "zero_rows",
+      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
+    },
+    {
+      "target": {
+        "mode": "nar",
+        "venue": "園田",
+        "day": "11",
+        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261111270000000000"
+      },
+      "error": "zero_rows",
+      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
+    },
+    {
+      "target": {
+        "mode": "nar",
+        "venue": "川崎",
+        "day": "11",
+        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261111210000000000"
+      },
+      "error": "zero_rows",
+      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
+    },
+    {
+      "target": {
+        "mode": "nar",
+        "venue": "門別",
+        "day": "11",
+        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261111360000000000"
+      },
+      "error": "zero_rows",
+      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
+    },
+    {
+      "target": {
+        "mode": "nar",
+        "venue": "名古屋",
+        "day": "12",
+        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261112240000000000"
+      },
+      "error": "zero_rows",
+      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
+    },
+    {
+      "target": {
+        "mode": "nar",
+        "venue": "園田",
+        "day": "12",
+        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261112270000000000"
+      },
+      "error": "zero_rows",
+      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
+    },
+    {
+      "target": {
+        "mode": "nar",
+        "venue": "川崎",
+        "day": "12",
+        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261112210000000000"
+      },
+      "error": "zero_rows",
+      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
+    },
+    {
+      "target": {
+        "mode": "nar",
+        "venue": "門別",
+        "day": "12",
+        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261112360000000000"
+      },
+      "error": "zero_rows",
+      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
+    },
+    {
+      "target": {
+        "mode": "nar",
+        "venue": "名古屋",
+        "day": "13",
+        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261113240000000000"
+      },
+      "error": "zero_rows",
+      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
+    },
+    {
+      "target": {
+        "mode": "nar",
+        "venue": "園田",
+        "day": "13",
+        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261113270000000000"
+      },
+      "error": "zero_rows",
+      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
+    },
+    {
+      "target": {
+        "mode": "nar",
+        "venue": "川崎",
+        "day": "13",
+        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261113210000000000"
+      },
+      "error": "zero_rows",
+      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
+    },
+    {
+      "target": {
+        "mode": "nar",
+        "venue": "金沢",
+        "day": "13",
+        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261113220000000000"
+      },
+      "error": "zero_rows",
+      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
+    },
+    {
+      "target": {
+        "mode": "nar",
+        "venue": "佐賀",
+        "day": "14",
+        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261114320000000000"
+      },
+      "error": "zero_rows",
+      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
+    },
+    {
+      "target": {
+        "mode": "nar",
+        "venue": "高知",
+        "day": "14",
+        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261114310000000000"
+      },
+      "error": "zero_rows",
+      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
+    },
+    {
+      "target": {
+        "mode": "nar",
+        "venue": "佐賀",
+        "day": "15",
+        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261115320000000000"
+      },
+      "error": "zero_rows",
+      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
+    },
+    {
+      "target": {
+        "mode": "nar",
+        "venue": "水沢",
+        "day": "15",
+        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261115110000000000"
+      },
+      "error": "zero_rows",
+      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
+    },
+    {
+      "target": {
+        "mode": "nar",
+        "venue": "金沢",
+        "day": "15",
+        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261115220000000000"
+      },
+      "error": "zero_rows",
+      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
+    },
+    {
+      "target": {
+        "mode": "nar",
+        "venue": "高知",
+        "day": "15",
+        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261115310000000000"
+      },
+      "error": "zero_rows",
+      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
+    },
+    {
+      "target": {
+        "mode": "nar",
+        "venue": "大井",
+        "day": "16",
+        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261116200000000000"
+      },
+      "error": "zero_rows",
+      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
+    },
+    {
+      "target": {
+        "mode": "nar",
+        "venue": "水沢",
+        "day": "16",
+        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261116110000000000"
+      },
+      "error": "zero_rows",
+      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
+    },
+    {
+      "target": {
+        "mode": "nar",
+        "venue": "金沢",
+        "day": "16",
+        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261116220000000000"
+      },
+      "error": "zero_rows",
+      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
+    },
+    {
+      "target": {
+        "mode": "nar",
+        "venue": "大井",
+        "day": "17",
+        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261117200000000000"
+      },
+      "error": "zero_rows",
+      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
+    },
+    {
+      "target": {
+        "mode": "nar",
+        "venue": "水沢",
+        "day": "17",
+        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261117110000000000"
+      },
+      "error": "zero_rows",
+      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
+    },
+    {
+      "target": {
+        "mode": "nar",
+        "venue": "金沢",
+        "day": "17",
+        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261117220000000000"
+      },
+      "error": "zero_rows",
+      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
+    },
+    {
+      "target": {
+        "mode": "nar",
+        "venue": "園田",
+        "day": "18",
+        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261118270000000000"
+      },
+      "error": "zero_rows",
+      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
+    },
+    {
+      "target": {
+        "mode": "nar",
+        "venue": "大井",
+        "day": "18",
+        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261118200000000000"
+      },
+      "error": "zero_rows",
+      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
+    },
+    {
+      "target": {
+        "mode": "nar",
+        "venue": "笠松",
+        "day": "18",
+        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261118230000000000"
+      },
+      "error": "zero_rows",
+      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
+    },
+    {
+      "target": {
+        "mode": "nar",
+        "venue": "園田",
+        "day": "19",
+        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261119270000000000"
+      },
+      "error": "zero_rows",
+      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
+    },
+    {
+      "target": {
+        "mode": "nar",
+        "venue": "大井",
+        "day": "19",
+        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261119200000000000"
+      },
+      "error": "zero_rows",
+      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
+    },
+    {
+      "target": {
+        "mode": "nar",
+        "venue": "笠松",
+        "day": "19",
+        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261119230000000000"
+      },
+      "error": "zero_rows",
+      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
+    },
+    {
+      "target": {
+        "mode": "nar",
+        "venue": "佐賀",
+        "day": "01",
+        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261101320000000000"
+      },
+      "error": "zero_rows",
+      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
+    },
+    {
+      "target": {
+        "mode": "nar",
+        "venue": "盛岡",
+        "day": "01",
+        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261101100000000000"
+      },
+      "error": "zero_rows",
+      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
+    },
+    {
+      "target": {
+        "mode": "nar",
+        "venue": "高知",
+        "day": "01",
+        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261101310000000000"
+      },
+      "error": "zero_rows",
+      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
+    },
+    {
+      "target": {
+        "mode": "nar",
+        "venue": "盛岡",
+        "day": "02",
+        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261102100000000000"
+      },
+      "error": "zero_rows",
+      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
+    },
+    {
+      "target": {
+        "mode": "nar",
+        "venue": "笠松",
+        "day": "02",
+        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261102230000000000"
+      },
+      "error": "zero_rows",
+      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
+    },
+    {
+      "target": {
+        "mode": "nar",
+        "venue": "船橋",
+        "day": "02",
+        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261102190000000000"
+      },
+      "error": "zero_rows",
+      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
+    },
+    {
+      "target": {
+        "mode": "nar",
+        "venue": "船橋",
+        "day": "03",
+        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261103190000000000"
+      },
+      "error": "zero_rows",
+      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
+    },
+    {
+      "target": {
+        "mode": "nar",
+        "venue": "金沢",
+        "day": "03",
+        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261103220000000000"
+      },
+      "error": "zero_rows",
+      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
+    },
+    {
+      "target": {
+        "mode": "nar",
+        "venue": "門別",
+        "day": "03",
+        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261103360000000000"
+      },
+      "error": "zero_rows",
+      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
+    },
+    {
+      "target": {
+        "mode": "nar",
+        "venue": "園田",
+        "day": "04",
+        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261104270000000000"
+      },
+      "error": "zero_rows",
+      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
+    },
+    {
+      "target": {
+        "mode": "nar",
+        "venue": "盛岡",
+        "day": "04",
+        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261104100000000000"
+      },
+      "error": "zero_rows",
+      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
+    },
+    {
+      "target": {
+        "mode": "nar",
+        "venue": "船橋",
+        "day": "04",
+        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261104190000000000"
+      },
+      "error": "zero_rows",
+      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
+    },
+    {
+      "target": {
+        "mode": "nar",
+        "venue": "金沢",
+        "day": "04",
+        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261104220000000000"
+      },
+      "error": "zero_rows",
+      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
+    },
+    {
+      "target": {
+        "mode": "nar",
+        "venue": "門別",
+        "day": "04",
+        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261104360000000000"
+      },
+      "error": "zero_rows",
+      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
+    },
+    {
+      "target": {
+        "mode": "nar",
+        "venue": "園田",
+        "day": "05",
+        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261105270000000000"
+      },
+      "error": "zero_rows",
+      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
+    },
+    {
+      "target": {
+        "mode": "nar",
+        "venue": "笠松",
+        "day": "05",
+        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261105230000000000"
+      },
+      "error": "zero_rows",
+      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
+    },
+    {
+      "target": {
+        "mode": "nar",
+        "venue": "船橋",
+        "day": "05",
+        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261105190000000000"
+      },
+      "error": "zero_rows",
+      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
+    },
+    {
+      "target": {
+        "mode": "nar",
+        "venue": "門別",
+        "day": "05",
+        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261105360000000000"
+      },
+      "error": "zero_rows",
+      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
+    },
+    {
+      "target": {
+        "mode": "nar",
+        "venue": "園田",
+        "day": "06",
+        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261106270000000000"
+      },
+      "error": "zero_rows",
+      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
+    },
+    {
+      "target": {
+        "mode": "nar",
+        "venue": "笠松",
+        "day": "06",
+        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261106230000000000"
+      },
+      "error": "zero_rows",
+      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
+    },
+    {
+      "target": {
+        "mode": "nar",
+        "venue": "船橋",
+        "day": "06",
+        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261106190000000000"
+      },
+      "error": "zero_rows",
+      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
+    },
+    {
+      "target": {
+        "mode": "nar",
+        "venue": "佐賀",
+        "day": "07",
+        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261107320000000000"
+      },
+      "error": "zero_rows",
+      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
+    },
+    {
+      "target": {
+        "mode": "nar",
+        "venue": "高知",
+        "day": "07",
+        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261107310000000000"
+      },
+      "error": "zero_rows",
+      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
+    },
+    {
+      "target": {
+        "mode": "nar",
+        "venue": "佐賀",
+        "day": "08",
+        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261108320000000000"
+      },
+      "error": "zero_rows",
+      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
+    },
+    {
+      "target": {
+        "mode": "nar",
+        "venue": "盛岡",
+        "day": "08",
+        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261108100000000000"
+      },
+      "error": "zero_rows",
+      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
+    },
+    {
+      "target": {
+        "mode": "nar",
+        "venue": "高知",
+        "day": "08",
+        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261108310000000000"
+      },
+      "error": "zero_rows",
+      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
+    },
+    {
+      "target": {
+        "mode": "nar",
+        "venue": "佐賀",
+        "day": "09",
+        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261109320000000000"
+      },
+      "error": "zero_rows",
+      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
+    },
+    {
+      "target": {
+        "mode": "nar",
+        "venue": "名古屋",
+        "day": "09",
+        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261109240000000000"
+      },
+      "error": "zero_rows",
+      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
+    },
+    {
+      "target": {
+        "mode": "nar",
+        "venue": "川崎",
+        "day": "09",
+        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261109210000000000"
+      },
+      "error": "zero_rows",
+      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
+    },
+    {
+      "target": {
+        "mode": "nar",
+        "venue": "盛岡",
+        "day": "09",
+        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261109100000000000"
+      },
+      "error": "zero_rows",
+      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
+    }
+  ]
+}
