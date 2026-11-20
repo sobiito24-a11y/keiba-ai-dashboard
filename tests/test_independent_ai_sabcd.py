@@ -105,3 +105,22 @@ def test_zero_or_tied_scores_are_deterministic_and_unlimited():
     annotate_view(view, source, race_id="race-123")
     assert [h["unified_sabcd"]["grade"] for h in view] == ["D"] * 5
     assert [h["unified_sabcd"]["rank"] for h in view] == [1, 2, 3, 4, 5]
+
+
+def test_prestart_grade_does_not_inherit_retrospective_legacy_warning():
+    from core.race_explorer_columns import records
+    from core.race_explorer_ui import lineup_html
+
+    view, source = sample()
+    for h in view:
+        h["explorer_facts"] = {"metrics": {}}
+        h["research_sabcd_weight_class"] = {"grade": "D", "score": .11, "retro": True}
+    # The old research model is retrospectively evaluated, whereas the new
+    # displayed score is a genuine saved pre-start prediction.
+    assert records(view)["1"]["research_sabcd_retro"] is True
+    annotate_view(view, source, race_id="race-123")
+    cells = records(view)
+    assert all(not item["research_sabcd_retro"] for item in cells.values())
+    html = lineup_html(view)
+    assert "この開催の研究SABCDには後日算出が含まれます" not in html
+    assert "当時の発走前予想ではありません" not in html

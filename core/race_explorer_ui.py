@@ -208,8 +208,11 @@ def lineup_html(view):
         '未校正で購入指示ではありません。旧正式順位・元SABCDは馬名の「研究評価の詳細」で確認できます。</p>'
     )
     retro_note = ('<p class="help">※この開催の研究SABCDには後日算出が含まれます。当時の発走前予想ではありません。</p>'
-                  if any(isinstance(h.get('research_sabcd_weight_class'), dict)
-                         and h['research_sabcd_weight_class'].get('retro') for h in view)
+                  if any(
+                      ((h.get('unified_sabcd') or {}).get('retro') is True
+                       if h.get('independent_ai_sabcd')
+                       else (h.get('research_sabcd_weight_class') or {}).get('retro') is True)
+                      for h in view)
                   else '')
     nar_help = ('<p class="help">研究用の「今回評価」は横一覧から非表示にしました。'
                 '馬名の詳細で根拠を確認できます。印・正式順位・純能力は変更しません。</p>'

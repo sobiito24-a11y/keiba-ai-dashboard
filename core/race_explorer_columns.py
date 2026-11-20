@@ -340,7 +340,10 @@ def records(view):
             research_sabcd_weight_class_normalized=_number(sabcd_trial.get("normalized_score")),
             research_sabcd_weight_class_reason=_text(sabcd_trial.get("reason")),
             research_sabcd_notes=_text("・".join(sabcd.get("notes") or ())),
-            research_sabcd_retro=sabcd_trial.get("retro") is True,
+            # Active independent grade comes from the archived pre-start forecast;
+            # do not leak the retro flag from an unrelated legacy model.
+            research_sabcd_retro=(unified.get("retro") is True if horse.get("independent_ai_sabcd")
+                                  else sabcd_trial.get("retro") is True),
             research_sabcd_sort=_integer(unified.get("rank")),
             nar_hybrid_score=_number(horse.get("nar_hybrid_score")) if horse.get("mode") == "nar" else None,
             nar_hybrid_rank=_integer(horse.get("nar_hybrid_rank")) if horse.get("mode") == "nar" else None,
