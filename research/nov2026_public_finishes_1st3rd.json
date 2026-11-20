@@ -1865,6 +1865,17 @@
       "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/202611101000000000",
       "races": [
         {
+          "r": 1,
+          "headcount": 7,
+          "top3": [
+            2,
+            7,
+            5,
+            4
+          ],
+          "tie_at_third": true
+        },
+        {
           "r": 2,
           "headcount": 7,
           "top3": [
@@ -2497,6 +2508,17 @@
             8,
             11
           ]
+        },
+        {
+          "r": 9,
+          "headcount": 14,
+          "top3": [
+            3,
+            9,
+            12,
+            10
+          ],
+          "tie_at_third": true
         },
         {
           "r": 10,
@@ -9041,5 +9063,9 @@
       ]
     }
   ],
-  "problems": []
+  "problems": [],
+  "notes": [
+    "When third place is dead-heated the top3 array has FOUR horse numbers; positions 3 and 4 share 3rd place.",
+    "Morioka 2026-11-10 1R and Kawasaki 2026-11-11 9R checked against official results."
+  ]
 }
