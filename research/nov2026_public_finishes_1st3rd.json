@@ -3,461 +3,6 @@
   "generated_for": "cross-check archived pre-race AI ranks; public race-day results",
   "entries": [
     {
-      "mode": "nar",
-      "venue": "名古屋",
-      "day": "10",
-      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261110240000000000",
-      "races": []
-    },
-    {
-      "mode": "nar",
-      "venue": "川崎",
-      "day": "10",
-      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261110210000000000",
-      "races": []
-    },
-    {
-      "mode": "nar",
-      "venue": "盛岡",
-      "day": "10",
-      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261110100000000000",
-      "races": []
-    },
-    {
-      "mode": "nar",
-      "venue": "金沢",
-      "day": "10",
-      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261110220000000000",
-      "races": []
-    },
-    {
-      "mode": "nar",
-      "venue": "門別",
-      "day": "10",
-      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261110360000000000",
-      "races": []
-    },
-    {
-      "mode": "nar",
-      "venue": "名古屋",
-      "day": "11",
-      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261111240000000000",
-      "races": []
-    },
-    {
-      "mode": "nar",
-      "venue": "園田",
-      "day": "11",
-      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261111270000000000",
-      "races": []
-    },
-    {
-      "mode": "nar",
-      "venue": "川崎",
-      "day": "11",
-      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261111210000000000",
-      "races": []
-    },
-    {
-      "mode": "nar",
-      "venue": "門別",
-      "day": "11",
-      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261111360000000000",
-      "races": []
-    },
-    {
-      "mode": "nar",
-      "venue": "名古屋",
-      "day": "12",
-      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261112240000000000",
-      "races": []
-    },
-    {
-      "mode": "nar",
-      "venue": "園田",
-      "day": "12",
-      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261112270000000000",
-      "races": []
-    },
-    {
-      "mode": "nar",
-      "venue": "川崎",
-      "day": "12",
-      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261112210000000000",
-      "races": []
-    },
-    {
-      "mode": "nar",
-      "venue": "門別",
-      "day": "12",
-      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261112360000000000",
-      "races": []
-    },
-    {
-      "mode": "nar",
-      "venue": "名古屋",
-      "day": "13",
-      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261113240000000000",
-      "races": []
-    },
-    {
-      "mode": "nar",
-      "venue": "園田",
-      "day": "13",
-      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261113270000000000",
-      "races": []
-    },
-    {
-      "mode": "nar",
-      "venue": "川崎",
-      "day": "13",
-      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261113210000000000",
-      "races": []
-    },
-    {
-      "mode": "nar",
-      "venue": "金沢",
-      "day": "13",
-      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261113220000000000",
-      "races": []
-    },
-    {
-      "mode": "nar",
-      "venue": "佐賀",
-      "day": "14",
-      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261114320000000000",
-      "races": []
-    },
-    {
-      "mode": "nar",
-      "venue": "高知",
-      "day": "14",
-      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261114310000000000",
-      "races": []
-    },
-    {
-      "mode": "nar",
-      "venue": "佐賀",
-      "day": "15",
-      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261115320000000000",
-      "races": []
-    },
-    {
-      "mode": "nar",
-      "venue": "水沢",
-      "day": "15",
-      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261115110000000000",
-      "races": []
-    },
-    {
-      "mode": "nar",
-      "venue": "金沢",
-      "day": "15",
-      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261115220000000000",
-      "races": []
-    },
-    {
-      "mode": "nar",
-      "venue": "高知",
-      "day": "15",
-      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261115310000000000",
-      "races": []
-    },
-    {
-      "mode": "nar",
-      "venue": "大井",
-      "day": "16",
-      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261116200000000000",
-      "races": []
-    },
-    {
-      "mode": "nar",
-      "venue": "水沢",
-      "day": "16",
-      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261116110000000000",
-      "races": []
-    },
-    {
-      "mode": "nar",
-      "venue": "金沢",
-      "day": "16",
-      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261116220000000000",
-      "races": []
-    },
-    {
-      "mode": "nar",
-      "venue": "大井",
-      "day": "17",
-      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261117200000000000",
-      "races": []
-    },
-    {
-      "mode": "nar",
-      "venue": "水沢",
-      "day": "17",
-      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261117110000000000",
-      "races": []
-    },
-    {
-      "mode": "nar",
-      "venue": "金沢",
-      "day": "17",
-      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261117220000000000",
-      "races": []
-    },
-    {
-      "mode": "nar",
-      "venue": "園田",
-      "day": "18",
-      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261118270000000000",
-      "races": []
-    },
-    {
-      "mode": "nar",
-      "venue": "大井",
-      "day": "18",
-      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261118200000000000",
-      "races": []
-    },
-    {
-      "mode": "nar",
-      "venue": "笠松",
-      "day": "18",
-      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261118230000000000",
-      "races": []
-    },
-    {
-      "mode": "nar",
-      "venue": "園田",
-      "day": "19",
-      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261119270000000000",
-      "races": []
-    },
-    {
-      "mode": "nar",
-      "venue": "大井",
-      "day": "19",
-      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261119200000000000",
-      "races": []
-    },
-    {
-      "mode": "nar",
-      "venue": "笠松",
-      "day": "19",
-      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261119230000000000",
-      "races": []
-    },
-    {
-      "mode": "nar",
-      "venue": "佐賀",
-      "day": "01",
-      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261101320000000000",
-      "races": []
-    },
-    {
-      "mode": "nar",
-      "venue": "盛岡",
-      "day": "01",
-      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261101100000000000",
-      "races": []
-    },
-    {
-      "mode": "nar",
-      "venue": "高知",
-      "day": "01",
-      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261101310000000000",
-      "races": []
-    },
-    {
-      "mode": "nar",
-      "venue": "盛岡",
-      "day": "02",
-      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261102100000000000",
-      "races": []
-    },
-    {
-      "mode": "nar",
-      "venue": "笠松",
-      "day": "02",
-      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261102230000000000",
-      "races": []
-    },
-    {
-      "mode": "nar",
-      "venue": "船橋",
-      "day": "02",
-      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261102190000000000",
-      "races": []
-    },
-    {
-      "mode": "nar",
-      "venue": "船橋",
-      "day": "03",
-      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261103190000000000",
-      "races": []
-    },
-    {
-      "mode": "nar",
-      "venue": "金沢",
-      "day": "03",
-      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261103220000000000",
-      "races": []
-    },
-    {
-      "mode": "nar",
-      "venue": "門別",
-      "day": "03",
-      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261103360000000000",
-      "races": []
-    },
-    {
-      "mode": "nar",
-      "venue": "園田",
-      "day": "04",
-      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261104270000000000",
-      "races": []
-    },
-    {
-      "mode": "nar",
-      "venue": "盛岡",
-      "day": "04",
-      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261104100000000000",
-      "races": []
-    },
-    {
-      "mode": "nar",
-      "venue": "船橋",
-      "day": "04",
-      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261104190000000000",
-      "races": []
-    },
-    {
-      "mode": "nar",
-      "venue": "金沢",
-      "day": "04",
-      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261104220000000000",
-      "races": []
-    },
-    {
-      "mode": "nar",
-      "venue": "門別",
-      "day": "04",
-      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261104360000000000",
-      "races": []
-    },
-    {
-      "mode": "nar",
-      "venue": "園田",
-      "day": "05",
-      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261105270000000000",
-      "races": []
-    },
-    {
-      "mode": "nar",
-      "venue": "笠松",
-      "day": "05",
-      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261105230000000000",
-      "races": []
-    },
-    {
-      "mode": "nar",
-      "venue": "船橋",
-      "day": "05",
-      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261105190000000000",
-      "races": []
-    },
-    {
-      "mode": "nar",
-      "venue": "門別",
-      "day": "05",
-      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261105360000000000",
-      "races": []
-    },
-    {
-      "mode": "nar",
-      "venue": "園田",
-      "day": "06",
-      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261106270000000000",
-      "races": []
-    },
-    {
-      "mode": "nar",
-      "venue": "笠松",
-      "day": "06",
-      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261106230000000000",
-      "races": []
-    },
-    {
-      "mode": "nar",
-      "venue": "船橋",
-      "day": "06",
-      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261106190000000000",
-      "races": []
-    },
-    {
-      "mode": "nar",
-      "venue": "佐賀",
-      "day": "07",
-      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261107320000000000",
-      "races": []
-    },
-    {
-      "mode": "nar",
-      "venue": "高知",
-      "day": "07",
-      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261107310000000000",
-      "races": []
-    },
-    {
-      "mode": "nar",
-      "venue": "佐賀",
-      "day": "08",
-      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261108320000000000",
-      "races": []
-    },
-    {
-      "mode": "nar",
-      "venue": "盛岡",
-      "day": "08",
-      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261108100000000000",
-      "races": []
-    },
-    {
-      "mode": "nar",
-      "venue": "高知",
-      "day": "08",
-      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261108310000000000",
-      "races": []
-    },
-    {
-      "mode": "nar",
-      "venue": "佐賀",
-      "day": "09",
-      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261109320000000000",
-      "races": []
-    },
-    {
-      "mode": "nar",
-      "venue": "名古屋",
-      "day": "09",
-      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261109240000000000",
-      "races": []
-    },
-    {
-      "mode": "nar",
-      "venue": "川崎",
-      "day": "09",
-      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261109210000000000",
-      "races": []
-    },
-    {
-      "mode": "nar",
-      "venue": "盛岡",
-      "day": "09",
-      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261109100000000000",
-      "races": []
-    },
-    {
       "mode": "jra",
       "venue": "05",
       "day": "26050411",
@@ -2080,658 +1625,7421 @@
           ]
         }
       ]
+    },
+    {
+      "mode": "nar",
+      "venue": "名古屋",
+      "day": "10",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/202611102400000000",
+      "races": [
+        {
+          "r": 1,
+          "headcount": 11,
+          "top3": [
+            10,
+            1,
+            11
+          ]
+        },
+        {
+          "r": 2,
+          "headcount": 11,
+          "top3": [
+            3,
+            9,
+            2
+          ]
+        },
+        {
+          "r": 3,
+          "headcount": 11,
+          "top3": [
+            2,
+            9,
+            8
+          ]
+        },
+        {
+          "r": 4,
+          "headcount": 11,
+          "top3": [
+            8,
+            1,
+            7
+          ]
+        },
+        {
+          "r": 5,
+          "headcount": 12,
+          "top3": [
+            4,
+            10,
+            12
+          ]
+        },
+        {
+          "r": 6,
+          "headcount": 12,
+          "top3": [
+            12,
+            11,
+            7
+          ]
+        },
+        {
+          "r": 7,
+          "headcount": 12,
+          "top3": [
+            8,
+            10,
+            7
+          ]
+        },
+        {
+          "r": 8,
+          "headcount": 12,
+          "top3": [
+            4,
+            11,
+            2
+          ]
+        },
+        {
+          "r": 9,
+          "headcount": 11,
+          "top3": [
+            3,
+            1,
+            11
+          ]
+        },
+        {
+          "r": 10,
+          "headcount": 10,
+          "top3": [
+            5,
+            7,
+            2
+          ]
+        },
+        {
+          "r": 11,
+          "headcount": 11,
+          "top3": [
+            10,
+            11,
+            7
+          ]
+        },
+        {
+          "r": 12,
+          "headcount": 12,
+          "top3": [
+            6,
+            7,
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "nar",
+      "venue": "川崎",
+      "day": "10",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/202611102100000000",
+      "races": [
+        {
+          "r": 1,
+          "headcount": 12,
+          "top3": [
+            9,
+            7,
+            8
+          ]
+        },
+        {
+          "r": 2,
+          "headcount": 6,
+          "top3": [
+            6,
+            2,
+            1
+          ]
+        },
+        {
+          "r": 3,
+          "headcount": 8,
+          "top3": [
+            3,
+            4,
+            8
+          ]
+        },
+        {
+          "r": 4,
+          "headcount": 12,
+          "top3": [
+            12,
+            3,
+            11
+          ]
+        },
+        {
+          "r": 5,
+          "headcount": 12,
+          "top3": [
+            12,
+            6,
+            7
+          ]
+        },
+        {
+          "r": 6,
+          "headcount": 13,
+          "top3": [
+            13,
+            1,
+            7
+          ]
+        },
+        {
+          "r": 7,
+          "headcount": 14,
+          "top3": [
+            2,
+            3,
+            7
+          ]
+        },
+        {
+          "r": 8,
+          "headcount": 12,
+          "top3": [
+            1,
+            9,
+            2
+          ]
+        },
+        {
+          "r": 9,
+          "headcount": 10,
+          "top3": [
+            1,
+            6,
+            4
+          ]
+        },
+        {
+          "r": 10,
+          "headcount": 12,
+          "top3": [
+            9,
+            2,
+            8
+          ]
+        },
+        {
+          "r": 11,
+          "headcount": 12,
+          "top3": [
+            10,
+            7,
+            6
+          ]
+        },
+        {
+          "r": 12,
+          "headcount": 14,
+          "top3": [
+            5,
+            3,
+            10
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "nar",
+      "venue": "盛岡",
+      "day": "10",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/202611101000000000",
+      "races": [
+        {
+          "r": 2,
+          "headcount": 7,
+          "top3": [
+            1,
+            4,
+            3
+          ]
+        },
+        {
+          "r": 3,
+          "headcount": 8,
+          "top3": [
+            5,
+            2,
+            6
+          ]
+        },
+        {
+          "r": 4,
+          "headcount": 7,
+          "top3": [
+            2,
+            4,
+            7
+          ]
+        },
+        {
+          "r": 5,
+          "headcount": 10,
+          "top3": [
+            5,
+            2,
+            6
+          ]
+        },
+        {
+          "r": 6,
+          "headcount": 11,
+          "top3": [
+            3,
+            11,
+            1
+          ]
+        },
+        {
+          "r": 7,
+          "headcount": 12,
+          "top3": [
+            10,
+            6,
+            8
+          ]
+        },
+        {
+          "r": 8,
+          "headcount": 12,
+          "top3": [
+            2,
+            11,
+            7
+          ]
+        },
+        {
+          "r": 9,
+          "headcount": 10,
+          "top3": [
+            7,
+            9,
+            3
+          ]
+        },
+        {
+          "r": 10,
+          "headcount": 10,
+          "top3": [
+            2,
+            4,
+            10
+          ]
+        },
+        {
+          "r": 11,
+          "headcount": 10,
+          "top3": [
+            8,
+            7,
+            9
+          ]
+        },
+        {
+          "r": 12,
+          "headcount": 12,
+          "top3": [
+            2,
+            1,
+            8
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "nar",
+      "venue": "金沢",
+      "day": "10",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/202611102200000000",
+      "races": [
+        {
+          "r": 1,
+          "headcount": 10,
+          "top3": [
+            6,
+            3,
+            1
+          ]
+        },
+        {
+          "r": 2,
+          "headcount": 10,
+          "top3": [
+            7,
+            2,
+            10
+          ]
+        },
+        {
+          "r": 3,
+          "headcount": 11,
+          "top3": [
+            9,
+            2,
+            7
+          ]
+        },
+        {
+          "r": 4,
+          "headcount": 7,
+          "top3": [
+            3,
+            2,
+            4
+          ]
+        },
+        {
+          "r": 5,
+          "headcount": 9,
+          "top3": [
+            4,
+            5,
+            7
+          ]
+        },
+        {
+          "r": 6,
+          "headcount": 8,
+          "top3": [
+            4,
+            1,
+            8
+          ]
+        },
+        {
+          "r": 7,
+          "headcount": 8,
+          "top3": [
+            3,
+            2,
+            6
+          ]
+        },
+        {
+          "r": 8,
+          "headcount": 9,
+          "top3": [
+            9,
+            4,
+            2
+          ]
+        },
+        {
+          "r": 9,
+          "headcount": 9,
+          "top3": [
+            9,
+            8,
+            4
+          ]
+        },
+        {
+          "r": 10,
+          "headcount": 11,
+          "top3": [
+            11,
+            4,
+            10
+          ]
+        },
+        {
+          "r": 11,
+          "headcount": 11,
+          "top3": [
+            6,
+            11,
+            10
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "nar",
+      "venue": "門別",
+      "day": "10",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/202611103600000000",
+      "races": [
+        {
+          "r": 1,
+          "headcount": 12,
+          "top3": [
+            3,
+            8,
+            2
+          ]
+        },
+        {
+          "r": 2,
+          "headcount": 12,
+          "top3": [
+            10,
+            4,
+            6
+          ]
+        },
+        {
+          "r": 3,
+          "headcount": 12,
+          "top3": [
+            2,
+            1,
+            4
+          ]
+        },
+        {
+          "r": 4,
+          "headcount": 12,
+          "top3": [
+            2,
+            6,
+            1
+          ]
+        },
+        {
+          "r": 5,
+          "headcount": 12,
+          "top3": [
+            3,
+            9,
+            11
+          ]
+        },
+        {
+          "r": 6,
+          "headcount": 11,
+          "top3": [
+            6,
+            8,
+            1
+          ]
+        },
+        {
+          "r": 7,
+          "headcount": 15,
+          "top3": [
+            15,
+            6,
+            11
+          ]
+        },
+        {
+          "r": 8,
+          "headcount": 15,
+          "top3": [
+            7,
+            9,
+            1
+          ]
+        },
+        {
+          "r": 9,
+          "headcount": 12,
+          "top3": [
+            12,
+            3,
+            10
+          ]
+        },
+        {
+          "r": 10,
+          "headcount": 12,
+          "top3": [
+            6,
+            10,
+            1
+          ]
+        },
+        {
+          "r": 11,
+          "headcount": 12,
+          "top3": [
+            3,
+            9,
+            6
+          ]
+        },
+        {
+          "r": 12,
+          "headcount": 12,
+          "top3": [
+            6,
+            9,
+            8
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "nar",
+      "venue": "名古屋",
+      "day": "11",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/202611112400000000",
+      "races": [
+        {
+          "r": 1,
+          "headcount": 11,
+          "top3": [
+            5,
+            10,
+            3
+          ]
+        },
+        {
+          "r": 2,
+          "headcount": 12,
+          "top3": [
+            8,
+            2,
+            12
+          ]
+        },
+        {
+          "r": 3,
+          "headcount": 12,
+          "top3": [
+            8,
+            11,
+            1
+          ]
+        },
+        {
+          "r": 4,
+          "headcount": 8,
+          "top3": [
+            3,
+            2,
+            5
+          ]
+        },
+        {
+          "r": 5,
+          "headcount": 9,
+          "top3": [
+            6,
+            1,
+            8
+          ]
+        },
+        {
+          "r": 6,
+          "headcount": 12,
+          "top3": [
+            9,
+            8,
+            3
+          ]
+        },
+        {
+          "r": 7,
+          "headcount": 12,
+          "top3": [
+            11,
+            1,
+            3
+          ]
+        },
+        {
+          "r": 8,
+          "headcount": 10,
+          "top3": [
+            9,
+            7,
+            3
+          ]
+        },
+        {
+          "r": 9,
+          "headcount": 11,
+          "top3": [
+            9,
+            7,
+            10
+          ]
+        },
+        {
+          "r": 10,
+          "headcount": 10,
+          "top3": [
+            8,
+            9,
+            6
+          ]
+        },
+        {
+          "r": 11,
+          "headcount": 11,
+          "top3": [
+            11,
+            3,
+            7
+          ]
+        },
+        {
+          "r": 12,
+          "headcount": 12,
+          "top3": [
+            6,
+            9,
+            12
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "nar",
+      "venue": "園田",
+      "day": "11",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/202611112700000000",
+      "races": [
+        {
+          "r": 1,
+          "headcount": 10,
+          "top3": [
+            2,
+            9,
+            10
+          ]
+        },
+        {
+          "r": 2,
+          "headcount": 8,
+          "top3": [
+            7,
+            5,
+            6
+          ]
+        },
+        {
+          "r": 3,
+          "headcount": 10,
+          "top3": [
+            5,
+            6,
+            7
+          ]
+        },
+        {
+          "r": 4,
+          "headcount": 10,
+          "top3": [
+            3,
+            10,
+            1
+          ]
+        },
+        {
+          "r": 5,
+          "headcount": 10,
+          "top3": [
+            6,
+            10,
+            1
+          ]
+        },
+        {
+          "r": 6,
+          "headcount": 12,
+          "top3": [
+            3,
+            12,
+            7
+          ]
+        },
+        {
+          "r": 7,
+          "headcount": 8,
+          "top3": [
+            1,
+            7,
+            4
+          ]
+        },
+        {
+          "r": 8,
+          "headcount": 9,
+          "top3": [
+            9,
+            2,
+            4
+          ]
+        },
+        {
+          "r": 9,
+          "headcount": 10,
+          "top3": [
+            8,
+            7,
+            10
+          ]
+        },
+        {
+          "r": 10,
+          "headcount": 10,
+          "top3": [
+            2,
+            9,
+            7
+          ]
+        },
+        {
+          "r": 11,
+          "headcount": 11,
+          "top3": [
+            2,
+            1,
+            4
+          ]
+        },
+        {
+          "r": 12,
+          "headcount": 12,
+          "top3": [
+            7,
+            2,
+            12
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "nar",
+      "venue": "川崎",
+      "day": "11",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/202611112100000000",
+      "races": [
+        {
+          "r": 1,
+          "headcount": 8,
+          "top3": [
+            7,
+            2,
+            4
+          ]
+        },
+        {
+          "r": 2,
+          "headcount": 8,
+          "top3": [
+            3,
+            5,
+            7
+          ]
+        },
+        {
+          "r": 3,
+          "headcount": 7,
+          "top3": [
+            1,
+            2,
+            6
+          ]
+        },
+        {
+          "r": 4,
+          "headcount": 12,
+          "top3": [
+            6,
+            8,
+            10
+          ]
+        },
+        {
+          "r": 5,
+          "headcount": 12,
+          "top3": [
+            11,
+            1,
+            8
+          ]
+        },
+        {
+          "r": 6,
+          "headcount": 12,
+          "top3": [
+            12,
+            8,
+            4
+          ]
+        },
+        {
+          "r": 7,
+          "headcount": 11,
+          "top3": [
+            7,
+            3,
+            11
+          ]
+        },
+        {
+          "r": 8,
+          "headcount": 11,
+          "top3": [
+            4,
+            8,
+            11
+          ]
+        },
+        {
+          "r": 10,
+          "headcount": 14,
+          "top3": [
+            7,
+            10,
+            3
+          ]
+        },
+        {
+          "r": 11,
+          "headcount": 14,
+          "top3": [
+            10,
+            8,
+            1
+          ]
+        },
+        {
+          "r": 12,
+          "headcount": 14,
+          "top3": [
+            7,
+            10,
+            8
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "nar",
+      "venue": "門別",
+      "day": "11",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/202611113600000000",
+      "races": [
+        {
+          "r": 1,
+          "headcount": 10,
+          "top3": [
+            1,
+            5,
+            4
+          ]
+        },
+        {
+          "r": 2,
+          "headcount": 12,
+          "top3": [
+            2,
+            12,
+            7
+          ]
+        },
+        {
+          "r": 3,
+          "headcount": 12,
+          "top3": [
+            3,
+            10,
+            8
+          ]
+        },
+        {
+          "r": 4,
+          "headcount": 16,
+          "top3": [
+            5,
+            8,
+            2
+          ]
+        },
+        {
+          "r": 5,
+          "headcount": 12,
+          "top3": [
+            2,
+            8,
+            3
+          ]
+        },
+        {
+          "r": 6,
+          "headcount": 12,
+          "top3": [
+            12,
+            3,
+            8
+          ]
+        },
+        {
+          "r": 7,
+          "headcount": 12,
+          "top3": [
+            9,
+            4,
+            6
+          ]
+        },
+        {
+          "r": 8,
+          "headcount": 12,
+          "top3": [
+            5,
+            10,
+            1
+          ]
+        },
+        {
+          "r": 9,
+          "headcount": 14,
+          "top3": [
+            12,
+            1,
+            3
+          ]
+        },
+        {
+          "r": 10,
+          "headcount": 13,
+          "top3": [
+            4,
+            3,
+            6
+          ]
+        },
+        {
+          "r": 11,
+          "headcount": 14,
+          "top3": [
+            14,
+            5,
+            12
+          ]
+        },
+        {
+          "r": 12,
+          "headcount": 12,
+          "top3": [
+            7,
+            12,
+            8
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "nar",
+      "venue": "名古屋",
+      "day": "12",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/202611122400000000",
+      "races": [
+        {
+          "r": 1,
+          "headcount": 11,
+          "top3": [
+            3,
+            8,
+            7
+          ]
+        },
+        {
+          "r": 2,
+          "headcount": 11,
+          "top3": [
+            2,
+            8,
+            4
+          ]
+        },
+        {
+          "r": 3,
+          "headcount": 11,
+          "top3": [
+            11,
+            9,
+            5
+          ]
+        },
+        {
+          "r": 4,
+          "headcount": 11,
+          "top3": [
+            3,
+            6,
+            9
+          ]
+        },
+        {
+          "r": 5,
+          "headcount": 11,
+          "top3": [
+            8,
+            3,
+            11
+          ]
+        },
+        {
+          "r": 6,
+          "headcount": 12,
+          "top3": [
+            10,
+            8,
+            12
+          ]
+        },
+        {
+          "r": 7,
+          "headcount": 11,
+          "top3": [
+            4,
+            1,
+            6
+          ]
+        },
+        {
+          "r": 8,
+          "headcount": 12,
+          "top3": [
+            2,
+            9,
+            1
+          ]
+        },
+        {
+          "r": 9,
+          "headcount": 12,
+          "top3": [
+            12,
+            5,
+            1
+          ]
+        },
+        {
+          "r": 10,
+          "headcount": 6,
+          "top3": [
+            4,
+            5,
+            1
+          ]
+        },
+        {
+          "r": 11,
+          "headcount": 12,
+          "top3": [
+            11,
+            2,
+            5
+          ]
+        },
+        {
+          "r": 12,
+          "headcount": 12,
+          "top3": [
+            8,
+            5,
+            3
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "nar",
+      "venue": "園田",
+      "day": "12",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/202611122700000000",
+      "races": [
+        {
+          "r": 1,
+          "headcount": 10,
+          "top3": [
+            10,
+            8,
+            6
+          ]
+        },
+        {
+          "r": 2,
+          "headcount": 9,
+          "top3": [
+            5,
+            8,
+            3
+          ]
+        },
+        {
+          "r": 3,
+          "headcount": 10,
+          "top3": [
+            7,
+            8,
+            2
+          ]
+        },
+        {
+          "r": 4,
+          "headcount": 10,
+          "top3": [
+            6,
+            8,
+            4
+          ]
+        },
+        {
+          "r": 5,
+          "headcount": 11,
+          "top3": [
+            1,
+            8,
+            5
+          ]
+        },
+        {
+          "r": 6,
+          "headcount": 10,
+          "top3": [
+            8,
+            6,
+            1
+          ]
+        },
+        {
+          "r": 7,
+          "headcount": 10,
+          "top3": [
+            9,
+            8,
+            6
+          ]
+        },
+        {
+          "r": 8,
+          "headcount": 12,
+          "top3": [
+            4,
+            1,
+            5
+          ]
+        },
+        {
+          "r": 9,
+          "headcount": 12,
+          "top3": [
+            10,
+            4,
+            12
+          ]
+        },
+        {
+          "r": 10,
+          "headcount": 12,
+          "top3": [
+            10,
+            7,
+            4
+          ]
+        },
+        {
+          "r": 11,
+          "headcount": 9,
+          "top3": [
+            8,
+            4,
+            7
+          ]
+        },
+        {
+          "r": 12,
+          "headcount": 12,
+          "top3": [
+            6,
+            9,
+            2
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "nar",
+      "venue": "川崎",
+      "day": "12",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/202611122100000000",
+      "races": [
+        {
+          "r": 1,
+          "headcount": 12,
+          "top3": [
+            4,
+            10,
+            12
+          ]
+        },
+        {
+          "r": 2,
+          "headcount": 7,
+          "top3": [
+            2,
+            7,
+            1
+          ]
+        },
+        {
+          "r": 3,
+          "headcount": 11,
+          "top3": [
+            7,
+            6,
+            3
+          ]
+        },
+        {
+          "r": 4,
+          "headcount": 12,
+          "top3": [
+            2,
+            9,
+            7
+          ]
+        },
+        {
+          "r": 5,
+          "headcount": 12,
+          "top3": [
+            4,
+            9,
+            12
+          ]
+        },
+        {
+          "r": 6,
+          "headcount": 12,
+          "top3": [
+            5,
+            7,
+            11
+          ]
+        },
+        {
+          "r": 7,
+          "headcount": 10,
+          "top3": [
+            10,
+            2,
+            4
+          ]
+        },
+        {
+          "r": 8,
+          "headcount": 11,
+          "top3": [
+            3,
+            9,
+            8
+          ]
+        },
+        {
+          "r": 9,
+          "headcount": 11,
+          "top3": [
+            8,
+            1,
+            11
+          ]
+        },
+        {
+          "r": 10,
+          "headcount": 13,
+          "top3": [
+            13,
+            2,
+            1
+          ]
+        },
+        {
+          "r": 11,
+          "headcount": 14,
+          "top3": [
+            5,
+            10,
+            9
+          ]
+        },
+        {
+          "r": 12,
+          "headcount": 14,
+          "top3": [
+            7,
+            10,
+            6
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "nar",
+      "venue": "門別",
+      "day": "12",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/202611123600000000",
+      "races": [
+        {
+          "r": 1,
+          "headcount": 14,
+          "top3": [
+            13,
+            10,
+            12
+          ]
+        },
+        {
+          "r": 2,
+          "headcount": 11,
+          "top3": [
+            10,
+            8,
+            9
+          ]
+        },
+        {
+          "r": 3,
+          "headcount": 12,
+          "top3": [
+            11,
+            7,
+            4
+          ]
+        },
+        {
+          "r": 4,
+          "headcount": 12,
+          "top3": [
+            8,
+            11,
+            9
+          ]
+        },
+        {
+          "r": 5,
+          "headcount": 12,
+          "top3": [
+            12,
+            9,
+            6
+          ]
+        },
+        {
+          "r": 6,
+          "headcount": 14,
+          "top3": [
+            14,
+            12,
+            4
+          ]
+        },
+        {
+          "r": 7,
+          "headcount": 13,
+          "top3": [
+            10,
+            12,
+            9
+          ]
+        },
+        {
+          "r": 8,
+          "headcount": 11,
+          "top3": [
+            9,
+            11,
+            8
+          ]
+        },
+        {
+          "r": 9,
+          "headcount": 12,
+          "top3": [
+            3,
+            11,
+            6
+          ]
+        },
+        {
+          "r": 10,
+          "headcount": 12,
+          "top3": [
+            8,
+            5,
+            2
+          ]
+        },
+        {
+          "r": 11,
+          "headcount": 15,
+          "top3": [
+            15,
+            12,
+            11
+          ]
+        },
+        {
+          "r": 12,
+          "headcount": 14,
+          "top3": [
+            14,
+            13,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "nar",
+      "venue": "名古屋",
+      "day": "13",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/202611132400000000",
+      "races": [
+        {
+          "r": 1,
+          "headcount": 11,
+          "top3": [
+            11,
+            10,
+            1
+          ]
+        },
+        {
+          "r": 2,
+          "headcount": 11,
+          "top3": [
+            7,
+            8,
+            9
+          ]
+        },
+        {
+          "r": 3,
+          "headcount": 12,
+          "top3": [
+            1,
+            11,
+            6
+          ]
+        },
+        {
+          "r": 4,
+          "headcount": 7,
+          "top3": [
+            7,
+            6,
+            5
+          ]
+        },
+        {
+          "r": 5,
+          "headcount": 11,
+          "top3": [
+            5,
+            7,
+            10
+          ]
+        },
+        {
+          "r": 6,
+          "headcount": 12,
+          "top3": [
+            10,
+            2,
+            11
+          ]
+        },
+        {
+          "r": 7,
+          "headcount": 12,
+          "top3": [
+            2,
+            12,
+            4
+          ]
+        },
+        {
+          "r": 8,
+          "headcount": 12,
+          "top3": [
+            11,
+            2,
+            7
+          ]
+        },
+        {
+          "r": 9,
+          "headcount": 12,
+          "top3": [
+            2,
+            10,
+            9
+          ]
+        },
+        {
+          "r": 10,
+          "headcount": 10,
+          "top3": [
+            8,
+            4,
+            1
+          ]
+        },
+        {
+          "r": 11,
+          "headcount": 12,
+          "top3": [
+            1,
+            6,
+            11
+          ]
+        },
+        {
+          "r": 12,
+          "headcount": 12,
+          "top3": [
+            4,
+            11,
+            8
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "nar",
+      "venue": "園田",
+      "day": "13",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/202611132700000000",
+      "races": [
+        {
+          "r": 1,
+          "headcount": 11,
+          "top3": [
+            9,
+            7,
+            3
+          ]
+        },
+        {
+          "r": 2,
+          "headcount": 7,
+          "top3": [
+            7,
+            3,
+            6
+          ]
+        },
+        {
+          "r": 3,
+          "headcount": 6,
+          "top3": [
+            4,
+            6,
+            2
+          ]
+        },
+        {
+          "r": 4,
+          "headcount": 12,
+          "top3": [
+            3,
+            10,
+            11
+          ]
+        },
+        {
+          "r": 5,
+          "headcount": 11,
+          "top3": [
+            11,
+            7,
+            8
+          ]
+        },
+        {
+          "r": 6,
+          "headcount": 11,
+          "top3": [
+            2,
+            10,
+            11
+          ]
+        },
+        {
+          "r": 7,
+          "headcount": 7,
+          "top3": [
+            6,
+            1,
+            7
+          ]
+        },
+        {
+          "r": 8,
+          "headcount": 9,
+          "top3": [
+            8,
+            5,
+            3
+          ]
+        },
+        {
+          "r": 9,
+          "headcount": 12,
+          "top3": [
+            12,
+            3,
+            11
+          ]
+        },
+        {
+          "r": 10,
+          "headcount": 11,
+          "top3": [
+            11,
+            7,
+            9
+          ]
+        },
+        {
+          "r": 11,
+          "headcount": 12,
+          "top3": [
+            10,
+            8,
+            9
+          ]
+        },
+        {
+          "r": 12,
+          "headcount": 11,
+          "top3": [
+            10,
+            7,
+            9
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "nar",
+      "venue": "川崎",
+      "day": "13",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/202611132100000000",
+      "races": [
+        {
+          "r": 1,
+          "headcount": 12,
+          "top3": [
+            8,
+            12,
+            3
+          ]
+        },
+        {
+          "r": 2,
+          "headcount": 8,
+          "top3": [
+            5,
+            7,
+            3
+          ]
+        },
+        {
+          "r": 3,
+          "headcount": 7,
+          "top3": [
+            6,
+            5,
+            7
+          ]
+        },
+        {
+          "r": 4,
+          "headcount": 6,
+          "top3": [
+            2,
+            5,
+            6
+          ]
+        },
+        {
+          "r": 5,
+          "headcount": 8,
+          "top3": [
+            7,
+            4,
+            2
+          ]
+        },
+        {
+          "r": 6,
+          "headcount": 14,
+          "top3": [
+            8,
+            11,
+            13
+          ]
+        },
+        {
+          "r": 7,
+          "headcount": 12,
+          "top3": [
+            7,
+            6,
+            11
+          ]
+        },
+        {
+          "r": 8,
+          "headcount": 11,
+          "top3": [
+            2,
+            3,
+            5
+          ]
+        },
+        {
+          "r": 9,
+          "headcount": 13,
+          "top3": [
+            12,
+            9,
+            3
+          ]
+        },
+        {
+          "r": 10,
+          "headcount": 12,
+          "top3": [
+            5,
+            11,
+            12
+          ]
+        },
+        {
+          "r": 11,
+          "headcount": 9,
+          "top3": [
+            4,
+            6,
+            2
+          ]
+        },
+        {
+          "r": 12,
+          "headcount": 12,
+          "top3": [
+            3,
+            2,
+            9
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "nar",
+      "venue": "金沢",
+      "day": "13",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/202611132200000000",
+      "races": [
+        {
+          "r": 1,
+          "headcount": 9,
+          "top3": [
+            5,
+            8,
+            4
+          ]
+        },
+        {
+          "r": 2,
+          "headcount": 9,
+          "top3": [
+            8,
+            7,
+            6
+          ]
+        },
+        {
+          "r": 3,
+          "headcount": 9,
+          "top3": [
+            3,
+            2,
+            5
+          ]
+        },
+        {
+          "r": 4,
+          "headcount": 7,
+          "top3": [
+            1,
+            4,
+            5
+          ]
+        },
+        {
+          "r": 5,
+          "headcount": 9,
+          "top3": [
+            1,
+            4,
+            6
+          ]
+        },
+        {
+          "r": 6,
+          "headcount": 9,
+          "top3": [
+            8,
+            3,
+            5
+          ]
+        },
+        {
+          "r": 7,
+          "headcount": 8,
+          "top3": [
+            2,
+            1,
+            8
+          ]
+        },
+        {
+          "r": 8,
+          "headcount": 11,
+          "top3": [
+            10,
+            5,
+            11
+          ]
+        },
+        {
+          "r": 9,
+          "headcount": 10,
+          "top3": [
+            9,
+            6,
+            2
+          ]
+        },
+        {
+          "r": 10,
+          "headcount": 12,
+          "top3": [
+            7,
+            11,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "nar",
+      "venue": "佐賀",
+      "day": "14",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/202611143200000000",
+      "races": [
+        {
+          "r": 1,
+          "headcount": 11,
+          "top3": [
+            8,
+            10,
+            6
+          ]
+        },
+        {
+          "r": 2,
+          "headcount": 12,
+          "top3": [
+            8,
+            6,
+            12
+          ]
+        },
+        {
+          "r": 3,
+          "headcount": 11,
+          "top3": [
+            1,
+            11,
+            10
+          ]
+        },
+        {
+          "r": 4,
+          "headcount": 11,
+          "top3": [
+            1,
+            4,
+            11
+          ]
+        },
+        {
+          "r": 5,
+          "headcount": 12,
+          "top3": [
+            6,
+            9,
+            4
+          ]
+        },
+        {
+          "r": 6,
+          "headcount": 9,
+          "top3": [
+            8,
+            6,
+            7
+          ]
+        },
+        {
+          "r": 7,
+          "headcount": 10,
+          "top3": [
+            3,
+            1,
+            5
+          ]
+        },
+        {
+          "r": 8,
+          "headcount": 10,
+          "top3": [
+            10,
+            9,
+            3
+          ]
+        },
+        {
+          "r": 9,
+          "headcount": 12,
+          "top3": [
+            10,
+            6,
+            11
+          ]
+        },
+        {
+          "r": 10,
+          "headcount": 11,
+          "top3": [
+            6,
+            9,
+            7
+          ]
+        },
+        {
+          "r": 11,
+          "headcount": 14,
+          "top3": [
+            12,
+            1,
+            10
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "nar",
+      "venue": "高知",
+      "day": "14",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/202611143100000000",
+      "races": [
+        {
+          "r": 1,
+          "headcount": 10,
+          "top3": [
+            9,
+            3,
+            1
+          ]
+        },
+        {
+          "r": 2,
+          "headcount": 8,
+          "top3": [
+            5,
+            7,
+            3
+          ]
+        },
+        {
+          "r": 3,
+          "headcount": 11,
+          "top3": [
+            2,
+            1,
+            10
+          ]
+        },
+        {
+          "r": 4,
+          "headcount": 11,
+          "top3": [
+            5,
+            11,
+            2
+          ]
+        },
+        {
+          "r": 5,
+          "headcount": 12,
+          "top3": [
+            1,
+            10,
+            2
+          ]
+        },
+        {
+          "r": 6,
+          "headcount": 12,
+          "top3": [
+            1,
+            7,
+            10
+          ]
+        },
+        {
+          "r": 7,
+          "headcount": 12,
+          "top3": [
+            10,
+            8,
+            4
+          ]
+        },
+        {
+          "r": 8,
+          "headcount": 12,
+          "top3": [
+            11,
+            3,
+            12
+          ]
+        },
+        {
+          "r": 9,
+          "headcount": 12,
+          "top3": [
+            9,
+            5,
+            10
+          ]
+        },
+        {
+          "r": 10,
+          "headcount": 11,
+          "top3": [
+            3,
+            2,
+            8
+          ]
+        },
+        {
+          "r": 11,
+          "headcount": 12,
+          "top3": [
+            12,
+            9,
+            11
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "nar",
+      "venue": "佐賀",
+      "day": "15",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/202611153200000000",
+      "races": [
+        {
+          "r": 1,
+          "headcount": 8,
+          "top3": [
+            4,
+            7,
+            6
+          ]
+        },
+        {
+          "r": 2,
+          "headcount": 8,
+          "top3": [
+            8,
+            6,
+            3
+          ]
+        },
+        {
+          "r": 3,
+          "headcount": 11,
+          "top3": [
+            9,
+            4,
+            8
+          ]
+        },
+        {
+          "r": 4,
+          "headcount": 11,
+          "top3": [
+            1,
+            9,
+            11
+          ]
+        },
+        {
+          "r": 5,
+          "headcount": 11,
+          "top3": [
+            6,
+            11,
+            5
+          ]
+        },
+        {
+          "r": 6,
+          "headcount": 9,
+          "top3": [
+            7,
+            3,
+            4
+          ]
+        },
+        {
+          "r": 7,
+          "headcount": 9,
+          "top3": [
+            8,
+            7,
+            1
+          ]
+        },
+        {
+          "r": 8,
+          "headcount": 8,
+          "top3": [
+            6,
+            8,
+            3
+          ]
+        },
+        {
+          "r": 9,
+          "headcount": 12,
+          "top3": [
+            10,
+            3,
+            11
+          ]
+        },
+        {
+          "r": 10,
+          "headcount": 11,
+          "top3": [
+            3,
+            11,
+            5
+          ]
+        },
+        {
+          "r": 11,
+          "headcount": 14,
+          "top3": [
+            6,
+            14,
+            2
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "nar",
+      "venue": "水沢",
+      "day": "15",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/202611151100000000",
+      "races": [
+        {
+          "r": 1,
+          "headcount": 5,
+          "top3": [
+            5,
+            2,
+            3
+          ]
+        },
+        {
+          "r": 2,
+          "headcount": 11,
+          "top3": [
+            1,
+            6,
+            3
+          ]
+        },
+        {
+          "r": 3,
+          "headcount": 11,
+          "top3": [
+            1,
+            5,
+            7
+          ]
+        },
+        {
+          "r": 4,
+          "headcount": 11,
+          "top3": [
+            9,
+            10,
+            6
+          ]
+        },
+        {
+          "r": 5,
+          "headcount": 11,
+          "top3": [
+            10,
+            2,
+            11
+          ]
+        },
+        {
+          "r": 6,
+          "headcount": 7,
+          "top3": [
+            3,
+            1,
+            2
+          ]
+        },
+        {
+          "r": 7,
+          "headcount": 10,
+          "top3": [
+            1,
+            4,
+            2
+          ]
+        },
+        {
+          "r": 8,
+          "headcount": 10,
+          "top3": [
+            7,
+            2,
+            4
+          ]
+        },
+        {
+          "r": 9,
+          "headcount": 11,
+          "top3": [
+            11,
+            3,
+            6
+          ]
+        },
+        {
+          "r": 10,
+          "headcount": 11,
+          "top3": [
+            3,
+            6,
+            7
+          ]
+        },
+        {
+          "r": 11,
+          "headcount": 11,
+          "top3": [
+            8,
+            3,
+            5
+          ]
+        },
+        {
+          "r": 12,
+          "headcount": 12,
+          "top3": [
+            6,
+            4,
+            12
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "nar",
+      "venue": "金沢",
+      "day": "15",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/202611152200000000",
+      "races": [
+        {
+          "r": 1,
+          "headcount": 9,
+          "top3": [
+            1,
+            7,
+            3
+          ]
+        },
+        {
+          "r": 2,
+          "headcount": 9,
+          "top3": [
+            3,
+            7,
+            9
+          ]
+        },
+        {
+          "r": 3,
+          "headcount": 9,
+          "top3": [
+            4,
+            2,
+            6
+          ]
+        },
+        {
+          "r": 4,
+          "headcount": 9,
+          "top3": [
+            3,
+            4,
+            7
+          ]
+        },
+        {
+          "r": 5,
+          "headcount": 11,
+          "top3": [
+            10,
+            7,
+            3
+          ]
+        },
+        {
+          "r": 6,
+          "headcount": 11,
+          "top3": [
+            2,
+            11,
+            10
+          ]
+        },
+        {
+          "r": 7,
+          "headcount": 10,
+          "top3": [
+            2,
+            3,
+            1
+          ]
+        },
+        {
+          "r": 8,
+          "headcount": 12,
+          "top3": [
+            9,
+            11,
+            12
+          ]
+        },
+        {
+          "r": 9,
+          "headcount": 9,
+          "top3": [
+            8,
+            1,
+            6
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "nar",
+      "venue": "高知",
+      "day": "15",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/202611153100000000",
+      "races": [
+        {
+          "r": 1,
+          "headcount": 6,
+          "top3": [
+            5,
+            1,
+            4
+          ]
+        },
+        {
+          "r": 2,
+          "headcount": 8,
+          "top3": [
+            6,
+            8,
+            5
+          ]
+        },
+        {
+          "r": 3,
+          "headcount": 10,
+          "top3": [
+            10,
+            1,
+            8
+          ]
+        },
+        {
+          "r": 4,
+          "headcount": 9,
+          "top3": [
+            9,
+            4,
+            5
+          ]
+        },
+        {
+          "r": 5,
+          "headcount": 12,
+          "top3": [
+            5,
+            12,
+            6
+          ]
+        },
+        {
+          "r": 6,
+          "headcount": 12,
+          "top3": [
+            5,
+            9,
+            3
+          ]
+        },
+        {
+          "r": 7,
+          "headcount": 9,
+          "top3": [
+            8,
+            4,
+            3
+          ]
+        },
+        {
+          "r": 8,
+          "headcount": 11,
+          "top3": [
+            3,
+            8,
+            5
+          ]
+        },
+        {
+          "r": 9,
+          "headcount": 11,
+          "top3": [
+            10,
+            1,
+            11
+          ]
+        },
+        {
+          "r": 10,
+          "headcount": 12,
+          "top3": [
+            7,
+            3,
+            10
+          ]
+        },
+        {
+          "r": 11,
+          "headcount": 10,
+          "top3": [
+            8,
+            4,
+            10
+          ]
+        },
+        {
+          "r": 12,
+          "headcount": 12,
+          "top3": [
+            11,
+            5,
+            10
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "nar",
+      "venue": "大井",
+      "day": "16",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/202611162000000000",
+      "races": [
+        {
+          "r": 1,
+          "headcount": 16,
+          "top3": [
+            3,
+            1,
+            5
+          ]
+        },
+        {
+          "r": 2,
+          "headcount": 10,
+          "top3": [
+            7,
+            3,
+            10
+          ]
+        },
+        {
+          "r": 3,
+          "headcount": 7,
+          "top3": [
+            6,
+            5,
+            3
+          ]
+        },
+        {
+          "r": 4,
+          "headcount": 11,
+          "top3": [
+            10,
+            4,
+            1
+          ]
+        },
+        {
+          "r": 5,
+          "headcount": 10,
+          "top3": [
+            8,
+            4,
+            7
+          ]
+        },
+        {
+          "r": 6,
+          "headcount": 12,
+          "top3": [
+            3,
+            1,
+            4
+          ]
+        },
+        {
+          "r": 7,
+          "headcount": 14,
+          "top3": [
+            11,
+            8,
+            2
+          ]
+        },
+        {
+          "r": 8,
+          "headcount": 14,
+          "top3": [
+            3,
+            12,
+            5
+          ]
+        },
+        {
+          "r": 9,
+          "headcount": 13,
+          "top3": [
+            6,
+            11,
+            2
+          ]
+        },
+        {
+          "r": 10,
+          "headcount": 14,
+          "top3": [
+            10,
+            2,
+            13
+          ]
+        },
+        {
+          "r": 11,
+          "headcount": 9,
+          "top3": [
+            8,
+            9,
+            4
+          ]
+        },
+        {
+          "r": 12,
+          "headcount": 14,
+          "top3": [
+            11,
+            10,
+            5
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "nar",
+      "venue": "水沢",
+      "day": "16",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/202611161100000000",
+      "races": [
+        {
+          "r": 1,
+          "headcount": 10,
+          "top3": [
+            7,
+            6,
+            8
+          ]
+        },
+        {
+          "r": 2,
+          "headcount": 10,
+          "top3": [
+            2,
+            4,
+            1
+          ]
+        },
+        {
+          "r": 3,
+          "headcount": 11,
+          "top3": [
+            11,
+            6,
+            5
+          ]
+        },
+        {
+          "r": 4,
+          "headcount": 11,
+          "top3": [
+            4,
+            8,
+            11
+          ]
+        },
+        {
+          "r": 5,
+          "headcount": 11,
+          "top3": [
+            9,
+            11,
+            2
+          ]
+        },
+        {
+          "r": 6,
+          "headcount": 12,
+          "top3": [
+            2,
+            5,
+            10
+          ]
+        },
+        {
+          "r": 7,
+          "headcount": 11,
+          "top3": [
+            8,
+            5,
+            10
+          ]
+        },
+        {
+          "r": 8,
+          "headcount": 11,
+          "top3": [
+            2,
+            1,
+            7
+          ]
+        },
+        {
+          "r": 9,
+          "headcount": 11,
+          "top3": [
+            1,
+            3,
+            5
+          ]
+        },
+        {
+          "r": 10,
+          "headcount": 12,
+          "top3": [
+            1,
+            7,
+            2
+          ]
+        },
+        {
+          "r": 11,
+          "headcount": 12,
+          "top3": [
+            5,
+            4,
+            2
+          ]
+        },
+        {
+          "r": 12,
+          "headcount": 12,
+          "top3": [
+            7,
+            6,
+            2
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "nar",
+      "venue": "金沢",
+      "day": "16",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/202611162200000000",
+      "races": [
+        {
+          "r": 1,
+          "headcount": 10,
+          "top3": [
+            2,
+            1,
+            6
+          ]
+        },
+        {
+          "r": 2,
+          "headcount": 10,
+          "top3": [
+            6,
+            8,
+            4
+          ]
+        },
+        {
+          "r": 3,
+          "headcount": 9,
+          "top3": [
+            3,
+            2,
+            7
+          ]
+        },
+        {
+          "r": 4,
+          "headcount": 9,
+          "top3": [
+            2,
+            1,
+            9
+          ]
+        },
+        {
+          "r": 5,
+          "headcount": 8,
+          "top3": [
+            6,
+            2,
+            8
+          ]
+        },
+        {
+          "r": 6,
+          "headcount": 8,
+          "top3": [
+            7,
+            8,
+            3
+          ]
+        },
+        {
+          "r": 7,
+          "headcount": 8,
+          "top3": [
+            3,
+            8,
+            4
+          ]
+        },
+        {
+          "r": 8,
+          "headcount": 9,
+          "top3": [
+            1,
+            5,
+            4
+          ]
+        },
+        {
+          "r": 9,
+          "headcount": 10,
+          "top3": [
+            10,
+            6,
+            3
+          ]
+        },
+        {
+          "r": 10,
+          "headcount": 9,
+          "top3": [
+            2,
+            8,
+            1
+          ]
+        },
+        {
+          "r": 11,
+          "headcount": 11,
+          "top3": [
+            3,
+            11,
+            10
+          ]
+        },
+        {
+          "r": 12,
+          "headcount": 5,
+          "top3": [
+            2,
+            3,
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "nar",
+      "venue": "大井",
+      "day": "17",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/202611172000000000",
+      "races": [
+        {
+          "r": 1,
+          "headcount": 14,
+          "top3": [
+            6,
+            13,
+            8
+          ]
+        },
+        {
+          "r": 2,
+          "headcount": 15,
+          "top3": [
+            15,
+            1,
+            14
+          ]
+        },
+        {
+          "r": 3,
+          "headcount": 8,
+          "top3": [
+            4,
+            2,
+            5
+          ]
+        },
+        {
+          "r": 4,
+          "headcount": 12,
+          "top3": [
+            8,
+            2,
+            3
+          ]
+        },
+        {
+          "r": 5,
+          "headcount": 12,
+          "top3": [
+            12,
+            8,
+            11
+          ]
+        },
+        {
+          "r": 6,
+          "headcount": 11,
+          "top3": [
+            11,
+            10,
+            7
+          ]
+        },
+        {
+          "r": 7,
+          "headcount": 14,
+          "top3": [
+            7,
+            3,
+            14
+          ]
+        },
+        {
+          "r": 8,
+          "headcount": 14,
+          "top3": [
+            6,
+            13,
+            2
+          ]
+        },
+        {
+          "r": 9,
+          "headcount": 11,
+          "top3": [
+            3,
+            5,
+            7
+          ]
+        },
+        {
+          "r": 10,
+          "headcount": 13,
+          "top3": [
+            7,
+            4,
+            8
+          ]
+        },
+        {
+          "r": 11,
+          "headcount": 14,
+          "top3": [
+            6,
+            1,
+            12
+          ]
+        },
+        {
+          "r": 12,
+          "headcount": 15,
+          "top3": [
+            13,
+            8,
+            9
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "nar",
+      "venue": "水沢",
+      "day": "17",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/202611171100000000",
+      "races": [
+        {
+          "r": 1,
+          "headcount": 12,
+          "top3": [
+            4,
+            2,
+            7
+          ]
+        },
+        {
+          "r": 2,
+          "headcount": 12,
+          "top3": [
+            10,
+            1,
+            3
+          ]
+        },
+        {
+          "r": 3,
+          "headcount": 12,
+          "top3": [
+            2,
+            9,
+            1
+          ]
+        },
+        {
+          "r": 4,
+          "headcount": 12,
+          "top3": [
+            6,
+            3,
+            12
+          ]
+        },
+        {
+          "r": 5,
+          "headcount": 10,
+          "top3": [
+            4,
+            2,
+            3
+          ]
+        },
+        {
+          "r": 6,
+          "headcount": 11,
+          "top3": [
+            1,
+            2,
+            11
+          ]
+        },
+        {
+          "r": 7,
+          "headcount": 9,
+          "top3": [
+            5,
+            1,
+            2
+          ]
+        },
+        {
+          "r": 8,
+          "headcount": 10,
+          "top3": [
+            9,
+            2,
+            4
+          ]
+        },
+        {
+          "r": 9,
+          "headcount": 10,
+          "top3": [
+            5,
+            7,
+            1
+          ]
+        },
+        {
+          "r": 10,
+          "headcount": 10,
+          "top3": [
+            7,
+            10,
+            6
+          ]
+        },
+        {
+          "r": 11,
+          "headcount": 11,
+          "top3": [
+            5,
+            10,
+            8
+          ]
+        },
+        {
+          "r": 12,
+          "headcount": 12,
+          "top3": [
+            11,
+            9,
+            7
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "nar",
+      "venue": "金沢",
+      "day": "17",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/202611172200000000",
+      "races": [
+        {
+          "r": 1,
+          "headcount": 10,
+          "top3": [
+            1,
+            9,
+            7
+          ]
+        },
+        {
+          "r": 2,
+          "headcount": 9,
+          "top3": [
+            3,
+            4,
+            6
+          ]
+        },
+        {
+          "r": 3,
+          "headcount": 8,
+          "top3": [
+            1,
+            5,
+            3
+          ]
+        },
+        {
+          "r": 4,
+          "headcount": 10,
+          "top3": [
+            4,
+            2,
+            6
+          ]
+        },
+        {
+          "r": 5,
+          "headcount": 9,
+          "top3": [
+            8,
+            2,
+            1
+          ]
+        },
+        {
+          "r": 6,
+          "headcount": 11,
+          "top3": [
+            8,
+            5,
+            4
+          ]
+        },
+        {
+          "r": 7,
+          "headcount": 12,
+          "top3": [
+            2,
+            5,
+            10
+          ]
+        },
+        {
+          "r": 8,
+          "headcount": 11,
+          "top3": [
+            3,
+            10,
+            5
+          ]
+        },
+        {
+          "r": 9,
+          "headcount": 9,
+          "top3": [
+            3,
+            6,
+            9
+          ]
+        },
+        {
+          "r": 10,
+          "headcount": 9,
+          "top3": [
+            9,
+            3,
+            6
+          ]
+        },
+        {
+          "r": 11,
+          "headcount": 12,
+          "top3": [
+            6,
+            4,
+            3
+          ]
+        },
+        {
+          "r": 12,
+          "headcount": 10,
+          "top3": [
+            8,
+            10,
+            9
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "nar",
+      "venue": "園田",
+      "day": "18",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/202611182700000000",
+      "races": [
+        {
+          "r": 1,
+          "headcount": 10,
+          "top3": [
+            6,
+            5,
+            10
+          ]
+        },
+        {
+          "r": 2,
+          "headcount": 9,
+          "top3": [
+            5,
+            6,
+            4
+          ]
+        },
+        {
+          "r": 3,
+          "headcount": 9,
+          "top3": [
+            5,
+            9,
+            7
+          ]
+        },
+        {
+          "r": 4,
+          "headcount": 12,
+          "top3": [
+            8,
+            6,
+            4
+          ]
+        },
+        {
+          "r": 5,
+          "headcount": 12,
+          "top3": [
+            1,
+            11,
+            5
+          ]
+        },
+        {
+          "r": 6,
+          "headcount": 10,
+          "top3": [
+            5,
+            3,
+            2
+          ]
+        },
+        {
+          "r": 7,
+          "headcount": 8,
+          "top3": [
+            8,
+            1,
+            7
+          ]
+        },
+        {
+          "r": 8,
+          "headcount": 9,
+          "top3": [
+            6,
+            2,
+            9
+          ]
+        },
+        {
+          "r": 9,
+          "headcount": 11,
+          "top3": [
+            7,
+            8,
+            10
+          ]
+        },
+        {
+          "r": 10,
+          "headcount": 9,
+          "top3": [
+            5,
+            6,
+            7
+          ]
+        },
+        {
+          "r": 11,
+          "headcount": 12,
+          "top3": [
+            8,
+            4,
+            12
+          ]
+        },
+        {
+          "r": 12,
+          "headcount": 12,
+          "top3": [
+            8,
+            10,
+            12
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "nar",
+      "venue": "大井",
+      "day": "18",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/202611182000000000",
+      "races": [
+        {
+          "r": 1,
+          "headcount": 12,
+          "top3": [
+            12,
+            6,
+            8
+          ]
+        },
+        {
+          "r": 2,
+          "headcount": 11,
+          "top3": [
+            2,
+            3,
+            1
+          ]
+        },
+        {
+          "r": 3,
+          "headcount": 13,
+          "top3": [
+            12,
+            4,
+            7
+          ]
+        },
+        {
+          "r": 4,
+          "headcount": 13,
+          "top3": [
+            2,
+            6,
+            10
+          ]
+        },
+        {
+          "r": 5,
+          "headcount": 11,
+          "top3": [
+            7,
+            8,
+            10
+          ]
+        },
+        {
+          "r": 6,
+          "headcount": 14,
+          "top3": [
+            6,
+            5,
+            3
+          ]
+        },
+        {
+          "r": 7,
+          "headcount": 14,
+          "top3": [
+            12,
+            6,
+            9
+          ]
+        },
+        {
+          "r": 8,
+          "headcount": 11,
+          "top3": [
+            4,
+            8,
+            1
+          ]
+        },
+        {
+          "r": 9,
+          "headcount": 12,
+          "top3": [
+            10,
+            7,
+            4
+          ]
+        },
+        {
+          "r": 10,
+          "headcount": 13,
+          "top3": [
+            1,
+            12,
+            6
+          ]
+        },
+        {
+          "r": 11,
+          "headcount": 12,
+          "top3": [
+            1,
+            11,
+            12
+          ]
+        },
+        {
+          "r": 12,
+          "headcount": 13,
+          "top3": [
+            11,
+            1,
+            3
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "nar",
+      "venue": "笠松",
+      "day": "18",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/202611182300000000",
+      "races": [
+        {
+          "r": 1,
+          "headcount": 10,
+          "top3": [
+            1,
+            7,
+            9
+          ]
+        },
+        {
+          "r": 2,
+          "headcount": 10,
+          "top3": [
+            3,
+            5,
+            8
+          ]
+        },
+        {
+          "r": 3,
+          "headcount": 11,
+          "top3": [
+            11,
+            1,
+            7
+          ]
+        },
+        {
+          "r": 4,
+          "headcount": 10,
+          "top3": [
+            2,
+            10,
+            5
+          ]
+        },
+        {
+          "r": 5,
+          "headcount": 9,
+          "top3": [
+            9,
+            3,
+            5
+          ]
+        },
+        {
+          "r": 6,
+          "headcount": 12,
+          "top3": [
+            4,
+            9,
+            10
+          ]
+        },
+        {
+          "r": 7,
+          "headcount": 10,
+          "top3": [
+            2,
+            10,
+            6
+          ]
+        },
+        {
+          "r": 8,
+          "headcount": 10,
+          "top3": [
+            10,
+            4,
+            8
+          ]
+        },
+        {
+          "r": 9,
+          "headcount": 12,
+          "top3": [
+            8,
+            12,
+            2
+          ]
+        },
+        {
+          "r": 10,
+          "headcount": 10,
+          "top3": [
+            4,
+            10,
+            3
+          ]
+        },
+        {
+          "r": 11,
+          "headcount": 10,
+          "top3": [
+            8,
+            10,
+            9
+          ]
+        },
+        {
+          "r": 12,
+          "headcount": 12,
+          "top3": [
+            9,
+            7,
+            12
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "nar",
+      "venue": "園田",
+      "day": "19",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/202611192700000000",
+      "races": [
+        {
+          "r": 1,
+          "headcount": 10,
+          "top3": [
+            6,
+            1,
+            10
+          ]
+        },
+        {
+          "r": 2,
+          "headcount": 10,
+          "top3": [
+            10,
+            5,
+            6
+          ]
+        },
+        {
+          "r": 3,
+          "headcount": 8,
+          "top3": [
+            4,
+            8,
+            7
+          ]
+        },
+        {
+          "r": 4,
+          "headcount": 10,
+          "top3": [
+            3,
+            7,
+            4
+          ]
+        },
+        {
+          "r": 5,
+          "headcount": 12,
+          "top3": [
+            11,
+            7,
+            12
+          ]
+        },
+        {
+          "r": 6,
+          "headcount": 12,
+          "top3": [
+            5,
+            9,
+            3
+          ]
+        },
+        {
+          "r": 7,
+          "headcount": 10,
+          "top3": [
+            8,
+            6,
+            10
+          ]
+        },
+        {
+          "r": 8,
+          "headcount": 8,
+          "top3": [
+            1,
+            4,
+            6
+          ]
+        },
+        {
+          "r": 9,
+          "headcount": 9,
+          "top3": [
+            9,
+            8,
+            6
+          ]
+        },
+        {
+          "r": 10,
+          "headcount": 9,
+          "top3": [
+            7,
+            9,
+            1
+          ]
+        },
+        {
+          "r": 11,
+          "headcount": 12,
+          "top3": [
+            7,
+            9,
+            4
+          ]
+        },
+        {
+          "r": 12,
+          "headcount": 12,
+          "top3": [
+            8,
+            10,
+            3
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "nar",
+      "venue": "大井",
+      "day": "19",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/202611192000000000",
+      "races": [
+        {
+          "r": 1,
+          "headcount": 13,
+          "top3": [
+            3,
+            8,
+            4
+          ]
+        },
+        {
+          "r": 2,
+          "headcount": 12,
+          "top3": [
+            9,
+            4,
+            5
+          ]
+        },
+        {
+          "r": 3,
+          "headcount": 11,
+          "top3": [
+            1,
+            3,
+            7
+          ]
+        },
+        {
+          "r": 4,
+          "headcount": 14,
+          "top3": [
+            8,
+            10,
+            14
+          ]
+        },
+        {
+          "r": 5,
+          "headcount": 10,
+          "top3": [
+            9,
+            7,
+            3
+          ]
+        },
+        {
+          "r": 6,
+          "headcount": 14,
+          "top3": [
+            1,
+            7,
+            10
+          ]
+        },
+        {
+          "r": 7,
+          "headcount": 12,
+          "top3": [
+            6,
+            9,
+            1
+          ]
+        },
+        {
+          "r": 8,
+          "headcount": 14,
+          "top3": [
+            1,
+            4,
+            6
+          ]
+        },
+        {
+          "r": 9,
+          "headcount": 15,
+          "top3": [
+            8,
+            13,
+            4
+          ]
+        },
+        {
+          "r": 10,
+          "headcount": 12,
+          "top3": [
+            11,
+            6,
+            8
+          ]
+        },
+        {
+          "r": 11,
+          "headcount": 9,
+          "top3": [
+            8,
+            9,
+            5
+          ]
+        },
+        {
+          "r": 12,
+          "headcount": 12,
+          "top3": [
+            10,
+            9,
+            2
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "nar",
+      "venue": "笠松",
+      "day": "19",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/202611192300000000",
+      "races": [
+        {
+          "r": 1,
+          "headcount": 10,
+          "top3": [
+            8,
+            2,
+            5
+          ]
+        },
+        {
+          "r": 2,
+          "headcount": 12,
+          "top3": [
+            4,
+            7,
+            10
+          ]
+        },
+        {
+          "r": 3,
+          "headcount": 10,
+          "top3": [
+            10,
+            3,
+            1
+          ]
+        },
+        {
+          "r": 4,
+          "headcount": 10,
+          "top3": [
+            10,
+            6,
+            5
+          ]
+        },
+        {
+          "r": 5,
+          "headcount": 10,
+          "top3": [
+            10,
+            8,
+            6
+          ]
+        },
+        {
+          "r": 6,
+          "headcount": 10,
+          "top3": [
+            1,
+            5,
+            6
+          ]
+        },
+        {
+          "r": 7,
+          "headcount": 10,
+          "top3": [
+            10,
+            8,
+            4
+          ]
+        },
+        {
+          "r": 8,
+          "headcount": 12,
+          "top3": [
+            3,
+            8,
+            10
+          ]
+        },
+        {
+          "r": 9,
+          "headcount": 10,
+          "top3": [
+            8,
+            6,
+            9
+          ]
+        },
+        {
+          "r": 10,
+          "headcount": 9,
+          "top3": [
+            3,
+            1,
+            9
+          ]
+        },
+        {
+          "r": 11,
+          "headcount": 12,
+          "top3": [
+            10,
+            3,
+            5
+          ]
+        },
+        {
+          "r": 12,
+          "headcount": 10,
+          "top3": [
+            6,
+            9,
+            2
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "nar",
+      "venue": "佐賀",
+      "day": "01",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/202611013200000000",
+      "races": [
+        {
+          "r": 1,
+          "headcount": 8,
+          "top3": [
+            6,
+            3,
+            5
+          ]
+        },
+        {
+          "r": 2,
+          "headcount": 10,
+          "top3": [
+            5,
+            8,
+            1
+          ]
+        },
+        {
+          "r": 3,
+          "headcount": 12,
+          "top3": [
+            10,
+            8,
+            2
+          ]
+        },
+        {
+          "r": 4,
+          "headcount": 9,
+          "top3": [
+            2,
+            4,
+            8
+          ]
+        },
+        {
+          "r": 5,
+          "headcount": 11,
+          "top3": [
+            9,
+            10,
+            7
+          ]
+        },
+        {
+          "r": 6,
+          "headcount": 11,
+          "top3": [
+            8,
+            7,
+            11
+          ]
+        },
+        {
+          "r": 7,
+          "headcount": 12,
+          "top3": [
+            9,
+            1,
+            8
+          ]
+        },
+        {
+          "r": 8,
+          "headcount": 10,
+          "top3": [
+            4,
+            8,
+            1
+          ]
+        },
+        {
+          "r": 9,
+          "headcount": 10,
+          "top3": [
+            7,
+            6,
+            3
+          ]
+        },
+        {
+          "r": 10,
+          "headcount": 10,
+          "top3": [
+            10,
+            1,
+            8
+          ]
+        },
+        {
+          "r": 11,
+          "headcount": 10,
+          "top3": [
+            8,
+            2,
+            5
+          ]
+        },
+        {
+          "r": 12,
+          "headcount": 14,
+          "top3": [
+            10,
+            7,
+            14
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "nar",
+      "venue": "盛岡",
+      "day": "01",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/202611011000000000",
+      "races": [
+        {
+          "r": 1,
+          "headcount": 5,
+          "top3": [
+            1,
+            5,
+            3
+          ]
+        },
+        {
+          "r": 2,
+          "headcount": 12,
+          "top3": [
+            9,
+            3,
+            7
+          ]
+        },
+        {
+          "r": 3,
+          "headcount": 12,
+          "top3": [
+            6,
+            11,
+            2
+          ]
+        },
+        {
+          "r": 4,
+          "headcount": 12,
+          "top3": [
+            9,
+            3,
+            7
+          ]
+        },
+        {
+          "r": 5,
+          "headcount": 12,
+          "top3": [
+            5,
+            6,
+            10
+          ]
+        },
+        {
+          "r": 6,
+          "headcount": 12,
+          "top3": [
+            8,
+            9,
+            6
+          ]
+        },
+        {
+          "r": 7,
+          "headcount": 10,
+          "top3": [
+            5,
+            8,
+            2
+          ]
+        },
+        {
+          "r": 8,
+          "headcount": 12,
+          "top3": [
+            5,
+            11,
+            6
+          ]
+        },
+        {
+          "r": 9,
+          "headcount": 12,
+          "top3": [
+            2,
+            7,
+            1
+          ]
+        },
+        {
+          "r": 10,
+          "headcount": 9,
+          "top3": [
+            7,
+            9,
+            1
+          ]
+        },
+        {
+          "r": 11,
+          "headcount": 10,
+          "top3": [
+            8,
+            6,
+            3
+          ]
+        },
+        {
+          "r": 12,
+          "headcount": 9,
+          "top3": [
+            9,
+            1,
+            7
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "nar",
+      "venue": "高知",
+      "day": "01",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/202611013100000000",
+      "races": [
+        {
+          "r": 1,
+          "headcount": 7,
+          "top3": [
+            6,
+            7,
+            5
+          ]
+        },
+        {
+          "r": 2,
+          "headcount": 8,
+          "top3": [
+            3,
+            5,
+            6
+          ]
+        },
+        {
+          "r": 3,
+          "headcount": 9,
+          "top3": [
+            8,
+            1,
+            3
+          ]
+        },
+        {
+          "r": 4,
+          "headcount": 11,
+          "top3": [
+            10,
+            9,
+            3
+          ]
+        },
+        {
+          "r": 5,
+          "headcount": 11,
+          "top3": [
+            7,
+            10,
+            5
+          ]
+        },
+        {
+          "r": 6,
+          "headcount": 11,
+          "top3": [
+            7,
+            9,
+            10
+          ]
+        },
+        {
+          "r": 7,
+          "headcount": 10,
+          "top3": [
+            2,
+            7,
+            1
+          ]
+        },
+        {
+          "r": 8,
+          "headcount": 10,
+          "top3": [
+            5,
+            1,
+            2
+          ]
+        },
+        {
+          "r": 9,
+          "headcount": 12,
+          "top3": [
+            5,
+            1,
+            7
+          ]
+        },
+        {
+          "r": 10,
+          "headcount": 9,
+          "top3": [
+            1,
+            4,
+            9
+          ]
+        },
+        {
+          "r": 11,
+          "headcount": 11,
+          "top3": [
+            7,
+            6,
+            3
+          ]
+        },
+        {
+          "r": 12,
+          "headcount": 12,
+          "top3": [
+            3,
+            7,
+            12
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "nar",
+      "venue": "盛岡",
+      "day": "02",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/202611021000000000",
+      "races": [
+        {
+          "r": 1,
+          "headcount": 12,
+          "top3": [
+            4,
+            8,
+            6
+          ]
+        },
+        {
+          "r": 2,
+          "headcount": 12,
+          "top3": [
+            6,
+            8,
+            12
+          ]
+        },
+        {
+          "r": 3,
+          "headcount": 9,
+          "top3": [
+            6,
+            4,
+            7
+          ]
+        },
+        {
+          "r": 4,
+          "headcount": 9,
+          "top3": [
+            4,
+            2,
+            8
+          ]
+        },
+        {
+          "r": 5,
+          "headcount": 10,
+          "top3": [
+            2,
+            4,
+            3
+          ]
+        },
+        {
+          "r": 6,
+          "headcount": 12,
+          "top3": [
+            6,
+            4,
+            7
+          ]
+        },
+        {
+          "r": 7,
+          "headcount": 12,
+          "top3": [
+            12,
+            11,
+            5
+          ]
+        },
+        {
+          "r": 8,
+          "headcount": 10,
+          "top3": [
+            5,
+            9,
+            8
+          ]
+        },
+        {
+          "r": 9,
+          "headcount": 11,
+          "top3": [
+            7,
+            3,
+            1
+          ]
+        },
+        {
+          "r": 10,
+          "headcount": 11,
+          "top3": [
+            2,
+            4,
+            3
+          ]
+        },
+        {
+          "r": 11,
+          "headcount": 12,
+          "top3": [
+            3,
+            5,
+            2
+          ]
+        },
+        {
+          "r": 12,
+          "headcount": 12,
+          "top3": [
+            3,
+            2,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "nar",
+      "venue": "笠松",
+      "day": "02",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/202611022300000000",
+      "races": [
+        {
+          "r": 1,
+          "headcount": 9,
+          "top3": [
+            5,
+            4,
+            8
+          ]
+        },
+        {
+          "r": 2,
+          "headcount": 10,
+          "top3": [
+            4,
+            5,
+            9
+          ]
+        },
+        {
+          "r": 3,
+          "headcount": 10,
+          "top3": [
+            1,
+            6,
+            2
+          ]
+        },
+        {
+          "r": 4,
+          "headcount": 10,
+          "top3": [
+            4,
+            6,
+            2
+          ]
+        },
+        {
+          "r": 5,
+          "headcount": 10,
+          "top3": [
+            5,
+            9,
+            3
+          ]
+        },
+        {
+          "r": 6,
+          "headcount": 11,
+          "top3": [
+            9,
+            2,
+            8
+          ]
+        },
+        {
+          "r": 7,
+          "headcount": 10,
+          "top3": [
+            8,
+            7,
+            5
+          ]
+        },
+        {
+          "r": 8,
+          "headcount": 9,
+          "top3": [
+            5,
+            6,
+            4
+          ]
+        },
+        {
+          "r": 9,
+          "headcount": 12,
+          "top3": [
+            8,
+            1,
+            12
+          ]
+        },
+        {
+          "r": 10,
+          "headcount": 10,
+          "top3": [
+            6,
+            10,
+            5
+          ]
+        },
+        {
+          "r": 11,
+          "headcount": 10,
+          "top3": [
+            9,
+            7,
+            3
+          ]
+        },
+        {
+          "r": 12,
+          "headcount": 12,
+          "top3": [
+            7,
+            9,
+            12
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "nar",
+      "venue": "船橋",
+      "day": "02",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/202611021900000000",
+      "races": [
+        {
+          "r": 1,
+          "headcount": 12,
+          "top3": [
+            2,
+            8,
+            12
+          ]
+        },
+        {
+          "r": 2,
+          "headcount": 12,
+          "top3": [
+            10,
+            6,
+            1
+          ]
+        },
+        {
+          "r": 3,
+          "headcount": 7,
+          "top3": [
+            6,
+            1,
+            5
+          ]
+        },
+        {
+          "r": 4,
+          "headcount": 9,
+          "top3": [
+            4,
+            7,
+            1
+          ]
+        },
+        {
+          "r": 5,
+          "headcount": 9,
+          "top3": [
+            4,
+            1,
+            6
+          ]
+        },
+        {
+          "r": 6,
+          "headcount": 11,
+          "top3": [
+            6,
+            4,
+            3
+          ]
+        },
+        {
+          "r": 7,
+          "headcount": 11,
+          "top3": [
+            8,
+            1,
+            5
+          ]
+        },
+        {
+          "r": 8,
+          "headcount": 12,
+          "top3": [
+            4,
+            7,
+            12
+          ]
+        },
+        {
+          "r": 9,
+          "headcount": 11,
+          "top3": [
+            11,
+            3,
+            7
+          ]
+        },
+        {
+          "r": 10,
+          "headcount": 12,
+          "top3": [
+            6,
+            5,
+            3
+          ]
+        },
+        {
+          "r": 11,
+          "headcount": 13,
+          "top3": [
+            10,
+            6,
+            8
+          ]
+        },
+        {
+          "r": 12,
+          "headcount": 11,
+          "top3": [
+            2,
+            7,
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "nar",
+      "venue": "船橋",
+      "day": "03",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/202611031900000000",
+      "races": [
+        {
+          "r": 1,
+          "headcount": 10,
+          "top3": [
+            6,
+            9,
+            10
+          ]
+        },
+        {
+          "r": 2,
+          "headcount": 10,
+          "top3": [
+            8,
+            9,
+            5
+          ]
+        },
+        {
+          "r": 3,
+          "headcount": 14,
+          "top3": [
+            5,
+            11,
+            3
+          ]
+        },
+        {
+          "r": 4,
+          "headcount": 12,
+          "top3": [
+            12,
+            8,
+            9
+          ]
+        },
+        {
+          "r": 5,
+          "headcount": 12,
+          "top3": [
+            5,
+            4,
+            9
+          ]
+        },
+        {
+          "r": 6,
+          "headcount": 11,
+          "top3": [
+            11,
+            9,
+            6
+          ]
+        },
+        {
+          "r": 7,
+          "headcount": 14,
+          "top3": [
+            10,
+            12,
+            3
+          ]
+        },
+        {
+          "r": 8,
+          "headcount": 12,
+          "top3": [
+            7,
+            12,
+            2
+          ]
+        },
+        {
+          "r": 9,
+          "headcount": 11,
+          "top3": [
+            8,
+            9,
+            11
+          ]
+        },
+        {
+          "r": 10,
+          "headcount": 14,
+          "top3": [
+            4,
+            2,
+            12
+          ]
+        },
+        {
+          "r": 11,
+          "headcount": 14,
+          "top3": [
+            9,
+            6,
+            10
+          ]
+        },
+        {
+          "r": 12,
+          "headcount": 14,
+          "top3": [
+            12,
+            10,
+            6
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "nar",
+      "venue": "金沢",
+      "day": "03",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/202611032200000000",
+      "races": [
+        {
+          "r": 1,
+          "headcount": 10,
+          "top3": [
+            8,
+            1,
+            4
+          ]
+        },
+        {
+          "r": 2,
+          "headcount": 12,
+          "top3": [
+            9,
+            7,
+            12
+          ]
+        },
+        {
+          "r": 3,
+          "headcount": 12,
+          "top3": [
+            2,
+            6,
+            7
+          ]
+        },
+        {
+          "r": 4,
+          "headcount": 12,
+          "top3": [
+            3,
+            2,
+            8
+          ]
+        },
+        {
+          "r": 5,
+          "headcount": 10,
+          "top3": [
+            10,
+            6,
+            2
+          ]
+        },
+        {
+          "r": 6,
+          "headcount": 12,
+          "top3": [
+            4,
+            10,
+            3
+          ]
+        },
+        {
+          "r": 7,
+          "headcount": 12,
+          "top3": [
+            9,
+            5,
+            12
+          ]
+        },
+        {
+          "r": 8,
+          "headcount": 12,
+          "top3": [
+            11,
+            10,
+            5
+          ]
+        },
+        {
+          "r": 9,
+          "headcount": 12,
+          "top3": [
+            2,
+            10,
+            6
+          ]
+        },
+        {
+          "r": 10,
+          "headcount": 8,
+          "top3": [
+            5,
+            8,
+            6
+          ]
+        },
+        {
+          "r": 11,
+          "headcount": 10,
+          "top3": [
+            5,
+            3,
+            6
+          ]
+        },
+        {
+          "r": 12,
+          "headcount": 10,
+          "top3": [
+            1,
+            8,
+            7
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "nar",
+      "venue": "門別",
+      "day": "03",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/202611033600000000",
+      "races": [
+        {
+          "r": 1,
+          "headcount": 8,
+          "top3": [
+            2,
+            7,
+            3
+          ]
+        },
+        {
+          "r": 2,
+          "headcount": 8,
+          "top3": [
+            5,
+            4,
+            7
+          ]
+        },
+        {
+          "r": 3,
+          "headcount": 12,
+          "top3": [
+            3,
+            4,
+            1
+          ]
+        },
+        {
+          "r": 4,
+          "headcount": 10,
+          "top3": [
+            1,
+            8,
+            10
+          ]
+        },
+        {
+          "r": 5,
+          "headcount": 12,
+          "top3": [
+            7,
+            1,
+            12
+          ]
+        },
+        {
+          "r": 6,
+          "headcount": 12,
+          "top3": [
+            4,
+            3,
+            8
+          ]
+        },
+        {
+          "r": 7,
+          "headcount": 12,
+          "top3": [
+            6,
+            1,
+            4
+          ]
+        },
+        {
+          "r": 8,
+          "headcount": 10,
+          "top3": [
+            1,
+            3,
+            8
+          ]
+        },
+        {
+          "r": 9,
+          "headcount": 11,
+          "top3": [
+            1,
+            6,
+            9
+          ]
+        },
+        {
+          "r": 10,
+          "headcount": 13,
+          "top3": [
+            11,
+            13,
+            8
+          ]
+        },
+        {
+          "r": 11,
+          "headcount": 10,
+          "top3": [
+            5,
+            8,
+            3
+          ]
+        },
+        {
+          "r": 12,
+          "headcount": 12,
+          "top3": [
+            11,
+            12,
+            3
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "nar",
+      "venue": "園田",
+      "day": "04",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/202611042700000000",
+      "races": [
+        {
+          "r": 1,
+          "headcount": 12,
+          "top3": [
+            10,
+            11,
+            3
+          ]
+        },
+        {
+          "r": 2,
+          "headcount": 10,
+          "top3": [
+            2,
+            3,
+            10
+          ]
+        },
+        {
+          "r": 3,
+          "headcount": 7,
+          "top3": [
+            5,
+            4,
+            1
+          ]
+        },
+        {
+          "r": 4,
+          "headcount": 12,
+          "top3": [
+            6,
+            2,
+            8
+          ]
+        },
+        {
+          "r": 5,
+          "headcount": 12,
+          "top3": [
+            11,
+            6,
+            9
+          ]
+        },
+        {
+          "r": 6,
+          "headcount": 12,
+          "top3": [
+            10,
+            2,
+            7
+          ]
+        },
+        {
+          "r": 7,
+          "headcount": 10,
+          "top3": [
+            10,
+            5,
+            4
+          ]
+        },
+        {
+          "r": 8,
+          "headcount": 9,
+          "top3": [
+            9,
+            4,
+            7
+          ]
+        },
+        {
+          "r": 9,
+          "headcount": 10,
+          "top3": [
+            9,
+            6,
+            7
+          ]
+        },
+        {
+          "r": 10,
+          "headcount": 12,
+          "top3": [
+            11,
+            10,
+            5
+          ]
+        },
+        {
+          "r": 11,
+          "headcount": 12,
+          "top3": [
+            4,
+            9,
+            7
+          ]
+        },
+        {
+          "r": 12,
+          "headcount": 12,
+          "top3": [
+            11,
+            9,
+            2
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "nar",
+      "venue": "盛岡",
+      "day": "04",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/202611041000000000",
+      "races": [
+        {
+          "r": 1,
+          "headcount": 11,
+          "top3": [
+            5,
+            1,
+            7
+          ]
+        },
+        {
+          "r": 2,
+          "headcount": 11,
+          "top3": [
+            4,
+            1,
+            5
+          ]
+        },
+        {
+          "r": 3,
+          "headcount": 11,
+          "top3": [
+            6,
+            1,
+            4
+          ]
+        },
+        {
+          "r": 4,
+          "headcount": 11,
+          "top3": [
+            3,
+            5,
+            7
+          ]
+        },
+        {
+          "r": 5,
+          "headcount": 10,
+          "top3": [
+            7,
+            1,
+            8
+          ]
+        },
+        {
+          "r": 6,
+          "headcount": 12,
+          "top3": [
+            5,
+            9,
+            3
+          ]
+        },
+        {
+          "r": 7,
+          "headcount": 12,
+          "top3": [
+            4,
+            7,
+            5
+          ]
+        },
+        {
+          "r": 8,
+          "headcount": 12,
+          "top3": [
+            1,
+            11,
+            8
+          ]
+        },
+        {
+          "r": 9,
+          "headcount": 12,
+          "top3": [
+            11,
+            9,
+            1
+          ]
+        },
+        {
+          "r": 10,
+          "headcount": 12,
+          "top3": [
+            6,
+            11,
+            3
+          ]
+        },
+        {
+          "r": 11,
+          "headcount": 10,
+          "top3": [
+            1,
+            7,
+            3
+          ]
+        },
+        {
+          "r": 12,
+          "headcount": 10,
+          "top3": [
+            6,
+            8,
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "nar",
+      "venue": "船橋",
+      "day": "04",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/202611041900000000",
+      "races": [
+        {
+          "r": 1,
+          "headcount": 12,
+          "top3": [
+            4,
+            8,
+            11
+          ]
+        },
+        {
+          "r": 2,
+          "headcount": 12,
+          "top3": [
+            9,
+            12,
+            6
+          ]
+        },
+        {
+          "r": 3,
+          "headcount": 12,
+          "top3": [
+            11,
+            10,
+            6
+          ]
+        },
+        {
+          "r": 4,
+          "headcount": 12,
+          "top3": [
+            11,
+            12,
+            2
+          ]
+        },
+        {
+          "r": 5,
+          "headcount": 12,
+          "top3": [
+            8,
+            9,
+            7
+          ]
+        },
+        {
+          "r": 6,
+          "headcount": 11,
+          "top3": [
+            3,
+            9,
+            2
+          ]
+        },
+        {
+          "r": 7,
+          "headcount": 14,
+          "top3": [
+            2,
+            13,
+            6
+          ]
+        },
+        {
+          "r": 8,
+          "headcount": 14,
+          "top3": [
+            14,
+            9,
+            6
+          ]
+        },
+        {
+          "r": 9,
+          "headcount": 10,
+          "top3": [
+            3,
+            1,
+            10
+          ]
+        },
+        {
+          "r": 10,
+          "headcount": 11,
+          "top3": [
+            7,
+            11,
+            1
+          ]
+        },
+        {
+          "r": 11,
+          "headcount": 11,
+          "top3": [
+            9,
+            2,
+            3
+          ]
+        },
+        {
+          "r": 12,
+          "headcount": 14,
+          "top3": [
+            12,
+            3,
+            7
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "nar",
+      "venue": "金沢",
+      "day": "04",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/202611042200000000",
+      "races": [
+        {
+          "r": 1,
+          "headcount": 11,
+          "top3": [
+            9,
+            10,
+            4
+          ]
+        },
+        {
+          "r": 2,
+          "headcount": 10,
+          "top3": [
+            4,
+            5,
+            7
+          ]
+        },
+        {
+          "r": 3,
+          "headcount": 10,
+          "top3": [
+            8,
+            4,
+            5
+          ]
+        },
+        {
+          "r": 4,
+          "headcount": 8,
+          "top3": [
+            6,
+            8,
+            7
+          ]
+        },
+        {
+          "r": 5,
+          "headcount": 10,
+          "top3": [
+            8,
+            5,
+            1
+          ]
+        },
+        {
+          "r": 6,
+          "headcount": 9,
+          "top3": [
+            4,
+            5,
+            7
+          ]
+        },
+        {
+          "r": 7,
+          "headcount": 9,
+          "top3": [
+            8,
+            5,
+            9
+          ]
+        },
+        {
+          "r": 8,
+          "headcount": 6,
+          "top3": [
+            6,
+            4,
+            5
+          ]
+        },
+        {
+          "r": 9,
+          "headcount": 9,
+          "top3": [
+            8,
+            4,
+            7
+          ]
+        },
+        {
+          "r": 10,
+          "headcount": 10,
+          "top3": [
+            7,
+            6,
+            2
+          ]
+        },
+        {
+          "r": 11,
+          "headcount": 9,
+          "top3": [
+            6,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "nar",
+      "venue": "門別",
+      "day": "04",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/202611043600000000",
+      "races": [
+        {
+          "r": 1,
+          "headcount": 10,
+          "top3": [
+            10,
+            6,
+            4
+          ]
+        },
+        {
+          "r": 2,
+          "headcount": 12,
+          "top3": [
+            4,
+            7,
+            8
+          ]
+        },
+        {
+          "r": 3,
+          "headcount": 10,
+          "top3": [
+            3,
+            8,
+            5
+          ]
+        },
+        {
+          "r": 4,
+          "headcount": 10,
+          "top3": [
+            10,
+            2,
+            7
+          ]
+        },
+        {
+          "r": 5,
+          "headcount": 12,
+          "top3": [
+            10,
+            8,
+            2
+          ]
+        },
+        {
+          "r": 6,
+          "headcount": 12,
+          "top3": [
+            2,
+            4,
+            1
+          ]
+        },
+        {
+          "r": 7,
+          "headcount": 12,
+          "top3": [
+            7,
+            5,
+            8
+          ]
+        },
+        {
+          "r": 8,
+          "headcount": 5,
+          "top3": [
+            4,
+            3,
+            2
+          ]
+        },
+        {
+          "r": 9,
+          "headcount": 12,
+          "top3": [
+            8,
+            3,
+            5
+          ]
+        },
+        {
+          "r": 10,
+          "headcount": 9,
+          "top3": [
+            3,
+            2,
+            5
+          ]
+        },
+        {
+          "r": 11,
+          "headcount": 9,
+          "top3": [
+            5,
+            8,
+            9
+          ]
+        },
+        {
+          "r": 12,
+          "headcount": 15,
+          "top3": [
+            10,
+            6,
+            13
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "nar",
+      "venue": "園田",
+      "day": "05",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/202611052700000000",
+      "races": [
+        {
+          "r": 1,
+          "headcount": 10,
+          "top3": [
+            9,
+            10,
+            6
+          ]
+        },
+        {
+          "r": 2,
+          "headcount": 10,
+          "top3": [
+            5,
+            8,
+            7
+          ]
+        },
+        {
+          "r": 3,
+          "headcount": 11,
+          "top3": [
+            6,
+            1,
+            11
+          ]
+        },
+        {
+          "r": 4,
+          "headcount": 10,
+          "top3": [
+            10,
+            8,
+            9
+          ]
+        },
+        {
+          "r": 5,
+          "headcount": 12,
+          "top3": [
+            10,
+            11,
+            8
+          ]
+        },
+        {
+          "r": 6,
+          "headcount": 10,
+          "top3": [
+            1,
+            9,
+            6
+          ]
+        },
+        {
+          "r": 7,
+          "headcount": 10,
+          "top3": [
+            4,
+            9,
+            3
+          ]
+        },
+        {
+          "r": 8,
+          "headcount": 10,
+          "top3": [
+            3,
+            1,
+            5
+          ]
+        },
+        {
+          "r": 9,
+          "headcount": 10,
+          "top3": [
+            2,
+            1,
+            10
+          ]
+        },
+        {
+          "r": 10,
+          "headcount": 12,
+          "top3": [
+            10,
+            5,
+            8
+          ]
+        },
+        {
+          "r": 11,
+          "headcount": 11,
+          "top3": [
+            9,
+            4,
+            2
+          ]
+        },
+        {
+          "r": 12,
+          "headcount": 12,
+          "top3": [
+            11,
+            6,
+            10
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "nar",
+      "venue": "笠松",
+      "day": "05",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/202611052300000000",
+      "races": [
+        {
+          "r": 1,
+          "headcount": 10,
+          "top3": [
+            1,
+            7,
+            5
+          ]
+        },
+        {
+          "r": 2,
+          "headcount": 9,
+          "top3": [
+            6,
+            5,
+            2
+          ]
+        },
+        {
+          "r": 3,
+          "headcount": 9,
+          "top3": [
+            8,
+            9,
+            5
+          ]
+        },
+        {
+          "r": 4,
+          "headcount": 9,
+          "top3": [
+            7,
+            2,
+            5
+          ]
+        },
+        {
+          "r": 5,
+          "headcount": 10,
+          "top3": [
+            1,
+            10,
+            2
+          ]
+        },
+        {
+          "r": 6,
+          "headcount": 10,
+          "top3": [
+            2,
+            5,
+            6
+          ]
+        },
+        {
+          "r": 7,
+          "headcount": 10,
+          "top3": [
+            4,
+            8,
+            5
+          ]
+        },
+        {
+          "r": 8,
+          "headcount": 10,
+          "top3": [
+            6,
+            2,
+            9
+          ]
+        },
+        {
+          "r": 9,
+          "headcount": 8,
+          "top3": [
+            3,
+            5,
+            8
+          ]
+        },
+        {
+          "r": 10,
+          "headcount": 10,
+          "top3": [
+            9,
+            8,
+            10
+          ]
+        },
+        {
+          "r": 11,
+          "headcount": 9,
+          "top3": [
+            2,
+            5,
+            9
+          ]
+        },
+        {
+          "r": 12,
+          "headcount": 10,
+          "top3": [
+            10,
+            7,
+            3
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "nar",
+      "venue": "船橋",
+      "day": "05",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/202611051900000000",
+      "races": [
+        {
+          "r": 1,
+          "headcount": 12,
+          "top3": [
+            12,
+            11,
+            7
+          ]
+        },
+        {
+          "r": 2,
+          "headcount": 12,
+          "top3": [
+            4,
+            9,
+            2
+          ]
+        },
+        {
+          "r": 3,
+          "headcount": 6,
+          "top3": [
+            6,
+            4,
+            3
+          ]
+        },
+        {
+          "r": 4,
+          "headcount": 12,
+          "top3": [
+            12,
+            9,
+            6
+          ]
+        },
+        {
+          "r": 5,
+          "headcount": 7,
+          "top3": [
+            5,
+            6,
+            3
+          ]
+        },
+        {
+          "r": 6,
+          "headcount": 11,
+          "top3": [
+            2,
+            6,
+            7
+          ]
+        },
+        {
+          "r": 7,
+          "headcount": 12,
+          "top3": [
+            5,
+            4,
+            6
+          ]
+        },
+        {
+          "r": 8,
+          "headcount": 12,
+          "top3": [
+            11,
+            7,
+            12
+          ]
+        },
+        {
+          "r": 9,
+          "headcount": 10,
+          "top3": [
+            5,
+            7,
+            10
+          ]
+        },
+        {
+          "r": 10,
+          "headcount": 14,
+          "top3": [
+            6,
+            9,
+            13
+          ]
+        },
+        {
+          "r": 11,
+          "headcount": 14,
+          "top3": [
+            14,
+            10,
+            6
+          ]
+        },
+        {
+          "r": 12,
+          "headcount": 14,
+          "top3": [
+            10,
+            3,
+            11
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "nar",
+      "venue": "門別",
+      "day": "05",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/202611053600000000",
+      "races": [
+        {
+          "r": 1,
+          "headcount": 11,
+          "top3": [
+            5,
+            10,
+            3
+          ]
+        },
+        {
+          "r": 2,
+          "headcount": 12,
+          "top3": [
+            11,
+            8,
+            12
+          ]
+        },
+        {
+          "r": 3,
+          "headcount": 9,
+          "top3": [
+            7,
+            5,
+            4
+          ]
+        },
+        {
+          "r": 4,
+          "headcount": 9,
+          "top3": [
+            1,
+            6,
+            7
+          ]
+        },
+        {
+          "r": 5,
+          "headcount": 11,
+          "top3": [
+            3,
+            4,
+            6
+          ]
+        },
+        {
+          "r": 6,
+          "headcount": 12,
+          "top3": [
+            12,
+            9,
+            7
+          ]
+        },
+        {
+          "r": 7,
+          "headcount": 12,
+          "top3": [
+            2,
+            6,
+            4
+          ]
+        },
+        {
+          "r": 8,
+          "headcount": 9,
+          "top3": [
+            8,
+            6,
+            5
+          ]
+        },
+        {
+          "r": 9,
+          "headcount": 8,
+          "top3": [
+            6,
+            4,
+            5
+          ]
+        },
+        {
+          "r": 10,
+          "headcount": 10,
+          "top3": [
+            9,
+            8,
+            10
+          ]
+        },
+        {
+          "r": 11,
+          "headcount": 8,
+          "top3": [
+            6,
+            7,
+            3
+          ]
+        },
+        {
+          "r": 12,
+          "headcount": 11,
+          "top3": [
+            10,
+            4,
+            8
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "nar",
+      "venue": "園田",
+      "day": "06",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/202611062700000000",
+      "races": [
+        {
+          "r": 1,
+          "headcount": 9,
+          "top3": [
+            9,
+            6,
+            8
+          ]
+        },
+        {
+          "r": 2,
+          "headcount": 7,
+          "top3": [
+            6,
+            3,
+            5
+          ]
+        },
+        {
+          "r": 3,
+          "headcount": 9,
+          "top3": [
+            5,
+            9,
+            2
+          ]
+        },
+        {
+          "r": 4,
+          "headcount": 10,
+          "top3": [
+            5,
+            2,
+            8
+          ]
+        },
+        {
+          "r": 5,
+          "headcount": 12,
+          "top3": [
+            5,
+            4,
+            10
+          ]
+        },
+        {
+          "r": 6,
+          "headcount": 12,
+          "top3": [
+            3,
+            12,
+            4
+          ]
+        },
+        {
+          "r": 7,
+          "headcount": 7,
+          "top3": [
+            7,
+            6,
+            4
+          ]
+        },
+        {
+          "r": 8,
+          "headcount": 8,
+          "top3": [
+            6,
+            7,
+            1
+          ]
+        },
+        {
+          "r": 9,
+          "headcount": 9,
+          "top3": [
+            9,
+            6,
+            7
+          ]
+        },
+        {
+          "r": 10,
+          "headcount": 10,
+          "top3": [
+            4,
+            1,
+            9
+          ]
+        },
+        {
+          "r": 11,
+          "headcount": 12,
+          "top3": [
+            12,
+            6,
+            1
+          ]
+        },
+        {
+          "r": 12,
+          "headcount": 12,
+          "top3": [
+            9,
+            12,
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "nar",
+      "venue": "笠松",
+      "day": "06",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/202611062300000000",
+      "races": [
+        {
+          "r": 1,
+          "headcount": 11,
+          "top3": [
+            5,
+            2,
+            8
+          ]
+        },
+        {
+          "r": 2,
+          "headcount": 10,
+          "top3": [
+            5,
+            3,
+            4
+          ]
+        },
+        {
+          "r": 3,
+          "headcount": 10,
+          "top3": [
+            7,
+            9,
+            4
+          ]
+        },
+        {
+          "r": 4,
+          "headcount": 12,
+          "top3": [
+            10,
+            8,
+            4
+          ]
+        },
+        {
+          "r": 5,
+          "headcount": 10,
+          "top3": [
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "r": 6,
+          "headcount": 10,
+          "top3": [
+            4,
+            5,
+            6
+          ]
+        },
+        {
+          "r": 7,
+          "headcount": 10,
+          "top3": [
+            2,
+            5,
+            6
+          ]
+        },
+        {
+          "r": 8,
+          "headcount": 10,
+          "top3": [
+            4,
+            2,
+            3
+          ]
+        },
+        {
+          "r": 9,
+          "headcount": 10,
+          "top3": [
+            8,
+            7,
+            5
+          ]
+        },
+        {
+          "r": 10,
+          "headcount": 10,
+          "top3": [
+            9,
+            3,
+            5
+          ]
+        },
+        {
+          "r": 11,
+          "headcount": 10,
+          "top3": [
+            5,
+            6,
+            8
+          ]
+        },
+        {
+          "r": 12,
+          "headcount": 10,
+          "top3": [
+            1,
+            10,
+            8
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "nar",
+      "venue": "船橋",
+      "day": "06",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/202611061900000000",
+      "races": [
+        {
+          "r": 1,
+          "headcount": 10,
+          "top3": [
+            10,
+            4,
+            1
+          ]
+        },
+        {
+          "r": 2,
+          "headcount": 9,
+          "top3": [
+            6,
+            5,
+            1
+          ]
+        },
+        {
+          "r": 3,
+          "headcount": 9,
+          "top3": [
+            7,
+            6,
+            2
+          ]
+        },
+        {
+          "r": 4,
+          "headcount": 10,
+          "top3": [
+            7,
+            8,
+            9
+          ]
+        },
+        {
+          "r": 5,
+          "headcount": 12,
+          "top3": [
+            4,
+            9,
+            2
+          ]
+        },
+        {
+          "r": 6,
+          "headcount": 13,
+          "top3": [
+            13,
+            8,
+            7
+          ]
+        },
+        {
+          "r": 7,
+          "headcount": 12,
+          "top3": [
+            7,
+            12,
+            6
+          ]
+        },
+        {
+          "r": 8,
+          "headcount": 12,
+          "top3": [
+            10,
+            12,
+            11
+          ]
+        },
+        {
+          "r": 9,
+          "headcount": 12,
+          "top3": [
+            4,
+            3,
+            6
+          ]
+        },
+        {
+          "r": 10,
+          "headcount": 14,
+          "top3": [
+            1,
+            11,
+            10
+          ]
+        },
+        {
+          "r": 11,
+          "headcount": 14,
+          "top3": [
+            2,
+            4,
+            10
+          ]
+        },
+        {
+          "r": 12,
+          "headcount": 12,
+          "top3": [
+            2,
+            3,
+            5
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "nar",
+      "venue": "佐賀",
+      "day": "07",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/202611073200000000",
+      "races": [
+        {
+          "r": 1,
+          "headcount": 10,
+          "top3": [
+            10,
+            1,
+            6
+          ]
+        },
+        {
+          "r": 2,
+          "headcount": 7,
+          "top3": [
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "r": 3,
+          "headcount": 10,
+          "top3": [
+            6,
+            9,
+            7
+          ]
+        },
+        {
+          "r": 4,
+          "headcount": 8,
+          "top3": [
+            7,
+            3,
+            1
+          ]
+        },
+        {
+          "r": 5,
+          "headcount": 11,
+          "top3": [
+            11,
+            8,
+            9
+          ]
+        },
+        {
+          "r": 6,
+          "headcount": 12,
+          "top3": [
+            2,
+            10,
+            7
+          ]
+        },
+        {
+          "r": 7,
+          "headcount": 11,
+          "top3": [
+            7,
+            6,
+            11
+          ]
+        },
+        {
+          "r": 8,
+          "headcount": 11,
+          "top3": [
+            9,
+            10,
+            11
+          ]
+        },
+        {
+          "r": 9,
+          "headcount": 11,
+          "top3": [
+            3,
+            1,
+            9
+          ]
+        },
+        {
+          "r": 10,
+          "headcount": 10,
+          "top3": [
+            7,
+            10,
+            6
+          ]
+        },
+        {
+          "r": 11,
+          "headcount": 14,
+          "top3": [
+            12,
+            11,
+            3
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "nar",
+      "venue": "高知",
+      "day": "07",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/202611073100000000",
+      "races": [
+        {
+          "r": 1,
+          "headcount": 11,
+          "top3": [
+            11,
+            9,
+            8
+          ]
+        },
+        {
+          "r": 2,
+          "headcount": 8,
+          "top3": [
+            8,
+            6,
+            2
+          ]
+        },
+        {
+          "r": 3,
+          "headcount": 10,
+          "top3": [
+            6,
+            9,
+            10
+          ]
+        },
+        {
+          "r": 4,
+          "headcount": 11,
+          "top3": [
+            3,
+            9,
+            10
+          ]
+        },
+        {
+          "r": 5,
+          "headcount": 10,
+          "top3": [
+            7,
+            10,
+            1
+          ]
+        },
+        {
+          "r": 6,
+          "headcount": 11,
+          "top3": [
+            8,
+            7,
+            4
+          ]
+        },
+        {
+          "r": 7,
+          "headcount": 9,
+          "top3": [
+            2,
+            5,
+            1
+          ]
+        },
+        {
+          "r": 8,
+          "headcount": 11,
+          "top3": [
+            10,
+            8,
+            4
+          ]
+        },
+        {
+          "r": 9,
+          "headcount": 8,
+          "top3": [
+            1,
+            4,
+            2
+          ]
+        },
+        {
+          "r": 10,
+          "headcount": 10,
+          "top3": [
+            8,
+            9,
+            3
+          ]
+        },
+        {
+          "r": 11,
+          "headcount": 10,
+          "top3": [
+            2,
+            6,
+            1
+          ]
+        },
+        {
+          "r": 12,
+          "headcount": 12,
+          "top3": [
+            4,
+            11,
+            7
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "nar",
+      "venue": "佐賀",
+      "day": "08",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/202611083200000000",
+      "races": [
+        {
+          "r": 1,
+          "headcount": 10,
+          "top3": [
+            7,
+            10,
+            1
+          ]
+        },
+        {
+          "r": 2,
+          "headcount": 11,
+          "top3": [
+            5,
+            6,
+            11
+          ]
+        },
+        {
+          "r": 3,
+          "headcount": 11,
+          "top3": [
+            1,
+            11,
+            2
+          ]
+        },
+        {
+          "r": 4,
+          "headcount": 10,
+          "top3": [
+            10,
+            4,
+            9
+          ]
+        },
+        {
+          "r": 5,
+          "headcount": 12,
+          "top3": [
+            3,
+            2,
+            11
+          ]
+        },
+        {
+          "r": 6,
+          "headcount": 11,
+          "top3": [
+            10,
+            11,
+            2
+          ]
+        },
+        {
+          "r": 7,
+          "headcount": 12,
+          "top3": [
+            11,
+            9,
+            7
+          ]
+        },
+        {
+          "r": 8,
+          "headcount": 11,
+          "top3": [
+            6,
+            10,
+            3
+          ]
+        },
+        {
+          "r": 9,
+          "headcount": 10,
+          "top3": [
+            3,
+            8,
+            10
+          ]
+        },
+        {
+          "r": 10,
+          "headcount": 10,
+          "top3": [
+            5,
+            3,
+            8
+          ]
+        },
+        {
+          "r": 11,
+          "headcount": 14,
+          "top3": [
+            8,
+            14,
+            6
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "nar",
+      "venue": "盛岡",
+      "day": "08",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/202611081000000000",
+      "races": [
+        {
+          "r": 1,
+          "headcount": 12,
+          "top3": [
+            12,
+            11,
+            7
+          ]
+        },
+        {
+          "r": 2,
+          "headcount": 10,
+          "top3": [
+            10,
+            4,
+            3
+          ]
+        },
+        {
+          "r": 3,
+          "headcount": 10,
+          "top3": [
+            4,
+            7,
+            6
+          ]
+        },
+        {
+          "r": 4,
+          "headcount": 10,
+          "top3": [
+            4,
+            9,
+            2
+          ]
+        },
+        {
+          "r": 5,
+          "headcount": 11,
+          "top3": [
+            9,
+            3,
+            6
+          ]
+        },
+        {
+          "r": 6,
+          "headcount": 9,
+          "top3": [
+            2,
+            8,
+            1
+          ]
+        },
+        {
+          "r": 7,
+          "headcount": 12,
+          "top3": [
+            9,
+            10,
+            4
+          ]
+        },
+        {
+          "r": 8,
+          "headcount": 12,
+          "top3": [
+            6,
+            2,
+            7
+          ]
+        },
+        {
+          "r": 9,
+          "headcount": 12,
+          "top3": [
+            7,
+            8,
+            5
+          ]
+        },
+        {
+          "r": 10,
+          "headcount": 10,
+          "top3": [
+            6,
+            10,
+            2
+          ]
+        },
+        {
+          "r": 11,
+          "headcount": 9,
+          "top3": [
+            1,
+            8,
+            6
+          ]
+        },
+        {
+          "r": 12,
+          "headcount": 10,
+          "top3": [
+            7,
+            5,
+            3
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "nar",
+      "venue": "高知",
+      "day": "08",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/202611083100000000",
+      "races": [
+        {
+          "r": 1,
+          "headcount": 10,
+          "top3": [
+            5,
+            3,
+            7
+          ]
+        },
+        {
+          "r": 2,
+          "headcount": 9,
+          "top3": [
+            3,
+            2,
+            6
+          ]
+        },
+        {
+          "r": 3,
+          "headcount": 8,
+          "top3": [
+            7,
+            8,
+            5
+          ]
+        },
+        {
+          "r": 4,
+          "headcount": 9,
+          "top3": [
+            3,
+            5,
+            9
+          ]
+        },
+        {
+          "r": 5,
+          "headcount": 10,
+          "top3": [
+            6,
+            10,
+            7
+          ]
+        },
+        {
+          "r": 6,
+          "headcount": 11,
+          "top3": [
+            7,
+            5,
+            10
+          ]
+        },
+        {
+          "r": 7,
+          "headcount": 11,
+          "top3": [
+            4,
+            3,
+            2
+          ]
+        },
+        {
+          "r": 8,
+          "headcount": 10,
+          "top3": [
+            7,
+            1,
+            8
+          ]
+        },
+        {
+          "r": 9,
+          "headcount": 9,
+          "top3": [
+            6,
+            4,
+            5
+          ]
+        },
+        {
+          "r": 10,
+          "headcount": 8,
+          "top3": [
+            6,
+            4,
+            8
+          ]
+        },
+        {
+          "r": 11,
+          "headcount": 7,
+          "top3": [
+            7,
+            2,
+            5
+          ]
+        },
+        {
+          "r": 12,
+          "headcount": 12,
+          "top3": [
+            4,
+            7,
+            12
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "nar",
+      "venue": "佐賀",
+      "day": "09",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/202611093200000000",
+      "races": [
+        {
+          "r": 1,
+          "headcount": 9,
+          "top3": [
+            8,
+            2,
+            7
+          ]
+        },
+        {
+          "r": 2,
+          "headcount": 8,
+          "top3": [
+            8,
+            1,
+            2
+          ]
+        },
+        {
+          "r": 3,
+          "headcount": 11,
+          "top3": [
+            1,
+            6,
+            4
+          ]
+        },
+        {
+          "r": 4,
+          "headcount": 12,
+          "top3": [
+            4,
+            10,
+            3
+          ]
+        },
+        {
+          "r": 5,
+          "headcount": 12,
+          "top3": [
+            8,
+            2,
+            7
+          ]
+        },
+        {
+          "r": 6,
+          "headcount": 8,
+          "top3": [
+            3,
+            2,
+            8
+          ]
+        },
+        {
+          "r": 7,
+          "headcount": 10,
+          "top3": [
+            3,
+            7,
+            5
+          ]
+        },
+        {
+          "r": 8,
+          "headcount": 9,
+          "top3": [
+            8,
+            4,
+            9
+          ]
+        },
+        {
+          "r": 9,
+          "headcount": 10,
+          "top3": [
+            10,
+            9,
+            7
+          ]
+        },
+        {
+          "r": 10,
+          "headcount": 12,
+          "top3": [
+            2,
+            7,
+            6
+          ]
+        },
+        {
+          "r": 11,
+          "headcount": 12,
+          "top3": [
+            8,
+            10,
+            6
+          ]
+        },
+        {
+          "r": 12,
+          "headcount": 14,
+          "top3": [
+            13,
+            11,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "nar",
+      "venue": "名古屋",
+      "day": "09",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/202611092400000000",
+      "races": [
+        {
+          "r": 1,
+          "headcount": 11,
+          "top3": [
+            9,
+            2,
+            5
+          ]
+        },
+        {
+          "r": 2,
+          "headcount": 11,
+          "top3": [
+            11,
+            2,
+            4
+          ]
+        },
+        {
+          "r": 3,
+          "headcount": 11,
+          "top3": [
+            7,
+            3,
+            8
+          ]
+        },
+        {
+          "r": 4,
+          "headcount": 10,
+          "top3": [
+            8,
+            5,
+            6
+          ]
+        },
+        {
+          "r": 5,
+          "headcount": 11,
+          "top3": [
+            10,
+            4,
+            2
+          ]
+        },
+        {
+          "r": 6,
+          "headcount": 12,
+          "top3": [
+            1,
+            11,
+            9
+          ]
+        },
+        {
+          "r": 7,
+          "headcount": 12,
+          "top3": [
+            2,
+            9,
+            7
+          ]
+        },
+        {
+          "r": 8,
+          "headcount": 12,
+          "top3": [
+            12,
+            2,
+            11
+          ]
+        },
+        {
+          "r": 9,
+          "headcount": 12,
+          "top3": [
+            10,
+            5,
+            3
+          ]
+        },
+        {
+          "r": 10,
+          "headcount": 10,
+          "top3": [
+            10,
+            2,
+            8
+          ]
+        },
+        {
+          "r": 11,
+          "headcount": 11,
+          "top3": [
+            7,
+            8,
+            3
+          ]
+        },
+        {
+          "r": 12,
+          "headcount": 12,
+          "top3": [
+            8,
+            9,
+            7
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "nar",
+      "venue": "川崎",
+      "day": "09",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/202611092100000000",
+      "races": [
+        {
+          "r": 1,
+          "headcount": 9,
+          "top3": [
+            4,
+            5,
+            8
+          ]
+        },
+        {
+          "r": 2,
+          "headcount": 7,
+          "top3": [
+            1,
+            4,
+            2
+          ]
+        },
+        {
+          "r": 3,
+          "headcount": 8,
+          "top3": [
+            7,
+            2,
+            3
+          ]
+        },
+        {
+          "r": 4,
+          "headcount": 12,
+          "top3": [
+            2,
+            5,
+            3
+          ]
+        },
+        {
+          "r": 5,
+          "headcount": 12,
+          "top3": [
+            10,
+            6,
+            11
+          ]
+        },
+        {
+          "r": 6,
+          "headcount": 12,
+          "top3": [
+            4,
+            7,
+            6
+          ]
+        },
+        {
+          "r": 7,
+          "headcount": 12,
+          "top3": [
+            6,
+            2,
+            10
+          ]
+        },
+        {
+          "r": 8,
+          "headcount": 12,
+          "top3": [
+            4,
+            7,
+            10
+          ]
+        },
+        {
+          "r": 9,
+          "headcount": 12,
+          "top3": [
+            6,
+            5,
+            10
+          ]
+        },
+        {
+          "r": 10,
+          "headcount": 14,
+          "top3": [
+            10,
+            3,
+            5
+          ]
+        },
+        {
+          "r": 11,
+          "headcount": 12,
+          "top3": [
+            10,
+            9,
+            6
+          ]
+        },
+        {
+          "r": 12,
+          "headcount": 13,
+          "top3": [
+            7,
+            11,
+            3
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "nar",
+      "venue": "盛岡",
+      "day": "09",
+      "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/202611091000000000",
+      "races": [
+        {
+          "r": 1,
+          "headcount": 12,
+          "top3": [
+            4,
+            9,
+            11
+          ]
+        },
+        {
+          "r": 2,
+          "headcount": 12,
+          "top3": [
+            12,
+            3,
+            5
+          ]
+        },
+        {
+          "r": 3,
+          "headcount": 12,
+          "top3": [
+            9,
+            6,
+            7
+          ]
+        },
+        {
+          "r": 4,
+          "headcount": 11,
+          "top3": [
+            7,
+            6,
+            2
+          ]
+        },
+        {
+          "r": 5,
+          "headcount": 11,
+          "top3": [
+            8,
+            2,
+            7
+          ]
+        },
+        {
+          "r": 6,
+          "headcount": 12,
+          "top3": [
+            12,
+            10,
+            3
+          ]
+        },
+        {
+          "r": 7,
+          "headcount": 12,
+          "top3": [
+            12,
+            7,
+            8
+          ]
+        },
+        {
+          "r": 8,
+          "headcount": 12,
+          "top3": [
+            1,
+            12,
+            5
+          ]
+        },
+        {
+          "r": 9,
+          "headcount": 12,
+          "top3": [
+            12,
+            2,
+            1
+          ]
+        },
+        {
+          "r": 10,
+          "headcount": 12,
+          "top3": [
+            11,
+            7,
+            10
+          ]
+        },
+        {
+          "r": 11,
+          "headcount": 12,
+          "top3": [
+            3,
+            12,
+            11
+          ]
+        },
+        {
+          "r": 12,
+          "headcount": 12,
+          "top3": [
+            8,
+            12,
+            7
+          ]
+        }
+      ]
     }
   ],
-  "problems": [
-    {
-      "target": {
-        "mode": "nar",
-        "venue": "名古屋",
-        "day": "10",
-        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261110240000000000"
-      },
-      "error": "zero_rows",
-      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
-    },
-    {
-      "target": {
-        "mode": "nar",
-        "venue": "川崎",
-        "day": "10",
-        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261110210000000000"
-      },
-      "error": "zero_rows",
-      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
-    },
-    {
-      "target": {
-        "mode": "nar",
-        "venue": "盛岡",
-        "day": "10",
-        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261110100000000000"
-      },
-      "error": "zero_rows",
-      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
-    },
-    {
-      "target": {
-        "mode": "nar",
-        "venue": "金沢",
-        "day": "10",
-        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261110220000000000"
-      },
-      "error": "zero_rows",
-      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
-    },
-    {
-      "target": {
-        "mode": "nar",
-        "venue": "門別",
-        "day": "10",
-        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261110360000000000"
-      },
-      "error": "zero_rows",
-      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
-    },
-    {
-      "target": {
-        "mode": "nar",
-        "venue": "名古屋",
-        "day": "11",
-        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261111240000000000"
-      },
-      "error": "zero_rows",
-      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
-    },
-    {
-      "target": {
-        "mode": "nar",
-        "venue": "園田",
-        "day": "11",
-        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261111270000000000"
-      },
-      "error": "zero_rows",
-      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
-    },
-    {
-      "target": {
-        "mode": "nar",
-        "venue": "川崎",
-        "day": "11",
-        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261111210000000000"
-      },
-      "error": "zero_rows",
-      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
-    },
-    {
-      "target": {
-        "mode": "nar",
-        "venue": "門別",
-        "day": "11",
-        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261111360000000000"
-      },
-      "error": "zero_rows",
-      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
-    },
-    {
-      "target": {
-        "mode": "nar",
-        "venue": "名古屋",
-        "day": "12",
-        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261112240000000000"
-      },
-      "error": "zero_rows",
-      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
-    },
-    {
-      "target": {
-        "mode": "nar",
-        "venue": "園田",
-        "day": "12",
-        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261112270000000000"
-      },
-      "error": "zero_rows",
-      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
-    },
-    {
-      "target": {
-        "mode": "nar",
-        "venue": "川崎",
-        "day": "12",
-        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261112210000000000"
-      },
-      "error": "zero_rows",
-      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
-    },
-    {
-      "target": {
-        "mode": "nar",
-        "venue": "門別",
-        "day": "12",
-        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261112360000000000"
-      },
-      "error": "zero_rows",
-      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
-    },
-    {
-      "target": {
-        "mode": "nar",
-        "venue": "名古屋",
-        "day": "13",
-        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261113240000000000"
-      },
-      "error": "zero_rows",
-      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
-    },
-    {
-      "target": {
-        "mode": "nar",
-        "venue": "園田",
-        "day": "13",
-        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261113270000000000"
-      },
-      "error": "zero_rows",
-      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
-    },
-    {
-      "target": {
-        "mode": "nar",
-        "venue": "川崎",
-        "day": "13",
-        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261113210000000000"
-      },
-      "error": "zero_rows",
-      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
-    },
-    {
-      "target": {
-        "mode": "nar",
-        "venue": "金沢",
-        "day": "13",
-        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261113220000000000"
-      },
-      "error": "zero_rows",
-      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
-    },
-    {
-      "target": {
-        "mode": "nar",
-        "venue": "佐賀",
-        "day": "14",
-        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261114320000000000"
-      },
-      "error": "zero_rows",
-      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
-    },
-    {
-      "target": {
-        "mode": "nar",
-        "venue": "高知",
-        "day": "14",
-        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261114310000000000"
-      },
-      "error": "zero_rows",
-      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
-    },
-    {
-      "target": {
-        "mode": "nar",
-        "venue": "佐賀",
-        "day": "15",
-        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261115320000000000"
-      },
-      "error": "zero_rows",
-      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
-    },
-    {
-      "target": {
-        "mode": "nar",
-        "venue": "水沢",
-        "day": "15",
-        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261115110000000000"
-      },
-      "error": "zero_rows",
-      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
-    },
-    {
-      "target": {
-        "mode": "nar",
-        "venue": "金沢",
-        "day": "15",
-        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261115220000000000"
-      },
-      "error": "zero_rows",
-      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
-    },
-    {
-      "target": {
-        "mode": "nar",
-        "venue": "高知",
-        "day": "15",
-        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261115310000000000"
-      },
-      "error": "zero_rows",
-      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
-    },
-    {
-      "target": {
-        "mode": "nar",
-        "venue": "大井",
-        "day": "16",
-        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261116200000000000"
-      },
-      "error": "zero_rows",
-      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
-    },
-    {
-      "target": {
-        "mode": "nar",
-        "venue": "水沢",
-        "day": "16",
-        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261116110000000000"
-      },
-      "error": "zero_rows",
-      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
-    },
-    {
-      "target": {
-        "mode": "nar",
-        "venue": "金沢",
-        "day": "16",
-        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261116220000000000"
-      },
-      "error": "zero_rows",
-      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
-    },
-    {
-      "target": {
-        "mode": "nar",
-        "venue": "大井",
-        "day": "17",
-        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261117200000000000"
-      },
-      "error": "zero_rows",
-      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
-    },
-    {
-      "target": {
-        "mode": "nar",
-        "venue": "水沢",
-        "day": "17",
-        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261117110000000000"
-      },
-      "error": "zero_rows",
-      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
-    },
-    {
-      "target": {
-        "mode": "nar",
-        "venue": "金沢",
-        "day": "17",
-        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261117220000000000"
-      },
-      "error": "zero_rows",
-      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
-    },
-    {
-      "target": {
-        "mode": "nar",
-        "venue": "園田",
-        "day": "18",
-        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261118270000000000"
-      },
-      "error": "zero_rows",
-      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
-    },
-    {
-      "target": {
-        "mode": "nar",
-        "venue": "大井",
-        "day": "18",
-        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261118200000000000"
-      },
-      "error": "zero_rows",
-      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
-    },
-    {
-      "target": {
-        "mode": "nar",
-        "venue": "笠松",
-        "day": "18",
-        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261118230000000000"
-      },
-      "error": "zero_rows",
-      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
-    },
-    {
-      "target": {
-        "mode": "nar",
-        "venue": "園田",
-        "day": "19",
-        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261119270000000000"
-      },
-      "error": "zero_rows",
-      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
-    },
-    {
-      "target": {
-        "mode": "nar",
-        "venue": "大井",
-        "day": "19",
-        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261119200000000000"
-      },
-      "error": "zero_rows",
-      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
-    },
-    {
-      "target": {
-        "mode": "nar",
-        "venue": "笠松",
-        "day": "19",
-        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261119230000000000"
-      },
-      "error": "zero_rows",
-      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
-    },
-    {
-      "target": {
-        "mode": "nar",
-        "venue": "佐賀",
-        "day": "01",
-        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261101320000000000"
-      },
-      "error": "zero_rows",
-      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
-    },
-    {
-      "target": {
-        "mode": "nar",
-        "venue": "盛岡",
-        "day": "01",
-        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261101100000000000"
-      },
-      "error": "zero_rows",
-      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
-    },
-    {
-      "target": {
-        "mode": "nar",
-        "venue": "高知",
-        "day": "01",
-        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261101310000000000"
-      },
-      "error": "zero_rows",
-      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
-    },
-    {
-      "target": {
-        "mode": "nar",
-        "venue": "盛岡",
-        "day": "02",
-        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261102100000000000"
-      },
-      "error": "zero_rows",
-      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
-    },
-    {
-      "target": {
-        "mode": "nar",
-        "venue": "笠松",
-        "day": "02",
-        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261102230000000000"
-      },
-      "error": "zero_rows",
-      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
-    },
-    {
-      "target": {
-        "mode": "nar",
-        "venue": "船橋",
-        "day": "02",
-        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261102190000000000"
-      },
-      "error": "zero_rows",
-      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
-    },
-    {
-      "target": {
-        "mode": "nar",
-        "venue": "船橋",
-        "day": "03",
-        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261103190000000000"
-      },
-      "error": "zero_rows",
-      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
-    },
-    {
-      "target": {
-        "mode": "nar",
-        "venue": "金沢",
-        "day": "03",
-        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261103220000000000"
-      },
-      "error": "zero_rows",
-      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
-    },
-    {
-      "target": {
-        "mode": "nar",
-        "venue": "門別",
-        "day": "03",
-        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261103360000000000"
-      },
-      "error": "zero_rows",
-      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
-    },
-    {
-      "target": {
-        "mode": "nar",
-        "venue": "園田",
-        "day": "04",
-        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261104270000000000"
-      },
-      "error": "zero_rows",
-      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
-    },
-    {
-      "target": {
-        "mode": "nar",
-        "venue": "盛岡",
-        "day": "04",
-        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261104100000000000"
-      },
-      "error": "zero_rows",
-      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
-    },
-    {
-      "target": {
-        "mode": "nar",
-        "venue": "船橋",
-        "day": "04",
-        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261104190000000000"
-      },
-      "error": "zero_rows",
-      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
-    },
-    {
-      "target": {
-        "mode": "nar",
-        "venue": "金沢",
-        "day": "04",
-        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261104220000000000"
-      },
-      "error": "zero_rows",
-      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
-    },
-    {
-      "target": {
-        "mode": "nar",
-        "venue": "門別",
-        "day": "04",
-        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261104360000000000"
-      },
-      "error": "zero_rows",
-      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
-    },
-    {
-      "target": {
-        "mode": "nar",
-        "venue": "園田",
-        "day": "05",
-        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261105270000000000"
-      },
-      "error": "zero_rows",
-      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
-    },
-    {
-      "target": {
-        "mode": "nar",
-        "venue": "笠松",
-        "day": "05",
-        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261105230000000000"
-      },
-      "error": "zero_rows",
-      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
-    },
-    {
-      "target": {
-        "mode": "nar",
-        "venue": "船橋",
-        "day": "05",
-        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261105190000000000"
-      },
-      "error": "zero_rows",
-      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
-    },
-    {
-      "target": {
-        "mode": "nar",
-        "venue": "門別",
-        "day": "05",
-        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261105360000000000"
-      },
-      "error": "zero_rows",
-      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
-    },
-    {
-      "target": {
-        "mode": "nar",
-        "venue": "園田",
-        "day": "06",
-        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261106270000000000"
-      },
-      "error": "zero_rows",
-      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
-    },
-    {
-      "target": {
-        "mode": "nar",
-        "venue": "笠松",
-        "day": "06",
-        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261106230000000000"
-      },
-      "error": "zero_rows",
-      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
-    },
-    {
-      "target": {
-        "mode": "nar",
-        "venue": "船橋",
-        "day": "06",
-        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261106190000000000"
-      },
-      "error": "zero_rows",
-      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
-    },
-    {
-      "target": {
-        "mode": "nar",
-        "venue": "佐賀",
-        "day": "07",
-        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261107320000000000"
-      },
-      "error": "zero_rows",
-      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
-    },
-    {
-      "target": {
-        "mode": "nar",
-        "venue": "高知",
-        "day": "07",
-        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261107310000000000"
-      },
-      "error": "zero_rows",
-      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
-    },
-    {
-      "target": {
-        "mode": "nar",
-        "venue": "佐賀",
-        "day": "08",
-        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261108320000000000"
-      },
-      "error": "zero_rows",
-      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
-    },
-    {
-      "target": {
-        "mode": "nar",
-        "venue": "盛岡",
-        "day": "08",
-        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261108100000000000"
-      },
-      "error": "zero_rows",
-      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
-    },
-    {
-      "target": {
-        "mode": "nar",
-        "venue": "高知",
-        "day": "08",
-        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261108310000000000"
-      },
-      "error": "zero_rows",
-      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
-    },
-    {
-      "target": {
-        "mode": "nar",
-        "venue": "佐賀",
-        "day": "09",
-        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261109320000000000"
-      },
-      "error": "zero_rows",
-      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
-    },
-    {
-      "target": {
-        "mode": "nar",
-        "venue": "名古屋",
-        "day": "09",
-        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261109240000000000"
-      },
-      "error": "zero_rows",
-      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
-    },
-    {
-      "target": {
-        "mode": "nar",
-        "venue": "川崎",
-        "day": "09",
-        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261109210000000000"
-      },
-      "error": "zero_rows",
-      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
-    },
-    {
-      "target": {
-        "mode": "nar",
-        "venue": "盛岡",
-        "day": "09",
-        "url": "https://keiba.rakuten.co.jp/race_performance/list/RACEID/20261109100000000000"
-      },
-      "error": "zero_rows",
-      "sample": "楽天グループ\n楽天ブックス\n楽天トラベル\n楽天×宝くじ\n楽天ウェブ検索\n楽天Edy\nサービス一覧\nカード\n銀行\n楽天市場\nサイトマップ\nお客様サポート\n楽天競馬とは\n投票\n精算\n照会\n履歴\nﾚｰｽ動画\n入金\n楽天競馬トップ\nマイページ\nみんなの予想\nお知らせ\nおトク情報\nガイド\n情報サイトUma+\n新着メッセージ\n-\n件\nトップ\n出馬表\nオッズ\n払戻金\n競走成績\nレース分析\nデータ分析\nカレンダー\n映像\n【重要】楽天競馬へのパスキー導入（新しいログイン方法）について\n【重要】"
-    }
-  ]
+  "problems": []
 }
