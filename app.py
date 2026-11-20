@@ -1779,6 +1779,12 @@ def render_game_prediction(result, *, show_header=False):
     # Outcome-free, frozen 2026-11-08 comparisons. Never overwrite the model.
     from core.frozen_research_review import with_frozen_reviews
     view = with_frozen_reviews(view)
+    # Use only the pinned, saved pre-start independent-AI prediction. A missing,
+    # stale, conflicting or unverified snapshot leaves the existing grade intact.
+    # This touches the read-only UI projection, never formal marks or saved data.
+    from core.independent_ai_sabcd import annotate_view as annotate_independent_sabcd
+    view = annotate_independent_sabcd(
+        view, (result.debug_info or {}).get("independent_ai_v3"), race_id=rid)
     if result_race_mode(result) == "jra":
         from core.jra_newspaper_horse_history import with_jra_history_context
         view = with_jra_history_context(view, sources, result.race_info)
