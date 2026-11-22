@@ -197,6 +197,7 @@ def _material_html(item):
 
 def detail_html(horse):
     """Render the one shared detail body for pickup and all-runner navigation."""
+    from .race_explorer_second_look import second_look_html, input_quality_html
     facts = _facts(horse)
     metrics = _metrics(horse, facts)
     cells = records([horse])[str(horse.get("no", ""))]
@@ -342,6 +343,7 @@ def detail_html(horse):
     return (
         '<section class="explorer-detail"><header class="detail-header">' + number_badge(horse) +
         '<div><h3>' + value(horse.get("name")) + '</h3><p>馬別詳細</p></div></header>' +
+        second_look_html(horse) +
         ('<section class="detail-quick-evidence" aria-label="選択した馬のプラス・注意材料">' +
          '<h4>プラス・注意材料</h4><div class="detail-quick-evidence-chips">' +
          quick_materials + '</div><p>比較用の材料です。買い推奨ではありません。全文は下の詳細欄で確認できます。</p></section>'
@@ -350,6 +352,7 @@ def detail_html(horse):
         _definition_list(basic, "detail-basic") +
         form_html +
         research_html +
+        input_quality_html(horse) +
         ('<section class="detail-frozen-review"><h4>検証用チェック（2026/11/08条件固定）</h4>'
          '<p><b>' + value(cells.get("frozen_review")) + '</b></p>'
          '<p>' + value(cells.get("frozen_review_reason")) + '</p>'

@@ -105,6 +105,40 @@ def annotate_view(view, prediction, *, race_id=None):
     if in_view != set(source):
         return view
 
+    # Capture input *quality only* from the same authenticated pre-start
+    # packet. Never take feature values from result, odds or a later archive.
+    packet = prediction.get("input")
+    packet_rows = packet.get("horses") if isinstance(packet, Mapping) else None
+    verified_inputs = {}
+    if isinstance(packet_rows, list) and len(packet_rows) == len(horses):
+        candidate = {}
+        for row in packet_rows:
+            if not isinstance(row, Mapping):
+                break
+            try:
+                key = str(int(row.get("horse_no")))
+            except (TypeError, ValueError, OverflowError):
+                break
+            if (key in candidate or key not in source
+                    or _name(row.get("name")) != source[key][0]):
+                break
+            candidate[key] = row
+        if len(candidate) == len(horses):
+            verified_inputs = candidate
+
+    def finite_value(raw, *, minimum=None, integer=False):
+        if raw is None or isinstance(raw, bool):
+            return None
+        try:
+            n = float(raw)
+        except (TypeError, ValueError, OverflowError):
+            return None
+        if not math.isfinite(n) or (minimum is not None and n < minimum):
+            return None
+        if integer and not n.is_integer():
+            return None
+        return int(n) if integer else n
+
     ordered = sorted(source, key=lambda no: (-source[no][1], int(no)))
     ranks = {no: index for index, no in enumerate(ordered, 1)}
     # Commit to the temporary projection only after ALL guards pass.
@@ -143,4 +177,27 @@ def annotate_view(view, prediction, *, race_id=None):
             "version": VERSION,
             "source_model_id": MODEL_ID,
         }
+        input_row = verified_inputs.get(no)
+        if input_row is None:
+            horse["independent_ai_input_quality"] = {"verified": False}
+        else:
+            checked = ("pure", "distance_index", "course_index", "recent3_mean",
+                       "jockey_place_rate", "jockey_sample_size",
+                       "rest_days", "load_change")
+            missing = [
+                key for key in checked if finite_value(
+                    input_row.get(key), minimum=0 if key in
+                    ("jockey_place_rate", "jockey_sample_size", "rest_days") else None
+                ) is None
+            ]
+            corner = finite_value(input_row.get("corner4"), minimum=1,
+                                  integer=True)
+            if corner is not None and corner > len(horses):
+                corner = None
+            if corner is None:
+                missing.append("corner4")
+            horse["independent_ai_input_quality"] = {
+                "verified": True, "corner4": corner,
+                "missing": tuple(missing),
+            }
     return view
