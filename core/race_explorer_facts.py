@@ -81,7 +81,8 @@ def _runs(profile, metrics, race_info):
         metric = saved.get(label, {}) if run else {}
         item = dict(label=label, **{
             key: _present(run.get(key)) or MISSING
-            for key in ("date", "finish", "venue", "surface", "distance", "turn", "class_raw", "class_grade_raw")
+            for key in ("date", "finish", "venue", "surface", "distance", "turn",
+                        "class_raw", "class_grade_raw", "race_name")
         })
         index = number(run.get("time_index"))
         item.update(time_index=index, condition=_condition(run),
