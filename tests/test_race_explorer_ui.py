@@ -456,7 +456,7 @@ def test_jra_does_not_gain_nar_bodyweight_column():
 
 @pytest.mark.parametrize("mode, raw_class, expected_class", [
     ("jra", "2勝クラス", "2勝"),
-    ("nar", "C2二", "C2"),
+    ("nar", "C2九組", "C2九組"),
 ])
 def test_three_historical_cells_show_finish_and_class_next_to_index(mode, raw_class, expected_class):
     _, _, _, view = field(mode, count=2)
