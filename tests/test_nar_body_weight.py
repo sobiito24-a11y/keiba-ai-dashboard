@@ -103,7 +103,7 @@ def test_wrong_race_and_foreign_origin_fail_closed():
             bw.parse_card(html, url, ident, prediction().race_info)
     with pytest.raises(ValueError, match="照合が不足"):
         bw.parse_card(card_html(wrong_name=True).replace("ニャンタロウ","偽馬").replace(
-            "ミライミライ","違う馬"), URL, ident, prediction().race_info)
+            "ミライミライ","違う馬").replace("ハナノキ", "異名"), URL, ident, prediction().race_info)
 
 
 def test_prestart_vs_poststart_observations_and_no_rank_mutations():
