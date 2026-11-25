@@ -1816,7 +1816,10 @@ def render_game_prediction(result, *, show_header=False):
     # the same horse comparison table; only one refresh action is needed.
     if nar_odds:
         with st.expander("⚖️ 馬体重", expanded=True):
-            from core.nar_body_weight_ui import render as render_nar_body_weight
+            # Like the odds UI above, refresh this module on warm Streamlit
+            # workers: cached render() may predate the compact= parameter.
+            from core import nar_body_weight_ui as body_weight_ui_module
+            render_nar_body_weight = importlib.reload(body_weight_ui_module).render
             view = render_nar_body_weight(result, view, compact=True)
     from core.paper_betting_ui import current_decision
     from core.game_race_ui import decision_view
