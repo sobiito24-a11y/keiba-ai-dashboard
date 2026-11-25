@@ -94,17 +94,16 @@ def _cell(horse, cells, key):
     if key == 'popularity':
         return value(item)+'番人気' if item is not None else '<span class="missing-cell">未取得</span>'
     if key in ('nar_body_weight', 'jra_body_weight'):
-        if item is None:
-            return '<span class="missing-cell">未取得</span>'
         delta = cells.get(key + '_change')
         label = cells.get(key + '_change_label')
         sign = f'({int(delta):+d})' if delta is not None else ('('+plain(label)+')' if label else '')
         low, high = cells.get(key + '_min'), cells.get(key + '_max')
         paired = (f'{int(low)}〜{int(high)}' if low is not None and high is not None
                   else '-')
+        current = (value(int(item)) + '<span class="nar-bodyweight-change">' + plain(sign) + '</span>'
+                   if item is not None else '<span class="missing-cell">未取得</span>')
         return ('<span class="nar-bodyweight-inline">'
-                '<strong>' + value(int(item)) +
-                '<span class="nar-bodyweight-change">' + plain(sign) + '</span></strong>'
+                '<strong>' + current + '</strong>'
                 '<small class="nar-bodyweight-paired">' + plain(paired) + '</small></span>')
     if key == 'rest_days':
         # Keep the saved interval text/day count. This extra small annotation
