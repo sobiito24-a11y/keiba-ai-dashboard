@@ -93,14 +93,15 @@ def _cell(horse, cells, key):
         return '<span class="formal-other-rank">'+value(item)+'位</span>'
     if key == 'popularity':
         return value(item)+'番人気' if item is not None else '<span class="missing-cell">未取得</span>'
-    if key == 'nar_body_weight':
+    if key in ('nar_body_weight', 'jra_body_weight'):
         if item is None:
             return '<span class="missing-cell">未取得</span>'
-        delta = cells.get('nar_body_weight_change')
-        sign = f'({int(delta):+d})' if delta is not None else ''
-        low, high = cells.get('nar_body_weight_min'), cells.get('nar_body_weight_max')
+        delta = cells.get(key + '_change')
+        label = cells.get(key + '_change_label')
+        sign = f'({int(delta):+d})' if delta is not None else ('('+plain(label)+')' if label else '')
+        low, high = cells.get(key + '_min'), cells.get(key + '_max')
         paired = (f'{int(low)}〜{int(high)}' if low is not None and high is not None
-                  else '連対時 未取得')
+                  else '-')
         return ('<span class="nar-bodyweight-inline">'
                 '<strong>' + value(int(item)) +
                 '<span class="nar-bodyweight-change">' + plain(sign) + '</span></strong>'
@@ -172,10 +173,10 @@ def _options(schema, first=None):
 def comparison_widths():
     """One width map shared by the normal and mirrored post-race table."""
     widths = dict(user=42, frame=36, no=44, name=190, jockey=85, odds=104, place_odds=98, score=120, nar_hybrid_score=108, frozen_review=128, class_attention=178, ai_memo=218, career_course=142,
-                  research_sabcd=70, rank=70, popularity=70, nar_body_weight=104, style=102, corner=82, training=60,
+                  research_sabcd=70, rank=70, popularity=70, nar_body_weight=104, jra_body_weight=104, style=102, corner=82, training=60,
                   run_old=134, run_middle=134, run_latest=134, jockey_change=160,
                   record_venue=190, record_distance=190, record_venue_distance=190, materials=220)
-    mobile_widths = dict(user=34, frame=28, no=34, name=118, research_sabcd=62, jockey=68, odds=94, place_odds=83, nar_body_weight=91,
+    mobile_widths = dict(user=34, frame=28, no=34, name=118, research_sabcd=62, jockey=68, odds=94, place_odds=83, nar_body_weight=91, jra_body_weight=91,
                          score=100, reference_score=110, nar_hybrid_score=93, frozen_review=104, class_attention=148, ai_memo=184, career_course=112, popularity=56, style=94,
                          corner=77, training=48, run_old=108, run_middle=108,
                          run_latest=108, jockey_change=128, record_venue=156,
@@ -206,13 +207,13 @@ def lineup_html(view):
             # Color the entire read-only grade cell, not the horse/ability row.
             if key == 'research_sabcd' and row.get(key) in ('S', 'A', 'B', 'C', 'D'):
                 cls += ' research-tier-'+row[key]
-            tooltip = str(('今回馬体重：' + str(row.get('nar_body_weight')) + 'kg｜前走比：'
-                            + str(row.get('nar_body_weight_change')) + 'kg｜連対時：'
-                            + str(row.get('nar_body_weight_min')) + '〜'
-                            + str(row.get('nar_body_weight_max')) + 'kg｜'
-                            + ('発走前観測' if row.get('nar_body_weight_prestart') else '発走前未確認・検証除外'))
-                            if key == 'nar_body_weight' and row.get('nar_body_weight') is not None
-                            else (row.get('nar_hybrid_reason') or '今回評価の計算材料が未取得') if key == 'nar_hybrid_score' else (row.get('class_attention_reason') or 'クラスの比較根拠未取得') if key == 'class_attention' else (row.get('research_sabcd_reason') or '研究格付けは未判定') if key == 'research_sabcd' else (row.get(key) if row.get(key) is not None else '未取得'))
+            tooltip = str(('今回馬体重：' + str(row.get(key)) + 'kg｜前走比：'
+                             + str(row.get(key+'_change') if row.get(key+'_change') is not None else row.get(key+'_change_label') or '-')
+                             + '｜連対時：' + (str(row.get(key+'_min')) + '〜' + str(row.get(key+'_max')) + 'kg'
+                                if row.get(key+'_min') is not None and row.get(key+'_max') is not None else '-') + '｜'
+                             + ('発走前観測' if row.get(key+'_prestart') else '発走前未確認・検証除外'))
+                             if key in ('nar_body_weight', 'jra_body_weight') and row.get(key) is not None
+                             else (row.get('nar_hybrid_reason') or '今回評価の計算材料が未取得') if key == 'nar_hybrid_score' else (row.get('class_attention_reason') or 'クラスの比較根拠未取得') if key == 'class_attention' else (row.get('research_sabcd_reason') or '研究格付けは未判定') if key == 'research_sabcd' else (row.get(key) if row.get(key) is not None else '未取得'))
             content.append('<td class="'+cls+'" data-label="'+plain(spec['label'])+'" title="'+plain(tooltip)+'">'+_cell(horse, row, key)+'</td>')
         rows.append('<tr data-row="'+plain(no)+'" data-horse="'+plain(no)+'">'+''.join(content)+'</tr>')
     class_help = '<p class="help">「クラス・重賞注目」は前走の「前走」の文字だけ省略した表示です。過去3走の根拠は列の説明・馬別詳細で確認できます。加点・純能力順位・正式印は変更しません。</p>'
