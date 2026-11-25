@@ -1807,20 +1807,19 @@ def render_game_prediction(result, *, show_header=False):
     import importlib
     from core import race_odds_ui_live as odds_ui_module
     render_prices = importlib.reload(odds_ui_module).render
-    nar_odds = result_race_mode(result) == "nar"
     # Two normal-use odds buttons only; the underlying historical/current
     # acquisition, provenance checks and overlay are preserved.
     with st.expander("📡 オッズ", expanded=True):
         view = render_prices(result, view, compact=True)
-    # NAR race-day weight observations are shown right next to popularity in
-    # the same horse comparison table; only one refresh action is needed.
-    if nar_odds:
+    # Same one-click, read-only bodyweight panel for JRA and NAR.
+    # Refresh the module on warm Streamlit workers (avoids cached signatures).
+    if result_race_mode(result) in ("jra", "nar"):
         with st.expander("⚖️ 馬体重", expanded=True):
-            # Like the odds UI above, refresh this module on warm Streamlit
-            # workers: cached render() may predate the compact= parameter.
-            from core import nar_body_weight_ui as body_weight_ui_module
-            render_nar_body_weight = importlib.reload(body_weight_ui_module).render
-            view = render_nar_body_weight(result, view, compact=True)
+            if result_race_mode(result) == "jra":
+                from core import jra_body_weight_ui as body_weight_ui_module
+            else:
+                from core import nar_body_weight_ui as body_weight_ui_module
+            view = importlib.reload(body_weight_ui_module).render(result, view, compact=True)
     from core.paper_betting_ui import current_decision
     from core.game_race_ui import decision_view
     buying_view = decision_view(view)
