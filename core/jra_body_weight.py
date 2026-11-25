@@ -8,7 +8,6 @@ from __future__ import annotations
 
 from copy import deepcopy
 from datetime import datetime
-from html import unescape
 import math
 import os
 import re
@@ -217,17 +216,15 @@ async def fetch_once(identity, info, *, now=None):
         raise ValueError("JRAの当日開催レースのみ更新できます")
     rid, venue, day, meeting, meeting_day, race_no = race_facts(identity, info)
     url = official_card_url(identity, info)
-    failures = []
+    import requests
     try:
-        import requests
         response = requests.get(
             url, headers={"User-Agent": "Mozilla/5.0 (compatible; KeibaAI/1.0; manual racecard lookup)"},
             timeout=12, allow_redirects=False)
         if response.status_code != 200 or not 0 < len(response.content) <= 4_000_000:
             raise ValueError("JRA公式出馬表のHTTP応答を確認できません")
         rows = parse_card(response.content, url, identity, info)
-    except (ValueError, TypeError, OSError, TimeoutError, requests.RequestException) as exc:
-        failures.append(str(exc)[:150])
+    except (ValueError, TypeError, OSError, TimeoutError, requests.RequestException):
         # Same URL and same race identity, but with the already configured
         # Chromium if JRA rejects direct HTTP access from Streamlit Cloud.
         from playwright.async_api import async_playwright
@@ -256,11 +253,9 @@ async def fetch_once(identity, info, *, now=None):
 
 def _post_time_before_now(info, now):
     """True only when a saved, timezone-aware post-time is later than now."""
+    from types import SimpleNamespace
     from .race_odds import start_from_result
-    # This function accepts race_info, avoiding mutating a PredictionResult.
-    class _Race:
-        race_info = info
-    raw = start_from_result(_Race)
+    raw = start_from_result(SimpleNamespace(race_info=info))
     if not raw:
         return False
     try:
