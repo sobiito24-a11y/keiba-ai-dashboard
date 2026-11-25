@@ -397,3 +397,57 @@ def test_formal_rank_never_inferred_from_sabcd_or_ability():
     assert "formal-top5-rank" not in _cell(h, {"rank": None, "research_sabcd": "S", "ability_rank": 1}, "rank")
     assert "formal-top5-rank" in _cell(h, {"rank": 5, "research_sabcd": "D", "ability_rank": 12}, "rank")
     assert "formal-top5-rank" not in _cell(h, {"rank": 6, "research_sabcd": "S", "ability_rank": 1}, "rank")
+
+
+def test_nar_bodyweight_is_two_lines_right_next_to_popularity_after_update():
+    _, _, info, view = field("nar", 3)
+    source = deepcopy(view)
+    update = view[0]["nar_body_weight_research"] = {
+        "horse_no": 1, "name": "保存馬1", "current_kg": 423,
+        "change_kg": -4, "paired_min_kg": 420, "paired_max_kg": 430,
+        "band": "範囲内", "prestart_observed": True,
+        "retrieved_at": "2026-11-25T11:05:00+09:00",
+    }
+    view[1]["nar_body_weight_research"] = {
+        "horse_no": 2, "name": "保存馬2", "current_kg": 454,
+        "change_kg": +10, "paired_min_kg": 447, "paired_max_kg": 449,
+        "band": "範囲外", "prestart_observed": False,
+        "retrieved_at": "2026-11-25T11:05:00+09:00",
+    }
+    frozen = deepcopy(view)
+    html = lineup_html(view)
+    parsed = BeautifulSoup(html, "html.parser")
+    names = [x.text for x in parsed.select('th .column-label')]
+    assert names[names.index('人気') + 1] == '馬体重'
+    weights = parsed.select('td.col-nar_body_weight')
+    assert len(weights) == 3
+    assert weights[0].select_one("strong").text == "423(-4)"
+    assert weights[0].select_one("small").text == "420〜430"
+    assert weights[1].select_one("strong").text == "454(+10)"
+    assert weights[1].select_one("small").text == "447〜449"
+    assert "発走前未確認" in weights[1]["title"]
+    assert weights[2].text == "未取得"
+    assert weights[2].select_one("strong") is None
+    specs = columns(view)
+    column = next(x for x in specs if x['key'] == 'nar_body_weight')
+    assert column['type'] == 'number'
+    assert not column.get('table_hidden')
+    assert frozen == view
+    assert source[0].get("nar_body_weight_research") is None
+    # The new weight column must not alter the original prediction.
+    for a, b in zip(source, view):
+        assert (a["mark"], a["rank"], a["score"], a["ability"]) == (
+            b["mark"], b["rank"], b["score"], b["ability"])
+
+
+def test_jra_does_not_gain_nar_bodyweight_column():
+    _, _, info, view = field("jra", 3)
+    for horse in view:
+        horse["nar_body_weight_research"] = {
+            "current_kg": 423, "change_kg": -4, "paired_min_kg": 420,
+            "paired_max_kg": 430,
+        }
+    assert all(s['key'] != 'nar_body_weight' for s in columns(view))
+    html = BeautifulSoup(lineup_html(view), "html.parser")
+    assert not html.select('td.col-nar_body_weight')
+    assert "馬体重" not in [x.text for x in html.select('th .column-label')]
