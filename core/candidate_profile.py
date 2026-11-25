@@ -55,7 +55,8 @@ def facts(row,info):
         rid=str(extra.get('race_id',''))
         runs.append({k:text(run.get(k)) for k in ('label','date','venue','surface','distance','turn','finish','passing_order','race_name')}|dict(
             time_index=number(run.get('time_index')),race_id=rid if re.fullmatch(r'20\d{10}',rid) else None,
-            class_raw=text(extra.get('race_data2') or extra.get('class_raw_text') or (run.get('race_name') if run.get('race_name') not in ('映像を見る','レース映像','動画') else ''))))
+            class_raw=text(extra.get('race_data2') or extra.get('class_raw_text') or (run.get('race_name') if run.get('race_name') not in ('映像を見る','レース映像','動画') else '')),
+            class_grade_raw=text(extra.get('race_grade') or extra.get('class_badge_raw'))))
     runs.sort(key=lambda r:day(r['date']),reverse=True);runs=runs[:3]
     values=[r['time_index'] for r in runs];valid=len(runs)==3 and all(v is not None for v in values)
     sd=pstdev(values) if valid else None
