@@ -93,6 +93,73 @@ def test_exact_rakuten_url_and_horse_names():
     assert rows[4]["band"] == "判定不能"
 
 
+
+def test_urawa_race_3_same_frame_rows_are_not_dropped_and_missing_paired_keeps_weight():
+    """Regression: 2026-11-25 Urawa 3R horses 6/8/10/12 omit frame TD."""
+    horse_data = [
+        (1, 1, "ニエリカ", 463, 2, 461, 461),
+        (2, 2, "フルールバトル", 419, 2, None, None),
+        (3, 3, "ウィズボンド", 456, -8, 464, 464),
+        (4, 4, "オンブラドーロ", 490, 0, 490, 490),
+        (5, 5, "ツガノヤマト", 499, 14, None, None),
+        (5, 6, "スモモサンジョ", 421, -6, None, None),
+        (6, 7, "ユウユウヒレシュ", 412, -1, None, None),
+        (6, 8, "ノーブルフリージア", 493, -4, 491, 491),
+        (7, 9, "ジーティーマルーン", 405, 15, 390, 390),
+        (7, 10, "トーケンジンバック", 479, 21, 458, 458),
+        (8, 11, "シナノダムール", 448, -4, 452, 452),
+        (8, 12, "タカイチイーロン", 470, 0, None, None),
+    ]
+    identity = dict(mode="nar", race_id="202642112503", horses=[
+        dict(horse_no=no, name=name) for _, no, name, *_ in horse_data
+    ])
+    info = dict(race_date="2026-11-25", racecourse="浦和")
+    source_url = bw.racecard_url(identity, info)
+    title = "浦和競馬場 出馬表 | 2026/11/25 3R ：楽天競馬"
+    head = "".join(f"<th>{col}</th>" for col in (
+        "枠番", "馬番", "あなたの予想", "父馬 馬名 母馬", "性齢",
+        "連対時馬体重", "馬体重増減", "前5走", "成績"
+    ))
+    html_rows = []
+    last_frame = None
+    for frame, no, name, kg, delta, low, high in horse_data:
+        frame_td = f"<td>{frame}</td>" if frame != last_frame else ""
+        last_frame = frame
+        band = f"{low}<p>|</p><p>{high}</p>" if low is not None else "-"
+        change = "±0" if delta == 0 else f"{delta:+d}"
+        html_rows.append(
+            f"<tr>{frame_td}<td>{no}</td><td>-</td>"
+            f"<td>父馬<p>{name}</p>母馬</td><td>牝2</td>"
+            f"<td>{band}</td><td>{kg}{change}</td><td>前走</td><td>成績</td></tr>"
+        )
+    html = (f"<html><title>{title}</title><table><thead><tr>{head}</tr></thead>"
+            f"<tbody>{''.join(html_rows)}</tbody></table></html>")
+    rows = bw.parse_card(html, source_url, identity, info)
+    assert len(rows) == 12
+    assert [r["current_kg"] for r in rows] == [x[3] for x in horse_data]
+    by_no = {r["horse_no"]: r for r in rows}
+    for no, kg, delta in ((6, 421, -6), (8, 493, -4),
+                          (10, 479, 21), (12, 470, 0)):
+        assert by_no[no]["current_kg"] == kg
+        assert by_no[no]["change_kg"] == delta
+    for no in (6, 12):
+        assert by_no[no]["paired_min_kg"] is None
+        assert by_no[no]["paired_max_kg"] is None
+    for no, low in ((8, 491), (10, 458)):
+        assert by_no[no]["paired_min_kg"] == low
+
+
+def test_rowspan_does_not_allow_a_wrong_saved_horse_name():
+    """Wrong horse must stay unmatched rather than borrowing the prior frame."""
+    from core.race_odds import identity_from_result
+    identity = identity_from_result(prediction())
+    html = card_html().replace("<tr><td>2</td><td>2</td>", "<tr><td>2</td>")
+    html = html.replace("シャンパンスター", "異なる馬")
+    rows = bw.parse_card(html, URL, identity, prediction().race_info)
+    assert rows[1]["current_kg"] is None
+    assert rows[0]["current_kg"] == 482
+
+
 def test_wrong_race_and_foreign_origin_fail_closed():
     from core.race_odds import identity_from_result
     ident = identity_from_result(prediction())
