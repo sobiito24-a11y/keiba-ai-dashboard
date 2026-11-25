@@ -1816,9 +1816,10 @@ def render_game_prediction(result, *, show_header=False):
     # After the weight panel, show research labels in the clicked horse detail
     # without changing ranking, marks, odds, or paper betting inputs.
     if nar_odds:
-        with st.expander("⚖️ 馬体重更新・ランク別検証（研究用）", expanded=False):
-            from core.nar_body_weight_ui import render as render_nar_body_weight
-            view = render_nar_body_weight(result, view)
+        # Keep the one-click control immediately above the ordinary
+        # comparison rather than a second, wide bodyweight table/tab.
+        from core.nar_body_weight_ui import render as render_nar_body_weight
+        view = render_nar_body_weight(result, view)
     with st.expander("勝率・3着内率 × 直前オッズ（研究／購入価値は未検証）", expanded=False):
         from core.race_value_research_ui import render as render_value_research
         render_value_research(result)
