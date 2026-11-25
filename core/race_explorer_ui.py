@@ -58,10 +58,19 @@ def _cell(horse, cells, key):
     if key in ('run_old','run_middle','run_latest'):
         star = ' <span class="maximum-match" title="保存された最高指数と一致">★</span>' if cells.get(key+'_is_maximum') else ''
         note = cells.get(key+'_note')
+        finish = cells.get(key+'_finish')
+        past_class = cells.get(key+'_class')
+        # Finish and class are independent read-only labels. If one is absent,
+        # do not suppress or guess the other, nor substitute the time index.
+        history_line = ('<small class="run-finish-class">'
+                        '<span class="run-finish">着順 '+value(finish)+'</span>'
+                        '<span class="run-class">クラス '+value(past_class)+'</span>'
+                        '</small>')
         # Only dated, horse-matched pre-race Data24 text; AI-generated text
         # must not be mistaken for a newspaper short review.
         note_html = ('<small class="run-short-review">短評：'+value(note)+'</small>') if note else ''
         return ('<b class="metric-number">'+value(item)+star+'</b>'
+                +history_line+
                 '<small class="run-condition">'+value(cells.get(key+'_condition'))+'</small>'
                 '<small>'+value(cells.get(key+'_date'))+'</small>'+note_html)
     if key == 'odds':
