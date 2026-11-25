@@ -192,3 +192,79 @@ def test_heldout_brier_evaluation_is_only_a_report_not_grade_update():
     assert out["train_days"] == 14 and out["test_days"] == 6
     assert out["weight_brier"] < out["base_brier"]
     assert synthetic == before
+
+
+def test_one_click_research_ui_fetch_and_later_settlement_leave_prediction_unchanged(monkeypatch):
+    from contextlib import nullcontext
+    import sys
+    from core import nar_body_weight_ui as ui
+
+    class FakeStreamlit:
+        def __init__(self):
+            self.session_state = {}
+            self.pressed = set()
+            self.notes = []
+            self.displayed = []
+        def markdown(self, *args, **kwargs): pass
+        def caption(self, *args, **kwargs): pass
+        def info(self, *args, **kwargs): self.notes.append(("info", args))
+        def warning(self, *args, **kwargs): self.notes.append(("warning", args))
+        def error(self, *args, **kwargs): self.notes.append(("error", args))
+        def success(self, *args, **kwargs): self.notes.append(("success", args))
+        def expander(self, *args, **kwargs): return nullcontext()
+        def spinner(self, *args, **kwargs): return nullcontext()
+        def file_uploader(self, *args, **kwargs): return None
+        def download_button(self, *args, **kwargs): return False
+        def dataframe(self, data, **kwargs): self.displayed.append(data)
+        def button(self, label, **kwargs):
+            return label in self.pressed and not kwargs.get("disabled")
+
+    class Clock:
+        today = TIME
+        @classmethod
+        def now(cls, zone):
+            return cls.today
+
+    streamlit = FakeStreamlit()
+    monkeypatch.setitem(sys.modules, "streamlit", streamlit)
+    monkeypatch.setattr(ui, "datetime", Clock)
+    calls = []
+    def fetch(url):
+        calls.append(url)
+        return result_html() if "/race_performance/" in url else card_html()
+    monkeypatch.setattr(ui.bw, "fetch_page", fetch)
+
+    result = prediction()
+    original = view()
+    frozen = deepcopy(original)
+    streamlit.pressed = {"当日馬体重を更新（楽天競馬）"}
+    shown = ui.render(result, original)
+    assert calls == [URL]
+    assert original == frozen and result.overall_table.shape[0] == 5
+    assert shown[0]["nar_body_weight_research"]["current_kg"] == 482
+    assert shown[0]["rank"] == original[0]["rank"]
+    book = streamlit.session_state["nar_body_weight_book_v1"]
+    assert len(book["races"][RID]["observations"]) == 1
+    assert book["races"][RID]["result"] is None
+
+    Clock.today = TIME + timedelta(hours=2)
+    streamlit.pressed = {"楽天競馬の確定着順を取得"}
+    ui.render(result, original)
+    assert calls == [URL, RESULT_URL]
+    book = streamlit.session_state["nar_body_weight_book_v1"]
+    assert book["races"][RID]["result"]["finishes"]["1"] == 1
+    assert len(bw.cohort_rows(book)) == 3
+    assert original == frozen
+
+
+def test_selected_horse_detail_escapes_research_only_data():
+    from core.nar_body_weight_ui import horse_detail_html
+    h = {"mode": "nar", "nar_body_weight_research": {
+        "current_kg": 450, "change_kg": -4, "paired_min_kg": 440,
+        "paired_max_kg": 452, "band": "<script>alert(1)</script>",
+        "prestart_observed": False,
+    }}
+    html = horse_detail_html(h)
+    assert "<script>" not in html
+    assert "&lt;script&gt;" in html
+    assert "発走前と未確認" in html
