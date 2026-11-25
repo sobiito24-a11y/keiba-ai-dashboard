@@ -1811,6 +1811,14 @@ def render_game_prediction(result, *, show_header=False):
     with st.expander("📡 NAR公式オッズ更新（無料）" if nar_odds
                      else "📡 JRAオッズ更新（無料・試験）", expanded=True):
         view = render_prices(result, view)
+    # NAR-only, human-triggered race-card bodyweights. Its observations and
+    # graded outcome research are independent of PredictionResult and SABCD.
+    # After the weight panel, show research labels in the clicked horse detail
+    # without changing ranking, marks, odds, or paper betting inputs.
+    if nar_odds:
+        with st.expander("⚖️ 馬体重更新・ランク別検証（研究用）", expanded=False):
+            from core.nar_body_weight_ui import render as render_nar_body_weight
+            view = render_nar_body_weight(result, view)
     with st.expander("勝率・3着内率 × 直前オッズ（研究／購入価値は未検証）", expanded=False):
         from core.race_value_research_ui import render as render_value_research
         render_value_research(result)
