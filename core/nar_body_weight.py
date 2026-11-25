@@ -263,8 +263,10 @@ def make_observation(result, view, source_url, html, *, now=None, method="one_cl
     rows = parse_card(html, source_url, identity, result.race_info or {})
     start, prestart = _prestart(result, now)
     by_no = {int(h["no"]): h for h in view}
-    if set(by_no) != {x["horse_no"] for x in rows}:
-        raise ValueError("予想画面と馬体重の出走馬が一致しません")
+    if (len(by_no) != len(view) or set(by_no) != {x["horse_no"] for x in rows}
+            or any(_norm(by_no[row["horse_no"]].get("name")) != _norm(row["name"])
+                   for row in rows)):
+        raise ValueError("予想画面と馬体重の馬番・馬名・頭数が一致しません")
     for row in rows:
         row["sabcd"] = _grade(by_no[row["horse_no"]]) if prestart else None
     body = dict(race_id=identity["race_id"], mode="nar", race_date=day,
