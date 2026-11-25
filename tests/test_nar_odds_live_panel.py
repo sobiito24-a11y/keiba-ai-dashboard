@@ -29,7 +29,7 @@ def test_warm_streamlit_session_imports_current_panel_not_cached_legacy():
 
 def test_jra_today_price_fetch_is_enabled_for_actual_race_date_only():
     text = _panel()
-    assert "if st.button('当日リアルオッズ取得'" in text
+    assert "if live_col.button('当日リアルオッズ取得'" in text
     assert "disabled=not is_today" in text
     assert "date.fromisoformat" in text or "_date.fromisoformat" in text
     assert "180" in text  # One race: delayed repeated reads.
@@ -63,7 +63,7 @@ def test_nar_official_zip_is_kept_separate_from_jra_public_live():
 
 def test_result_and_price_rows_display_near_buttons_and_before_manual_form():
     text = _panel()
-    live = text.index("if st.button('当日リアルオッズ取得")
+    live = text.index("if live_col.button('当日リアルオッズ取得")
     notice = text.index("notice = st.session_state.get(key+'_status')")
     manual = text.index('with st.expander("直前オッズを数行')
     assert live < notice < manual

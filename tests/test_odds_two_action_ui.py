@@ -9,8 +9,8 @@ from pathlib import Path
 def test_jra_odds_has_two_primary_actions_and_collapsed_backups():
     path = Path(__file__).parents[1] / "core" / "race_odds_ui_live.py"
     code = path.read_text(encoding="utf-8")
-    assert "st.button('過去オッズ取得'" in code
-    assert "st.button('当日リアルオッズ取得'" in code
+    assert "past_col.button('過去オッズ取得'" in code
+    assert "live_col.button('当日リアルオッズ取得'" in code
     assert "st.button('過去単複をAIへ反映（優馬JAPAN）'" not in code
     assert "st.button('オッズ更新（無料・試験）'" not in code
     assert "st.button('JRA公式から単複取得（試験）'" not in code

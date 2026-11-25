@@ -8,7 +8,7 @@ import json
 from . import race_odds as odds
 
 
-def render(result, view):
+def render(result, view, *, compact=False):
     import streamlit as st
     def caption(value):
         st.caption(str(value))
@@ -43,8 +43,10 @@ def render(result, view):
         connection = provider(config)
     except (ValueError, TypeError):
         connection = provider()
-    st.markdown('#### オッズ')
-    st.caption('単勝・複勝｜保存済みの評価・順位は変更しません。')
+    if not compact:
+        st.markdown('#### オッズ')
+        st.caption('単勝・複勝｜保存済みの評価・順位は変更しません。')
+    past_col, live_col = st.columns(2) if compact else (st, st)
     is_nar = identity['mode'] == 'nar'
     if not is_nar:
         jra_id = identity['race_id']
@@ -65,7 +67,7 @@ def render(result, view):
                     is_past = _date.fromisoformat(race_date) < now_historical.date()
                 except ValueError:
                     is_past = False
-                if st.button('過去オッズ取得',
+                if past_col.button('過去オッズ取得',
                              key=key+'_historical_fetch', disabled=not is_past):
                     previous = st.session_state.get(key+'_historical_last_request')
                     across = st.session_state.get('_jra_historical_global_last_request')
@@ -107,82 +109,83 @@ def render(result, view):
                 # without retrying blocked public sites in a loop.
                 past_failed = str(st.session_state.get(key+'_status') or '').startswith(
                     'JRA過去オッズ未取得')
-                with st.expander('過去オッズの予備取込・掲載元', expanded=past_failed):
-                    if past_failed:
-                        st.caption('自動取得先への接続・照合が完了しませんでした。'
-                                   'Streamlitサーバーから外部サイトへの通信が拒否される場合、'
-                                   '同じボタンを繰り返しても改善しないことがあります。'
-                                   '下記の公開ページをPCブラウザで保存したHTMLを読み込めます。')
-                    st.caption('優馬JAPANの単勝・複勝HTMLをそれぞれ保存して読み込めます。'
-                               '競馬ラボ・スポーツナビの単複HTMLも取込できます。')
-                    yuma_win = st.file_uploader(
-                        '優馬JAPANの単勝ページHTML', type=['html', 'htm'],
-                        key=key+'_yuma_win_file')
-                    yuma_place = st.file_uploader(
-                        '優馬JAPANの複勝ページHTML', type=['html', 'htm'],
-                        key=key+'_yuma_place_file')
-                    if st.button('保存した優馬JAPANの単複をAIに取込',
-                                 key=key+'_yuma_import', disabled=not (yuma_win or yuma_place)):
-                        try:
-                            from .jra_yuma_odds import parse_yuma_pages
-                            payload = {}
-                            for flag, item in (('tan', yuma_win), ('fuk', yuma_place)):
-                                if item is not None:
-                                    raw = item.getvalue()
-                                    if len(raw) > 3_000_000:
-                                        raise ValueError('HTMLは3MB以下にしてください')
-                                    payload[flag] = raw
-                            quote = parse_yuma_pages(payload, identity, result.race_info or {})
-                            history = odds.merge(state['history'], [quote], identity)
-                            state['history'] = history
-                            activate_observation(quote)
-                            st.session_state[key+'_status'] = (
-                                f"取得：{quote['horse_count']}／{quote['expected_horses']}頭。"
-                                "優馬JAPANの保存HTMLからAIへ反映しました。")
-                        except (ValueError, TypeError) as exc:
-                            st.session_state[key+'_status'] = 'JRA過去オッズ未取得：' + str(exc)
-                    st.markdown('[競馬ラボ：単勝・複勝一覧](' + historical_links['keibalab'] + ')')
-                    st.markdown('[優馬JAPAN：単勝一覧](' + historical_links['yuma_win'] + ')')
-                    st.markdown('[優馬JAPAN：複勝一覧](' + historical_links['yuma_place'] + ')')
-                    st.markdown('[スポーツナビ：単勝・複勝一覧](' + historical_links['sportsnavi'] + ')')
-                    saved_sports = st.file_uploader(
-                        'スポーツナビの過去単複HTML（予備取込）', type=['html','htm'],
-                        key=key+'_sportsnavi_history_file')
-                    if st.button('保存したスポーツナビHTMLを反映',
-                                 key=key+'_sportsnavi_history_import',
-                                 disabled=saved_sports is None):
-                        try:
-                            from .jra_sportsnavi_odds import parse_sportsnavi_html
-                            raw = saved_sports.getvalue()
-                            if len(raw) > 3_000_000:
-                                raise ValueError('HTMLが3MBを超えています')
-                            quote = parse_sportsnavi_html(raw, identity, result.race_info or {})
-                            history = odds.merge(state['history'], [quote], identity)
-                            state['history'] = history
-                            activate_observation(quote)
-                            st.session_state[key+'_status'] = (
-                                f"取得：スポーツナビHTMLから単勝{quote['coverage']['win']['count']}頭・"
-                                f"複勝{quote['coverage']['place']['count']}頭を反映しました。")
-                        except (ValueError, TypeError, KeyError) as exc:
-                            st.session_state[key+'_status'] = 'JRA過去オッズ未取得：' + str(exc)
-                    archived_file = st.file_uploader(
-                        '競馬ラボの過去単複ページ（HTML）', type=['html', 'htm'],
-                        key=key+'_historical_file')
-                    if st.button('保存HTMLの単複をAIへ反映',
-                                 key=key+'_historical_import', disabled=archived_file is None):
-                        try:
-                            data = archived_file.getvalue()
-                            if len(data) > 3_000_000:
-                                raise ValueError('HTMLが3MBを超えています')
-                            quote = parse_keibalab_html(data, identity, result.race_info or {})
-                            history = odds.merge(state['history'], [quote], identity)
-                            state['history'] = history
-                            activate_observation(quote)
-                            st.session_state[key+'_status'] = (
-                                f"取得：{quote['horse_count']}／{quote['expected_horses']}頭。"
-                                "保存HTMLの過去単複をAIの表示に反映しました。")
-                        except (ValueError, TypeError) as exc:
-                            st.session_state[key+'_status'] = 'JRA過去オッズ未取得：' + str(exc)
+                if not compact:
+                    with st.expander('過去オッズの予備取込・掲載元', expanded=past_failed):
+                        if past_failed:
+                            st.caption('自動取得先への接続・照合が完了しませんでした。'
+                                       'Streamlitサーバーから外部サイトへの通信が拒否される場合、'
+                                       '同じボタンを繰り返しても改善しないことがあります。'
+                                       '下記の公開ページをPCブラウザで保存したHTMLを読み込めます。')
+                        st.caption('優馬JAPANの単勝・複勝HTMLをそれぞれ保存して読み込めます。'
+                                   '競馬ラボ・スポーツナビの単複HTMLも取込できます。')
+                        yuma_win = st.file_uploader(
+                            '優馬JAPANの単勝ページHTML', type=['html', 'htm'],
+                            key=key+'_yuma_win_file')
+                        yuma_place = st.file_uploader(
+                            '優馬JAPANの複勝ページHTML', type=['html', 'htm'],
+                            key=key+'_yuma_place_file')
+                        if st.button('保存した優馬JAPANの単複をAIに取込',
+                                     key=key+'_yuma_import', disabled=not (yuma_win or yuma_place)):
+                            try:
+                                from .jra_yuma_odds import parse_yuma_pages
+                                payload = {}
+                                for flag, item in (('tan', yuma_win), ('fuk', yuma_place)):
+                                    if item is not None:
+                                        raw = item.getvalue()
+                                        if len(raw) > 3_000_000:
+                                            raise ValueError('HTMLは3MB以下にしてください')
+                                        payload[flag] = raw
+                                quote = parse_yuma_pages(payload, identity, result.race_info or {})
+                                history = odds.merge(state['history'], [quote], identity)
+                                state['history'] = history
+                                activate_observation(quote)
+                                st.session_state[key+'_status'] = (
+                                    f"取得：{quote['horse_count']}／{quote['expected_horses']}頭。"
+                                    "優馬JAPANの保存HTMLからAIへ反映しました。")
+                            except (ValueError, TypeError) as exc:
+                                st.session_state[key+'_status'] = 'JRA過去オッズ未取得：' + str(exc)
+                        st.markdown('[競馬ラボ：単勝・複勝一覧](' + historical_links['keibalab'] + ')')
+                        st.markdown('[優馬JAPAN：単勝一覧](' + historical_links['yuma_win'] + ')')
+                        st.markdown('[優馬JAPAN：複勝一覧](' + historical_links['yuma_place'] + ')')
+                        st.markdown('[スポーツナビ：単勝・複勝一覧](' + historical_links['sportsnavi'] + ')')
+                        saved_sports = st.file_uploader(
+                            'スポーツナビの過去単複HTML（予備取込）', type=['html','htm'],
+                            key=key+'_sportsnavi_history_file')
+                        if st.button('保存したスポーツナビHTMLを反映',
+                                     key=key+'_sportsnavi_history_import',
+                                     disabled=saved_sports is None):
+                            try:
+                                from .jra_sportsnavi_odds import parse_sportsnavi_html
+                                raw = saved_sports.getvalue()
+                                if len(raw) > 3_000_000:
+                                    raise ValueError('HTMLが3MBを超えています')
+                                quote = parse_sportsnavi_html(raw, identity, result.race_info or {})
+                                history = odds.merge(state['history'], [quote], identity)
+                                state['history'] = history
+                                activate_observation(quote)
+                                st.session_state[key+'_status'] = (
+                                    f"取得：スポーツナビHTMLから単勝{quote['coverage']['win']['count']}頭・"
+                                    f"複勝{quote['coverage']['place']['count']}頭を反映しました。")
+                            except (ValueError, TypeError, KeyError) as exc:
+                                st.session_state[key+'_status'] = 'JRA過去オッズ未取得：' + str(exc)
+                        archived_file = st.file_uploader(
+                            '競馬ラボの過去単複ページ（HTML）', type=['html', 'htm'],
+                            key=key+'_historical_file')
+                        if st.button('保存HTMLの単複をAIへ反映',
+                                     key=key+'_historical_import', disabled=archived_file is None):
+                            try:
+                                data = archived_file.getvalue()
+                                if len(data) > 3_000_000:
+                                    raise ValueError('HTMLが3MBを超えています')
+                                quote = parse_keibalab_html(data, identity, result.race_info or {})
+                                history = odds.merge(state['history'], [quote], identity)
+                                state['history'] = history
+                                activate_observation(quote)
+                                st.session_state[key+'_status'] = (
+                                    f"取得：{quote['horse_count']}／{quote['expected_horses']}頭。"
+                                    "保存HTMLの過去単複をAIの表示に反映しました。")
+                            except (ValueError, TypeError) as exc:
+                                st.session_state[key+'_status'] = 'JRA過去オッズ未取得：' + str(exc)
                 # The matching source pages are available only inside the
                 # collapsed backup panel above; the main UI has two actions.
     if not is_nar:
@@ -194,7 +197,7 @@ def render(result, view):
             is_today = _date.fromisoformat(date_text) == now_live.date()
         except ValueError:
             is_today = False
-        if st.button('当日リアルオッズ取得',
+        if live_col.button('当日リアルオッズ取得',
                      key=key+'_live_fetch', disabled=not is_today):
             last = st.session_state.get(key+'_live_last_request')
             global_last = st.session_state.get('_jra_free_odds_global_request')
@@ -263,21 +266,22 @@ def render(result, view):
                     except (ValueError, TypeError, KeyError) as exc:
                         st.session_state[key+'_status'] = 'JRAオッズ未取得（照合）：' + str(exc)
     if not is_nar:
-        with st.expander('当日の掲載元・利用上の注意', expanded=False):
-            st.markdown('[JRA公式オッズ](https://www.jra.go.jp/)'
-                        '（公式サイトの「オッズ」から選択）')
-            from .jra_historical_odds_links import archived_odds_urls as _odds_urls
-            sports_url = _odds_urls(identity, result.race_info or {}).get('sportsnavi')
-            if sports_url:
-                st.markdown('[スポーツナビ・このレースの単勝複勝](' + sports_url +
-                            ')（当日の中間掲載値。提供元更新時刻を確認してください）')
-            st.markdown(
-                '[netkeiba・このレースのオッズ](https://race.netkeiba.com/odds/index.html?race_id='
-                + jra_id + '&type=b1)'
-                '（単勝・複勝を確認）')
-            st.caption('実際の投票価格は購入直前にJRA公式の販売画面で再確認。'
-                       'アクセスが制限された場合はスクショ・HTML取込を使用。'
-                       '自動巡回や更新回数の上限制限回避は行いません。')
+        if not compact:
+            with st.expander('当日の掲載元・利用上の注意', expanded=False):
+                st.markdown('[JRA公式オッズ](https://www.jra.go.jp/)'
+                            '（公式サイトの「オッズ」から選択）')
+                from .jra_historical_odds_links import archived_odds_urls as _odds_urls
+                sports_url = _odds_urls(identity, result.race_info or {}).get('sportsnavi')
+                if sports_url:
+                    st.markdown('[スポーツナビ・このレースの単勝複勝](' + sports_url +
+                                ')（当日の中間掲載値。提供元更新時刻を確認してください）')
+                st.markdown(
+                    '[netkeiba・このレースのオッズ](https://race.netkeiba.com/odds/index.html?race_id='
+                    + jra_id + '&type=b1)'
+                    '（単勝・複勝を確認）')
+                st.caption('実際の投票価格は購入直前にJRA公式の販売画面で再確認。'
+                           'アクセスが制限された場合はスクショ・HTML取込を使用。'
+                           '自動巡回や更新回数の上限制限回避は行いません。')
     if is_nar:
         from datetime import date as _date
         from .nar_official_odds import locator as nar_locator
@@ -292,7 +296,7 @@ def render(result, view):
             saved_day, nar_day, nar_date_valid = None, None, False
         nar_is_past = nar_date_valid and _date(2026, 3, 1) <= saved_day < now_nar.date()
         nar_is_today = nar_date_valid and saved_day == now_nar.date()
-        if st.button('過去オッズ取得',
+        if past_col.button('過去オッズ取得',
                      key=key+'_nar_historical_fetch', disabled=not nar_is_past):
             try:
                 month_key = nar_day[:6]
@@ -321,34 +325,36 @@ def render(result, view):
                 st.session_state[key+'_status'] = (
                     'NAR公式過去オッズ未取得：' + type(exc).__name__ +
                     '。保存予想は変更していません。')
-        if not nar_is_past and nar_date_valid and saved_day < now_nar.date():
-            st.caption('過去の公式確定単複は2026年3月以降が対象です。')
-        st.caption('過去＝公式月次確定オッズ／当日＝公式当日オッズ（配信に遅れがあります）。')
-        with st.expander('NAR公式・過去オッズのZIPを取り込む', expanded=False):
-            st.markdown('[NAR公式・月別開催日程（オッズ情報を選択）]'
-                        '(https://www.keiba.go.jp/KeibaWeb/MonthlyConveneInfo/MonthlyConveneInfoTop)')
-            monthly_upload = st.file_uploader(
-                '過去のNAR公式月次オッズZIP', type=['zip'],
-                key=key+'_nar_monthly_file')
-            if st.button('保存ZIPの確定単複を反映',
-                         key=key+'_nar_monthly_import',
-                         disabled=not (monthly_upload and nar_is_past)):
-                try:
-                    quote = parse_monthly_zip(
-                        monthly_upload.getvalue(), monthly_upload.name,
-                        identity, result.race_info or {})
-                    history = odds.merge(state['history'], [quote], identity)
-                    state['history'] = history
-                    activate_observation(quote)
-                    st.session_state[key+'_status'] = (
-                        f"取得：公式月次ZIPから単勝{quote['coverage']['win']['count']}頭・"
-                        f"複勝{quote['coverage']['place']['count']}頭を反映しました。")
-                except (ValueError, TypeError, KeyError) as exc:
-                    st.session_state[key+'_status'] = 'NAR公式過去オッズ未取得：' + str(exc)
-            st.markdown('[当日のNAR公式](https://www.keiba.go.jp/KeibaWeb/TodayRaceInfo/TodayRaceInfoTop)')
+        if not compact:
+            if not nar_is_past and nar_date_valid and saved_day < now_nar.date():
+                st.caption('過去の公式確定単複は2026年3月以降が対象です。')
+            st.caption('過去＝公式月次確定オッズ／当日＝公式当日オッズ（配信に遅れがあります）。')
+        if not compact:
+            with st.expander('NAR公式・過去オッズのZIPを取り込む', expanded=False):
+                st.markdown('[NAR公式・月別開催日程（オッズ情報を選択）]'
+                            '(https://www.keiba.go.jp/KeibaWeb/MonthlyConveneInfo/MonthlyConveneInfoTop)')
+                monthly_upload = st.file_uploader(
+                    '過去のNAR公式月次オッズZIP', type=['zip'],
+                    key=key+'_nar_monthly_file')
+                if st.button('保存ZIPの確定単複を反映',
+                             key=key+'_nar_monthly_import',
+                             disabled=not (monthly_upload and nar_is_past)):
+                    try:
+                        quote = parse_monthly_zip(
+                            monthly_upload.getvalue(), monthly_upload.name,
+                            identity, result.race_info or {})
+                        history = odds.merge(state['history'], [quote], identity)
+                        state['history'] = history
+                        activate_observation(quote)
+                        st.session_state[key+'_status'] = (
+                            f"取得：公式月次ZIPから単勝{quote['coverage']['win']['count']}頭・"
+                            f"複勝{quote['coverage']['place']['count']}頭を反映しました。")
+                    except (ValueError, TypeError, KeyError) as exc:
+                        st.session_state[key+'_status'] = 'NAR公式過去オッズ未取得：' + str(exc)
+                st.markdown('[当日のNAR公式](https://www.keiba.go.jp/KeibaWeb/TodayRaceInfo/TodayRaceInfoTop)')
 
     if getattr(result, '_race_odds_error', None): st.warning(result._race_odds_error)
-    if is_nar and st.button('当日リアルオッズ取得', key=key+'_fetch',
+    if is_nar and live_col.button('当日リアルオッズ取得', key=key+'_fetch',
                             disabled=not nar_is_today):
         now = datetime.now(odds.JST)
         from .nar_official_odds import fetch_daily, parse_daily_zip, locator
@@ -400,48 +406,51 @@ def render(result, view):
         current_id = runtime.get('active_observation')
         active = next((x for x in reversed(state['history'])
                        if x.get('observation_id') == current_id), None)
-        with st.expander('取得した全頭の照合表・保存', expanded=False):
-            if (active is not None and ('取得：' in notice or '照合。' in notice
-                                       or notice.startswith('NAR公式ZIPから'))):
-                st.caption('取得元：' + str(active.get('source') or '不明') +
-                           '｜配信元更新：' + odds.format_time(active.get('observed_at')) +
-                           '｜' + odds.freshness(active, odds.start_from_result(result)))
-                names = {int(h['horse_no']): h['name'] for h in identity['horses']}
-                win_prices = {p['horses'][0]: odds.price_text(p) for p in active['prices']
-                              if p['kind'] == 'win'}
-                place_prices = {p['horses'][0]: odds.price_text(p) for p in active['prices']
-                                if p['kind'] == 'place'}
-                singles = [dict(馬番=no, 馬名=name,
-                                単勝=(win_prices.get(no, '—') + '倍' if no in win_prices else '—'),
-                                複勝=(place_prices.get(no, '—') + '倍' if no in place_prices else '—'))
-                           for no, name in sorted(names.items())]
-                if singles:
-                    st.dataframe(singles, hide_index=True, use_container_width=True)
-                    st.caption('保存レースの全頭を表示。未取得の価格は「—」で、古い価格を補完しません。')
-                    if active.get('acquisition_method') in ('keibalab_historical_html', 'yuma_historical_html',
-                                                              'sportsnavi_historical_html', 'nar_official_monthly_zip'):
-                        source_archive = (st.session_state.get('game_archive_upload')
-                                          or st.session_state.get('dashboard_saved_prediction'))
-                        if source_archive is not None:
-                            try:
-                                copied_archive = odds.export_copy(source_archive.getvalue(), identity, state)
-                                st.download_button('過去単複を反映した.keibaコピーを保存',
-                                                   data=copied_archive,
-                                                   file_name=identity['race_id']+'_with_historical_odds.keiba',
-                                                   key=key+'_historical_copy_quick')
-                            except (ValueError, TypeError, KeyError, AttributeError):
-                                st.caption('元の.keibaが確認できないため、この画面ではコピーを作成できません。')
-                        else:
-                            st.caption('反映内容はセッション内です。必要なら下の履歴JSONを保存してください。')
-                else:
-                    st.warning('単勝オッズが未取得です。取得できた券種のみ下の詳細で確認してください。')
-    elif not is_nar:
+        if not compact:
+            with st.expander('取得した全頭の照合表・保存', expanded=False):
+                if (active is not None and ('取得：' in notice or '照合。' in notice
+                                           or notice.startswith('NAR公式ZIPから'))):
+                    st.caption('取得元：' + str(active.get('source') or '不明') +
+                               '｜配信元更新：' + odds.format_time(active.get('observed_at')) +
+                               '｜' + odds.freshness(active, odds.start_from_result(result)))
+                    names = {int(h['horse_no']): h['name'] for h in identity['horses']}
+                    win_prices = {p['horses'][0]: odds.price_text(p) for p in active['prices']
+                                  if p['kind'] == 'win'}
+                    place_prices = {p['horses'][0]: odds.price_text(p) for p in active['prices']
+                                    if p['kind'] == 'place'}
+                    singles = [dict(馬番=no, 馬名=name,
+                                    単勝=(win_prices.get(no, '—') + '倍' if no in win_prices else '—'),
+                                    複勝=(place_prices.get(no, '—') + '倍' if no in place_prices else '—'))
+                               for no, name in sorted(names.items())]
+                    if singles:
+                        st.dataframe(singles, hide_index=True, use_container_width=True)
+                        st.caption('保存レースの全頭を表示。未取得の価格は「—」で、古い価格を補完しません。')
+                        if active.get('acquisition_method') in ('keibalab_historical_html', 'yuma_historical_html',
+                                                                  'sportsnavi_historical_html', 'nar_official_monthly_zip'):
+                            source_archive = (st.session_state.get('game_archive_upload')
+                                              or st.session_state.get('dashboard_saved_prediction'))
+                            if source_archive is not None:
+                                try:
+                                    copied_archive = odds.export_copy(source_archive.getvalue(), identity, state)
+                                    st.download_button('過去単複を反映した.keibaコピーを保存',
+                                                       data=copied_archive,
+                                                       file_name=identity['race_id']+'_with_historical_odds.keiba',
+                                                       key=key+'_historical_copy_quick')
+                                except (ValueError, TypeError, KeyError, AttributeError):
+                                    st.caption('元の.keibaが確認できないため、この画面ではコピーを作成できません。')
+                            else:
+                                st.caption('反映内容はセッション内です。必要なら下の履歴JSONを保存してください。')
+                    else:
+                        st.warning('単勝オッズが未取得です。取得できた券種のみ下の詳細で確認してください。')
+    elif not is_nar and not compact:
         st.caption('更新ボタンを押すと、ここに成功／失敗と取得元更新時刻を表示します。'
                    '終了レースの場合は過去の参考オッズになります。')
 
-    with st.expander('その他の取込・履歴保存', expanded=False):
-        show_extra = st.checkbox('手動入力・スクショ・ファイル取込を使う',
-                                 value=False, key=key+'_show_extra')
+    show_extra = False
+    if not compact:
+        with st.expander('その他の取込・履歴保存', expanded=False):
+            show_extra = st.checkbox('手動入力・スクショ・ファイル取込を使う',
+                                     value=False, key=key+'_show_extra')
     if show_extra:
         with st.expander("直前オッズを数行で手入力（外部サイトを見ながら）", expanded=False):
             st.caption("例：『単勝 3 5.2』『馬連 3-7 14.8』『ワイド 3-7 4.5-5.8』。"
@@ -513,6 +522,12 @@ def render(result, view):
               if q['observation_id'] not in runtime['seen_history_ids']]
     if unseen:
         activate_observation(unseen[-1])
+    # Compact control has only two fetch actions; keep model and saved state unchanged.
+    if compact:
+        active_id = runtime.get('active_observation')
+        selected = next((q for q in reversed(state['history'])
+                         if q.get('observation_id') == active_id), None)
+        return odds.overlay(view, selected, '取得オッズ' if selected else 'オッズ未取得')
     choices = [('未取得', None)]
     choices += [('保存時オッズ', q) for q in state['saved']] + [('更新オッズ', q) for q in state['history']]
     # A saved prediction's price is not the current pre-race observation.

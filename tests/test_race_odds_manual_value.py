@@ -117,8 +117,11 @@ def test_current_observation_requires_explicit_selected_quote():
 def test_actual_game_ui_contains_price_panel_without_rewriting_prediction():
     from pathlib import Path
     app=(Path(__file__).resolve().parents[1]/"app.py").read_text(encoding="utf-8")
-    assert "render_value_research(result)" in app
-    assert "view = render_prices(result, view)" in app
+    # Ordinary Dashboard intentionally exposes only the two price fetch
+    # buttons, not the standalone price-value research panel.
+    assert "render_value_research(result)" not in app
+    assert "view = render_prices(result, view, compact=True)" in app
+    assert "view = render_nar_body_weight(result, view, compact=True)" in app
     odds_ui=(Path(__file__).resolve().parents[1]/"core/race_odds_ui.py").read_text(encoding="utf-8")
     assert "build_observation(typed, identity" in odds_ui
     assert "外部サイト" in odds_ui

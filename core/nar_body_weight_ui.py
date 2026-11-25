@@ -104,16 +104,17 @@ def _summary_display(st, book):
         st.caption(gate["message"] + " 結果が一度良くても、ランク補正を採用する証明にはなりません。")
 
 
-def render(result, view):
+def render(result, view, *, compact=False):
     """Streamlit panel; always returns a display-only copy of the input view."""
     import streamlit as st
 
     if getattr(result, "race_mode", None) != "nar":
         return view
-    st.markdown("**⚖️ NAR馬体重更新**")
-    st.caption("更新すると、すぐ下の全頭比較一覧で人気の右に"
-               "「今回馬体重（前走比）」と小さな「連対時体重範囲」を表示します。"
-               "既存の新SABCD・印・買い目は変更しません。")
+    if not compact:
+        st.markdown("**⚖️ NAR馬体重更新**")
+        st.caption("更新すると、すぐ下の全頭比較一覧で人気の右に"
+                   "「今回馬体重（前走比）」と小さな「連対時体重範囲」を表示します。"
+                   "既存の新SABCD・印・買い目は変更しません。")
 
     try:
         identity = race_odds.identity_from_result(result)
@@ -133,8 +134,9 @@ def render(result, view):
     start, prestart = bw._prestart(result, now)
     notice_key = "nar_body_weight_note_" + rid
 
-    st.caption(f"[楽天競馬・対象出走表]({url}) ｜ {day}｜取得時刻はアプリ受信時刻（JST）。"
-               " 発走前と確認できない観測は研究用集計から除外します。")
+    if not compact:
+        st.caption(f"[楽天競馬・対象出走表]({url}) ｜ {day}｜取得時刻はアプリ受信時刻（JST）。"
+                   " 発走前と確認できない観測は研究用集計から除外します。")
 
     if st.button("当日馬体重を更新（楽天競馬）", key=rid+"_weight_fetch",
                  disabled=not is_today):
@@ -164,6 +166,16 @@ def render(result, view):
             except Exception:
                 st.session_state[notice_key] = (
                     "error", "公開出走表に接続できません。保存HTML取込を利用してください。")
+
+    # Keep observational research and its JSON tools in the module, but the
+    # ordinary prediction screen has only the refresh button and its result.
+    # This path still overlays every previously verified session observation.
+    if compact:
+        feedback = st.session_state.get(notice_key)
+        if feedback:
+            status, message = feedback
+            getattr(st, status)(message)
+        return _overlay(view, latest)
 
     with st.expander("更新できないとき：出走表HTMLを取り込む", expanded=False):
         uploaded = st.file_uploader("楽天競馬の対象出走表HTML（横の出馬表）",
