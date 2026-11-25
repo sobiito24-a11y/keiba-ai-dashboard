@@ -19,6 +19,34 @@ _MISSING = frozenset(("", "—", "―", "－", "-", "未取得", "不明", "対�
 _RUNS = (("run_old", "3走前"), ("run_middle", "2走前"), ("run_latest", "前走"))
 
 
+def _past_finish(value):
+    """Only show a saved prior result; never treat an index as a finish."""
+    label = _text(value)
+    if label is None:
+        return None
+    match = re.fullmatch(r"([1-9]\d?)(?:\.0)?(?:着)?", label)
+    if match:
+        return str(int(match.group(1))) + "着"
+    if label in ("中止", "競走中止", "失格", "取消", "除外", "降着"):
+        return label
+    return None
+
+
+def _past_class(run):
+    """Conservative class label from the archived, dated previous run only."""
+    raw = _text(run.get("class_raw"))
+    venue = _text(run.get("venue"))
+    if not raw or not venue:
+        return None
+    from .newspaper_v2_enrichment import conservative_class
+    found = conservative_class(dict(
+        race_name=raw, venue=venue, surface=_text(run.get("surface")),
+        race_grade=_text(run.get("class_grade_raw")),
+    ))
+    label = found.get("class_label_v2")
+    return _text(label) if label not in (None, "不明") else None
+
+
 def _mapping(item):
     return item if isinstance(item, Mapping) else {}
 
@@ -423,10 +451,14 @@ def records(view):
         notes = _mapping(horse.get("jra_past_short_notes")) if horse.get("mode") == "jra" else {}
         for key, label in _RUNS:
             run = _mapping(runs.get(label))
+            # Date-gated explorer facts are the only permitted historical source.
+            # When evidence is absent, keep the index/finish/class independent.
             item[key + "_note"] = _text(notes.get(label))
             item[key] = _number(run.get("time_index"))
             item[key + "_condition"] = _text(run.get("condition"))
             item[key + "_date"] = _text(run.get("date"))
+            item[key + "_finish"] = _past_finish(run.get("finish"))
+            item[key + "_class"] = _past_class(run)
             item[key + "_is_maximum"] = run.get("is_maximum") is True and item[key] is not None
         result[no] = item
     return result
