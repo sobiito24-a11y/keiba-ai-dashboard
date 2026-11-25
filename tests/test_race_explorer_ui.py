@@ -451,3 +451,42 @@ def test_jra_does_not_gain_nar_bodyweight_column():
     html = BeautifulSoup(lineup_html(view), "html.parser")
     assert not html.select('td.col-nar_body_weight')
     assert "馬体重" not in [x.text for x in html.select('th .column-label')]
+
+
+
+@pytest.mark.parametrize("mode, raw_class, expected_class", [
+    ("jra", "2勝クラス", "2勝"),
+    ("nar", "C2二", "C2"),
+])
+def test_three_historical_cells_show_finish_and_class_next_to_index(mode, raw_class, expected_class):
+    _, _, _, view = field(mode, count=2)
+    for horse in view:
+        for run in horse["explorer_facts"]["runs"]:
+            run.update(finish="3着", class_raw=raw_class,
+                       venue="京都" if mode == "jra" else "浦和",
+                       surface="芝" if mode == "jra" else "ダ")
+    before = deepcopy(view)
+    doc = BeautifulSoup(lineup_html(view), "html.parser")
+    for row in doc.select("tbody tr[data-horse]"):
+        for key in ("run_old", "run_middle", "run_latest"):
+            td = row.select_one(".col-" + key)
+            assert td is not None
+            line = td.select_one(".run-finish-class")
+            assert line is not None
+            assert "着順 3着" in line.text
+            assert "クラス " + expected_class in line.text
+            assert td.select_one(".metric-number") is not None
+            assert td.select_one(".run-condition") is not None
+    assert view == before
+
+
+def test_missing_finish_or_class_is_visible_without_invention():
+    _, _, _, view = field("jra", count=1)
+    for run in view[0]["explorer_facts"]["runs"]:
+        run.update(finish="未取得", class_raw="レースの固有名", venue="東京", surface="芝")
+    html = BeautifulSoup(lineup_html(view), "html.parser")
+    for td in html.select(".col-run_old,.col-run_middle,.col-run_latest"):
+        line = td.select_one(".run-finish-class")
+        assert line is not None
+        assert "着順 未取得" in line.text
+        assert "クラス 未取得" in line.text
