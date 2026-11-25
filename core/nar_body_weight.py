@@ -95,8 +95,10 @@ def _check_page(soup, source_url, identity, info, *, result=False):
         raise ValueError("楽天競馬の開催日・競馬場・レース番号が保存予想と一致しません")
     title = _norm(soup.title.get_text(" ", strip=True) if soup.title else "")
     expected_day = f"{day[:4]}/{int(day[4:6]):02d}/{int(day[6:]):02d}"
-    if (venue + "競馬場") not in title or expected_day not in title or not re.search(
-        rf"(?<!\d){race}R(?!\d)", title):
+    # Whitespace was normalized out of the title: the date's last digit
+    # now touches the race number (e.g. 2026/11/239R). Anchor both together.
+    if ((venue + "競馬場") not in title or
+            f"{expected_day}{race}R" not in title):
         raise ValueError("ページのタイトルと保存予想の日付・開催場・Rが一致しません")
     if ("競走成績" if result else "出馬表") not in title:
         raise ValueError("異なる種類の楽天競馬ページです")
