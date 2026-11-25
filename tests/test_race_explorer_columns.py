@@ -312,7 +312,7 @@ def test_fixed_place_odds_value_keeps_same_lower_and_upper():
 
 @pytest.mark.parametrize("mode, venue, surface, classes, expected", [
     ("jra", "東京", "芝", ("1勝クラス", "3勝クラス", "G2"), ("1勝", "3勝", "G2")),
-    ("nar", "浦和", "ダ", ("C2二", "2歳三", "B1"), ("C2", "2歳限定・三組", "B1")),
+    ("nar", "浦和", "ダ", ("C2二", "2歳三", "B1"), ("C2二", "2歳三", "B1")),
 ])
 def test_recent_three_finish_and_class_use_saved_history_only(mode, venue, surface, classes, expected):
     h = horse(mode=mode)
@@ -354,3 +354,33 @@ def test_past_run_grade_evidence_only_from_saved_grade():
     assert r["run_latest_finish"] == "2着"
     assert r["run_latest_class"] == "G2"
 
+
+
+@pytest.mark.parametrize("archived, expected", [
+    ("C29", "C29"),
+    ("C2九", "C2九"),
+    ("C2九組", "C2九組"),
+    ("C2-9組", "C2-9組"),
+    ("C2 9組", "C2 9組"),
+    ("C2二", "C2二"),
+    ("C3十", "C3十"),
+    ("B1", "B1"),
+    ("2歳三", "2歳三"),
+    ("2歳三組", "2歳三組"),
+])
+def test_nar_previous_class_keeps_exact_subdivision(archived, expected):
+    h = horse(mode="nar")
+    run = h["explorer_facts"]["runs"][0]
+    run.update(class_raw=archived, venue="浦和", surface="ダ", finish="3着")
+    original = deepcopy(h)
+    result = records([h])["7"]
+    assert result["run_latest_class"] == expected
+    assert result["run_latest_finish"] == "3着"
+    assert h == original
+
+
+def test_nar_specific_class_can_come_from_saved_dated_race_name():
+    h = horse(mode="nar")
+    h["explorer_facts"]["runs"][0].update(
+        class_raw="重賞名など分類不能", race_name="C2九組", venue="浦和", surface="ダ")
+    assert records([h])["7"]["run_latest_class"] == "C2九組"
