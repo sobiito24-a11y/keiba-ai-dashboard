@@ -110,10 +110,10 @@ def render(result, view):
 
     if getattr(result, "race_mode", None) != "nar":
         return view
-    st.markdown("### ⚖️ 馬体重コンディション・研究")
-    st.caption("楽天競馬の連対時馬体重と今回馬体重を比較。"
-               "既存のSABCD・能力・印・オッズ・買い目は一切変更しません。"
-               "連対時範囲は「好走できる体重」の証明ではありません。")
+    st.markdown("**⚖️ NAR馬体重更新**")
+    st.caption("更新すると、すぐ下の全頭比較一覧で人気の右に"
+               "「今回馬体重（前走比）」と小さな「連対時体重範囲」を表示します。"
+               "既存の新SABCD・印・買い目は変更しません。")
 
     try:
         identity = race_odds.identity_from_result(result)
@@ -133,10 +133,8 @@ def render(result, view):
     start, prestart = bw._prestart(result, now)
     notice_key = "nar_body_weight_note_" + rid
 
-    st.markdown(f"[楽天競馬・対象出走表]({url})")
-    st.caption(f"取得対象：{rid} ／ {day} ／ 取得時刻はアプリ受信時刻（JST）。"
-               "サイト側の更新時刻は未取得です。"
-               "発走時刻が不明な場合、分析用の発走前データには採用しません。")
+    st.caption(f"[楽天競馬・対象出走表]({url}) ｜ {day}｜取得時刻はアプリ受信時刻（JST）。"
+               " 発走前と確認できない観測は研究用集計から除外します。")
 
     if st.button("当日馬体重を更新（楽天競馬）", key=rid+"_weight_fetch",
                  disabled=not is_today):
@@ -200,17 +198,19 @@ def render(result, view):
         getattr(st, status)(message)
 
     if latest:
-        st.caption("選択中の観測：" + latest["retrieved_at"] +
-                   ("（発走前取得）" if latest["prestart_observed"]
-                    else "（発走前未確認・検証には使いません）"))
-        st.dataframe(_bodyweight_table(latest), hide_index=True, use_container_width=True)
-        st.caption("前走比と連対時範囲を独立に表示。『範囲外』というだけでマイナス評価にはしません。")
+        confirmed = sum(h.get("current_kg") is not None for h in latest["rows"])
+        st.caption(f"全頭比較一覧に{confirmed}/{len(latest['rows'])}頭分の馬体重を反映 "
+                   f"｜観測 {latest['retrieved_at']} "
+                   + ("（発走前取得）" if latest["prestart_observed"]
+                      else "（発走前未確認・検証には使いません）")
+                   + "｜未発表の馬は未取得のまま")
     else:
-        st.info("まだ馬体重を取込んでいません。馬体重発表後に更新ボタンを押してください。")
+        st.caption("未取得。馬体重が発表されたら更新ボタンを押してください。")
 
     # Outcome is attached only to the separate study book and only after
     # the race. No prior prediction, view or observation is rewritten.
-    with st.expander("レース後：結果を照合する", expanded=False):
+    with st.expander("任意：レース後の結果照合・研究データ管理", expanded=False):
+        st.caption("この欄は馬体重一覧とは別の研究記録用です。")
         settled = ((book.get("races") or {}).get(rid) or {}).get("result")
         if settled:
             st.success("確定着順を保存済み。発走前の体重観測には上書きしていません。")
@@ -232,7 +232,7 @@ def render(result, view):
                 except Exception:
                     st.warning("確定着順に接続できません。研究データはそのまま保持しています。")
 
-    with st.expander("蓄積データ・SABCD別の1着／2着以内／3着以内率", expanded=False):
+    with st.expander("任意：新SABCD×馬体重の1着／2着以内／3着以内率", expanded=False):
         _summary_display(st, book)
         st.caption("1レースにつき最後の発走前観測を使用。複数回の更新を重複サンプルにはしません。"
                    "発走後に取得した過去の連対時範囲は、過去予測を知っていたことにはしません。")
