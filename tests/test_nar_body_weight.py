@@ -237,7 +237,7 @@ def test_one_click_research_ui_fetch_and_later_settlement_leave_prediction_uncha
     result = prediction()
     original = view()
     frozen = deepcopy(original)
-    streamlit.pressed = {"当日馬体重を更新（楽天競馬）"}
+    streamlit.pressed = {"当日馬体重を更新"}
     shown = ui.render(result, original)
     assert calls == [URL]
     assert original == frozen and result.overall_table.shape[0] == 5
