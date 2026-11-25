@@ -163,21 +163,34 @@ def parse_card(html, source_url, identity, info):
     rows = {}
     for tr in table.find_all("tr"):
         cells = tr.find_all(["td", "th"], recursive=False)
-        if len(cells) < 7:
+        if len(cells) < 6:
             continue
-        no = _integer(cells[1].get_text(" ", strip=True))
-        if no is None or no not in names:
+        # Rakuten merges the frame-number cell (rowspan) for the second
+        # horse in one frame. Its <tr> therefore has ONE fewer cell.
+        # Do not infer a frame or a horse from the preceding row: accept
+        # either layout only after matching BOTH saved number and name.
+        matched = None
+        for shift in (0, -1):
+            no_index, name_index = 1 + shift, 3 + shift
+            range_index, weight_index = 5 + shift, 6 + shift
+            if weight_index >= len(cells):
+                continue
+            no = _integer(cells[no_index].get_text(" ", strip=True))
+            if no is None or no not in names:
+                continue
+            # Sire/dam share the horse-name cell; reject ambiguous matches.
+            horse_text = _norm(cells[name_index].get_text(" ", strip=True))
+            matching = [n for n in names.values() if _norm(n) in horse_text]
+            if len(matching) == 1 and _norm(matching[0]) == _norm(names[no]):
+                matched = (no, range_index, weight_index)
+                break
+        if matched is None:
             continue
-        # Sire/dam and the horse name share this table cell. Match the
-        # frozen exact horse name; ambiguous substring matches are rejected.
-        horse_text = _norm(cells[3].get_text(" ", strip=True))
-        matching = [n for n in names.values() if _norm(n) in horse_text]
-        if len(matching) != 1 or _norm(matching[0]) != _norm(names[no]):
-            continue
+        no, range_index, weight_index = matched
         if no in rows:
             raise ValueError("楽天競馬出走表内に同じ馬番が重複しています")
-        low, high = _range(cells[5].get_text(" ", strip=True))
-        kg, delta = _weight(cells[6].get_text(" ", strip=True))
+        low, high = _range(cells[range_index].get_text(" ", strip=True))
+        kg, delta = _weight(cells[weight_index].get_text(" ", strip=True))
         band, distance = _classify(kg, low, high)
         rows[no] = dict(horse_no=no, name=names[no], current_kg=kg,
                         change_kg=delta, paired_min_kg=low, paired_max_kg=high,
