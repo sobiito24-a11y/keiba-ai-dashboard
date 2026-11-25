@@ -32,15 +32,44 @@ def _past_finish(value):
     return None
 
 
-def _past_class(run):
-    """Conservative class label from the archived, dated previous run only."""
+def _past_class(run, mode=None):
+    """Display a saved past-race class without upgrading an unknown result.
+
+    NAR class subdivisions are not interchangeable: C29, C2九 and C2九組
+    remain exactly as published in the saved source, rather than collapsing
+    them all to C2. This is a read-only label, not a model class input.
+    """
     raw = _text(run.get("class_raw"))
+    race_name = _text(run.get("race_name"))
     venue = _text(run.get("venue"))
-    if not raw or not venue:
+    if not venue or not (raw or race_name):
         return None
+    if mode == "nar":
+        # Explicit A/B/C classes with numeric or kanji subdivisions.
+        # Preserve the matched token verbatim, including a trailing 組.
+        # E.g. C29, C2九, C2九組, C2-9組, C2 9組, B1, 2歳三組.
+        class_pattern = (
+            r"(?<![A-Za-z0-9])"
+            r"[ABC](?:[1-9]\d?|[一二三四五六七八九十百]+)"
+            r"(?:\s*[-ー－‐−]\s*[一二三四五六七八九十百\d]+|\s+[1-9]\d?|[一二三四五六七八九十百]+)?"
+            r"(?:\s*組)?"
+            r"(?![A-Za-z0-9])"
+        )
+        age_pattern = r"(?<!\d)[23]歳\s*[-ー－]?\s*[一二三四五六七八九十百\d]+\s*(?:組)?"
+        # Prefer explicit class tokens in the dated archive; race names may
+        # contain only a sponsor name and must not be treated as class facts.
+        for evidence in (raw, race_name):
+            if not evidence:
+                continue
+            found = re.search(class_pattern, evidence)
+            if found:
+                return found.group(0).strip()
+            found = re.search(age_pattern, evidence)
+            if found:
+                return found.group(0).strip()
     from .newspaper_v2_enrichment import conservative_class
     found = conservative_class(dict(
-        race_name=raw, venue=venue, surface=_text(run.get("surface")),
+        race_name=raw or race_name, venue=venue, surface=_text(run.get("surface")),
         race_grade=_text(run.get("class_grade_raw")),
     ))
     label = found.get("class_label_v2")
@@ -458,7 +487,7 @@ def records(view):
             item[key + "_condition"] = _text(run.get("condition"))
             item[key + "_date"] = _text(run.get("date"))
             item[key + "_finish"] = _past_finish(run.get("finish"))
-            item[key + "_class"] = _past_class(run)
+            item[key + "_class"] = _past_class(run, mode=horse.get("mode"))
             item[key + "_is_maximum"] = run.get("is_maximum") is True and item[key] is not None
         result[no] = item
     return result
