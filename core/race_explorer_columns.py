@@ -109,6 +109,11 @@ def columns(view):
         insert_at = next(i for i, spec in enumerate(result) if spec["key"] == "course_rank") + 1
         result.insert(insert_at, _spec("career_course", "同コース全戦績", "text"))
     if not jra:
+        # NAR bodyweight belongs directly beside popularity in the normal
+        # comparison; it is a read-only observation, not a scoring feature.
+        result.insert(
+            next(i for i, spec in enumerate(result) if spec["key"] == "popularity") + 1,
+            _spec("nar_body_weight", "馬体重", "number"))
         # Keep the NAR hybrid research score available to filters/details, not in the wide table.
         # It never alters the formal model or the saved pure-ability values.
         position = next(i for i, spec in enumerate(result) if spec["key"] == "ability")
@@ -178,6 +183,7 @@ def columns(view):
     # win/place in a single column.
     visible_keys = (
         "user", "frame", "no", "name", "jockey", "odds", "popularity",
+        *(("nar_body_weight",) if not jra else ()),
         "research_sabcd", "ability", "style",
         *(("training",) if jra else ()),
         "distance", "course",
@@ -295,6 +301,15 @@ def records(view):
         grade = _text(facts.get("training"))
         grade = grade if grade in ("A", "B", "C", "D") and horse.get("mode") == "jra" else None
         current_weight = _number(facts.get("current_weight"))
+        nar_weight = _mapping(horse.get("nar_body_weight_research")) if horse.get("mode") == "nar" else {}
+        body_kg = _integer(nar_weight.get("current_kg"), minimum=250, maximum=750)
+        body_delta = _integer(abs(nar_weight.get("change_kg")), minimum=0, maximum=99) if isinstance(nar_weight.get("change_kg"), int) and not isinstance(nar_weight.get("change_kg"), bool) else None
+        if body_delta is not None and nar_weight.get("change_kg") < 0:
+            body_delta = -body_delta
+        paired_low = _integer(nar_weight.get("paired_min_kg"), minimum=250, maximum=750)
+        paired_high = _integer(nar_weight.get("paired_max_kg"), minimum=250, maximum=750)
+        if paired_low is None or paired_high is None or paired_low > paired_high:
+            paired_low = paired_high = None
         class_attention = _mapping(_mapping(horse.get("profile")).get("class_attention"))
         sabcd = _mapping(horse.get("research_sabcd"))
         sabcd_trial = _mapping(horse.get("research_sabcd_weight_class"))
@@ -314,6 +329,10 @@ def records(view):
             jockey=_text(facts.get("current_jockey", horse.get("jockey"))),
             odds=odds, place_odds=place_low, place_odds_high=place_high,
             popularity=popularity, score=score, rank=rank,
+            nar_body_weight=body_kg, nar_body_weight_change=body_delta,
+            nar_body_weight_min=paired_low, nar_body_weight_max=paired_high,
+            nar_body_weight_prestart=nar_weight.get("prestart_observed") is True,
+            nar_body_weight_observed_at=_text(nar_weight.get("retrieved_at")),
             ability=ability, ability_rank=ability_rank,
             class_attention=_compact_class_attention(class_attention.get("display") or class_attention.get("label")),
             class_attention_reason=_text(class_attention.get("reason")),
