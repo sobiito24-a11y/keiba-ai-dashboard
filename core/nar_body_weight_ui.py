@@ -21,7 +21,7 @@ def _bodyweight_table(observation):
             馬番=h["horse_no"], 馬名=h["name"], 新SABCD=h.get("sabcd") or "未照合",
             今回馬体重=(str(weight)+"kg") if weight is not None else "未発表",
             前走比=(f"{change:+d}kg" if change is not None else "未取得"),
-            連対時体重=(f"{low}〜{high}kg" if low is not None and high is not None else "未取得"),
+            連対時体重=(f"{low}〜{high}kg" if low is not None and high is not None else "-"),
             範囲判定=h["band"],
             範囲からの差=(f"{diff}kg" if diff is not None else "—"),
         ))
@@ -40,7 +40,7 @@ def _weight_detail(h):
     parts = [
         ("今回馬体重", str(current)+"kg" if current is not None else "未発表"),
         ("前走からの増減", (f"{delta:+d}kg" if delta is not None else "未取得")),
-        ("過去の連対時馬体重", (f"{low}〜{high}kg" if low is not None and high is not None else "未取得")),
+        ("過去の連対時馬体重", (f"{low}〜{high}kg" if low is not None and high is not None else "-")),
         ("連対時の範囲と比較", band or "判定不能"),
         ("観測の位置づけ", "発走前に取得" if prestart else "発走前と未確認・研究成績から除外"),
     ]
@@ -138,7 +138,7 @@ def render(result, view, *, compact=False):
         st.caption(f"[楽天競馬・対象出走表]({url}) ｜ {day}｜取得時刻はアプリ受信時刻（JST）。"
                    " 発走前と確認できない観測は研究用集計から除外します。")
 
-    if st.button("当日馬体重を更新（楽天競馬）", key=rid+"_weight_fetch",
+    if st.button("当日馬体重を更新", key=rid+"_weight_fetch",
                  disabled=not is_today):
         last = st.session_state.get("_nar_weight_last_global")
         previous = st.session_state.get(rid+"_weight_last")
