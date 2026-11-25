@@ -358,6 +358,8 @@ def test_past_run_grade_evidence_only_from_saved_grade():
 
 @pytest.mark.parametrize("archived, expected", [
     ("C29", "C29"),
+    ("Ｃ２九組", "C2九組"),
+    ("Ｃ２９組", "C29組"),
     ("C2九", "C2九"),
     ("C2九組", "C2九組"),
     ("C2-9組", "C2-9組"),
