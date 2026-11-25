@@ -7,6 +7,7 @@ race-wide odds overlay, and absent values remain JSON null rather than zero.
 from collections.abc import Mapping
 from math import isfinite
 import re
+import unicodedata
 
 from .final_candidate_selection import formal_score
 from .race_explorer_common import material_text
@@ -61,10 +62,13 @@ def _past_class(run, mode=None):
         for evidence in (raw, race_name):
             if not evidence:
                 continue
-            found = re.search(class_pattern, evidence)
+            # Normalize full-width racecard digits while retaining precise
+            # numeric/kanji division labels and their group suffix.
+            normalized = unicodedata.normalize("NFKC", evidence)
+            found = re.search(class_pattern, normalized)
             if found:
                 return found.group(0).strip()
-            found = re.search(age_pattern, evidence)
+            found = re.search(age_pattern, normalized)
             if found:
                 return found.group(0).strip()
     from .newspaper_v2_enrichment import conservative_class
