@@ -182,40 +182,76 @@ def overlay(view, observation):
     return out
 
 
+def official_card_url(identity, info):
+    """Verified 2026 JRA racecard address; never brute-force checksum values.
+
+    JRA's CNAME carries a one-byte check value. This formula was compared
+    against official cards on multiple 2026 race dates. Verify the response
+    identity again after download: an HTTP 200 alone proves nothing.
+    """
+    rid, venue, day, meeting, meeting_day, race_no = race_facts(identity, info)
+    if rid[:4] != "2026":
+        raise ValueError("2026年以外のJRA出馬表URLは未検証です")
+    v = int(rid[4:6])
+    month, date = int(day[4:6]), int(day[6:8])
+    hi_lo = lambda n: divmod(n, 10)
+    vt, vo = hi_lo(v)
+    dt, do = hi_lo(meeting_day)
+    mt, mo = hi_lo(month)
+    xt, xo = hi_lo(date)
+    code = (
+        vt * 0x29 + vo * 0x4A + meeting * 0x31 +
+        dt * 0x10 + do * 0x73 + xt * 0x5A + xo * 0xBD +
+        mt * 0x18 + mo * 0x7B + 0x4B
+    ) % 256
+    for earlier_race in range(1, race_no):
+        code = (code - (0x0B if earlier_race == 9 else 0x4B)) % 256
+    name = f"pw01dde01{rid[4:6]}{rid[:4]}{rid[6:8]}{rid[8:10]}{rid[10:12]}{day}/{code:02X}"
+    return "https://www.jra.go.jp/JRADB/accessD.html?CNAME=" + name
+
+
 async def fetch_once(identity, info, *, now=None):
-    """One explicit button press, one official navigation; no polling or login."""
-    from playwright.async_api import async_playwright
+    """One user-initiated official request; browser fallback if HTTP is blocked."""
     now = now or datetime.now(JST)
     if not is_today(identity, info, now):
         raise ValueError("JRAの当日開催レースのみ更新できます")
     rid, venue, day, meeting, meeting_day, race_no = race_facts(identity, info)
-    async with async_playwright() as playwright:
-        kwargs = dict(headless=True, args=["--no-sandbox", "--disable-dev-shm-usage"])
-        if os.path.isfile("/usr/bin/chromium"):
-            kwargs["executable_path"] = "/usr/bin/chromium"
-        try:
-            browser = await playwright.chromium.launch(**kwargs)
-        except Exception as exc:
-            raise ValueError("JRA取得用ブラウザを起動できません（Chromium設定を確認）") from exc
-        try:
-            page = await browser.new_page()
-            page.set_default_timeout(12000)
-            await page.goto("https://www.jra.go.jp/", wait_until="domcontentloaded", timeout=20000)
-            await page.get_by_role("link", name="出馬表", exact=True).first.click()
-            await page.get_by_role("link", name=f"{meeting}回{venue}{meeting_day}日").first.click()
-            await page.get_by_role("link", name=f"{race_no}レース", exact=True).first.click()
-            await page.wait_for_load_state("domcontentloaded")
-            url, html = page.url, await page.content()
-            rows = parse_card(html, url, identity, info)
-            return dict(race_id=rid, mode="jra", source_url=url,
-                        retrieved_at=now.isoformat(), prestart_observed=(
-                            _post_time_before_now(info, now)), rows=rows)
-        except ValueError:
-            raise
-        except Exception as exc:
-            raise ValueError("JRA公式出馬表に到達できません（掲載前・画面変更・通信制限の可能性）") from exc
-        finally:
-            await browser.close()
+    url = official_card_url(identity, info)
+    failures = []
+    try:
+        import requests
+        response = requests.get(
+            url, headers={"User-Agent": "Mozilla/5.0 (compatible; KeibaAI/1.0; manual racecard lookup)"},
+            timeout=12, allow_redirects=False)
+        if response.status_code != 200 or not 0 < len(response.content) <= 4_000_000:
+            raise ValueError("JRA公式出馬表のHTTP応答を確認できません")
+        rows = parse_card(response.content, url, identity, info)
+    except (ValueError, TypeError, OSError, TimeoutError, requests.RequestException) as exc:
+        failures.append(str(exc)[:150])
+        # Same URL and same race identity, but with the already configured
+        # Chromium if JRA rejects direct HTTP access from Streamlit Cloud.
+        from playwright.async_api import async_playwright
+        async with async_playwright() as playwright:
+            kwargs = dict(headless=True, args=["--no-sandbox", "--disable-dev-shm-usage"])
+            if os.path.isfile("/usr/bin/chromium"):
+                kwargs["executable_path"] = "/usr/bin/chromium"
+            try:
+                browser = await playwright.chromium.launch(**kwargs)
+            except Exception as browser_exc:
+                raise ValueError("JRA公式出馬表を取得できません（HTTPとChromiumの両経路が失敗）") from browser_exc
+            try:
+                page = await browser.new_page()
+                page.set_default_timeout(12000)
+                await page.goto(url, wait_until="domcontentloaded", timeout=20000)
+                rows = parse_card(await page.content(), page.url, identity, info)
+                url = page.url
+            except Exception as browser_exc:
+                raise ValueError("JRA公式の当日出馬表を照合できません（掲載前・画面変更・通信制限の可能性）") from browser_exc
+            finally:
+                await browser.close()
+    return dict(race_id=rid, mode="jra", source_url=url,
+                retrieved_at=now.isoformat(),
+                prestart_observed=_post_time_before_now(info, now), rows=rows)
 
 
 def _post_time_before_now(info, now):
