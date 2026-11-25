@@ -307,3 +307,50 @@ def test_fixed_place_odds_value_keeps_same_lower_and_upper():
     h["sort_values"].pop("place_odds_high",None)
     result=records([h])["7"]
     assert result["place_odds"]==1.2 and result["place_odds_high"]==1.2
+
+
+
+@pytest.mark.parametrize("mode, venue, surface, classes, expected", [
+    ("jra", "東京", "芝", ("1勝クラス", "3勝クラス", "G2"), ("1勝", "3勝", "G2")),
+    ("nar", "浦和", "ダ", ("C2二", "2歳三", "B1"), ("C2", "2歳限定・三組", "B1")),
+])
+def test_recent_three_finish_and_class_use_saved_history_only(mode, venue, surface, classes, expected):
+    h = horse(mode=mode)
+    original = deepcopy(h)
+    runs = h["explorer_facts"]["runs"]
+    for run, finish, cls in zip(runs, ("1着", "4着", "12着"), classes):
+        run.update(finish=finish, class_raw=cls, venue=venue, surface=surface)
+    original = deepcopy(h)
+    row = records([h])["7"]
+    assert [row[k + "_finish"] for k in ("run_old", "run_middle", "run_latest")] == [
+        "4着", "12着", "1着"
+    ]
+    assert [row[k + "_class"] for k in ("run_old", "run_middle", "run_latest")] == [
+        expected[1], expected[2], expected[0]
+    ]
+    assert [row[k] for k in ("run_old", "run_middle", "run_latest")] == [46, 93.2, 71]
+    assert h == original
+
+
+@pytest.mark.parametrize("mode", ["jra", "nar"])
+def test_unknown_history_does_not_invent_finish_or_class(mode):
+    h = horse(mode=mode)
+    for run in h["explorer_facts"]["runs"]:
+        run.update(finish=None, class_raw="根拠不明の固有名", venue="東京" if mode == "jra" else "浦和",
+                   surface="芝" if mode == "jra" else "ダ")
+    r = records([h])["7"]
+    for key in ("run_old", "run_middle", "run_latest"):
+        assert r[key + "_finish"] is None
+        assert r[key + "_class"] is None
+        assert r[key] is not None  # An index never substitutes for finish.
+
+
+def test_past_run_grade_evidence_only_from_saved_grade():
+    h = horse(mode="jra")
+    h["explorer_facts"]["runs"][0].update(
+        finish="2", class_raw="芝の名前付き重賞", class_grade_raw="GII",
+        venue="東京", surface="芝")
+    r = records([h])["7"]
+    assert r["run_latest_finish"] == "2着"
+    assert r["run_latest_class"] == "G2"
+
