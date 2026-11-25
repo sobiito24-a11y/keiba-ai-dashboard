@@ -503,3 +503,41 @@
 #postrace-review .explorer-table .ai-evaluation-memo small {
   color:#647989;font-size:10px;line-height:1.4;
 }
+
+
+/* NAR: one compact, read-only bodyweight cell right after popularity. */
+.race-explorer .explorer-table .col-nar_body_weight {
+  min-width: 91px;
+  text-align: center;
+  white-space: nowrap;
+}
+.race-explorer .nar-bodyweight-inline {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  line-height: 1.35;
+  white-space: nowrap;
+}
+.race-explorer .nar-bodyweight-inline strong {
+  font-size: 13px;
+  font-weight: 750;
+  font-variant-numeric: tabular-nums;
+}
+.race-explorer .nar-bodyweight-change {
+  font-weight: 550;
+  font-size: 12px;
+  padding-left: 1px;
+}
+.race-explorer .nar-bodyweight-paired {
+  font-size: 10px;
+  font-weight: 450;
+  color: #63778b;
+  white-space: nowrap;
+}
+@media (max-width: 700px) {
+  .race-explorer .explorer-table .col-nar_body_weight { min-width: 91px; }
+  .race-explorer .nar-bodyweight-inline strong { font-size: 12px; }
+  .race-explorer .nar-bodyweight-paired { font-size: 10px; }
+}
