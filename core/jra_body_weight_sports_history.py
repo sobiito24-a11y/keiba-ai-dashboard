@@ -58,13 +58,20 @@ def parse_racecard_ids(html, url, identity, info):
             if no not in saved or no in result:
                 raise ValueError("保存馬番にない馬または馬番重複があります")
             name_cell = cells[name_i]
-            # The actual Sportsnavi racecard puts the horse name directly
-            # before a <p> containing sex/age; race links may wrap the name.
-            first = next((n for n in name_cell.contents if
-                          str(n).strip() and getattr(n, "name", None) != "p"), None)
-            row_name = _norm(first.get_text(" ", strip=True)
-                             if hasattr(first, "get_text") else str(first or ""))
-            if row_name != saved[no]:
+            # Some JRA horse cards place an empty icon/badge before the
+            # linked horse name. The FIRST HTML node is not necessarily
+            # the horse name: compare exact nonempty rendered text nodes
+            # and exact linked names, never a substring of the full cell.
+            candidates = [
+                _norm(node.get_text(" ", strip=True)
+                      if hasattr(node, "get_text") else str(node))
+                for node in name_cell.contents
+            ]
+            candidates += [
+                _norm(node.get_text(" ", strip=True))
+                for node in name_cell.find_all(["a", "strong", "p"])
+            ]
+            if saved[no] not in candidates:
                 raise ValueError(f"馬番{no}の馬名が一致しません")
             ids = []
             for link in name_cell.find_all("a", href=True):
