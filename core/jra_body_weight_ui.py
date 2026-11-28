@@ -49,6 +49,20 @@ def render(result, view, *, compact=False):
                 # Never replace already confirmed weights with a prepublication
                 # empty page, but keep zero-weight observations for past ranges.
                 if available >= prior_count:
+                    if isinstance(latest, dict) and latest.get("race_id") == rid:
+                        # If a supplemental history request is blocked, keep
+                        # previously verified career ranges. Never replace a
+                        # known result with the fallback's missing value.
+                        prior = {int(r["horse_no"]): r for r in latest.get("rows", [])}
+                        for row in observed.get("rows", []):
+                            older = prior.get(int(row["horse_no"]))
+                            if (older and bw._norm(older.get("name")) == bw._norm(row.get("name"))
+                                    and older.get("paired_scope") == "career"
+                                    and row.get("paired_scope") != "career"):
+                                for field in ("paired_min_kg", "paired_max_kg", "paired_count",
+                                              "paired_scope", "paired_source_url", "paired_source"):
+                                    if field in older:
+                                        row[field] = older[field]
                     book[rid] = observed
                     st.session_state[book_key] = book
                     latest = observed
@@ -63,6 +77,9 @@ def render(result, view, *, compact=False):
                     history_note = ("過去全走の連対時体重を取得できず、"
                                     "JRA公式の直近4走のみ参照しています。"
                                     "「-」は過去に連対がないことを示すとは限りません。")
+                if observed.get("paired_career_error"):
+                    history_note += " 履歴取得の原因：" + str(
+                        observed["paired_career_error"])[:220]
                 provider = {
                     "sportsnavi": "スポーツナビ",
                     "netkeiba": "netkeiba",
