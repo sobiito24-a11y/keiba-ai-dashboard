@@ -313,3 +313,65 @@ def test_kyoto7_zero_on_both_hosts_is_uncertain_not_proof_of_nonpublication():
     assert len(calls) == 2
     assert result["publication_uncertain"] is True
     assert result["current_count"] == 0
+
+
+def test_zero_weights_on_both_http_hosts_triggers_browser_verification(monkeypatch):
+    import asyncio
+    import sys
+    import types
+    from datetime import datetime
+
+    ident, info, page_html = _nov28()
+    stale = (page_html.replace("501kg(+4)", "")
+             .replace("468kg(-2)", "")
+             .replace("488kg(初出走)", ""))
+
+    class Response:
+        status_code = 200
+        content = stale.encode("utf-8")
+
+    class FakePage:
+        url = ""
+        def set_default_timeout(self, *_args):
+            pass
+        async def goto(self, url, **_kwargs):
+            self.url = url
+        async def content(self):
+            return page_html
+
+    class FakeContext:
+        async def new_page(self):
+            return FakePage()
+
+    class FakeBrowser:
+        async def new_context(self, **kwargs):
+            assert kwargs["extra_http_headers"]["Cache-Control"].startswith("no-cache")
+            return FakeContext()
+        async def close(self):
+            pass
+
+    class FakeChromium:
+        async def launch(self, **kwargs):
+            assert kwargs["headless"] is True
+            return FakeBrowser()
+
+    class FakePlaywright:
+        chromium = FakeChromium()
+        async def __aenter__(self):
+            return self
+        async def __aexit__(self, exc_type, exc, tb):
+            pass
+
+    fake_api = types.ModuleType("playwright.async_api")
+    fake_api.async_playwright = lambda: FakePlaywright()
+    fake_base = types.ModuleType("playwright")
+    fake_base.__path__ = []
+    monkeypatch.setitem(sys.modules, "playwright", fake_base)
+    monkeypatch.setitem(sys.modules, "playwright.async_api", fake_api)
+
+    result = asyncio.run(bw.fetch_once(
+        ident, info, now=datetime(2026, 11, 28, 13, 19, tzinfo=bw.JST),
+        request_get=lambda *_a, **_kw: Response(), browser_fallback=True))
+    assert result["verified_by"] == "browser"
+    assert result["current_count"] == 3
+    assert result["publication_uncertain"] is False
