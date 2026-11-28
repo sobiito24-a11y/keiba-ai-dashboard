@@ -51,9 +51,10 @@ def render(result, view, *, compact=False):
                 total = len(observed["rows"])
                 if observed["publication_status"] == "unpublished":
                     st.session_state[note_key] = (
-                        "warning", f"JRA公式の出馬表は確認できましたが、当日馬体重はまだ未発表です（0/{total}頭）。"
-                        "通常は発走のおよそ60分前に発表されます。"
-                        "連対時体重がない馬は「-」で表示します。")
+                        "warning", f"JRA公式の出馬表を複数経路で確認しましたが、取得結果に当日馬体重がありません（0/{total}頭）。"
+                        "公式で既に発表されていても、取得元のキャッシュ・配信遅延の可能性があります。"
+                        "発走約60分前以降なら30秒以上空けて再更新してください。"
+                        "過去の連対時体重がない馬は「-」で表示します。")
                 elif available < total:
                     st.session_state[note_key] = (
                         "warning", f"JRA公式で{available}/{total}頭の当日馬体重を取得しました。"
