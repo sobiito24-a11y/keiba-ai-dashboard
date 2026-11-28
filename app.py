@@ -1821,6 +1821,12 @@ def render_game_prediction(result, *, show_header=False):
                 # take effect without requiring the user to restart the app.
                 from core import jra_body_weight as jra_body_weight_module
                 importlib.reload(jra_body_weight_module)
+                # Streamlit can retain dependent modules across reruns. Reload
+                # both career data providers as well as the top-level parser.
+                from core import jra_body_weight_sports_history as jra_sports_history_module
+                from core import jra_body_weight_history as jra_history_module
+                importlib.reload(jra_sports_history_module)
+                importlib.reload(jra_history_module)
                 from core import jra_body_weight_ui as body_weight_ui_module
             else:
                 from core import nar_body_weight_ui as body_weight_ui_module
