@@ -1,8 +1,9 @@
 """JRA official racecard body weights, for display only (never a model input).
 
-An explicit user click navigates the official site. The JRA CNAME checksum is
-not guessed: a live racecard link is discovered by the official browser menu.
-Missing current weights / previous 1st-2nd finishes are never fabricated.
+A user click fetches the exact saved race card from official JRA hosts.
+The race URL and each horse's number/name are checked before accepting data.
+Unpublished current weights stay missing; historical paired weights can
+still be displayed separately. No scores, ranks or odds are changed.
 """
 from __future__ import annotations
 
@@ -209,24 +210,50 @@ def official_card_url(identity, info):
     return "https://www.jra.go.jp/JRADB/accessD.html?CNAME=" + name
 
 
-async def fetch_once(identity, info, *, now=None):
-    """One user-initiated official request; browser fallback if HTTP is blocked."""
+def _official_variants(primary_url):
+    """Only identical racecard paths on official hosts; preserve CNAME exactly."""
+    parsed = urlsplit(primary_url)
+    if parsed.scheme != "https" or parsed.hostname not in OFFICIAL_HOSTS or parsed.path != "/JRADB/accessD.html":
+        raise ValueError("JRA出馬表以外のURLは取得しません")
+    path_query = parsed.path + "?" + parsed.query
+    return [f"https://{host}{path_query}" for host in ("www.jra.go.jp", "jra.jp")]
+
+
+def _retrieval_status(rows):
+    confirmed = sum(row.get("current_kg") is not None for row in rows)
+    return "published" if confirmed else "unpublished"
+
+
+async def fetch_once(identity, info, *, now=None, request_get=None, browser_fallback=True):
+    """One manual update, alternate official hosts, and validated browser fallback.
+
+    If all horse weights are still unpublished, this is a successful *page*
+    retrieval but NOT a successful bodyweight refresh.
+    """
     now = now or datetime.now(JST)
     if not is_today(identity, info, now):
         raise ValueError("JRAの当日開催レースのみ更新できます")
-    rid, venue, day, meeting, meeting_day, race_no = race_facts(identity, info)
-    url = official_card_url(identity, info)
+    rid, _venue, _day, _meeting, _meeting_day, _race_no = race_facts(identity, info)
     import requests
-    try:
-        response = requests.get(
-            url, headers={"User-Agent": "Mozilla/5.0 (compatible; KeibaAI/1.0; manual racecard lookup)"},
-            timeout=12, allow_redirects=False)
-        if response.status_code != 200 or not 0 < len(response.content) <= 4_000_000:
-            raise ValueError("JRA公式出馬表のHTTP応答を確認できません")
-        rows = parse_card(response.content, url, identity, info)
-    except (ValueError, TypeError, OSError, TimeoutError, requests.RequestException):
-        # Same URL and same race identity, but with the already configured
-        # Chromium if JRA rejects direct HTTP access from Streamlit Cloud.
+    get = request_get or requests.get
+    candidates = _official_variants(official_card_url(identity, info))
+    errors = []
+    fetched = None
+    for url in candidates:
+        try:
+            response = get(
+                url, headers={"User-Agent": "Mozilla/5.0 (KeibaAI; manual official racecard)"},
+                timeout=9, allow_redirects=False)
+            if response.status_code != 200:
+                raise ValueError(f"HTTP {response.status_code}")
+            if not 0 < len(response.content) <= 4_000_000:
+                raise ValueError("出馬表の応答サイズが不正")
+            rows = parse_card(response.content, url, identity, info)
+            fetched = (url, rows)
+            break
+        except (ValueError, TypeError, OSError, TimeoutError, requests.RequestException) as exc:
+            errors.append(f"{urlsplit(url).hostname}: {str(exc)[:85]}")
+    if fetched is None and browser_fallback:
         from playwright.async_api import async_playwright
         async with async_playwright() as playwright:
             kwargs = dict(headless=True, args=["--no-sandbox", "--disable-dev-shm-usage"])
@@ -234,21 +261,34 @@ async def fetch_once(identity, info, *, now=None):
                 kwargs["executable_path"] = "/usr/bin/chromium"
             try:
                 browser = await playwright.chromium.launch(**kwargs)
-            except Exception as browser_exc:
-                raise ValueError("JRA公式出馬表を取得できません（HTTPとChromiumの両経路が失敗）") from browser_exc
-            try:
-                page = await browser.new_page()
-                page.set_default_timeout(12000)
-                await page.goto(url, wait_until="domcontentloaded", timeout=20000)
-                rows = parse_card(await page.content(), page.url, identity, info)
-                url = page.url
-            except Exception as browser_exc:
-                raise ValueError("JRA公式の当日出馬表を照合できません（掲載前・画面変更・通信制限の可能性）") from browser_exc
-            finally:
-                await browser.close()
+            except Exception as exc:
+                errors.append("Chromiumを起動できません")
+            else:
+                try:
+                    page = await browser.new_page()
+                    page.set_default_timeout(12000)
+                    for candidate in candidates:
+                        try:
+                            await page.goto(candidate, wait_until="domcontentloaded", timeout=20000)
+                            rows = parse_card(await page.content(), page.url, identity, info)
+                            fetched = (page.url, rows)
+                            break
+                        except Exception as exc:
+                            errors.append(f"ブラウザ({urlsplit(candidate).hostname}): {str(exc)[:85]}")
+                finally:
+                    await browser.close()
+    if fetched is None:
+        # Show enough context to distinguish blocked requests from a changed
+        # JRA page template without leaking browser internals or credentials.
+        raise ValueError("JRA公式出馬表に接続・照合できません。"
+                         + " / ".join(errors[:4])[:360])
+    url, rows = fetched
     return dict(race_id=rid, mode="jra", source_url=url,
                 retrieved_at=now.isoformat(),
-                prestart_observed=_post_time_before_now(info, now), rows=rows)
+                prestart_observed=_post_time_before_now(info, now),
+                publication_status=_retrieval_status(rows),
+                current_count=sum(r["current_kg"] is not None for r in rows),
+                rows=rows)
 
 
 def _post_time_before_now(info, now):
