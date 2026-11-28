@@ -224,11 +224,17 @@ def _retrieval_status(rows):
     return "published" if confirmed else "unpublished"
 
 
-async def fetch_once(identity, info, *, now=None, request_get=None, browser_fallback=True):
-    """One manual update, alternate official hosts, and validated browser fallback.
+def _published_count(rows):
+    return sum(row.get("current_kg") is not None for row in rows)
 
-    If all horse weights are still unpublished, this is a successful *page*
-    retrieval but NOT a successful bodyweight refresh.
+
+async def fetch_once(identity, info, *, now=None, request_get=None, browser_fallback=True):
+    """Refresh the exact saved JRA race, independently of predicted rankings.
+
+    A valid card containing ZERO current weights might be an outdated cached
+    response. Never interpret one such HTTP response as proof of nonpublication:
+    retry the other official host, and then the installed browser. Keep the
+    validated response with the greatest number of actual current weights.
     """
     now = now or datetime.now(JST)
     if not is_today(identity, info, now):
@@ -238,56 +244,85 @@ async def fetch_once(identity, info, *, now=None, request_get=None, browser_fall
     get = request_get or requests.get
     candidates = _official_variants(official_card_url(identity, info))
     errors = []
-    fetched = None
+    best = None
+
+    def consider(url, rows, channel):
+        nonlocal best
+        count = _published_count(rows)
+        if best is None or count > best[2]:
+            best = (url, rows, count, channel)
+        return count
+
     for url in candidates:
         try:
             response = get(
-                url, headers={"User-Agent": "Mozilla/5.0 (KeibaAI; manual official racecard)"},
+                url,
+                headers={
+                    "User-Agent": "Mozilla/5.0 (KeibaAI; manual official racecard)",
+                    "Cache-Control": "no-cache, no-store, max-age=0",
+                    "Pragma": "no-cache",
+                },
                 timeout=9, allow_redirects=False)
             if response.status_code != 200:
                 raise ValueError(f"HTTP {response.status_code}")
             if not 0 < len(response.content) <= 4_000_000:
                 raise ValueError("出馬表の応答サイズが不正")
             rows = parse_card(response.content, url, identity, info)
-            fetched = (url, rows)
-            break
+            count = consider(url, rows, "http")
+            if count == len(rows):
+                # Every declared horse has a measured current weight.
+                break
         except (ValueError, TypeError, OSError, TimeoutError, requests.RequestException) as exc:
             errors.append(f"{urlsplit(url).hostname}: {str(exc)[:85]}")
-    if fetched is None and browser_fallback:
-        from playwright.async_api import async_playwright
-        async with async_playwright() as playwright:
-            kwargs = dict(headless=True, args=["--no-sandbox", "--disable-dev-shm-usage"])
-            if os.path.isfile("/usr/bin/chromium"):
-                kwargs["executable_path"] = "/usr/bin/chromium"
-            try:
-                browser = await playwright.chromium.launch(**kwargs)
-            except Exception as exc:
-                errors.append("Chromiumを起動できません")
-            else:
+
+    if (best is None or best[2] == 0) and browser_fallback:
+        # A valid but unpopulated HTTP card still needs browser verification;
+        # otherwise we can falsely report "unpublished" six minutes before
+        # the start even though weights are published on JRA's current page.
+        try:
+            from playwright.async_api import async_playwright
+            async with async_playwright() as playwright:
+                kwargs = dict(headless=True, args=["--no-sandbox", "--disable-dev-shm-usage"])
+                if os.path.isfile("/usr/bin/chromium"):
+                    kwargs["executable_path"] = "/usr/bin/chromium"
                 try:
-                    page = await browser.new_page()
-                    page.set_default_timeout(12000)
-                    for candidate in candidates:
-                        try:
-                            await page.goto(candidate, wait_until="domcontentloaded", timeout=20000)
-                            rows = parse_card(await page.content(), page.url, identity, info)
-                            fetched = (page.url, rows)
-                            break
-                        except Exception as exc:
-                            errors.append(f"ブラウザ({urlsplit(candidate).hostname}): {str(exc)[:85]}")
-                finally:
-                    await browser.close()
-    if fetched is None:
-        # Show enough context to distinguish blocked requests from a changed
-        # JRA page template without leaking browser internals or credentials.
+                    browser = await playwright.chromium.launch(**kwargs)
+                except Exception:
+                    errors.append("Chromiumを起動できません")
+                else:
+                    try:
+                        context = await browser.new_context(extra_http_headers={
+                            "Cache-Control": "no-cache, no-store, max-age=0",
+                            "Pragma": "no-cache",
+                        })
+                        page = await context.new_page()
+                        page.set_default_timeout(12000)
+                        for candidate in candidates:
+                            try:
+                                await page.goto(candidate, wait_until="domcontentloaded", timeout=20000)
+                                rows = parse_card(await page.content(), page.url, identity, info)
+                                count = consider(page.url, rows, "browser")
+                                if count:
+                                    break
+                            except Exception as exc:
+                                errors.append(
+                                    f"ブラウザ({urlsplit(candidate).hostname}): {str(exc)[:85]}")
+                    finally:
+                        await browser.close()
+        except Exception as exc:
+            errors.append(f"ブラウザ再確認不可: {type(exc).__name__}")
+
+    if best is None:
         raise ValueError("JRA公式出馬表に接続・照合できません。"
                          + " / ".join(errors[:4])[:360])
-    url, rows = fetched
+    url, rows, count, channel = best
     return dict(race_id=rid, mode="jra", source_url=url,
                 retrieved_at=now.isoformat(),
                 prestart_observed=_post_time_before_now(info, now),
                 publication_status=_retrieval_status(rows),
-                current_count=sum(r["current_kg"] is not None for r in rows),
+                current_count=count, verified_by=channel,
+                # Zero may mean unannounced weights OR a stale provider cache.
+                publication_uncertain=(count == 0),
                 rows=rows)
 
 
