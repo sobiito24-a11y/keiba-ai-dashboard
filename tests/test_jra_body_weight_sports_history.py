@@ -82,6 +82,15 @@ def test_sports_racecard_maps_horse_ids_not_order():
     }
 
 
+def test_badge_before_horse_name_does_not_hide_verified_profile_id():
+    page = card_html().replace(
+        "<td><a href='https://sports.yahoo.co.jp/keiba/directory/horse/",
+        "<td><span class='badge'></span><a href='https://sports.yahoo.co.jp/keiba/directory/horse/")
+    ids = sports.parse_racecard_ids(page, CARD, RACE, INFO)
+    assert ids[2] == ("レッドシュヴェルト", IDS[2])
+    assert ids[3] == ("アドマイヤクワッズ", IDS[3])
+
+
 def test_wrong_day_name_or_race_refused():
     with pytest.raises(ValueError):
         sports.parse_racecard_ids(card_html(wrong_date=True), CARD, RACE, INFO)
