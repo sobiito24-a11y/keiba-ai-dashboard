@@ -228,7 +228,8 @@ def _published_count(rows):
     return sum(row.get("current_kg") is not None for row in rows)
 
 
-async def fetch_once(identity, info, *, now=None, request_get=None, browser_fallback=True):
+async def fetch_once(identity, info, *, now=None, request_get=None,
+                     browser_fallback=True, history_cache=None):
     """Refresh the exact saved JRA race, independently of predicted rankings.
 
     A valid card containing ZERO current weights might be an outdated cached
@@ -353,11 +354,26 @@ async def fetch_once(identity, info, *, now=None, request_get=None, browser_fall
         raise ValueError("JRA公式出馬表に接続・照合できません。"
                          + " / ".join(errors[:4])[:360])
     url, rows, count, channel = best
+    career_checked = 0
+    career_error = None
+    # Only UI-triggered calls opt in. Existing fetch/test callers that omit
+    # the cache keep the established one-request racecard contract.
+    if history_cache is not None:
+        try:
+            from .jra_body_weight_history import enrich as enrich_career
+            rows, career_checked = enrich_career(
+                rows, identity, info, get=get, cache=history_cache)
+        except Exception as exc:
+            # Past-history failures must not hide verified current weights.
+            career_error = type(exc).__name__
     return dict(race_id=rid, mode="jra", source_url=url,
                 retrieved_at=now.isoformat(),
                 prestart_observed=_post_time_before_now(info, now),
                 publication_status=_retrieval_status(rows),
                 current_count=count, verified_by=channel,
+                paired_career_checked=career_checked,
+                paired_career_total=len(rows),
+                paired_career_error=career_error,
                 # Zero may mean unannounced weights OR a stale provider cache.
                 publication_uncertain=(count == 0),
                 rows=rows)
