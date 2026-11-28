@@ -61,6 +61,7 @@ def main():
                           if hasattr(name, "get_text") else str(name or ""))
             saved.append({"horse_no": int(number), "name": horse})
         break
+    print("Parsed racecard saved horses:", saved, flush=True)
     assert len(saved) == 18, f"Racecard runners: {len(saved)}"
     identity = {"race_id": RACE_ID, "mode": "jra", "horses": saved}
     mapping = parse_racecard_ids(raw, URL, identity, RACE_INFO)
