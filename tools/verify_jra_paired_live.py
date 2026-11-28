@@ -55,10 +55,21 @@ def main():
             if not re.fullmatch(r"\d{1,2}", number):
                 continue
             name_cell = tds[name_i]
-            name = next((node for node in name_cell.contents
-                         if str(node).strip() and getattr(node, "name", None) != "p"), None)
-            horse = _norm(name.get_text(" ", strip=True)
-                          if hasattr(name, "get_text") else str(name or ""))
+            # Ignore empty decorative icons before a linked horse name.
+            links = [
+                a for a in name_cell.find_all("a", href=True)
+                if "/keiba/directory/horse/" in a["href"]
+                and _norm(a.get_text(" ", strip=True))
+            ]
+            if links:
+                horse = _norm(links[0].get_text(" ", strip=True))
+            else:
+                names = [
+                    _norm(node.get_text(" ", strip=True)
+                          if hasattr(node, "get_text") else str(node))
+                    for node in name_cell.contents
+                ]
+                horse = next((v for v in names if v), "")
             saved.append({"horse_no": int(number), "name": horse})
         break
     print("Parsed racecard saved horses:", saved, flush=True)
