@@ -171,10 +171,12 @@ def test_a_blocked_horse_history_preserves_existing_official_paired_weights():
         if url == CARD:
             return Response(racecard())
         raise ConnectionError("blocked")
-    updated, checked = history.enrich(
-        old, RACE, INFO, get=get, max_workers=1)
-    assert checked == 0
-    assert updated == old
+    before = deepcopy(old)
+    # A fully blocked source is now surfaced so the UI can show why the
+    # all-career range is missing. Existing JRA values remain unchanged.
+    with pytest.raises(ValueError, match="スポーツナビ"):
+        history.enrich(old, RACE, INFO, get=get, max_workers=1)
+    assert old == before
 
 
 
