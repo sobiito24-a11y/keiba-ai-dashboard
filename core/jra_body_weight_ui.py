@@ -32,27 +32,42 @@ def render(result, view, *, compact=False):
     now = datetime.now(race_odds.JST)
     if st.button("当日馬体重を更新", key=rid + "_jra_weight_fetch", disabled=not today):
         previous = st.session_state.get(rid + "_jra_weight_last")
-        if previous and (now - previous).total_seconds() < 120:
-            st.session_state[note_key] = ("warning", "同じレースの馬体重更新は2分間隔でお願いします。")
+        if previous and (now - previous).total_seconds() < 30:
+            st.session_state[note_key] = ("warning", "JRA公式への再確認は30秒間隔でお願いします。")
         else:
             st.session_state[rid + "_jra_weight_last"] = now
             try:
-                with st.spinner("JRA公式の当日出馬表を照合しています…"):
+                with st.spinner("JRA公式の出馬表から馬体重を照合しています…"):
                     observed = asyncio.run(bw.fetch_once(identity, result.race_info or {}, now=now))
-                    # Never replace a previous observation with a different race.
+                available = observed["current_count"]
+                prior_count = (sum(x.get("current_kg") is not None for x in latest.get("rows", []))
+                               if isinstance(latest, dict) else 0)
+                # Never replace already confirmed weights with a prepublication
+                # empty page, but keep zero-weight observations for past ranges.
+                if available >= prior_count:
                     book[rid] = observed
                     st.session_state[book_key] = book
                     latest = observed
-                available = sum(h["current_kg"] is not None for h in latest["rows"])
-                st.session_state[note_key] = (
-                    "success", f"当日馬体重を{available}/{len(latest['rows'])}頭確認しました。"
-                    "連対時体重がない馬も当日体重・増減は表示します。")
+                total = len(observed["rows"])
+                if observed["publication_status"] == "unpublished":
+                    st.session_state[note_key] = (
+                        "warning", f"JRA公式の出馬表は確認できましたが、当日馬体重はまだ未発表です（0/{total}頭）。"
+                        "通常は発走のおよそ60分前に発表されます。"
+                        "連対時体重がない馬は「-」で表示します。")
+                elif available < total:
+                    st.session_state[note_key] = (
+                        "warning", f"JRA公式で{available}/{total}頭の当日馬体重を取得しました。"
+                        "未取得の馬は未発表・除外等の可能性があります。")
+                else:
+                    st.session_state[note_key] = (
+                        "success", f"JRA公式から当日馬体重を{available}/{total}頭取得しました。"
+                        "連対時体重がない馬も当日馬体重・増減は表示します。")
             except (ValueError, TypeError, KeyError) as exc:
-                st.session_state[note_key] = ("warning", "JRA馬体重を取得できません：" + str(exc))
+                st.session_state[note_key] = ("warning", "JRA馬体重の取得に失敗：" + str(exc))
             except Exception as exc:
                 st.session_state[note_key] = (
-                    "warning", "JRA公式の当日出馬表を取得できません（"
-                    + type(exc).__name__ + "）。予想と以前の観測は維持します。")
+                    "warning", "JRA公式出馬表の取得処理で"
+                    + type(exc).__name__ + "が発生しました。予想と以前の観測は維持します。")
 
     feedback = st.session_state.get(note_key)
     if feedback:
