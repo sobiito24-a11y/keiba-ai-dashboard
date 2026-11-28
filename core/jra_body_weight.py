@@ -275,6 +275,43 @@ async def fetch_once(identity, info, *, now=None, request_get=None, browser_fall
         except (ValueError, TypeError, OSError, TimeoutError, requests.RequestException) as exc:
             errors.append(f"{urlsplit(url).hostname}: {str(exc)[:85]}")
 
+    if best is None or best[2] < len(best[1]):
+        # The official page may be stale even though its race identity
+        # validates. Use *separate* public providers for today's actual
+        # measurements, but only after matching the full saved race identity
+        # and every matched horse number + name. They are not model inputs.
+        from .jra_body_weight_alternates import sources as alternate_sources
+        from .jra_body_weight_alternates import parse_card as parse_alternate
+        official_rows = (best[1] if best and best[3] in ("http", "browser") else ())
+        official_by_no = {r["horse_no"]: r for r in official_rows}
+        for provider, alternate_url in alternate_sources(identity, info):
+            try:
+                response = get(
+                    alternate_url,
+                    headers={
+                        "User-Agent": "Mozilla/5.0 (compatible; KeibaAI/1.0; manual racecard)",
+                        "Cache-Control": "no-cache, max-age=0",
+                        "Pragma": "no-cache",
+                    },
+                    timeout=9, allow_redirects=False)
+                if response.status_code != 200:
+                    raise ValueError(f"HTTP {response.status_code}")
+                if not 0 < len(response.content) <= 4_000_000:
+                    raise ValueError("出馬表の応答サイズが不正")
+                extra = parse_alternate(response.content, alternate_url, provider, identity, info)
+                # Third-party pages supply only today's weights. Preserve the
+                # past 1st/2nd ranges, separately verified from official JRA.
+                for row in extra:
+                    prior = official_by_no.get(row["horse_no"])
+                    if prior and row["name"] == prior["name"]:
+                        for field in ("paired_min_kg", "paired_max_kg", "paired_count"):
+                            row[field] = prior.get(field)
+                count = consider(alternate_url, extra, provider)
+                if count == len(extra):
+                    break
+            except (ValueError, TypeError, OSError, TimeoutError, requests.RequestException) as exc:
+                errors.append(f"{provider}: {str(exc)[:85]}")
+
     if (best is None or best[2] == 0) and browser_fallback:
         # A valid but unpopulated HTTP card still needs browser verification;
         # otherwise we can falsely report "unpublished" six minutes before
