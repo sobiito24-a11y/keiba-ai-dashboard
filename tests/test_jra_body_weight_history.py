@@ -142,7 +142,7 @@ def test_enrich_completes_all_career_ranges_without_changing_current_weight():
         old, RACE, INFO, get=get, cache=cache, max_workers=1)
     assert checked == 2
     assert old == saved
-    assert len(calls) == 3
+    assert len(calls) == 4  # Sportsnavi first, then netkeiba fallback
     assert enriched[0]["current_kg"] == 478
     assert enriched[0]["change_kg"] == 0
     assert (enriched[0]["paired_min_kg"], enriched[0]["paired_max_kg"]) == (450, 476)
@@ -152,7 +152,7 @@ def test_enrich_completes_all_career_ranges_without_changing_current_weight():
     repeat, rechecked = history.enrich(
         old, RACE, INFO, get=get, cache=cache, max_workers=1)
     assert rechecked == 2
-    assert len(calls) == 1  # card identity is rechecked, horse histories cached
+    assert len(calls) == 2  # both cards rechecked; netkeiba histories cached
     assert repeat == enriched
 
 
@@ -223,5 +223,5 @@ def test_jra_fetch_once_integrates_career_ranges_and_preserves_live_weight():
         (478, 0), (478, 0)]
     assert [(x["paired_min_kg"], x["paired_max_kg"]) for x in observation["rows"]] == [
         (450, 476), (472, 478)]
-    assert len(urls) == 4  # official, netkeiba racecard, two verified careers
+    assert len(urls) == 5  # official, Sportsnavi attempt, netkeiba card, two careers
     assert RACE == original
