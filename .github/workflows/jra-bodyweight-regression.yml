@@ -31,4 +31,4 @@ jobs:
             tests/test_jra_body_weight_sports_history.py
       - name: Optional live Sportsnavi provider smoke
         continue-on-error: true
-        run: python tools/verify_jra_paired_live.py
+        run: PYTHONPATH=. python tools/verify_jra_paired_live.py
