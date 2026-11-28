@@ -114,3 +114,108 @@ def test_table_has_jra_weight_immediately_after_popularity():
     visible = [spec["key"] for spec in columns(view) if not spec.get("table_hidden")]
     assert visible.index("jra_body_weight") == visible.index("popularity") + 1
     assert "nar_body_weight" not in visible
+
+
+# Regression for 2026-11-28: 8R has public weights while 10-12R
+# may legitimately have a valid racecard but no published weights yet.
+def _nov28():
+    rid = "202608050708"  # Kyoto fifth meeting, seventh day, 8R
+    info = {"race_date": "2026-11-28", "racecourse": "京都"}
+    ident = identity()
+    ident["race_id"] = rid
+    html = page().replace(
+        "2026年11月21日（土曜）5回京都5日 11レース",
+        "2026年11月28日（土曜）5回京都7日 8レース")
+    return ident, info, html
+
+
+def test_nov28_live_official_url_checksums():
+    ident, info, _html = _nov28()
+    assert bw.official_card_url(ident, info).endswith(
+        "pw01dde0108202605070820261128/D7")
+    for rid, code in [("202608050710", "81"), ("202608050712", "EB"),
+                      ("202605050701", "06")]:
+        sample = dict(ident, race_id=rid)
+        local = dict(info, racecourse="東京" if rid.startswith("202605") else "京都")
+        assert bw.official_card_url(sample, local).endswith("/" + code)
+
+
+def test_prepublication_still_parses_exact_horses_and_paired_history():
+    ident, info, html = _nov28()
+    url = bw.official_card_url(ident, info)
+    html = html.replace("501kg(+4)", "").replace("468kg(-2)", "").replace("488kg(初出走)", "")
+    rows = bw.parse_card(html, url, ident, info)
+    assert bw._retrieval_status(rows) == "unpublished"
+    assert all(h["current_kg"] is None for h in rows)
+    assert rows[0]["paired_min_kg"] == 496
+    assert rows[0]["paired_max_kg"] == 498
+    assert rows[1]["paired_min_kg"] is None
+
+
+def test_automatic_fallback_to_second_official_jra_host_without_guessed_data():
+    import asyncio
+    from datetime import datetime
+
+    ident, info, html = _nov28()
+    calls = []
+
+    class Response:
+        def __init__(self, status, content):
+            self.status_code = status
+            self.content = content
+
+    def get(url, **kwargs):
+        calls.append(url)
+        assert kwargs["allow_redirects"] is False
+        if url.startswith("https://www.jra.go.jp/"):
+            return Response(403, b"blocked")
+        return Response(200, html.encode("utf-8"))
+
+    observed = asyncio.run(bw.fetch_once(
+        ident, info, now=datetime(2026, 11, 28, 13, 45, tzinfo=bw.JST),
+        request_get=get, browser_fallback=False))
+    assert len(calls) == 2
+    assert observed["source_url"].startswith("https://jra.jp/")
+    assert observed["publication_status"] == "published"
+    assert observed["current_count"] == 3
+    assert observed["rows"][0]["current_kg"] == 501
+    assert observed["rows"][1]["current_kg"] == 468
+
+
+def test_valid_racecard_without_current_weights_reports_unpublished():
+    import asyncio
+    from datetime import datetime
+
+    ident, info, html = _nov28()
+    html = html.replace("501kg(+4)", "").replace("468kg(-2)", "").replace("488kg(初出走)", "")
+
+    class Response:
+        status_code = 200
+        content = html.encode("utf-8")
+
+    observation = asyncio.run(bw.fetch_once(
+        ident, info, now=datetime(2026, 11, 28, 13, 5, tzinfo=bw.JST),
+        request_get=lambda *_args, **_kwargs: Response(),
+        browser_fallback=False))
+    assert observation["publication_status"] == "unpublished"
+    assert observation["current_count"] == 0
+    assert len(observation["rows"]) == 4
+    # Past winning weights may be shown even when today's weight is absent.
+    assert observation["rows"][0]["paired_min_kg"] == 496
+
+
+def test_official_http_failure_reports_source_instead_of_false_success():
+    import asyncio
+    from datetime import datetime
+
+    ident, info, _html = _nov28()
+
+    class Denied:
+        status_code = 403
+        content = b"blocked"
+
+    with pytest.raises(ValueError, match="HTTP 403"):
+        asyncio.run(bw.fetch_once(
+            ident, info, now=datetime(2026, 11, 28, 13, 5, tzinfo=bw.JST),
+            request_get=lambda *_args, **_kwargs: Denied(),
+            browser_fallback=False))
