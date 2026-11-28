@@ -164,7 +164,7 @@ def career_pair_weights(html, url, *, expected_horse_id, expected_name, race_day
     )
 
 
-def enrich(rows, identity, info, *, get, cache=None, timeout=7, max_workers=4):
+def _enrich_netkeiba(rows, identity, info, *, get, cache=None, timeout=7, max_workers=4):
     """Fill all-career paired ranges without modifying current weight/delta.
 
     The caller owns an optional per-session cache. Cache values remain valid
@@ -181,6 +181,10 @@ def enrich(rows, identity, info, *, get, cache=None, timeout=7, max_workers=4):
     results = {}
     for no, (name, horse_id) in mapping.items():
         if no not in by_no or _norm(by_no[no].get("name")) != name:
+            continue
+        # Sportsnavi's already verified full-career history has precedence.
+        # A second source should fill gaps, never overwrite a known range.
+        if by_no[no].get("paired_scope") == "career":
             continue
         key = f"{horse_id}:{day}"
         old = cache.get(key) if cache is not None else None
@@ -215,6 +219,37 @@ def enrich(rows, identity, info, *, get, cache=None, timeout=7, max_workers=4):
                 row[key] = record[key]
     return updated, len(results)
 
+
+
+def enrich(rows, identity, info, *, get, cache=None, timeout=7, max_workers=4):
+    """Use the Sportsnavi racecard/profile first, netkeiba for remaining gaps.
+
+    A failed first provider must never block the second; preserve prior JRA
+    4-run results as the final fallback. Count only successfully validated
+    career histories, including horses with genuinely zero 1st/2nd finishes.
+    """
+    copied = [dict(row) for row in rows]
+    errors = []
+    try:
+        from .jra_body_weight_sports_history import enrich as sports_enrich
+        copied, _checked = sports_enrich(
+            copied, identity, info, get=get, cache=cache,
+            timeout=timeout, max_workers=max_workers)
+    except Exception as exc:
+        errors.append("スポーツナビ: " + str(exc)[:125])
+
+    if sum(r.get("paired_scope") == "career" for r in copied) < len(copied):
+        try:
+            copied, _checked = _enrich_netkeiba(
+                copied, identity, info, get=get, cache=cache,
+                timeout=timeout, max_workers=max_workers)
+        except Exception as exc:
+            errors.append("netkeiba: " + str(exc)[:125])
+
+    count = sum(r.get("paired_scope") == "career" for r in copied)
+    if count == 0 and errors:
+        raise ValueError(" / ".join(errors)[:300])
+    return copied, count
 
 def _try_fetch(func):
     def wrapped(task):
