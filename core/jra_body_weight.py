@@ -275,8 +275,8 @@ async def fetch_once(identity, info, *, now=None, request_get=None, browser_fall
         except (ValueError, TypeError, OSError, TimeoutError, requests.RequestException) as exc:
             errors.append(f"{urlsplit(url).hostname}: {str(exc)[:85]}")
 
-    if best is None or best[2] < len(best[1]):
-        # The official page may be stale even though its race identity
+    if best is None or best[2] < len(best[1]) * 0.70:
+        # A low-coverage official page may be stale even though its race identity
         # validates. Use *separate* public providers for today's actual
         # measurements, but only after matching the full saved race identity
         # and every matched horse number + name. They are not model inputs.
