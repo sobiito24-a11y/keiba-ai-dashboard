@@ -219,3 +219,97 @@ def test_official_http_failure_reports_source_instead_of_false_success():
             ident, info, now=datetime(2026, 11, 28, 13, 5, tzinfo=bw.JST),
             request_get=lambda *_args, **_kwargs: Denied(),
             browser_fallback=False))
+
+
+def test_kyoto7_nov28_cached_zero_then_live_18_retries_other_official_host():
+    """Regression for screenshot: Kyoto 7R 13:19 showed 0/18 with published data."""
+    import asyncio
+    from datetime import datetime
+
+    names_weights = [
+        ("カラペルソナ", "446kg(+6)"),
+        ("コスモフィレンツェ", "496kg(+14)"),
+        ("スマートティアナ", "410kg(-6)"),
+        ("スノースケープ", "474kg(+6)"),
+        ("ラッキーストーン", "502kg(+2)"),
+        ("ニシノマルガリート", "436kg(-6)"),
+        ("フィングステン", "480kg(+6)"),
+        ("アイスヴィレッジ", "506kg(-6)"),
+        ("ペイシャシス", "400kg(+4)"),
+        ("ブランドブラン", "502kg(+2)"),
+        ("トップオンザヒル", "470kg(-4)"),
+        ("ジャストビート", "436kg(+6)"),
+        ("ブルーミングローズ", "480kg(+8)"),
+        ("アドマイヤシュラ", "440kg(-10)"),
+        ("アージュドール", "436kg(+6)"),
+        ("ゴーゴータカシ", "486kg(0)"),
+        ("マイネルビスマルク", "504kg(+6)"),
+        ("アレンテージョ", "498kg(+18)"),
+    ]
+    ident = {"race_id": "202608050707", "mode": "jra", "horses": [
+        {"horse_no": n, "name": name} for n, (name, _kg) in enumerate(names_weights, 1)
+    ]}
+    info = {"race_date": "2026-11-28", "racecourse": "京都", "start_time": "13:25"}
+    url = bw.official_card_url(ident, info)
+    assert url.endswith("pw01dde0108202605070720261128/22")
+    headers = ["枠", "馬番", "馬名 / 馬体重", "性齢", "前走", "前々走", "3走前", "4走前"]
+    head = "".join(f"<th>{h}</th>" for h in headers)
+    heading = "<h1>出馬表2026年11月28日（土曜）5回京都7日 7レース</h1>"
+
+    def card(with_current):
+        trs = []
+        for number, (name, kg) in enumerate(names_weights, 1):
+            weight = kg if with_current else ""
+            trs.append(_runner(number, name, weight, ["", "", "", ""]))
+        return (f"<html>{heading}<table><thead><tr>{head}</tr></thead>"
+                f"<tbody>{''.join(trs)}</tbody></table></html>").encode("utf-8")
+
+    class Response:
+        def __init__(self, content):
+            self.status_code = 200
+            self.content = content
+
+    calls = []
+
+    def get(url, **kwargs):
+        calls.append(url)
+        assert kwargs["headers"]["Cache-Control"].startswith("no-cache")
+        if url.startswith("https://www.jra.go.jp/"):
+            # Old cached response was still a valid 18-horse page.
+            return Response(card(False))
+        return Response(card(True))
+
+    result = asyncio.run(bw.fetch_once(
+        ident, info, now=datetime(2026, 11, 28, 13, 19, tzinfo=bw.JST),
+        request_get=get, browser_fallback=False))
+    assert len(calls) == 2
+    assert result["current_count"] == 18
+    assert result["publication_status"] == "published"
+    assert result["rows"][0]["current_kg"] == 446
+    assert result["rows"][1]["current_kg"] == 496
+    assert result["rows"][17]["change_kg"] == 18
+    assert result["prestart_observed"] is True
+
+
+def test_kyoto7_zero_on_both_hosts_is_uncertain_not_proof_of_nonpublication():
+    import asyncio
+    from datetime import datetime
+
+    ident, info, html = _nov28()
+    html = html.replace("501kg(+4)", "").replace("468kg(-2)", "").replace("488kg(初出走)", "")
+
+    class Response:
+        status_code = 200
+        content = html.encode("utf-8")
+
+    calls = []
+    def get(url, **kwargs):
+        calls.append(url)
+        return Response()
+
+    result = asyncio.run(bw.fetch_once(
+        ident, info, now=datetime(2026, 11, 28, 13, 19, tzinfo=bw.JST),
+        request_get=get, browser_fallback=False))
+    assert len(calls) == 2
+    assert result["publication_uncertain"] is True
+    assert result["current_count"] == 0
