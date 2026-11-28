@@ -175,3 +175,53 @@ def test_a_blocked_horse_history_preserves_existing_official_paired_weights():
         old, RACE, INFO, get=get, max_workers=1)
     assert checked == 0
     assert updated == old
+
+
+
+def test_jra_fetch_once_integrates_career_ranges_and_preserves_live_weight():
+    """Complete end-to-end without any external HTTP calls."""
+    import asyncio
+    from datetime import datetime
+
+    from core import jra_body_weight as bw
+    head = "<h1>出馬表2026年11月28日（土曜）5回東京7日 11レース</h1>"
+    columns = ["枠", "馬番", "馬名 / 単勝オッズ(人気) 馬体重",
+               "性齢", "前走", "前々走", "3走前", "4走前"]
+    th = "".join(f"<th>{col}</th>" for col in columns)
+    official_rows = "".join(
+        f"<tr><td>1</td><td>{no}</td><td>{name}<p>478kg(0)</p></td>"
+        "<td>牡</td><td></td><td></td><td></td><td></td></tr>"
+        for no, name in [(2, "レッドシュヴェルト"), (3, "アドマイヤクワッズ")])
+    official_html = (f"<html>{head}<table><thead><tr>{th}</tr></thead>"
+                     f"<tbody>{official_rows}</tbody></table></html>")
+
+    class Response:
+        status_code = 200
+        def __init__(self, content):
+            self.content = content.encode("utf-8")
+
+    urls = []
+    def get(url, **kwargs):
+        urls.append(url)
+        if "jra.go.jp" in url or "jra.jp" in url:
+            return Response(official_html)
+        if url == CARD:
+            return Response(racecard())
+        if "/horse/result/" in url:
+            horse_id = url.split("/horse/result/")[-1].strip("/")
+            return Response(CAREERS[horse_id])
+        raise AssertionError("Unexpected source")
+
+    original = deepcopy(RACE)
+    observation = asyncio.run(bw.fetch_once(
+        RACE, INFO, now=datetime(2026, 11, 28, 15, 18, tzinfo=bw.JST),
+        request_get=get, browser_fallback=False, history_cache={}))
+    assert observation["current_count"] == 2
+    assert observation["paired_career_checked"] == 2
+    assert observation["verified_by"] == "http"
+    assert [(x["current_kg"], x["change_kg"]) for x in observation["rows"]] == [
+        (478, 0), (478, 0)]
+    assert [(x["paired_min_kg"], x["paired_max_kg"]) for x in observation["rows"]] == [
+        (450, 476), (472, 478)]
+    assert len(urls) == 4  # official, netkeiba racecard, two verified careers
+    assert RACE == original
