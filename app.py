@@ -1816,6 +1816,11 @@ def render_game_prediction(result, *, show_header=False):
     if result_race_mode(result) in ("jra", "nar"):
         with st.expander("⚖️ 馬体重", expanded=True):
             if result_race_mode(result) == "jra":
+                # Warm Streamlit workers also cache the underlying JRA parser.
+                # Reload it before the UI so updates to acquisition logic
+                # take effect without requiring the user to restart the app.
+                from core import jra_body_weight as jra_body_weight_module
+                importlib.reload(jra_body_weight_module)
                 from core import jra_body_weight_ui as body_weight_ui_module
             else:
                 from core import nar_body_weight_ui as body_weight_ui_module
