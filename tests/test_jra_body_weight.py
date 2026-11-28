@@ -310,7 +310,9 @@ def test_kyoto7_zero_on_both_hosts_is_uncertain_not_proof_of_nonpublication():
     result = asyncio.run(bw.fetch_once(
         ident, info, now=datetime(2026, 11, 28, 13, 19, tzinfo=bw.JST),
         request_get=get, browser_fallback=False))
-    assert len(calls) == 2
+    # Official hosts were checked first; two alternate providers then
+    # returned an unrelated fixture and were correctly rejected.
+    assert len(calls) == 4
     assert result["publication_uncertain"] is True
     assert result["current_count"] == 0
 
