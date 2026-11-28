@@ -50,7 +50,7 @@ def test_official_card_url_computed_against_published_jra_pages():
     assert bw.official_card_url(identity(), INFO) == URL
     examples = [
         ("202605050511", "2026-11-22", "東京", "04"),
-        ("202605060511", "2026-11-23", "東京", "34"),
+        ("202605050611", "2026-11-23", "東京", "34"),
     ]
     for rid, date, venue, checksum in examples:
         ident = {"race_id": rid, "mode": "jra", "horses": [{"horse_no": 1, "name": "保存馬A"}]}
