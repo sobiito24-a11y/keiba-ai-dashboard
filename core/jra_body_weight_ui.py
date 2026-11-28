@@ -49,19 +49,25 @@ def render(result, view, *, compact=False):
                     st.session_state[book_key] = book
                     latest = observed
                 total = len(observed["rows"])
+                provider = {
+                    "sportsnavi": "スポーツナビ",
+                    "netkeiba": "netkeiba",
+                    "http": "JRA公式",
+                    "browser": "JRA公式（ブラウザ）",
+                }.get(observed.get("verified_by"), "取得元")
                 if observed["publication_status"] == "unpublished":
                     st.session_state[note_key] = (
-                        "warning", f"JRA公式の出馬表を複数経路で確認しましたが、取得結果に当日馬体重がありません（0/{total}頭）。"
+                        "warning", f"JRA公式・補助サイトを確認しましたが、取得結果に当日馬体重がありません（0/{total}頭）。"
                         "公式で既に発表されていても、取得元のキャッシュ・配信遅延の可能性があります。"
                         "発走約60分前以降なら30秒以上空けて再更新してください。"
                         "過去の連対時体重がない馬は「-」で表示します。")
                 elif available < total:
                     st.session_state[note_key] = (
-                        "warning", f"JRA公式で{available}/{total}頭の当日馬体重を取得しました。"
+                        "warning", f"{provider}で{available}/{total}頭の当日馬体重を取得しました。"
                         "未取得の馬は未発表・除外等の可能性があります。")
                 else:
                     st.session_state[note_key] = (
-                        "success", f"JRA公式から当日馬体重を{available}/{total}頭取得しました。"
+                        "success", f"{provider}から当日馬体重を{available}/{total}頭取得しました。"
                         "連対時体重がない馬も当日馬体重・増減は表示します。")
             except (ValueError, TypeError, KeyError) as exc:
                 st.session_state[note_key] = ("warning", "JRA馬体重の取得に失敗：" + str(exc))
