@@ -365,7 +365,7 @@ async def fetch_once(identity, info, *, now=None, request_get=None,
                 rows, identity, info, get=get, cache=history_cache)
         except Exception as exc:
             # Past-history failures must not hide verified current weights.
-            career_error = type(exc).__name__
+            career_error = str(exc)[:220] or type(exc).__name__
     return dict(race_id=rid, mode="jra", source_url=url,
                 retrieved_at=now.isoformat(),
                 prestart_observed=_post_time_before_now(info, now),
